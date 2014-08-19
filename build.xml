@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project  name="mpe-commons-tensorics" default="default">
+<project  name="tensorics-core" default="default">
 	<!--      Defines project variables
 	  
 	  --> 

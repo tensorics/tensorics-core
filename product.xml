@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
-	<product name="mpe-commons-tensorics" version="0.0.1" directory="mpe/commons/mpe-commons-tensorics">
-		<desc>Common domain objects for the MPE projects</desc>
+	<product name="tensorics-core" version="0.0.1" directory="org/tensorics/tensorics-core">
+		<desc>Framework of tensor-like objects for numerical data analysis, statistics and backing of domain objects.</desc>
 		<dependencies>
 			<dep product="jscience" />
 			<dep product="guava" />
