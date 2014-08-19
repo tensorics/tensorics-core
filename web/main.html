@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tensorics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+      
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="main.html">Tensorics</a>
+              </div>
+              <div class="collapse navbar-collapse">
+                  <ul class="nav navbar-nav">
+                      <li class="active"><a href="main.html">Home</a></li>
+                      <li><a href="download.html">Download</a></li>
+                      <li><a href="main.html#contact">Contact</a></li>
+                  </ul>
+              </div><!--/.nav-collapse -->
+          </div>
+      </div>
+      
+
+  
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron" style="background-image:url('cube_small.jpg');
+            background-repeat:no-repeat;
+            
+            background-position:top right; ">
+      <div class="container">
+        <h1>One to rule them all...</h1>
+        <p>Did you ever play with multi-dimensional arrays?<br>
+        Did you ever try to perform some simple operations on them?<br>
+        Did you feel annoyed by re-implementing the same <br>operations every time you start a new project?<br>
+        What if you would have objects and a framework that does it for you?
+        </p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="tensors.html">Learn more &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        
+        <div class="col-md-4">
+          <h2>Tensors and their framework</h2>
+          <p>Main concepts:</p>
+          <ul>
+              <li>tensors are basically multi-key to value maps </a></li>
+              <li>coordinates give precise and unique value localization within tensors</li>
+              <li>scalability and reductionability as a built in operations</li>
+              <li>possibility to use in deferred version to build an expression that can be evaluated later in data processing.</li>
+              <li>lighthweigt eDSL for operations - forget about non readable operations on multi dimensional arrays</li>
+          </ul>
+          <p><a class="btn btn-default" href="tensors.html#tensors" role="button">more details <span class="label label-warning">tensor</span> &raquo;</a> <a class="btn btn-default" href="tensors.html#framework" role="button">more details <span class="label label-warning">framework</span> &raquo;</a></p>
+        </div>
+        
+        
+        <div class="col-md-4">
+          <h2>Data completness</h2>
+          <p>
+          Did you ever suffer from simple calculation that didn't provide any information about actual unit of value that is used? What about error propagation? And what if some part of actual acquisition is not valid? all of these you get for free with tenosorics implementations.</p>
+          <p><a class="btn btn-default" href="tensors.html#datacompletness" role="button">View details on <span class="label label-warning">units</span> <span class="label label-warning">errors</span> <span class="label label-warning">validity</span> &raquo;</a></p>
+       </div>
+        
+        
+        <div class="col-md-4">
+          <h2>News</h2>
+          <p>plug link to GitHub logs, with recent changes ...</p>
+          <p><a class="btn btn-default" href="tensors.html#framework" role="button">Learn more  &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+       <a name="contact"></a>
+       <div class="starter-template">
+            <h2>Contact</h2>
+            <p><a class="btn btn-primary btn-lg" role="button" href="#"> kajetan</a> <a class="btn btn-primary btn-lg" role="button" href="#"> arek</a>
+             Or go directly to our <a class="btn btn-primary btn-lg" role="button" href="#">GitHub repositiry &raquo;</a></p>
+       </div>
+     
+      <footer>
+        <p>&copy; CreativeCommons 2014</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

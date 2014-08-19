@@ -1,0 +1,103 @@
+/**
+ * Copyright (c) 2013 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.lang;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.TensorStructurals;
+
+import com.google.common.collect.ImmutableSet;
+
+/**
+ * @author agorzaws
+ */
+public class TensorBackedBySetOfTensorValuesTest {
+
+    private static final double DOUBLE_LIMIT = 0.001;
+    private static final int TENSOR_10_x_10_ORDER_2 = 2;
+    private Tensor<Double> tensorToTest;
+
+    /**
+     * @throws java.lang.Exception
+     */
+    @Before
+    public void setUp() throws Exception {
+        tensorToTest = createTensor();
+    }
+
+    @Test
+    public void orderOfTensor() {
+        assertEquals(TENSOR_10_x_10_ORDER_2, tensorToTest.shape().dimensionSet().size());
+    }
+
+    @Test
+    public void valueOfTensor() {
+        XCoordinate x = new XCoordinate(8);
+        YCoordinate y = new YCoordinate(8);
+        assertEquals(64.0, tensorToTest.get(x, y), DOUBLE_LIMIT);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void valueOfTensorWithNotEnoughCoordinates() {
+        YCoordinate y = new YCoordinate(8);
+        assertEquals(64.0, tensorToTest.get(y), DOUBLE_LIMIT);
+    }
+
+    @Test
+    public void orderOfSliceOfTensor() {
+        XCoordinate x = new XCoordinate(8);
+        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
+        assertEquals(tensorToTest.shape().dimensionSet().size() - 1, tensorOnXCoordinate.shape().dimensionSet().size());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void sliceOfTensorGetSameCoordinate() {
+        XCoordinate x = new XCoordinate(8);
+        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
+        assertEquals(1.0, tensorOnXCoordinate.get(x), DOUBLE_LIMIT);
+    }
+
+    @Test
+    public void sliceOfTensorGetValue() {
+        XCoordinate x = new XCoordinate(8);
+        YCoordinate y = new YCoordinate(8);
+        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
+        assertEquals(64.0, tensorOnXCoordinate.get(y), DOUBLE_LIMIT);
+    }
+
+    private Tensor<Double> createTensor() {
+        ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
+                .of(XCoordinate.class, YCoordinate.class);
+        Builder<Double> builder = ImmutableTensor.builder(dimensions);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                builder.at(Position.of(coordinatesFor(i, j))).put(valueFor(i, j));
+            }
+        }
+        return builder.build();
+    }
+
+    private double valueFor(int i, int j) {
+        return j * i * 1.0;
+    }
+
+    private Set<TestCoordinate> coordinatesFor(int i, int j) {
+        Set<TestCoordinate> coordinates = new HashSet<>();
+        coordinates.add(new XCoordinate(i));
+        coordinates.add(new YCoordinate(j));
+        return coordinates;
+    }
+
+}
