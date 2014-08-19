@@ -1,0 +1,136 @@
+/**
+ * Copyright (c) 2014 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.tensorbacked;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import java.util.Collections;
+
+import org.junit.Test;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor.Entry;
+import org.tensorics.core.tensorbacked.orbit.SinglebeamOrbit;
+import org.tensorics.core.tensorbacked.orbit.coordinates.Bpm;
+import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
+
+import com.google.common.collect.Iterables;
+
+public class TensorbackedBuilderTest {
+
+    private static final double TESTVALUE_1_0 = 1.0;
+    private static final Bpm BPM_A = new Bpm("A");
+    private static final Position POS_A_H = Position.of(BPM_A, Plane.H);
+
+    @Test
+    public void emptyTensorbackedHasCorrectDimensionality() {
+        assertThat(Tensorbackeds.dimensionalityOf(emptyOrbit()), equalTo(2));
+    }
+
+    @Test
+    public void emptyTensorHasSizeZero() {
+        assertThat(Tensorbackeds.sizeOf(emptyOrbit()), equalTo(0));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void putInsufficientCoordinateThrows() {
+        newBuilder().at(BPM_A).put(1.0);
+    }
+
+    @Test
+    public void putOneCorrectValueWorks() {
+        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        builder.at(BPM_A, Plane.H).put(1.0);
+        SinglebeamOrbit orbit = builder.build();
+        assertThat(Tensorbackeds.sizeOf(orbit), equalTo(1));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void putAtOnePositionWithWrongCoordinatesThrows() {
+        newBuilder().at(Position.of(BPM_A)).put(TESTVALUE_1_0);
+    }
+
+    @Test
+    public void putOneAtPositionHasCorrectSize() {
+        assertThat(Tensorbackeds.sizeOf(oneValuePosAH()), equalTo(1));
+    }
+
+    @Test
+    public void putOneAtPositionHasCorrectValue() {
+        assertThat(oneValuePosAH().tensor().get(POS_A_H), equalTo(TESTVALUE_1_0));
+    }
+
+    @Test
+    public void putOneValueByCoordinatesHasCorrectValue() {
+        assertThat(oneValueCoordinatesAH().tensor().get(POS_A_H), equalTo(TESTVALUE_1_0));
+    }
+
+    @Test
+    public void oneValueCoordinatesEqualsOneValuePos() {
+        assertThat(oneValueCoordinatesAH(), equalTo(oneValuePosAH()));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void putNullEntryThrows() {
+        newBuilder().put(null);
+    }
+
+    @Test
+    public void putOneEntryIsEqualToOriginal() {
+        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        builder.put(Iterables.getFirst(oneValuePosAH().tensor().entrySet(), null));
+        assertThat(builder.build(), equalTo(oneValuePosAH()));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void putNullEntriesThrows() {
+        newBuilder().putAll(null);
+    }
+
+    @Test
+    public void putEmptyCollectionResultsInEmptyTensor() {
+        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        builder.putAll(Collections.<Entry<Double>> emptySet());
+        assertThat(Tensorbackeds.sizeOf(builder.build()), equalTo(0));
+    }
+
+    @Test
+    public void copyByEntryEqualsToOriginal() {
+        assertThat(oneValuePosCopied(), equalTo(oneValuePosAH()));
+    }
+
+    @Test
+    public void copyByEntryEqualsHasCorrectSize() {
+        assertThat(Tensorbackeds.sizeOf(oneValuePosCopied()), equalTo(1));
+    }
+
+    private SinglebeamOrbit oneValuePosCopied() {
+        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        builder.putAll(oneValuePosAH().tensor().entrySet());
+        SinglebeamOrbit copiedOrbit = builder.build();
+        return copiedOrbit;
+    }
+
+    private SinglebeamOrbit oneValueCoordinatesAH() {
+        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        builder.at(POS_A_H.coordinates()).put(TESTVALUE_1_0);
+        return builder.build();
+    }
+
+    private SinglebeamOrbit oneValuePosAH() {
+        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        builder.at(POS_A_H).put(TESTVALUE_1_0);
+        return builder.build();
+    }
+
+    private TensorbackedBuilder<Double, SinglebeamOrbit> newBuilder() {
+        return Tensorbackeds.builderFor(SinglebeamOrbit.class);
+    }
+
+    private SinglebeamOrbit emptyOrbit() {
+        return newBuilder().build();
+    }
+
+}

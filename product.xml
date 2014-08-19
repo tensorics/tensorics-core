@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+	<product name="mpe-commons-tensorics" version="0.0.1" directory="mpe/commons/mpe-commons-tensorics">
+		<desc>Common domain objects for the MPE projects</desc>
+		<dependencies>
+			<dep product="jscience" />
+			<dep product="guava" />
+
+			<!-- for testing -->
+			<dep product="junit" local="true" excluded="true" />
+			<dep product="openpojo" local="true" excluded="true" />
+			<dep product="mockito-core" local="true" excluded="true" />
+			<dep product="objenesis" local="true" excluded="true" />
+		</dependencies>
+	</product>
+</products>
+
