@@ -69,7 +69,7 @@ public final class Instantiators {
          * @param argumentClass the type of the argument of the constructor for the object
          * @return a new instantiator
          */
-        public <A> Instantiator<A, T> withConstructorArgumentType(Class<A> argumentClass) {
+        public <A> Instantiator<A, T> withArgumentType(Class<A> argumentClass) {
             Preconditions.checkNotNull(argumentClass, "The type of the constructor argument must not be null!");
             return new SingleArgumentConstructorInstantiator<>(instanceClass, argumentClass);
         }
