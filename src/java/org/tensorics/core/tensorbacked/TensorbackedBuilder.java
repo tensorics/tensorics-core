@@ -12,6 +12,7 @@ import java.util.Set;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.OngoingPut;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensor.Entry;
 
 /**
@@ -39,7 +40,6 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
         this.tensorBuilder = ImmutableTensor.builder(dimensionsOf(tensorbackedClass));
     }
 
-    
     @SuppressWarnings("PMD.ShortMethodName")
     public final OngoingPut<V> at(Position entryPosition) {
         return tensorBuilder.at(entryPosition);
@@ -61,6 +61,22 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 
     public final void putAll(Iterable<Entry<V>> entries) {
         tensorBuilder.putAll(entries);
+    }
+
+    public final void putAllAt(Tensor<V> tensor, Position position) {
+        tensorBuilder.putAllAt(tensor, position);
+    }
+
+    public final void putAllAt(Tensorbacked<V> tensorbacked, Position position) {
+        tensorBuilder.putAllAt(tensorbacked.tensor(), position);
+    }
+
+    public final void putAllAt(Tensor<V> tensor, Object... coordinates) {
+        tensorBuilder.putAllAt(tensor, coordinates);
+    }
+
+    public final void putAllAt(Tensorbacked<V> tensorbacked, Object... coordinates) {
+        tensorBuilder.putAllAt(tensorbacked.tensor(), coordinates);
     }
 
     /**

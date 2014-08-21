@@ -28,12 +28,12 @@ public class InstantiatorsTest {
 
     @Test(expected = NullPointerException.class)
     public void instantiatorWithNullArgumentClassThrows() {
-        instantiatorFor(TestClassWithIntConstructor.class).withConstructorArgumentType(null);
+        instantiatorFor(TestClassWithIntConstructor.class).withArgumentType(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void instantiatorWithNotMatchingConstructorThrows() {
-        instantiatorFor(TestClassWithIntConstructor.class).withConstructorArgumentType(String.class);
+        instantiatorFor(TestClassWithIntConstructor.class).withArgumentType(String.class);
     }
 
     @Test
@@ -48,17 +48,17 @@ public class InstantiatorsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void instantiatorForPackagePrivateConstructorThrows() throws Exception {
-        instantiatorFor(TestClassWithPackageIntConstructor.class).withConstructorArgumentType(Integer.class);
+        instantiatorFor(TestClassWithPackageIntConstructor.class).withArgumentType(Integer.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void instantiatorWithThrowingConstructorThrows() {
-        instantiatorFor(TestClassWithIntThrowingConstructor.class).withConstructorArgumentType(Integer.class).create(
+        instantiatorFor(TestClassWithIntThrowingConstructor.class).withArgumentType(Integer.class).create(
                 TEST_VALUE_5);
     }
 
     private Instantiator<Integer, TestClassWithIntConstructor> workingInstantiator() {
-        return instantiatorFor(TestClassWithIntConstructor.class).withConstructorArgumentType(Integer.class);
+        return instantiatorFor(TestClassWithIntConstructor.class).withArgumentType(Integer.class);
     }
 
     private static class TestClassWithIntConstructor {

@@ -51,7 +51,7 @@ public final class TensorbackedInternals {
      */
     public static <V, T extends Tensorbacked<V>> T createBackedByTensor(Class<T> tensorBackedClass, Tensor<V> tensor) {
         verifyDimensions(tensorBackedClass, tensor);
-        return instantiatorFor(tensorBackedClass).withConstructorArgumentType(Tensor.class).create(tensor);
+        return instantiatorFor(tensorBackedClass).withArgumentType(Tensor.class).create(tensor);
     }
 
     private static <T extends Tensorbacked<V>, V> void verifyDimensions(Class<T> tensorBackedClass, Tensor<?> tensor) {

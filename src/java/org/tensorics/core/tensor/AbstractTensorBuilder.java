@@ -71,6 +71,37 @@ public class AbstractTensorBuilder<E> {
         return this.at(Position.of(coordinates));
     }
 
+    /**
+     * Puts all the values of the given tensor into the new tensor, at the given position. The positions in the new
+     * tensor will be the merged positions of the original coordinates in the tensor with the given target position.
+     * Therefore, the given position is not allowed to have a dimensions overlap with the positions in the original
+     * tensor.
+     * 
+     * @param tensor the tensor, whose values to add to the tensor under construction
+     * @param position the position which will be merged with the tensor in the source tensor
+     */
+    /* Not too nice yet. Should be refactored into ongoing put */
+    public final void putAllAt(Tensor<E> tensor, Position position) {
+        checkNotNull(tensor, "The tensor must not be null!");
+        checkNotNull("The position must not be null!");
+        for (Tensor.Entry<E> entry : tensor.entrySet()) {
+            at(Positions.union(position, entry.getPosition())).put(entry.getValue());
+        }
+    }
+
+    /**
+     * Puts all the values of the given tensor into the new tensor at a position represented by the given coordinates.
+     * This is a convenience method for {@link #putAllAt(Tensor, Position)}.
+     * 
+     * @param tensor the tensor whose values to put into the tensor unser construction
+     * @param coordinates the coordinates defining the position where to put the values
+     */
+    /* Not too nice yet. Should be refactored into ongoing put */
+    @SafeVarargs
+    public final void putAllAt(Tensor<E> tensor, Object... coordinates) {
+        putAllAt(tensor, Position.of(coordinates));
+    }
+
     public final void put(Tensor.Entry<E> entry) {
         checkNotNull(entry, "Entry to put must not be null!");
         at(entry.getPosition()).put(entry.getValue());
