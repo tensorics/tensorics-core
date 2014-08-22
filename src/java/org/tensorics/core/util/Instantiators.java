@@ -4,6 +4,8 @@
 
 package org.tensorics.core.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -39,7 +41,7 @@ public final class Instantiators {
      * @return an objects that provides methods for refinements of the instantiator
      */
     public static <T> OngoingInstantiatorCreation<T> instantiatorFor(Class<T> instanceClass) {
-        return new OngoingInstantiatorCreation<>(instanceClass);
+        return new OngoingInstantiatorCreation<>(InstantiatorType.FACTORY_METHOD, instanceClass);
     }
 
     /**
@@ -50,6 +52,7 @@ public final class Instantiators {
      */
     public static final class OngoingInstantiatorCreation<T> {
         private final Class<T> instanceClass;
+        private final InstantiatorType type;
 
         /**
          * Constructor, which takes the class of the objects to instantiate, package private because it will be
@@ -57,8 +60,13 @@ public final class Instantiators {
          * 
          * @param instanceClass the type of the objects to create
          */
-        OngoingInstantiatorCreation(Class<T> instanceClass) {
-            this.instanceClass = Preconditions.checkNotNull(instanceClass, "Class to instantiate must not be null!");
+        OngoingInstantiatorCreation(InstantiatorType type, Class<T> instanceClass) {
+            this.instanceClass = checkNotNull(instanceClass, "Class to instantiate must not be null!");
+            this.type = checkNotNull(type, "Instantiator type must not be null");
+        }
+
+        public OngoingInstantiatorCreation<T> ofType(InstantiatorType type) {
+            return new OngoingInstantiatorCreation<>(type, instanceClass);
         }
 
         /**
@@ -71,7 +79,7 @@ public final class Instantiators {
          */
         public <A> Instantiator<A, T> withArgumentType(Class<A> argumentClass) {
             Preconditions.checkNotNull(argumentClass, "The type of the constructor argument must not be null!");
-            return new SingleArgumentInvokableInstantiator<>(instanceClass, argumentClass);
+            return type.createInstantiator(instanceClass, argumentClass);
         }
     }
 
