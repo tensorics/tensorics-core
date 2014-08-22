@@ -29,7 +29,7 @@ public final class Instantiators {
      * <pre>
      * <code>
      *   Instantiator<Argument, Instance> instantiator = 
-     *      instantiatorFor(Instance.class).withConstructorArgumentType(Argument.class);
+     *      instantiatorFor(Instance.class).withArgumentType(Argument.class);
      * 
      *   Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
      * </code>
@@ -71,7 +71,7 @@ public final class Instantiators {
          */
         public <A> Instantiator<A, T> withArgumentType(Class<A> argumentClass) {
             Preconditions.checkNotNull(argumentClass, "The type of the constructor argument must not be null!");
-            return new SingleArgumentConstructorInstantiator<>(instanceClass, argumentClass);
+            return new SingleArgumentInvokableInstantiator<>(instanceClass, argumentClass);
         }
     }
 
