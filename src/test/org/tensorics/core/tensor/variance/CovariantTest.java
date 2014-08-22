@@ -39,9 +39,14 @@ public class CovariantTest {
 
     public static class CovariantString extends Covariant<String> {
 
-        public CovariantString(String argument) {
+        private CovariantString(String argument) {
             super(argument);
         }
+
+        public static CovariantString of(String argument) {
+            return new CovariantString(argument);
+        }
+
     }
 
 }

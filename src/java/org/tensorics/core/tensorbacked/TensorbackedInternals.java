@@ -5,11 +5,13 @@
 package org.tensorics.core.tensorbacked;
 
 import static org.tensorics.core.util.Instantiators.instantiatorFor;
+import static org.tensorics.core.util.InstantiatorType.CONSTRUCTOR;
 
 import java.util.Set;
 
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
+import org.tensorics.core.util.InstantiatorType;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -51,7 +53,7 @@ public final class TensorbackedInternals {
      */
     public static <V, T extends Tensorbacked<V>> T createBackedByTensor(Class<T> tensorBackedClass, Tensor<V> tensor) {
         verifyDimensions(tensorBackedClass, tensor);
-        return instantiatorFor(tensorBackedClass).withArgumentType(Tensor.class).create(tensor);
+        return instantiatorFor(tensorBackedClass).ofType(CONSTRUCTOR).withArgumentType(Tensor.class).create(tensor);
     }
 
     private static <T extends Tensorbacked<V>, V> void verifyDimensions(Class<T> tensorBackedClass, Tensor<?> tensor) {

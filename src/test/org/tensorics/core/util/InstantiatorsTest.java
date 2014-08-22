@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
+import static org.tensorics.core.util.InstantiatorType.CONSTRUCTOR;
 import static org.tensorics.core.util.Instantiators.instantiatorFor;
 
 import org.junit.Test;
@@ -58,7 +59,7 @@ public class InstantiatorsTest {
     }
 
     private Instantiator<Integer, TestClassWithIntConstructor> workingInstantiator() {
-        return instantiatorFor(TestClassWithIntConstructor.class).withArgumentType(Integer.class);
+        return instantiatorFor(TestClassWithIntConstructor.class).ofType(CONSTRUCTOR).withArgumentType(Integer.class);
     }
 
     private static class TestClassWithIntConstructor {
