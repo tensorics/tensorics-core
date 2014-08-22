@@ -18,12 +18,12 @@ import java.lang.reflect.InvocationTargetException;
  * @param <A> the type of the constructor argument
  * @param <R> the type of the resulting instance
  */
-public final class SingleArgumentConstructorInstantiator<A, R> implements Instantiator<A, R> {
+public final class SingleArgumentInvokableInstantiator<A, R> implements Instantiator<A, R> {
 
     private final Class<R> instanceClass;
     private final Constructor<R> constructor;
 
-    public SingleArgumentConstructorInstantiator(Class<R> instanceClass, Class<A> constructorArgumentClass) {
+    public SingleArgumentInvokableInstantiator(Class<R> instanceClass, Class<A> constructorArgumentClass) {
         this.instanceClass = instanceClass;
         this.constructor = constructorFor(constructorArgumentClass);
     }
