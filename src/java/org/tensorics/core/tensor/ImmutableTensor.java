@@ -40,7 +40,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
      */
     ImmutableTensor(AbstractTensorBuilder<T> builder) {
         this.entries = builder.createEntries();
-        this.shape = Shape.ofDimensionsAndPositions(builder.getDimensions(), this.entries.keySet());
+        this.shape = Shape.viewOf(builder.getDimensions(), this.entries.keySet());
     }
 
     /**

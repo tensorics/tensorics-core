@@ -7,8 +7,10 @@ package org.tensorics.core.lang;
 import static org.junit.Assert.*;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
 import static org.tensorics.core.tensor.lang.TensorStructurals.from;
-import static org.tensorics.core.util.SystemState.currentState;
+import static org.tensorics.core.util.SystemState.currentTimeAfterGc;
+import static org.tensorics.core.util.SystemState.currentTimeBeforeGc;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,16 +21,22 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import javax.measure.unit.SI;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.tensorics.core.fields.doubles.Structures;
+import org.tensorics.core.quantity.ImmutableQuantifiedValue;
+import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensor.Entry;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.units.JScienceUnit;
+import org.tensorics.core.units.Unit;
 import org.tensorics.core.util.SystemState;
 
 import com.google.common.collect.ImmutableMap;
@@ -292,9 +300,9 @@ public class TensorCalculationsTest {
 
     private ProfileResult profileXCoordinateMap(int size) {
         System.out.println("Map preparation preparation of size=" + size + ":");
-        SystemState initialState = currentState();
+        SystemState initialState = currentTimeAfterGc();
         Map<XCoordinate, Double> map = createImmutableMapOfSize(size);
-        SystemState stateDiff = currentState().minus(initialState);
+        SystemState stateDiff = currentTimeAfterGc().minus(initialState);
         stateDiff.printToStdOut();
         return new ProfileResult(map.size(), stateDiff);
 
@@ -336,9 +344,9 @@ public class TensorCalculationsTest {
 
     private ProfileResult profileTensorPreparation(int nX, int nY, int nZ) {
         System.out.println("Tensor preparation for " + nX + "x" + nY + "x" + nZ + ":");
-        SystemState initialState = currentState();
+        SystemState initialState = currentTimeAfterGc();
         Tensor<Double> tensor = prepareValuesForBig(nX, nY, nZ, 2.0);
-        SystemState stateDiff = currentState().minus(initialState);
+        SystemState stateDiff = currentTimeBeforeGc().minus(initialState);
         stateDiff.printToStdOut();
         System.out.println("Tensor size:" + tensor.shape().size());
         return new ProfileResult(tensor.shape().size(), stateDiff);
@@ -346,9 +354,9 @@ public class TensorCalculationsTest {
 
     private ProfileResult profileMapPreparation(int nX, int nY, int nZ) {
         System.out.println("Map preparation for " + nX + "x" + nY + "x" + nZ + ":");
-        SystemState initialState = currentState();
+        SystemState initialState = currentTimeAfterGc();
         Map<Position, Double> map = prepareMap(nX, nY, nZ);
-        SystemState stateDiff = currentState().minus(initialState);
+        SystemState stateDiff = currentTimeAfterGc().minus(initialState);
         stateDiff.printToStdOut();
         System.out.println("Map size:" + map.size());
         return new ProfileResult(map.size(), stateDiff);
@@ -361,9 +369,33 @@ public class TensorCalculationsTest {
     }
 
     @Test
-    @Ignore
-    public void profileRepetitiveTensor() {
-        List<ProfileResult> results = profileTensorNTimes(10);
+    public void profileSimpleRepetitiveTensor() {
+        CoordinateRange range = CoordinateRange.fromSize(TensorSize.ofXYZ(400, 500, 1));
+        System.out.println("Created range");
+        
+        List<ProfileResult> results = profileTensorCreationNTimes(5, range, new ValueFactory<Double>() {
+
+            @Override
+            public Double create(int x, int y, int z) {
+                return valueForBig(x, y, z, 2.0);
+            }
+        });
+        printProfileResult(results);
+    }
+
+    @Test
+    public void profileQuantifiedRepetitiveTensor() {
+        final Unit unit = JScienceUnit.of(SI.METER);
+        CoordinateRange range = CoordinateRange.fromSize(TensorSize.ofXYZ(100, 1000, 1));
+
+        List<ProfileResult> results = profileTensorCreationNTimes(10, range,
+                new ValueFactory<QuantifiedValue<Double>>() {
+
+                    @Override
+                    public QuantifiedValue<Double> create(int x, int y, int z) {
+                        return ImmutableQuantifiedValue.of(valueForBig(x, y, z, 2.0), unit).withError(0.0);
+                    }
+                });
         printProfileResult(results);
     }
 
@@ -371,9 +403,9 @@ public class TensorCalculationsTest {
         List<Map<Position, Double>> maps = new ArrayList<>();
         List<ProfileResult> results = new ArrayList<>();
         for (int i = 0; i < nTimes; i++) {
-            SystemState initialState = currentState();
+            SystemState initialState = currentTimeAfterGc();
             Map<Position, Double> map = prepareMap(100, 1000, 1);
-            SystemState stateDiff = currentState().minus(initialState);
+            SystemState stateDiff = currentTimeAfterGc().minus(initialState);
             stateDiff.printToStdOut();
             System.out.println("Map size:" + map.size());
             results.add(new ProfileResult(map.size(), stateDiff));
@@ -382,13 +414,14 @@ public class TensorCalculationsTest {
         return results;
     }
 
-    public List<ProfileResult> profileTensorNTimes(int nTimes) {
-        List<Tensor<Double>> tensors = new ArrayList<>();
+    public <V> List<ProfileResult> profileTensorCreationNTimes(int nTimes, CoordinateRange range,
+            ValueFactory<V> factory) {
+        List<Tensor<V>> tensors = new ArrayList<>();
         List<ProfileResult> results = new ArrayList<>();
         for (int i = 0; i < nTimes; i++) {
-            SystemState initialState = currentState();
-            Tensor<Double> tensor = prepareValuesForBig(100, 1000, 1, 2.0);
-            SystemState stateDiff = currentState().minus(initialState);
+            SystemState initialState = currentTimeAfterGc();
+            Tensor<V> tensor = createTensor(range, factory);
+            SystemState stateDiff = currentTimeBeforeGc().minus(initialState);
             stateDiff.printToStdOut();
             int size = tensor.shape().size();
             System.out.println("Tensor size:" + size);
@@ -396,6 +429,10 @@ public class TensorCalculationsTest {
             tensors.add(tensor);
         }
         return results;
+    }
+
+    private interface TensorFactory<V> {
+        Tensor<V> create();
     }
 
     private Map<Position, Double> prepareMap(int nX, int nY, int nZ) {
@@ -571,18 +608,32 @@ public class TensorCalculationsTest {
     }
 
     @SuppressWarnings("boxing")
-    private Tensor<Double> prepareValuesForBig(int Nx, int Ny, int Nz, double factor) {
+    private Tensor<Double> prepareValuesForBig(int Nx, int Ny, int Nz, final double factor) {
+        final CoordinateRange range = CoordinateRange.fromSize(TensorSize.ofXYZ(Nx, Ny, Nz));
+        return createTensor(range, new ValueFactory<Double>() {
+            @Override
+            public Double create(int x, int y, int z) {
+                return valueForBig(x, y, z, factor);
+            }
+        });
+    }
+
+    private <V> Tensor<V> createTensor(CoordinateRange range, ValueFactory<V> factory) {
         ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet.of(XCoordinate.class,
                 YCoordinate.class, ZCoordinate.class);
-        Builder<Double> builder = ImmutableTensor.builder(dimensions);
-        for (int i = 0; i < Nx; i++) {
-            for (int j = 0; j < Ny; j++) {
-                for (int k = 0; k < Nz; k++) {
-                    builder.at(Position.of(coordinatesFor(i, j, k))).put(valueForBig(i, j, k, factor));
+        Builder<V> builder = ImmutableTensor.builder(dimensions);
+        for (XCoordinate x : range.getxCoordinates()) {
+            for (YCoordinate y : range.getyCoordinates()) {
+                for (ZCoordinate z : range.getzCoordinates()) {
+                    builder.putValueAt(factory.create(x.getValue(), y.getValue(), z.getValue()), Position.of(x, y, z));
                 }
             }
         }
         return builder.build();
+    }
+
+    interface ValueFactory<V> {
+        V create(int x, int y, int z);
     }
 
     private double valueForBig(int i, int j, int k, double factor) {

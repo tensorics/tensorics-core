@@ -29,7 +29,7 @@ public class YCoordinate implements TestCoordinate {
     }
 
     public static YCoordinate of(int coor) {
-        return INTERNER.intern(new YCoordinate(coor));
+        return new YCoordinate(coor);
     }
 
     public int getValue() {

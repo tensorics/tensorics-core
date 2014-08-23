@@ -28,12 +28,12 @@ public final class Shape {
     private final Set<Position> positions;
 
     Shape(Builder builder) {
-        this(builder.dimensions, builder.setBuilder.build());
+        this(ImmutableSet.copyOf(builder.dimensions), ImmutableSet.copyOf(builder.setBuilder.build()));
     }
 
     Shape(Set<? extends Class<?>> dimensions, Set<Position> positions) {
-        this.dimensions = ImmutableSet.copyOf(dimensions);
-        this.positions = ImmutableSet.copyOf(positions);
+        this.dimensions = dimensions;
+        this.positions = positions;
     }
 
     /**
@@ -122,7 +122,7 @@ public final class Shape {
      * @param positions the positions of the shape
      * @return a new shape instance
      */
-    static Shape ofDimensionsAndPositions(Set<? extends Class<?>> dimensions, Set<Position> positions) {
+    static Shape viewOf(Set<? extends Class<?>> dimensions, Set<Position> positions) {
         return new Shape(dimensions, positions);
     }
 

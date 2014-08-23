@@ -5,6 +5,7 @@
 package org.tensorics.core.util;
 
 import java.io.PrintStream;
+import java.util.List;
 
 /**
  * To be used for testing. Will contain the actual state of the system and provides methods to print it.
@@ -26,9 +27,16 @@ public class SystemState {
         this.delta = delta;
     }
 
-    public static SystemState currentState() {
-        return new SystemState(memoryUsageInB(), System.currentTimeMillis(), false);
+    public static SystemState currentTimeAfterGc() {
+        long memoryUsage = memoryUsageInB();
+        return new SystemState(memoryUsage, System.currentTimeMillis(), false);
     }
+    
+    public static SystemState currentTimeBeforeGc() {
+        long time = System.currentTimeMillis();
+        return new SystemState(memoryUsageInB(), time, false);
+    }
+
 
     public static long memoryUsageInB() {
         for (int i = 0; i < 10; i++) {
@@ -68,6 +76,14 @@ public class SystemState {
 
     public long getTimeInMillis() {
         return timeInMillis;
+    }
+
+    public static void printStates(List<SystemState> states) {
+        System.out.println("Step \ttime [ms] \tmem [byte]");
+        int step = 0;
+        for (SystemState result : states) {
+            System.out.println(step++ + "\t" + result.getTimeInMillis() + "\t" + result.getMemoryUsageInB());
+        }
     }
 
 }
