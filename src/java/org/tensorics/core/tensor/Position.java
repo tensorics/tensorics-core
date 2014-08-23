@@ -6,13 +6,13 @@ package org.tensorics.core.tensor;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Interner;
+import com.google.common.collect.Interners;
 
 /**
  * Defines the position of a value within a tensor in the N-dimensional coordinate space.
@@ -21,8 +21,8 @@ import com.google.common.collect.ImmutableSet;
  */
 public final class Position {
 
-    private static final Map<Set<?>, Position> CACHED_POSITIONS = new ConcurrentHashMap<>();
-
+    private static final Interner<Position> INTERNER = Interners.newWeakInterner();
+    
     /*
      * NOTE: This has to be after the cachedPositions initialization, because the 'of' method uses it!
      */
@@ -41,12 +41,7 @@ public final class Position {
 
     @SuppressWarnings("PMD.ShortMethodName")
     public static Position of(Set<?> coordinates) {
-        Position value = CACHED_POSITIONS.get(coordinates);
-        if (value == null) {
-            value = new Position(coordinates);
-            CACHED_POSITIONS.put(ImmutableSet.copyOf(coordinates), value);
-        }
-        return value;
+        return INTERNER.intern(new Position(coordinates));
     }
 
     public static Position empty() {

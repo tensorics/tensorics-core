@@ -4,8 +4,6 @@
 
 package org.tensorics.core.tensor;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 
 /**
  * Inner Builder object to manage between positions and values.
@@ -15,12 +13,11 @@ import com.google.common.base.Preconditions;
  */
 public final class OngoingPut<T> {
     private final Position position;
-    private final VerificationCallback<T> verificationCallback;
-    private Optional<T> value = Optional.absent();
+    private final AbstractTensorBuilder<T> tensorBuilder;
 
-    OngoingPut(Position position, VerificationCallback<T> verificationCallback) {
+    OngoingPut(Position position, AbstractTensorBuilder<T> tensorBuilder) {
         this.position = position;
-        this.verificationCallback = verificationCallback;
+        this.tensorBuilder = tensorBuilder;
     }
 
     /**
@@ -29,25 +26,7 @@ public final class OngoingPut<T> {
      * @param entryValue as value to set
      */
     public void put(T entryValue) {
-        Preconditions.checkArgument(entryValue != null, "Argument 'entryValue' must not be null!");
-        verificationCallback.verify(entryValue);
-        this.value = Optional.of(entryValue);
-    }
-
-    Tensor.Entry<T> createEntry() { // NOSONAR
-        if (!value.isPresent()) {
-            throw new IllegalStateException("The put for position '" + getPosition()
-                    + "' was incomplete (no value was set)");
-        }
-        return new ImmutableEntry<>(getPosition(), value.get());
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public Optional<T> getValue() {
-        return value;
+        this.tensorBuilder.putValueAt(entryValue, this.position);
     }
 
 }

@@ -39,9 +39,8 @@ public class ImmutableTensor<T> implements Tensor<T> {
      * @param builder to be used when {@link ImmutableTensor} is created.
      */
     ImmutableTensor(AbstractTensorBuilder<T> builder) {
-        Set<Tensor.Entry<T>> tensorEntries = builder.createEntries();
-        this.entries = buildEntryMap(tensorEntries);
-        this.shape = buildShape(builder, tensorEntries);
+        this.entries = builder.createEntries();
+        this.shape = Shape.ofDimensionsAndPositions(builder.getDimensions(), this.entries.keySet());
     }
 
     /**
@@ -188,7 +187,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
         }
         if (buffer.length() > 1) {
             buffer.setLength(buffer.length() - 2);
-         }
+        }
         return "{" + buffer + "}";
     }
 

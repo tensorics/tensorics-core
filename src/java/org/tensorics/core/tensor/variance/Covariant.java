@@ -86,6 +86,6 @@ public class Covariant<C> {
 
     @Override
     public String toString() {
-        return "Covariant(" + coordinate + ")";
+        return getClass().getSimpleName() +  " [" + coordinate + "]";
     }
 }
