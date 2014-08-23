@@ -26,7 +26,7 @@ public class XCoordinate implements TestCoordinate {
     }
 
     public static XCoordinate of(int coor) {
-        return INTERNER.intern(new XCoordinate(coor));
+        return new XCoordinate(coor);
     }
 
     public int getValue() {

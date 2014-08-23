@@ -28,7 +28,7 @@ public class ZCoordinate implements TestCoordinate {
     }
 
     public static ZCoordinate of(int coor) {
-        return INTERNER.intern(new ZCoordinate(coor));
+        return new ZCoordinate(coor);
     }
 
     public int getValue() {

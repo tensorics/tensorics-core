@@ -24,7 +24,7 @@ public class AbstractTensorBuilder<E> {
 
     private final Set<? extends Class<?>> dimensions;
     private final VerificationCallback<E> callback;
-    private final Map<Position, Entry<E>> entries = new HashMap<>();
+    private final ImmutableMap.Builder<Position, Entry<E>> entries = ImmutableMap.builder();
 
     public AbstractTensorBuilder(Set<? extends Class<?>> dimensions, VerificationCallback<E> callback) {
         Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
@@ -51,10 +51,6 @@ public class AbstractTensorBuilder<E> {
      */
     @SuppressWarnings("PMD.ShortMethodName")
     public final OngoingPut<E> at(Position entryPosition) {
-        if (entries.containsKey(entryPosition)) {
-            throw new IllegalArgumentException("Already another entry was put at position '" + entryPosition
-                    + "'. Duplicate entries are not allowed at the same coordinates.");
-        }
         return new OngoingPut<E>(entryPosition, this);
     }
 
@@ -115,10 +111,6 @@ public class AbstractTensorBuilder<E> {
         checkNotNull(entry, "Entry to put must not be null!");
         Position position = entry.getPosition();
         Positions.assertConsistentDimensions(position, getDimensions());
-        if (entries.containsKey(position)) {
-            throw new IllegalArgumentException("Already another entry was put at position '" + position
-                    + "'. Duplicate entries are not allowed at the same coordinates.");
-        }
         this.callback.verify(entry.getValue());
         this.entries.put(position, entry);
     }
@@ -131,7 +123,7 @@ public class AbstractTensorBuilder<E> {
     }
 
     protected final Map<Position, Tensor.Entry<E>> createEntries() {
-        return ImmutableMap.copyOf(this.entries);
+        return this.entries.build();
     }
 
     public Set<? extends Class<?>> getDimensions() {
