@@ -44,35 +44,35 @@ public class TensorBackedBySetOfTensorValuesTest {
 
     @Test
     public void valueOfTensor() {
-        XCoordinate x = new XCoordinate(8);
-        YCoordinate y = new YCoordinate(8);
+        XCoordinate x = XCoordinate.of(8);
+        YCoordinate y = YCoordinate.of(8);
         assertEquals(64.0, tensorToTest.get(x, y), DOUBLE_LIMIT);
     }
 
     @Test(expected = NoSuchElementException.class)
     public void valueOfTensorWithNotEnoughCoordinates() {
-        YCoordinate y = new YCoordinate(8);
+        YCoordinate y = YCoordinate.of(8);
         assertEquals(64.0, tensorToTest.get(y), DOUBLE_LIMIT);
     }
 
     @Test
     public void orderOfSliceOfTensor() {
-        XCoordinate x = new XCoordinate(8);
+        XCoordinate x = XCoordinate.of(8);
         Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
         assertEquals(tensorToTest.shape().dimensionSet().size() - 1, tensorOnXCoordinate.shape().dimensionSet().size());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void sliceOfTensorGetSameCoordinate() {
-        XCoordinate x = new XCoordinate(8);
+        XCoordinate x = XCoordinate.of(8);
         Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
         assertEquals(1.0, tensorOnXCoordinate.get(x), DOUBLE_LIMIT);
     }
 
     @Test
     public void sliceOfTensorGetValue() {
-        XCoordinate x = new XCoordinate(8);
-        YCoordinate y = new YCoordinate(8);
+        XCoordinate x = XCoordinate.of(8);
+        YCoordinate y = YCoordinate.of(8);
         Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
         assertEquals(64.0, tensorOnXCoordinate.get(y), DOUBLE_LIMIT);
     }
@@ -95,8 +95,8 @@ public class TensorBackedBySetOfTensorValuesTest {
 
     private Set<TestCoordinate> coordinatesFor(int i, int j) {
         Set<TestCoordinate> coordinates = new HashSet<>();
-        coordinates.add(new XCoordinate(i));
-        coordinates.add(new YCoordinate(j));
+        coordinates.add(XCoordinate.of(i));
+        coordinates.add(YCoordinate.of(j));
         return coordinates;
     }
 

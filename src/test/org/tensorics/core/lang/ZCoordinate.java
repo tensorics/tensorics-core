@@ -4,11 +4,18 @@
 
 package org.tensorics.core.lang;
 
+import com.google.common.collect.Interner;
+import com.google.common.collect.Interners;
+
+
 /**
  * @author agorzaws
  */
 public class ZCoordinate implements TestCoordinate {
 
+    private static Interner<ZCoordinate> INTERNER = Interners.newWeakInterner();
+
+    
     private final int coor;
 
     /**
@@ -16,8 +23,12 @@ public class ZCoordinate implements TestCoordinate {
      * 
      * @param coor value of Coordinate
      */
-    public ZCoordinate(int coor) {
+    private ZCoordinate(int coor) {
         this.coor = coor;
+    }
+
+    public static ZCoordinate of(int coor) {
+        return INTERNER.intern(new ZCoordinate(coor));
     }
 
     public int getValue() {

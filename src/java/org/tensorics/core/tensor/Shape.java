@@ -28,8 +28,12 @@ public final class Shape {
     private final Set<Position> positions;
 
     Shape(Builder builder) {
-        this.dimensions = builder.dimensions;
-        this.positions = ImmutableSet.copyOf(builder.setBuilder.build());
+        this(builder.dimensions, builder.setBuilder.build());
+    }
+
+    Shape(Set<? extends Class<?>> dimensions, Set<Position> positions) {
+        this.dimensions = ImmutableSet.copyOf(dimensions);
+        this.positions = ImmutableSet.copyOf(positions);
     }
 
     /**
@@ -108,6 +112,18 @@ public final class Shape {
      */
     public static Builder builder(Set<? extends Class<?>> dimensions) {
         return new Builder(dimensions);
+    }
+
+    /**
+     * Directly creates a shape using the given dimensions and positions. The consistency of dimensions and positions is
+     * not checked! Thus this is only for internal use.
+     * 
+     * @param dimensions the dimensions for the shape
+     * @param positions the positions of the shape
+     * @return a new shape instance
+     */
+    static Shape ofDimensionsAndPositions(Set<? extends Class<?>> dimensions, Set<Position> positions) {
+        return new Shape(dimensions, positions);
     }
 
     /**

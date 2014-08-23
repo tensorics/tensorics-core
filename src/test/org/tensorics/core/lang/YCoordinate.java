@@ -4,10 +4,19 @@
 
 package org.tensorics.core.lang;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Interner;
+import com.google.common.collect.Interners;
+
 /**
  * @author agorzaws
  */
 public class YCoordinate implements TestCoordinate {
+
+    private static Interner<YCoordinate> INTERNER = Interners.newWeakInterner();
+
     private final int coor;
 
     /**
@@ -15,8 +24,12 @@ public class YCoordinate implements TestCoordinate {
      * 
      * @param coor value of Coordinate
      */
-    public YCoordinate(int coor) {
+    private YCoordinate(int coor) {
         this.coor = coor;
+    }
+
+    public static YCoordinate of(int coor) {
+        return INTERNER.intern(new YCoordinate(coor));
     }
 
     public int getValue() {

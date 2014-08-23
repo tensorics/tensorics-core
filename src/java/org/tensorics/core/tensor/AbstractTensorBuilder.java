@@ -6,13 +6,14 @@ package org.tensorics.core.tensor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.tensorics.core.tensor.Tensor.Entry;
+
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -22,8 +23,8 @@ import com.google.common.collect.ImmutableSet;
 public class AbstractTensorBuilder<E> {
 
     private final Set<? extends Class<?>> dimensions;
-    private final Map<Position, OngoingPut<E>> ongoingPuts = new HashMap<>();
     private final VerificationCallback<E> callback;
+    private final Map<Position, Entry<E>> entries = new HashMap<>();
 
     public AbstractTensorBuilder(Set<? extends Class<?>> dimensions, VerificationCallback<E> callback) {
         Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
@@ -50,14 +51,22 @@ public class AbstractTensorBuilder<E> {
      */
     @SuppressWarnings("PMD.ShortMethodName")
     public final OngoingPut<E> at(Position entryPosition) {
-        if (ongoingPuts.containsKey(entryPosition)) {
+        if (entries.containsKey(entryPosition)) {
             throw new IllegalArgumentException("Already another entry was put at position '" + entryPosition
                     + "'. Duplicate entries are not allowed at the same coordinates.");
         }
-        Positions.assertConsistentDimensions(entryPosition, getDimensions());
-        OngoingPut<E> ongoingPut = new OngoingPut<E>(entryPosition, callback);
-        this.ongoingPuts.put(entryPosition, ongoingPut);
-        return ongoingPut;
+        return new OngoingPut<E>(entryPosition, this);
+    }
+
+    public final void putValueAt(E value, Position position) {
+        Preconditions.checkNotNull(value, "value must not be null!");
+        Preconditions.checkNotNull(position, "position must not be null");
+
+        this.put(new ImmutableEntry<E>(position, value));
+    }
+
+    public final void putValueAt(E value, Object... coordinates) {
+        this.putValueAt(value, Position.of(coordinates));
     }
 
     @SuppressWarnings("PMD.ShortMethodName")
@@ -85,7 +94,7 @@ public class AbstractTensorBuilder<E> {
         checkNotNull(tensor, "The tensor must not be null!");
         checkNotNull("The position must not be null!");
         for (Tensor.Entry<E> entry : tensor.entrySet()) {
-            at(Positions.union(position, entry.getPosition())).put(entry.getValue());
+            putValueAt(entry.getValue(), Positions.union(position, entry.getPosition()));
         }
     }
 
@@ -104,26 +113,25 @@ public class AbstractTensorBuilder<E> {
 
     public final void put(Tensor.Entry<E> entry) {
         checkNotNull(entry, "Entry to put must not be null!");
-        at(entry.getPosition()).put(entry.getValue());
+        Position position = entry.getPosition();
+        Positions.assertConsistentDimensions(position, getDimensions());
+        if (entries.containsKey(position)) {
+            throw new IllegalArgumentException("Already another entry was put at position '" + position
+                    + "'. Duplicate entries are not allowed at the same coordinates.");
+        }
+        this.callback.verify(entry.getValue());
+        this.entries.put(position, entry);
     }
 
-    public final void putAll(Iterable<Tensor.Entry<E>> entries) {
-        checkNotNull(entries, "Iterable of entries to put must not be null!");
-        for (Tensor.Entry<E> entry : entries) {
+    public final void putAll(Iterable<Tensor.Entry<E>> newEntries) {
+        checkNotNull(newEntries, "Iterable of entries to put must not be null!");
+        for (Tensor.Entry<E> entry : newEntries) {
             put(entry);
         }
     }
 
-    protected final Set<Tensor.Entry<E>> createEntries() {
-        Set<Tensor.Entry<E>> entries = new HashSet<>();
-        for (OngoingPut<E> ongoingPut : ongoingPuts.values()) {
-            entries.add(ongoingPut.createEntry());
-        }
-        return entries;
-    }
-
-    public Collection<OngoingPut<E>> getPuts() {
-        return ongoingPuts.values();
+    protected final Map<Position, Tensor.Entry<E>> createEntries() {
+        return ImmutableMap.copyOf(this.entries);
     }
 
     public Set<? extends Class<?>> getDimensions() {

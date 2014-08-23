@@ -4,18 +4,23 @@
 
 package org.tensorics.core.lang;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
 import static org.tensorics.core.tensor.lang.TensorStructurals.from;
+import static org.tensorics.core.util.SystemState.currentState;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -24,7 +29,9 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensor.Entry;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.util.SystemState;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -52,7 +59,7 @@ public class TensorCalculationsTest {
 
     @Test
     public void averageOverOneDimensionOnValue1() {
-        YCoordinate y = new YCoordinate(1);
+        YCoordinate y = YCoordinate.of(1);
         Tensor<Double> averagedOverX = TensorStructurals.from(tensor1).reduce(XCoordinate.class)
                 .byAveragingIn(doubles());
         assertEquals(4.5, averagedOverX.get(Position.of(y)), 0.0);
@@ -70,23 +77,23 @@ public class TensorCalculationsTest {
 
     @Test
     public void testMultiplyByNumber() {
-        YCoordinate y = new YCoordinate(1);
-        XCoordinate x = new XCoordinate(3);
+        YCoordinate y = YCoordinate.of(1);
+        XCoordinate x = XCoordinate.of(3);
         Tensor<Double> tensor = tensoricFieldUsage.calculate(tensor1).elementTimesV(-1.0);
         assertEquals(-3, tensor.get(x, y).doubleValue(), 0.0);
     }
 
     @Test
     public void testDivideByNumber() {
-        YCoordinate y = new YCoordinate(1);
-        XCoordinate x = new XCoordinate(3);
+        YCoordinate y = YCoordinate.of(1);
+        XCoordinate x = XCoordinate.of(3);
         Tensor<Double> tensor = tensoricFieldUsage.calculate(tensor1).elementDividedByV(2.0);
         assertEquals(1.5, tensor.get(x, y).doubleValue(), 0.0);
     }
 
     @Test
     public void testRMSCalculation() {
-        YCoordinate y = new YCoordinate(1);
+        YCoordinate y = YCoordinate.of(1);
         double rms = TensorStructurals.from(tensor1).reduce(XCoordinate.class).byRmsIn(doubles()).get(y);
 
         assertEquals(5.33, rms, 0.01);
@@ -96,8 +103,8 @@ public class TensorCalculationsTest {
 
     @Test(expected = NoSuchElementException.class)
     public void testRMSCalculationTooManyCoordiantes() {
-        YCoordinate y = new YCoordinate(1);
-        XCoordinate x = new XCoordinate(2);
+        YCoordinate y = YCoordinate.of(1);
+        XCoordinate x = XCoordinate.of(2);
         double rms = TensorStructurals.from(tensor1).reduce(XCoordinate.class).byRmsIn(doubles()).get(x, y);
 
         assertEquals(5.33, rms, 0.01);
@@ -105,7 +112,7 @@ public class TensorCalculationsTest {
 
     @Test
     public void testMeanCalculation() {
-        YCoordinate y = new YCoordinate(1);
+        YCoordinate y = YCoordinate.of(1);
         double mean2 = TensorStructurals.from(TensorStructurals.from(tensor1).extractSliceAt(y))
                 .reduce(XCoordinate.class).byAveragingIn(doubles()).get(Position.empty());
         assertEquals(4.5, mean2, 0.0);
@@ -113,33 +120,33 @@ public class TensorCalculationsTest {
 
     @Test
     public void testAddition() {
-        YCoordinate y = new YCoordinate(2);
-        XCoordinate x = new XCoordinate(6);
+        YCoordinate y = YCoordinate.of(2);
+        XCoordinate x = XCoordinate.of(6);
         Tensor<Double> tensor = tensoricFieldUsage.calculate(tensor1).plus(tensor1);
         assertEquals(24.0, tensor.get(x, y).doubleValue(), 0.0);
     }
 
     @Test
     public void testSubtraction() {
-        YCoordinate y = new YCoordinate(2);
-        XCoordinate x = new XCoordinate(6);
+        YCoordinate y = YCoordinate.of(2);
+        XCoordinate x = XCoordinate.of(6);
         Tensor<Double> tensor = tensoricFieldUsage.calculate(tensor1).minus(tensor1);
         assertEquals(0.0, tensor.get(x, y).doubleValue(), 0.0);
     }
 
     @Test
     public void testFluentAddition() {
-        YCoordinate y = new YCoordinate(2);
-        XCoordinate x = new XCoordinate(6);
+        YCoordinate y = YCoordinate.of(2);
+        XCoordinate x = XCoordinate.of(6);
         Tensor<Double> tensor = tensoricFieldUsage.calculate(tensor1).plus(tensor1);
         assertEquals(24.0, tensor.get(x, y).doubleValue(), 0.0);
     }
 
     @Test
     public void testAdditionOf2elementsTo100WithResult2() {
-        YCoordinate y = new YCoordinate(2);
-        XCoordinate x = new XCoordinate(6);
-        XCoordinate x2 = new XCoordinate(3);
+        YCoordinate y = YCoordinate.of(2);
+        XCoordinate x = XCoordinate.of(6);
+        XCoordinate x2 = XCoordinate.of(3);
 
         Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
         builder.at(Position.of(ImmutableSet.of(x, y))).put(13.2);
@@ -152,9 +159,9 @@ public class TensorCalculationsTest {
 
     @Test
     public void testAdditionOf2elementsTo2() {
-        YCoordinate y = new YCoordinate(2);
-        XCoordinate x = new XCoordinate(6);
-        XCoordinate x2 = new XCoordinate(3);
+        YCoordinate y = YCoordinate.of(2);
+        XCoordinate x = XCoordinate.of(6);
+        XCoordinate x2 = XCoordinate.of(3);
 
         Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
         builder.at(Position.of(ImmutableSet.of(x, y))).put(13.2);
@@ -172,8 +179,8 @@ public class TensorCalculationsTest {
     @Test
     public void testFlagApplience() {
         Tensor<Double> tensor = from(tensor1).extractWhereTrue(tensor1Flags);
-        YCoordinate y = new YCoordinate(2);
-        XCoordinate x = new XCoordinate(6);
+        YCoordinate y = YCoordinate.of(2);
+        XCoordinate x = XCoordinate.of(6);
         assertEquals(12.0, tensor.get(Position.of(ImmutableSet.of(x, y))).doubleValue(), 0.0);
         assertEquals(5, TensorStructurals.from(tensor).extractCoordinatesOfType(x.getClass()).size());
     }
@@ -181,15 +188,15 @@ public class TensorCalculationsTest {
     @Test(expected = NoSuchElementException.class)
     public void testFlagApplienceFailure() {
         Tensor<Double> tensor = from(tensor1).extractWhereTrue(tensor1Flags);
-        YCoordinate y = new YCoordinate(2);
-        XCoordinate x = new XCoordinate(7);
+        YCoordinate y = YCoordinate.of(2);
+        XCoordinate x = XCoordinate.of(7);
         assertEquals(14.0, tensor.get(x, y).doubleValue(), 0.0);
     }
 
     @Test
     public void testAdditionFrom2elementsTo100WithWrongShapes() {
-        XCoordinate x = new XCoordinate(6);
-        XCoordinate x2 = new XCoordinate(3);
+        XCoordinate x = XCoordinate.of(6);
+        XCoordinate x2 = XCoordinate.of(3);
         Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.<Class<? extends TestCoordinate>> of(x
                 .getClass()));
         double x1Add = 13.2;
@@ -220,13 +227,198 @@ public class TensorCalculationsTest {
 
     @Test(expected = IllegalStateException.class)
     public void testReductionOnNonExistingCoordinate() {
-        TensorStructurals.from(tensor1).extractSliceAt(new ZCoordinate(1));
+        TensorStructurals.from(tensor1).extractSliceAt(ZCoordinate.of(1));
     }
 
     @Test
     public void testOperationsOnBig512x2x1Tensor() {
         long totalDiff = calculateOnTensor(X_COOR_NUMBER, Y_COOR_NUMBER, Z_COOR_NUMBER, true);
         assertTrue(totalDiff < 600);
+    }
+
+    @Test
+    @Ignore
+    public void profileTensorPreparation() {
+        int maxY = 1000;
+        int step = 100;
+        int nX = 100;
+        int nZ = 1;
+        populateCaches(maxY);
+        populatePositionCache(nX, maxY, nZ);
+        List<ProfileResult> results = new ArrayList<>();
+        for (int nY = step; nY <= maxY; nY += step) {
+            results.add(profileTensorPreparation(nX, nY, nZ));
+        }
+        printProfileResult(results);
+    }
+
+    private void printProfileResult(List<ProfileResult> results) {
+        System.out.println("Step \tSize \ttime [ms] \tmem [byte]");
+        int step = 0;
+        for (ProfileResult result : results) {
+            SystemState stateDiff = result.systemStateDiff;
+            System.out.println(step++ + "\t" + result.tensorSize + "\t" + stateDiff.getTimeInMillis() + "\t"
+                    + stateDiff.getMemoryUsageInB());
+        }
+    }
+
+    @Test
+    public void profilePositionMapPreparation() {
+        int maxY = 1000;
+        int step = 100;
+        int nX = 100;
+        int nZ = 1;
+        populateCaches(maxY);
+        populatePositionCache(nX, maxY, nZ);
+        List<ProfileResult> results = new ArrayList<>();
+        for (int nY = step; nY <= maxY; nY += step) {
+            results.add(profileMapPreparation(nX, nY, nZ));
+        }
+        printProfileResult(results);
+    }
+
+    @Test
+    @Ignore
+    public void profileSimpleMapPopulation() {
+        int maxValue = 100000;
+        int step = 10000;
+        populateCaches(maxValue);
+        List<ProfileResult> results = new ArrayList<>();
+        for (int i = step; i <= maxValue; i += step) {
+            results.add(profileXCoordinateMap(i));
+        }
+        printProfileResult(results);
+    }
+
+    private ProfileResult profileXCoordinateMap(int size) {
+        System.out.println("Map preparation preparation of size=" + size + ":");
+        SystemState initialState = currentState();
+        Map<XCoordinate, Double> map = createImmutableMapOfSize(size);
+        SystemState stateDiff = currentState().minus(initialState);
+        stateDiff.printToStdOut();
+        return new ProfileResult(map.size(), stateDiff);
+
+    }
+
+    private Map<XCoordinate, Double> createHashMapOfSize(int size) {
+        Map<XCoordinate, Double> map = new HashMap<>();
+        for (int i = 0; i < size; i++) {
+            map.put(XCoordinate.of(i), valueForBig(i, i, i, 2.0));
+        }
+        return map;
+    }
+
+    private Map<XCoordinate, Double> createImmutableMapOfSize(int size) {
+        ImmutableMap.Builder<XCoordinate, Double> builder = ImmutableMap.builder();
+        for (int i = 0; i < size; i++) {
+            builder.put(XCoordinate.of(i), valueForBig(i, i, i, 2.0));
+        }
+        return builder.build();
+    }
+
+    private void populateCaches(int maxValue) {
+        for (int i = 0; i <= maxValue; i++) {
+            XCoordinate.of(i);
+            YCoordinate.of(i);
+            ZCoordinate.of(i);
+        }
+    }
+
+    private void populatePositionCache(int nX, int nY, int nZ) {
+        for (int i = 0; i <= nX; i++) {
+            for (int j = 0; j <= nY; j++) {
+                for (int k = 0; k <= nZ; k++) {
+                    Position.of(coordinatesFor(i, j, k));
+                }
+            }
+        }
+    }
+
+    private ProfileResult profileTensorPreparation(int nX, int nY, int nZ) {
+        System.out.println("Tensor preparation for " + nX + "x" + nY + "x" + nZ + ":");
+        SystemState initialState = currentState();
+        Tensor<Double> tensor = prepareValuesForBig(nX, nY, nZ, 2.0);
+        SystemState stateDiff = currentState().minus(initialState);
+        stateDiff.printToStdOut();
+        System.out.println("Tensor size:" + tensor.shape().size());
+        return new ProfileResult(tensor.shape().size(), stateDiff);
+    }
+
+    private ProfileResult profileMapPreparation(int nX, int nY, int nZ) {
+        System.out.println("Map preparation for " + nX + "x" + nY + "x" + nZ + ":");
+        SystemState initialState = currentState();
+        Map<Position, Double> map = prepareMap(nX, nY, nZ);
+        SystemState stateDiff = currentState().minus(initialState);
+        stateDiff.printToStdOut();
+        System.out.println("Map size:" + map.size());
+        return new ProfileResult(map.size(), stateDiff);
+    }
+
+    @Test
+    public void profileRepetitiveMap() {
+        List<ProfileResult> results = profileMapNTimes(10);
+        printProfileResult(results);
+    }
+
+    @Test
+    @Ignore
+    public void profileRepetitiveTensor() {
+        List<ProfileResult> results = profileTensorNTimes(10);
+        printProfileResult(results);
+    }
+
+    public List<ProfileResult> profileMapNTimes(int nTimes) {
+        List<Map<Position, Double>> maps = new ArrayList<>();
+        List<ProfileResult> results = new ArrayList<>();
+        for (int i = 0; i < nTimes; i++) {
+            SystemState initialState = currentState();
+            Map<Position, Double> map = prepareMap(100, 1000, 1);
+            SystemState stateDiff = currentState().minus(initialState);
+            stateDiff.printToStdOut();
+            System.out.println("Map size:" + map.size());
+            results.add(new ProfileResult(map.size(), stateDiff));
+            maps.add(map);
+        }
+        return results;
+    }
+
+    public List<ProfileResult> profileTensorNTimes(int nTimes) {
+        List<Tensor<Double>> tensors = new ArrayList<>();
+        List<ProfileResult> results = new ArrayList<>();
+        for (int i = 0; i < nTimes; i++) {
+            SystemState initialState = currentState();
+            Tensor<Double> tensor = prepareValuesForBig(100, 1000, 1, 2.0);
+            SystemState stateDiff = currentState().minus(initialState);
+            stateDiff.printToStdOut();
+            int size = tensor.shape().size();
+            System.out.println("Tensor size:" + size);
+            results.add(new ProfileResult(size, stateDiff));
+            tensors.add(tensor);
+        }
+        return results;
+    }
+
+    private Map<Position, Double> prepareMap(int nX, int nY, int nZ) {
+        Map<Position, Double> map = new HashMap<>();
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
+                for (int k = 0; k < nZ; k++) {
+                    map.put(Position.of(coordinatesFor(i, j, k)), valueForBig(i, j, k, 2.0));
+                }
+            }
+        }
+        return map;
+    }
+
+    private static class ProfileResult {
+        private final SystemState systemStateDiff;
+        private final int tensorSize;
+
+        public ProfileResult(int tensorSize, SystemState systemStateDiff) {
+            super();
+            this.tensorSize = tensorSize;
+            this.systemStateDiff = systemStateDiff;
+        }
     }
 
     @Test
@@ -264,9 +456,9 @@ public class TensorCalculationsTest {
 
         System.out.println("used memory :" + (getMemoryUsage() - memoryBefore));
 
-        YCoordinate y = new YCoordinate(0);
-        XCoordinate x = new XCoordinate(0);
-        ZCoordinate z = new ZCoordinate(0);
+        YCoordinate y = YCoordinate.of(0);
+        XCoordinate x = XCoordinate.of(0);
+        ZCoordinate z = ZCoordinate.of(0);
         Date date2 = new Date();
         if (printLog) {
             System.out.println("done after (" + (date2.getTime() - date.getTime())
@@ -367,14 +559,14 @@ public class TensorCalculationsTest {
 
     private Set<TestCoordinate> coordinatesFor(int i, int j) {
         Set<TestCoordinate> coordinates = new HashSet<>();
-        coordinates.add(new XCoordinate(i));
-        coordinates.add(new YCoordinate(j));
+        coordinates.add(XCoordinate.of(i));
+        coordinates.add(YCoordinate.of(j));
         return coordinates;
     }
 
     private Set<TestCoordinate> coordinatesFor(int i, int j, int k) {
         Set<TestCoordinate> coordinates = coordinatesFor(i, j);
-        coordinates.add(new ZCoordinate(k));
+        coordinates.add(ZCoordinate.of(k));
         return coordinates;
     }
 
