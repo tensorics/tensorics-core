@@ -8,7 +8,6 @@
 		<dependencies>
 			<dep product="jscience" />
 			<dep product="guava" />
-			<dep product="jama" />
 
 			<!-- for testing -->
 			<dep product="junit" local="true" excluded="true" />
