@@ -39,6 +39,8 @@ import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 import org.tensorics.core.util.SystemState;
 
+import Jama.Matrix;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -63,6 +65,7 @@ public class TensorCalculationsTest {
         tensor1 = prepareValues(1.0);
         tensor1Flags = prepareOnlyEvenValuesTrueFlag();
         tensor2 = prepareValues(2.5);
+        System.out.println("============== <<<<<<<<<< NEXT TEST >>>>>>>>>> =============");
     }
 
     @Test
@@ -260,6 +263,19 @@ public class TensorCalculationsTest {
         printProfileResult(results);
     }
 
+    @Test
+    public void profileJamaMatrixPreparation() {
+        int maxY = 1000;
+        int step = 100;
+        int nX = 540;
+
+        List<ProfileResult> results = new ArrayList<>();
+        for (int nY = step; nY <= maxY; nY += step) {
+            results.add(profileJamaMatrixPreparation(nX, nY));
+        }
+        printProfileResult(results);
+    }
+
     private void printProfileResult(List<ProfileResult> results) {
         System.out.println("Step \tSize \ttime [ms] \tmem [byte]");
         int step = 0;
@@ -270,6 +286,7 @@ public class TensorCalculationsTest {
         }
     }
 
+    @Ignore
     @Test
     public void profilePositionMapPreparation() {
         int maxY = 1000;
@@ -362,17 +379,48 @@ public class TensorCalculationsTest {
         return new ProfileResult(map.size(), stateDiff);
     }
 
+    private ProfileResult profileJamaMatrixPreparation(int nX, int nY) {
+        System.out.println("JAMA matrix preparation for " + nX + "x" + nY);
+        SystemState initialState = currentTimeAfterGc();
+        Matrix matrix = prepareValuesInMatrix(nX, nY, 2);
+
+        SystemState stateDiff = currentTimeBeforeGc().minus(initialState);
+        stateDiff.printToStdOut();
+        int matrixElementsCount = matrix.getColumnDimension() * matrix.getRowDimension();
+        System.out.println("Matrix size:" + matrix.getColumnDimension() + " x " + matrix.getRowDimension() + "= "
+                + matrixElementsCount);
+        return new ProfileResult(matrixElementsCount, stateDiff);
+    }
+
+    /**
+     * @param nX
+     * @param nY
+     * @param i
+     * @return
+     */
+    private Matrix prepareValuesInMatrix(int nX, int nY, int value) {
+        double[][] matrixValues = new double[nX][nY];
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
+                matrixValues[i][j] = value;
+            }
+        }
+        return new Matrix(matrixValues);
+    }
+
+    @Ignore
     @Test
     public void profileRepetitiveMap() {
         List<ProfileResult> results = profileMapNTimes(10);
         printProfileResult(results);
     }
 
+    @Ignore
     @Test
     public void profileSimpleRepetitiveTensor() {
         CoordinateRange range = CoordinateRange.fromSize(TensorSize.ofXYZ(400, 500, 1));
         System.out.println("Created range");
-        
+
         List<ProfileResult> results = profileTensorCreationNTimes(5, range, new ValueFactory<Double>() {
 
             @Override
@@ -383,6 +431,7 @@ public class TensorCalculationsTest {
         printProfileResult(results);
     }
 
+    @Ignore
     @Test
     public void profileQuantifiedRepetitiveTensor() {
         final Unit unit = JScienceUnit.of(SI.METER);
