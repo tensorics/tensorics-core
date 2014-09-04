@@ -107,6 +107,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
     public static final <T> Tensor<T> copyOf(Tensor<T> tensor) {
         Builder<T> builder = builder(tensor.shape().dimensionSet());
         builder.putAll(tensor.entrySet());
+        builder.setTensorContext(tensor.context());
         return builder.build();
     }
 
