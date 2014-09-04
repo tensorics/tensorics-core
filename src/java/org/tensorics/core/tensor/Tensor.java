@@ -38,6 +38,11 @@ public interface Tensor<E> {
     Shape shape();
 
     /**
+     * @return a Context of the tensor.
+     */
+    Context context();
+
+    /**
      * An interface for tensor entries.
      * 
      * @author agorzaws

@@ -6,7 +6,6 @@ package org.tensorics.core.tensor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +24,7 @@ public class AbstractTensorBuilder<E> {
     private final Set<? extends Class<?>> dimensions;
     private final VerificationCallback<E> callback;
     private final ImmutableMap.Builder<Position, Entry<E>> entries = ImmutableMap.builder();
+    private Context context = Context.empty();
 
     public AbstractTensorBuilder(Set<? extends Class<?>> dimensions, VerificationCallback<E> callback) {
         Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
@@ -63,6 +63,21 @@ public class AbstractTensorBuilder<E> {
 
     public final void putValueAt(E value, Object... coordinates) {
         this.putValueAt(value, Position.of(coordinates));
+    }
+
+    public final void setTensorContext(Context context) {
+        checkIfContextValid(context);
+        this.context = context;
+    }
+
+    private void checkIfContextValid(Context context2) {
+        Position contextPosition = context2.getPosition();
+        for (Class<?> oneDimensionClass : contextPosition.dimensionSet()) {
+            if (dimensions.contains(oneDimensionClass)) {
+                throw new IllegalStateException("Inconsistent state: " + oneDimensionClass
+                        + " you are trying to put in to context is a BASE dimension of the tensor!");
+            }
+        }
     }
 
     @SuppressWarnings("PMD.ShortMethodName")
@@ -128,5 +143,12 @@ public class AbstractTensorBuilder<E> {
 
     public Set<? extends Class<?>> getDimensions() {
         return dimensions;
+    }
+
+    /**
+     * @return
+     */
+    public Context getContext() {
+        return context;
     }
 }

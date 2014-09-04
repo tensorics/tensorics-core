@@ -32,6 +32,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
 
     private final Map<Position, Tensor.Entry<T>> entries; // NOSONAR
     private final Shape shape; // NOSONAR
+    private final Context context;
 
     /**
      * Private constructor to be called from builder
@@ -41,6 +42,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
     ImmutableTensor(AbstractTensorBuilder<T> builder) {
         this.entries = builder.createEntries();
         this.shape = Shape.viewOf(builder.getDimensions(), this.entries.keySet());
+        this.context = builder.getContext();
     }
 
     /**
@@ -111,6 +113,11 @@ public class ImmutableTensor<T> implements Tensor<T> {
     @Override
     public T get(Position position) {
         return findEntryOrThrow(position).getValue();
+    }
+
+    @Override
+    public Context context() {
+        return context;
     }
 
     @Override
@@ -195,6 +202,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((context == null) ? 0 : context.hashCode());
         result = prime * result + ((entries == null) ? 0 : entries.hashCode());
         result = prime * result + ((shape == null) ? 0 : shape.hashCode());
         return result;
@@ -211,7 +219,14 @@ public class ImmutableTensor<T> implements Tensor<T> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ImmutableTensor<?> other = (ImmutableTensor<?>) obj;
+        ImmutableTensor other = (ImmutableTensor) obj;
+        if (context == null) {
+            if (other.context != null) {
+                return false;
+            }
+        } else if (!context.equals(other.context)) {
+            return false;
+        }
         if (entries == null) {
             if (other.entries != null) {
                 return false;
@@ -228,5 +243,4 @@ public class ImmutableTensor<T> implements Tensor<T> {
         }
         return true;
     }
-
 }

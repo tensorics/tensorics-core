@@ -84,4 +84,8 @@ public final class BroadcastedTensorView<V> implements Tensor<V> {
         return this.broadcastedShape;
     }
 
+    @Override
+    public Context context() {
+        return originalTensor.context();
+    }
 }

@@ -7,9 +7,16 @@ package org.tensorics.core.lang;
 import static org.junit.Assert.assertEquals;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 
@@ -38,4 +45,85 @@ public class TensorsTest {
         assertEquals(1, reduced.shape().dimensionSet().size());
     }
 
+    @Test
+    public void testTensorMerge() {
+        Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+        Tensor<Double> tensor2 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(3)));
+        assertEquals(2, tensor1.shape().dimensionSet().size());
+        assertEquals(2, tensor2.shape().dimensionSet().size());
+        Set<Tensor<Double>> toMerge = new HashSet<>();
+        toMerge.add(tensor1);
+        toMerge.add(tensor2);
+        Tensor<Double> merged = Tensorics.merge(toMerge);
+        Shape shapeOfMerged = merged.shape();
+        assertEquals(3, shapeOfMerged.dimensionality());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testTensorMergeFailsDueToWrongContextContent() {
+        prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+        prepareTensorWithContextOf(ImmutableSet.of(YCoordinate.of(2)));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTensorMergeFailsDueNoContextProvided() {
+        Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+        Tensor<Double> tensor2 = prepareTensorWithContextOf(Collections.emptySet());
+        Set<Tensor<Double>> toMerge = new HashSet<>();
+        toMerge.add(tensor1);
+        toMerge.add(tensor2);
+        Tensorics.merge(toMerge);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTensorMergeFailsDueToDifferentContext() {
+        Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+        Tensor<Double> tensor2 = prepareTensorWithContextOf(ImmutableSet.of(TCoordinate.of(3)));
+        Set<Tensor<Double>> toMerge = new HashSet<>();
+        toMerge.add(tensor1);
+        toMerge.add(tensor2);
+        assertEquals(2, tensor1.shape().dimensionSet().size());
+        assertEquals(2, tensor2.shape().dimensionSet().size());
+
+        Tensorics.merge(toMerge);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTensorMergeFailsDueToOnlyOneTensor() {
+        Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+        Set<Tensor<Double>> toMerge = new HashSet<>();
+        toMerge.add(tensor1);
+        assertEquals(2, tensor1.shape().dimensionSet().size());
+        Tensorics.merge(toMerge);
+    }
+
+    @Test
+    public void testTensorbackedMerge() {
+        Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+        Tensor<Double> tensor2 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(3)));
+        Set<TensorBackedTwoCoordinates> toMerge = new HashSet<>();
+        toMerge.add(new TensorBackedTwoCoordinates(tensor1));
+        toMerge.add(new TensorBackedTwoCoordinates(tensor2));
+        TensorBackedThreeCoordinates merged = Tensorics.mergeTo(toMerge, TensorBackedThreeCoordinates.class);
+        Shape shapeOfMerged = merged.tensor().shape();
+        assertEquals(3, shapeOfMerged.dimensionality());
+    }
+
+    /**
+     * @param coordinateForContext
+     * @return
+     */
+    private Tensor<Double> prepareTensorWithContextOf(Set<?> coordinateForContext) {
+        Builder<Double> tensorBuilder = ImmutableTensor.<Double> builder(ImmutableSet.of(XCoordinate.class,
+                YCoordinate.class));
+        if (coordinateForContext.size() > 0) {
+            tensorBuilder.setTensorContext(Context.of(coordinateForContext));
+        }
+        for (int i = 1; i < 6; i++) {
+            for (int j = 1; j < 6; j++) {
+                tensorBuilder.at(YCoordinate.of(j), XCoordinate.of(i)).put((double) i * j);
+            }
+        }
+        return tensorBuilder.build();
+    }
 }
