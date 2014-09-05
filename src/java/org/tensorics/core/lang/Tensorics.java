@@ -14,7 +14,7 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedInternals;
-
+ 
 /**
  * Contains utility methods for tensors
  * 
