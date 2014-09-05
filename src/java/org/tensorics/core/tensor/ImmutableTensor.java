@@ -137,22 +137,6 @@ public class ImmutableTensor<T> implements Tensor<T> {
         return this.shape;
     }
 
-    private ImmutableMap<Position, Tensor.Entry<T>> buildEntryMap(Set<Tensor.Entry<T>> tensorEntries) {
-        ImmutableMap.Builder<Position, Tensor.Entry<T>> mapBuilder = ImmutableMap.builder();
-        for (Tensor.Entry<T> entry : tensorEntries) {
-            mapBuilder.put(entry.getPosition(), entry);
-        }
-        return mapBuilder.build();
-    }
-
-    private Shape buildShape(AbstractTensorBuilder<T> builder, Set<Tensor.Entry<T>> tensorEntries) {
-        Shape.Builder shapeBuilder = Shape.builder(builder.getDimensions());
-        for (Tensor.Entry<T> entry : tensorEntries) {
-            shapeBuilder.add(entry.getPosition());
-        }
-        return shapeBuilder.build();
-    }
-
     private Tensor.Entry<T> findEntryOrThrow(Position position) {
         Tensor.Entry<T> entry = findEntryOrNull(position);
         if (entry == null) {
@@ -220,7 +204,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ImmutableTensor other = (ImmutableTensor) obj;
+        ImmutableTensor<?> other = (ImmutableTensor<?>) obj;
         if (context == null) {
             if (other.context != null) {
                 return false;
