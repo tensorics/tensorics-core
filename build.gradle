@@ -1,11 +1,13 @@
 buildscript {
+    //    repositories {
+    //        jcenter()
+    //    }
+
     repositories {
-        jcenter()
+        maven { url "http://artifactory.cern.ch/beco-thirdparty-local" }
     }
 
-    dependencies {
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
-    }
+    dependencies { classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2' }
 }
 
 apply plugin: 'org.asciidoctor.gradle.asciidoctor'
