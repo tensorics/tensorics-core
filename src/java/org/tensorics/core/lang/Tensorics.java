@@ -82,8 +82,8 @@ public final class Tensorics {
 
     /**
      * Provides the way to merge the set of {@link Tensorbacked} objects to specified object such that the sum of the
-     * tensor {@link Dimension} set and tensor context position dimension set is equal to dimension of target class
-     * (annotated with {@link Dimensions})
+     * tensor dimension set and tensor context position dimension set is equal to dimension of target class
+     * (annotated with {@link org.tensorics.core.tensorbacked.annotation.Dimensions})
      * 
      * @param toBeMerged the tensor backed objects that shall be merged into one
      * @param classToReturn the type of the tensor backed that should be resulting from the merge

@@ -13,7 +13,7 @@ public class ZCoordinate implements TestCoordinate {
     private final int coor;
 
     /**
-     * Create test coordinae
+     * Create test coordinate
      * 
      * @param coor value of Coordinate
      */
