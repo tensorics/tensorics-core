@@ -242,7 +242,7 @@ public class TensorCalculationsTest {
     @Test
     public void testOperationsOnBig512x2x1Tensor() {
         long totalDiff = calculateOnTensor(X_COOR_NUMBER, Y_COOR_NUMBER, Z_COOR_NUMBER, true);
-        assertTrue(totalDiff < 700);
+        assertTrue(totalDiff < 800);
     }
 
     @Test
