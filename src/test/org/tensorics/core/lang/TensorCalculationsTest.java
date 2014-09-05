@@ -310,14 +310,6 @@ public class TensorCalculationsTest {
 
     }
 
-    private Map<XCoordinate, Double> createHashMapOfSize(int size) {
-        Map<XCoordinate, Double> map = new HashMap<>();
-        for (int i = 0; i < size; i++) {
-            map.put(XCoordinate.of(i), valueForBig(i, i, i, 2.0));
-        }
-        return map;
-    }
-
     private Map<XCoordinate, Double> createImmutableMapOfSize(int size) {
         ImmutableMap.Builder<XCoordinate, Double> builder = ImmutableMap.builder();
         for (int i = 0; i < size; i++) {
@@ -434,10 +426,6 @@ public class TensorCalculationsTest {
             tensors.add(tensor);
         }
         return results;
-    }
-
-    private interface TensorFactory<V> {
-        Tensor<V> create();
     }
 
     private Map<Position, Double> prepareMap(int nX, int nY, int nZ) {

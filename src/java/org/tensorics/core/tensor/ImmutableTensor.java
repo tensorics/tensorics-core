@@ -31,7 +31,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
 
     private final Map<Position, Tensor.Entry<T>> entries; // NOSONAR
     private final Shape shape; // NOSONAR
-    private final Context context;
+    private final Context context; // NOSONAR
 
     /**
      * Private constructor to be called from builder
@@ -193,6 +193,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
     }
 
     @Override
+    @SuppressWarnings("PMD.NPathComplexity")
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
