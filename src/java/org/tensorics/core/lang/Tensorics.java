@@ -4,7 +4,6 @@
 
 package org.tensorics.core.lang;
 
-import java.awt.Dimension;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +14,6 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedInternals;
-import org.tensorics.core.tensorbacked.annotation.Dimensions;
 
 /**
  * Contains utility methods for tensors
@@ -82,8 +80,8 @@ public final class Tensorics {
 
     /**
      * Provides the way to merge the set of {@link Tensorbacked} objects to specified object such that the sum of the
-     * tensor dimension set and tensor context position dimension set is equal to dimension of target class
-     * (annotated with {@link org.tensorics.core.tensorbacked.annotation.Dimensions})
+     * tensor dimension set and tensor context position dimension set is equal to dimension of target class (annotated
+     * with {@link org.tensorics.core.tensorbacked.annotation.Dimensions})
      * 
      * @param toBeMerged the tensor backed objects that shall be merged into one
      * @param classToReturn the type of the tensor backed that should be resulting from the merge
@@ -113,10 +111,6 @@ public final class Tensorics {
             Set<Class<?>> refContextDimensions) {
         Set<Class<?>> tensorDimensionSet = tensor.shape().dimensionSet();
         Set<Class<?>> contextPositionDimensionSet = tensor.context().getPosition().dimensionSet();
-
-        return (tensorDimensionSet.size() == refDimensions.size() && tensorDimensionSet.containsAll(refDimensions))
-                && (contextPositionDimensionSet.containsAll(refContextDimensions) && contextPositionDimensionSet.size() == refContextDimensions
-                        .size());
+        return (tensorDimensionSet.equals(refDimensions) && contextPositionDimensionSet.equals(refContextDimensions));
     }
-
 }
