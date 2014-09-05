@@ -3,16 +3,16 @@ buildscript {
     //        jcenter()
     //    }
 
-//    repositories {
-//        maven { url "http://artifactory.cern.ch/beco-thirdparty-local" }
-//    }
+   // repositories {
+   //     maven { url "http://artifactory.cern.ch/beco-thirdparty-local" }
+   // }
 
-//    dependencies { classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2' }
+    dependencies { classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2' }
 
  javadoc {
     options.encoding = "UTF-8"
   }
-
+ 
 }
 
 //apply plugin: 'org.asciidoctor.gradle.asciidoctor'
