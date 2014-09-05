@@ -48,9 +48,6 @@ public class BroadcastAllBroadcastingStrategyTest {
 		strategy.broadcast(null, ZERO_DIMENSIONAL_ZERO, emptyDimensions());
 	}
 
-    /**
-     * @return
-     */
     private Set<Class<?>> emptyDimensions() {
         return Collections.<Class<?>>emptySet();
     }

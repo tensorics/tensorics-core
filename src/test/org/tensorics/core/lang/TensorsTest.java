@@ -109,10 +109,6 @@ public class TensorsTest {
         assertEquals(3, shapeOfMerged.dimensionality());
     }
 
-    /**
-     * @param coordinateForContext
-     * @return
-     */
     private Tensor<Double> prepareTensorWithContextOf(Set<?> coordinateForContext) {
         Builder<Double> tensorBuilder = ImmutableTensor.<Double> builder(ImmutableSet.of(XCoordinate.class,
                 YCoordinate.class));

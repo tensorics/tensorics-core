@@ -122,7 +122,7 @@ public final class Shape {
      * @param positions the positions of the shape
      * @return a new shape instance
      */
-    static Shape viewOf(Set<? extends Class<?>> dimensions, Set<Position> positions) {
+    public static Shape viewOf(Set<? extends Class<?>> dimensions, Set<Position> positions) {
         return new Shape(dimensions, positions);
     }
 

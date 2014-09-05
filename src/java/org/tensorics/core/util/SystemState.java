@@ -12,7 +12,9 @@ import java.util.List;
  * 
  * @author kfuchsbe
  */
-public class SystemState {
+public final class SystemState {
+
+    private static final int GC_ITERATIONS = 10;
 
     private static final int KILOBYTE_FACTOR = 1024;
 
@@ -28,18 +30,17 @@ public class SystemState {
     }
 
     public static SystemState currentTimeAfterGc() {
-        long memoryUsage = memoryUsageInB();
+        long memoryUsage = memoryUsageInByte();
         return new SystemState(memoryUsage, System.currentTimeMillis(), false);
     }
-    
+
     public static SystemState currentTimeBeforeGc() {
         long time = System.currentTimeMillis();
-        return new SystemState(memoryUsageInB(), time, false);
+        return new SystemState(memoryUsageInByte(), time, false);
     }
 
-
-    public static long memoryUsageInB() {
-        for (int i = 0; i < 10; i++) {
+    public static long memoryUsageInByte() {
+        for (int i = 0; i < GC_ITERATIONS; i++) {
             System.gc(); // NOSONAR benchmarking code
         }
         Runtime runtime = Runtime.getRuntime();
@@ -79,10 +80,14 @@ public class SystemState {
     }
 
     public static void printStates(List<SystemState> states) {
-        System.out.println("Step \ttime [ms] \tmem [byte]");
+        printStatesTo(states, System.out);
+    }
+
+    public static void printStatesTo(List<SystemState> states, PrintStream stream) {
+        stream.println("Step \ttime [ms] \tmem [byte]"); // NOSONAR
         int step = 0;
         for (SystemState result : states) {
-            System.out.println(step++ + "\t" + result.getTimeInMillis() + "\t" + result.getMemoryUsageInB());
+            stream.println(step++ + "\t" + result.getTimeInMillis() + "\t" + result.getMemoryUsageInB()); // NOSONAR
         }
     }
 

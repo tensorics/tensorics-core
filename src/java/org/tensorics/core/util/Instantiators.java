@@ -65,8 +65,8 @@ public final class Instantiators {
             this.type = checkNotNull(type, "Instantiator type must not be null");
         }
 
-        public OngoingInstantiatorCreation<T> ofType(InstantiatorType type) {
-            return new OngoingInstantiatorCreation<>(type, instanceClass);
+        public OngoingInstantiatorCreation<T> ofType(InstantiatorType newType) {
+            return new OngoingInstantiatorCreation<>(newType, instanceClass);
         }
 
         /**

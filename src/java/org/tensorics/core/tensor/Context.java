@@ -14,7 +14,7 @@ import java.util.Set;
  * 
  * @author agorzaws
  */
-public class Context {
+public final class Context {
 
     private final Position position;
 
@@ -37,6 +37,7 @@ public class Context {
      * @param coordinates to be saved in context/position
      * @return a Context
      */
+    @SuppressWarnings("PMD.ShortMethodName")
     public static Context of(Set<?> coordinates) {
         return new Context(coordinates);
     }

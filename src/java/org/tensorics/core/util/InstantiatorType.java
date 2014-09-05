@@ -4,6 +4,16 @@
 
 package org.tensorics.core.util;
 
+/**
+ * An Enum, which describes the different ways how classes (e.g. tensor-backeds) can be instantiated. The following ways
+ * are supported:
+ * <ul>
+ * <li>Instantiation by constructor
+ * <li>Instantiation by static factory method
+ * </ul>
+ * 
+ * @author kfuchsbe
+ */
 public enum InstantiatorType {
     CONSTRUCTOR {
         @Override

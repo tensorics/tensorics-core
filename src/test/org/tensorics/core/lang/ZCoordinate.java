@@ -4,18 +4,12 @@
 
 package org.tensorics.core.lang;
 
-import com.google.common.collect.Interner;
-import com.google.common.collect.Interners;
-
 
 /**
  * @author agorzaws
  */
 public class ZCoordinate implements TestCoordinate {
 
-    private static Interner<ZCoordinate> INTERNER = Interners.newWeakInterner();
-
-    
     private final int coor;
 
     /**

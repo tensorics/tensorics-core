@@ -4,15 +4,11 @@
 
 package org.tensorics.core.lang;
 
-import com.google.common.collect.Interner;
-import com.google.common.collect.Interners;
 
 /**
  * @author agorzaws
  */
 public class XCoordinate implements TestCoordinate {
-
-    private static Interner<XCoordinate> INTERNER = Interners.newWeakInterner();
 
     private final int coor;
 

@@ -44,9 +44,12 @@ public final class Tensorics {
     }
 
     /**
-     * Merges the given set of the Tensors based on information in their context and dimensions. The only valid outcome
-     * of this operation is the following: <li>Context of all the tensors in the set has THE SAME dimension</li> AND <li>
-     * Dimension of all the tensors are THE SAME (first found tensor dimension is taken as an reference)</li>
+     * Merges the given set of the Tensors based on information in their context and dimensions. This operation is only
+     * possible, if the following preconditions are fulfilled:
+     * <ul>
+     * <li>The contexts of all the tensors have THE SAME dimensions</li> AND
+     * <li>The dimensions of all the tensors are THE SAME (first found tensor dimension is taken as an reference)</li>
+     * </ul
      * 
      * @param tensors to be merged.
      * @return a merged tensor.
@@ -70,7 +73,8 @@ public final class Tensorics {
                 tensorBuilder.putAllAt(oneTensor, oneTensor.context().getPosition());
             } else {
                 throw new IllegalArgumentException(
-                        "One of the tensors in the provided list does not fit the others on dimensions. Cannot continiue merging");
+                        "One of the tensors in the provided list does not fit the others on dimensions."
+                                + " Cannot continiue merging");
             }
         }
         return tensorBuilder.build();
@@ -81,9 +85,9 @@ public final class Tensorics {
      * tensor {@link Dimension} set and tensor context position dimension set is equal to dimension of target class
      * (annotated with {@link Dimensions})
      * 
-     * @param toBeMerged
-     * @param classToReturn
-     * @return
+     * @param toBeMerged the tensor backed objects that shall be merged into one
+     * @param classToReturn the type of the tensor backed that should be resulting from the merge
+     * @return a new tensor backed object resulting from the the merge of the tensors
      */
     public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Set<TB> toBeMerged,
             Class<TBOUT> classToReturn) {
@@ -97,21 +101,21 @@ public final class Tensorics {
     }
 
     /**
-     * checks if the provided tensor has: the same dimension as the reference dimensions, equal number of them, as well
+     * Checks if the provided tensor has: the same dimension as the reference dimensions, equal number of them, as well
      * as equal number of Context Position dimension and referenceContext Position and their dimensionality.
      * 
-     * @param tensor
-     * @param refDimensions
-     * @param refContextPosiotion
-     * @return
+     * @param tensor the tensor to check
+     * @param refDimensions the dimensions that the tensor should have
+     * @param refContextDimensions the context position the context dimensions, to which the tensor shall be compatible
+     * @return {@code true} if the conditions are fulfilled, {@code false} if not.
      */
     private static <E> boolean isValidInTermsOfDimensions(Tensor<E> tensor, Set<Class<?>> refDimensions,
-            Set<Class<?>> refContextPosiotion) {
+            Set<Class<?>> refContextDimensions) {
         Set<Class<?>> tensorDimensionSet = tensor.shape().dimensionSet();
         Set<Class<?>> contextPositionDimensionSet = tensor.context().getPosition().dimensionSet();
 
         return (tensorDimensionSet.size() == refDimensions.size() && tensorDimensionSet.containsAll(refDimensions))
-                && (contextPositionDimensionSet.containsAll(refContextPosiotion) && contextPositionDimensionSet.size() == refContextPosiotion
+                && (contextPositionDimensionSet.containsAll(refContextDimensions) && contextPositionDimensionSet.size() == refContextDimensions
                         .size());
     }
 

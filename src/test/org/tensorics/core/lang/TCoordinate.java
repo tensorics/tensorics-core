@@ -4,12 +4,8 @@
 
 package org.tensorics.core.lang;
 
-import com.google.common.collect.Interner;
-import com.google.common.collect.Interners;
 
 public class TCoordinate implements TestCoordinate {
-
-    private static Interner<TCoordinate> INTERNER = Interners.newWeakInterner();
 
     private final int coor;
 

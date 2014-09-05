@@ -124,6 +124,7 @@ public final class Positions {
      * 
      * @param pair the pair, whose dimensions should be united
      * @param targetDimensions the dimension in which the positions shall be united
+     * @return a new position, containing the coordinates of the pair, merged by the above rules
      */
     /* Similar to union ... maybe to be unified at some point */
     public static Position combineDimensions(PositionPair pair, Set<Class<?>> targetDimensions) {
@@ -143,6 +144,7 @@ public final class Positions {
      * @param left the first of the two positions, whose dimensions should be united
      * @param right the second of the two positions whose dimensions should be combined
      * @param targetDimensions the dimension in which the positions shall be united
+     * @return a new position, with the coordinates merged according to the above rules
      */
     public static Position combineDimensions(Position left, Position right, Set<Class<?>> targetDimensions) {
         ImmutableSet.Builder<Object> builder = ImmutableSet.builder();

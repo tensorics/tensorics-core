@@ -19,6 +19,7 @@ import com.google.common.collect.ImmutableSet;
  * @author kfuchsbe
  * @param <E> the type of the elements of the tensor to build
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class AbstractTensorBuilder<E> {
 
     private final Set<? extends Class<?>> dimensions;
@@ -103,7 +104,7 @@ public class AbstractTensorBuilder<E> {
     /* Not too nice yet. Should be refactored into ongoing put */
     public final void putAllAt(Tensor<E> tensor, Position position) {
         checkNotNull(tensor, "The tensor must not be null!");
-        checkNotNull("The position must not be null!");
+        checkNotNull(position, "The position must not be null!");
         for (Tensor.Entry<E> entry : tensor.entrySet()) {
             putValueAt(entry.getValue(), Positions.union(position, entry.getPosition()));
         }
@@ -145,9 +146,6 @@ public class AbstractTensorBuilder<E> {
         return dimensions;
     }
 
-    /**
-     * @return
-     */
     public Context getContext() {
         return context;
     }
