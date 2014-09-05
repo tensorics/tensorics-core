@@ -4,13 +4,13 @@
 
 package org.tensorics.core.lang;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
 import static org.tensorics.core.tensor.lang.TensorStructurals.from;
 import static org.tensorics.core.util.SystemState.currentTimeAfterGc;
 import static org.tensorics.core.util.SystemState.currentTimeBeforeGc;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

@@ -6,10 +6,7 @@ package org.tensorics.core.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
-import javax.script.Invocable;
 
 import com.google.common.reflect.Invokable;
 

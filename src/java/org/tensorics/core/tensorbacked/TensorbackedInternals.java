@@ -4,14 +4,13 @@
 
 package org.tensorics.core.tensorbacked;
 
-import static org.tensorics.core.util.Instantiators.instantiatorFor;
 import static org.tensorics.core.util.InstantiatorType.CONSTRUCTOR;
+import static org.tensorics.core.util.Instantiators.instantiatorFor;
 
 import java.util.Set;
 
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
-import org.tensorics.core.util.InstantiatorType;
 
 import com.google.common.collect.ImmutableSet;
 
