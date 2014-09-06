@@ -6,13 +6,9 @@ package org.tensorics.core.tensor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
 import java.util.Set;
 
-import org.tensorics.core.tensor.Tensor.Entry;
-
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -20,11 +16,10 @@ import com.google.common.collect.ImmutableSet;
  * @param <E> the type of the elements of the tensor to build
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class AbstractTensorBuilder<E> {
+public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 
     private final Set<? extends Class<?>> dimensions;
     private final VerificationCallback<E> callback;
-    private final ImmutableMap.Builder<Position, Entry<E>> entries = ImmutableMap.builder();
     private Context context = Context.empty();
 
     public AbstractTensorBuilder(Set<? extends Class<?>> dimensions, VerificationCallback<E> callback) {
@@ -55,18 +50,25 @@ public class AbstractTensorBuilder<E> {
         return new OngoingPut<E>(entryPosition, this);
     }
 
-    public final void putValueAt(E value, Position position) {
+    @Override
+	public final void putValueAt(E value, Position position) {
         Preconditions.checkNotNull(value, "value must not be null!");
         Preconditions.checkNotNull(position, "position must not be null");
-
-        this.put(new ImmutableEntry<E>(position, value));
+        Positions.assertConsistentDimensions(position, getDimensions());
+        this.callback.verify(value);
+        this.putItAt(value, position);
     }
+    
+    
+    protected abstract void putItAt(E value, Position position);
 
-    public final void putValueAt(E value, Object... coordinates) {
+    @Override
+	public final void putValueAt(E value, Object... coordinates) {
         this.putValueAt(value, Position.of(coordinates));
     }
 
-    public final void setTensorContext(Context context) {
+    @Override
+	public final void setTensorContext(Context context) {
         checkIfContextValid(context);
         this.context = context;
     }
@@ -92,17 +94,8 @@ public class AbstractTensorBuilder<E> {
         return this.at(Position.of(coordinates));
     }
 
-    /**
-     * Puts all the values of the given tensor into the new tensor, at the given position. The positions in the new
-     * tensor will be the merged positions of the original coordinates in the tensor with the given target position.
-     * Therefore, the given position is not allowed to have a dimensions overlap with the positions in the original
-     * tensor.
-     * 
-     * @param tensor the tensor, whose values to add to the tensor under construction
-     * @param position the position which will be merged with the tensor in the source tensor
-     */
-    /* Not too nice yet. Should be refactored into ongoing put */
-    public final void putAllAt(Tensor<E> tensor, Position position) {
+    @Override
+	public final void putAllAt(Tensor<E> tensor, Position position) {
         checkNotNull(tensor, "The tensor must not be null!");
         checkNotNull(position, "The position must not be null!");
         for (Tensor.Entry<E> entry : tensor.entrySet()) {
@@ -110,36 +103,24 @@ public class AbstractTensorBuilder<E> {
         }
     }
 
-    /**
-     * Puts all the values of the given tensor into the new tensor at a position represented by the given coordinates.
-     * This is a convenience method for {@link #putAllAt(Tensor, Position)}.
-     * 
-     * @param tensor the tensor whose values to put into the tensor unser construction
-     * @param coordinates the coordinates defining the position where to put the values
-     */
-    /* Not too nice yet. Should be refactored into ongoing put */
+    @Override
     @SafeVarargs
     public final void putAllAt(Tensor<E> tensor, Object... coordinates) {
         putAllAt(tensor, Position.of(coordinates));
     }
 
-    public final void put(Tensor.Entry<E> entry) {
+    @Override
+	public final void put(Tensor.Entry<E> entry) {
         checkNotNull(entry, "Entry to put must not be null!");
-        Position position = entry.getPosition();
-        Positions.assertConsistentDimensions(position, getDimensions());
-        this.callback.verify(entry.getValue());
-        this.entries.put(position, entry);
+        putValueAt(entry.getValue(), entry.getPosition());
     }
 
-    public final void putAll(Iterable<Tensor.Entry<E>> newEntries) {
+    @Override
+	public final void putAll(Iterable<Tensor.Entry<E>> newEntries) {
         checkNotNull(newEntries, "Iterable of entries to put must not be null!");
         for (Tensor.Entry<E> entry : newEntries) {
             put(entry);
         }
-    }
-
-    protected final Map<Position, Tensor.Entry<E>> createEntries() {
-        return this.entries.build();
     }
 
     public Set<? extends Class<?>> getDimensions() {
