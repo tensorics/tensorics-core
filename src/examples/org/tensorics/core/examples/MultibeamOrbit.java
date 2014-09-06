@@ -4,12 +4,12 @@
 
 package org.tensorics.core.examples;
 
-import cern.mpe.commons.tensorics.domain.tensor.annotation.Dimensions;
-import cern.mpe.commons.tensorics.domain.tensor.backed.orbit.coordinates.Beam;
-import cern.mpe.commons.tensorics.domain.tensor.backed.orbit.coordinates.Bpm;
-import cern.mpe.commons.tensorics.domain.tensor.backed.orbit.coordinates.Plane;
-import cern.mpe.commons.tensorics.domain.tensor.base.Tensor;
-import cern.mpe.commons.tensorics.domain.tensor.base.TensorBacked;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.annotation.Dimensions;
+import org.tensorics.core.tensorbacked.orbit.coordinates.Beam;
+import org.tensorics.core.tensorbacked.orbit.coordinates.Bpm;
+import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 
 /**
  * Test case. Multibeam class supported with TensorBacked(Double)
@@ -18,7 +18,7 @@ import cern.mpe.commons.tensorics.domain.tensor.base.TensorBacked;
  */
 //tag::classdef[]
 @Dimensions({ Beam.class, Plane.class, Bpm.class })
-public class MultibeamOrbit implements TensorBacked<Double> {
+public class MultibeamOrbit implements Tensorbacked<Double> {
 
     private final Tensor<Double> tensor;
     
