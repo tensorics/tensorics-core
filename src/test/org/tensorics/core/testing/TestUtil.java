@@ -9,33 +9,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import com.openpojo.reflection.PojoClass;
-import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.PojoValidator;
-import com.openpojo.validation.test.impl.GetterTester;
-import com.openpojo.validation.test.impl.SetterTester;
-
 public class TestUtil {
 
     private TestUtil() {
         /* only static methods */
-    }
-
-    public static final void testGetterSetters(Class<?> clazz) {
-        PojoClass pojoClass = PojoClassFactory.getPojoClass(clazz);
-        createGetterSetterValidator().runValidation(pojoClass);
-    }
-
-    /**
-     * creates a validator, which contains a tester for getters and setters.
-     * 
-     * @return the validator which contains a tester for getters and one for setters
-     */
-    public static final PojoValidator createGetterSetterValidator() {
-        PojoValidator pojoValidator = new PojoValidator();
-        pojoValidator.addTester(new GetterTester());
-        pojoValidator.addTester(new SetterTester());
-        return pojoValidator;
     }
 
     /**
