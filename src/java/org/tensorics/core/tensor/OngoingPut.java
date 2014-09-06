@@ -13,9 +13,9 @@ package org.tensorics.core.tensor;
  */
 public final class OngoingPut<T> {
     private final Position position;
-    private final AbstractTensorBuilder<T> tensorBuilder;
+    private final TensorBuilder<T> tensorBuilder;
 
-    OngoingPut(Position position, AbstractTensorBuilder<T> tensorBuilder) {
+    OngoingPut(Position position, TensorBuilder<T> tensorBuilder) {
         this.position = position;
         this.tensorBuilder = tensorBuilder;
     }

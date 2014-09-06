@@ -15,7 +15,7 @@ public class ImmutableEntry<T> implements Tensor.Entry<T> {
     private final T value;
     private final Position position;
 
-    ImmutableEntry(Position position, T value) {
+    public ImmutableEntry(Position position, T value) {
         this.value = value;
         this.position = position;
     }

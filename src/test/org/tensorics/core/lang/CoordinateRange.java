@@ -4,17 +4,16 @@
 
 package org.tensorics.core.lang;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CoordinateRange {
-    private final Collection<XCoordinate> xCoordinates;
-    private final Collection<YCoordinate> yCoordinates;
-    private final Collection<ZCoordinate> zCoordinates;
+    private final Set<XCoordinate> xCoordinates;
+    private final Set<YCoordinate> yCoordinates;
+    private final Set<ZCoordinate> zCoordinates;
 
-    private CoordinateRange(Collection<XCoordinate> xCoordinates, Collection<YCoordinate> yCoordinates,
-            Collection<ZCoordinate> zCoordinates) {
+    private CoordinateRange(Set<XCoordinate> xCoordinates, Set<YCoordinate> yCoordinates,
+            Set<ZCoordinate> zCoordinates) {
         super();
         this.xCoordinates = xCoordinates;
         this.yCoordinates = yCoordinates;
@@ -22,30 +21,30 @@ public class CoordinateRange {
     }
 
     public static CoordinateRange fromSize(TensorSize size) {
-        List<XCoordinate> xcoords = new ArrayList<>();
+        Set<XCoordinate> xcoords = new HashSet<>();
         for (int i = 0; i < size.getNx(); i++) {
             xcoords.add(XCoordinate.of(i));
         }
-        List<YCoordinate> ycoords = new ArrayList<>();
+        Set<YCoordinate> ycoords = new HashSet<>();
         for (int j = 0; j < size.getNy(); j++) {
             ycoords.add(YCoordinate.of(j));
         }
-        List<ZCoordinate> zcoords = new ArrayList<>();
+        Set<ZCoordinate> zcoords = new HashSet<>();
         for (int k = 0; k < size.getNz(); k++) {
             zcoords.add(ZCoordinate.of(k));
         }
         return new CoordinateRange(xcoords, ycoords, zcoords);
     }
 
-    public Collection<XCoordinate> getxCoordinates() {
+    public Set<XCoordinate> getxCoordinates() {
         return xCoordinates;
     }
 
-    public Collection<YCoordinate> getyCoordinates() {
+    public Set<YCoordinate> getyCoordinates() {
         return yCoordinates;
     }
 
-    public Collection<ZCoordinate> getzCoordinates() {
+    public Set<ZCoordinate> getzCoordinates() {
         return zCoordinates;
     }
 }
