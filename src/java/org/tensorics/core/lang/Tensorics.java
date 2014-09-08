@@ -72,7 +72,7 @@ public final class Tensorics {
             } else {
                 throw new IllegalArgumentException(
                         "One of the tensors in the provided list does not fit the others on dimensions."
-                                + " Cannot continiue merging");
+                                + " Cannot continiue merging" + oneTensor);
             }
         }
         return tensorBuilder.build();
