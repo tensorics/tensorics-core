@@ -3,10 +3,10 @@ package org.tensorics.core.tensor;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.base.Function;
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -171,7 +171,7 @@ public final class Positions {
 			Object leftCoordinate = left.coordinateFor(dimension);
 			Object rightCoordinate = right.coordinateFor(dimension);
 			if (Objects.equal(leftCoordinate, rightCoordinate) || oneIsNull(leftCoordinate, rightCoordinate)) {
-				builder.add(MoreObjects.firstNonNull(leftCoordinate, rightCoordinate));
+				builder.add(Objects.firstNonNull(leftCoordinate, rightCoordinate));
 			} else {
 				throw new IllegalArgumentException("Coordinates for dimension '" + dimension
 						+ "' are neither the same in both positions (" + left + " and " + right
@@ -212,5 +212,20 @@ public final class Positions {
 		}
 		return builder.build();
 	}
+
+    /**
+     * Extracts the provided class of the coordinate from the set of the positions.
+     * 
+     * @param positions
+     * @param ofClass a class of the coordinate to be extracted
+     * @return a set of the extracted coordinates from provided positions
+     */
+    public static <T> Set<T> coordinatesOfType(Set<Position> positions, Class<T> ofClass) {
+        Set<T> toReturn = new HashSet<>();
+        for (Position onePosition : positions) {
+            toReturn.add(onePosition.coordinateFor(ofClass));
+        }
+        return toReturn;
+    }
 
 }
