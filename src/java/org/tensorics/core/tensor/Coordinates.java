@@ -4,6 +4,8 @@
 
 package org.tensorics.core.tensor;
 
+import java.util.Set;
+
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 
@@ -35,6 +37,48 @@ public final class Coordinates {
             coordinateBuilder.put(coordinateClass, coordinate);
         }
         return coordinateBuilder.build();
+    }
+
+    /**
+     * Provides the way to reduce long classpath names of the coordinates classes to only short Class names. It produces
+     * a combination of the tensor and it's context result.
+     * 
+     * @param tensor to extract the dimension set and reduce their length of the output string
+     * @return a reduced string
+     */
+    public static String dimensionsWithoutClassPath(Tensor<?> tensor) {
+        String dimensions = dimensionsWithoutClassPath(tensor.shape().dimensionSet());
+        String dimensionsContext = dimensionsWithoutClassPath(tensor.context().getPosition());
+        return "Tensor:" + dimensions + ", Context:" + dimensionsContext;
+    }
+
+    /**
+     * Provides the way to reduce long classpath names of the coordinates classes to only short Class names.
+     * 
+     * @param position to extract the dimension set and reduce their ength of the output string
+     * @return a reduced string
+     */
+    public static String dimensionsWithoutClassPath(Position position) {
+        return dimensionsWithoutClassPath(position.dimensionSet());
+    }
+
+    /**
+     * Provides the way to reduce long classpath names of the coordinates classes to only short Class names.
+     * 
+     * @param dimensionSet to reduce length of the output string
+     * @return a reduced string
+     */
+    public static String dimensionsWithoutClassPath(Set<Class<?>> dimensionSet) {
+        String toReturn = "[";
+        int i = 0;
+        for (Class<?> oneClass : dimensionSet) {
+            String[] split = oneClass.toString().split("\\.");
+            toReturn += split[split.length - 1];
+            if (i++ < dimensionSet.size() - 1) {
+                toReturn += ", ";
+            }
+        }
+        return toReturn + "]";
     }
 
 }
