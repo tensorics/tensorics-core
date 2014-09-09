@@ -14,7 +14,7 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedInternals;
- 
+
 /**
  * Contains utility methods for tensors
  * 
@@ -52,7 +52,7 @@ public final class Tensorics {
      * @param tensors to be merged.
      * @return a merged tensor.
      * @throws IllegalArgumentException if zero or one tensor is put to be merged OR if tensors dimensionality and their
-     *             context positions dimensionality is not equal.
+     *             context positions dimensionality is not equal OR tensor context is empty.
      */
     public static <E> Tensor<E> merge(Set<Tensor<E>> tensors) {
         if (tensors.size() <= 1) {
@@ -63,6 +63,9 @@ public final class Tensorics {
         Position refContextPosition = firstTensor.context().getPosition();
         Set<Class<?>> outcomeDimensionSet = new HashSet<>(refDimensionSet);
         Set<Class<?>> dimensionSet = refContextPosition.dimensionSet();
+        if (dimensionSet.size() == 0) {
+            throw new IllegalArgumentException("Cannot merge tensors with not specified context!");
+        }
         outcomeDimensionSet.addAll(dimensionSet);
         Builder<E> tensorBuilder = ImmutableTensor.builder(outcomeDimensionSet);
 
