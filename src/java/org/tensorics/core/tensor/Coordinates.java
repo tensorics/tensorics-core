@@ -72,8 +72,7 @@ public final class Coordinates {
         String toReturn = "[";
         int i = 0;
         for (Class<?> oneClass : dimensionSet) {
-            String[] split = oneClass.toString().split("\\.");
-            toReturn += split[split.length - 1];
+            toReturn += oneClass.getSimpleName();
             if (i++ < dimensionSet.size() - 1) {
                 toReturn += ", ";
             }
