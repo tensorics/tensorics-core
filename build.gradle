@@ -1,18 +1,7 @@
-buildscript {
-    //    repositories {
-    //        jcenter()
-    //    }
+apply plugin: 'maven'
 
-   // repositories {
-   //     maven { url "http://artifactory.cern.ch/beco-thirdparty-local" }
-   // }
+repositories {  maven { url 'http://artifactory/development' }  }
 
-    dependencies { classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2' }
+dependencies { compile 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'}
 
- javadoc {
-    options.encoding = "UTF-8"
-  }
- 
-}
-
-//apply plugin: 'org.asciidoctor.gradle.asciidoctor'
+javadoc { options.encoding = "UTF-8" }
