@@ -2,7 +2,7 @@
  * Copyright (c) 2013 European Organisation for Nuclear Research (CERN), All Rights Reserved.
  */
 
-package org.tensorics.core.resolve.engine; 
+package org.tensorics.core.resolve.engine;
 
 import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.resolve.domain.ResolvingException;
@@ -17,7 +17,7 @@ import org.tensorics.core.tree.domain.ResolvingContext;
 import com.google.common.base.Preconditions;
 
 /**
- * Processes the analysis in a way, that it tries to give the biggest possible chunks to a resolver. s.
+ * Processes the expression tree in a way, that it tries to give the biggest possible chunks to a resolver.
  * 
  * @author kfuchsbe
  */
