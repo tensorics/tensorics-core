@@ -51,9 +51,9 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
     }
 
     @Override
-    public ResolvingContext processTree(Node rootNode, ResolvingContext rebuildingContext,
+    public ResolvingContext processTree(Node rootNode, ResolvingContext oldContext,
             OptionRegistry<ResolvingOption> processingOptions) {
-        ResolverCandidateRepository executableNodes = findResolverCandidates(rootNode, rebuildingContext);
+        ResolverCandidateRepository executableNodes = findResolverCandidates(rootNode, oldContext);
         return executableNodes.executeNodes(rootNode, processingOptions);
     }
 
