@@ -1,8 +1,13 @@
-apply plugin: 'maven'
 apply plugin: 'java'
-
-repositories {  maven { url 'http://artifactory/development' }  }
-
-dependencies { compile 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'}
+apply plugin: 'maven'
+apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
 javadoc { options.encoding = "UTF-8" }
+
+buildscript {
+    
+	repositories { maven { url 'http://artifactory/development' }  }
+    
+    dependencies { classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'}
+}
+
