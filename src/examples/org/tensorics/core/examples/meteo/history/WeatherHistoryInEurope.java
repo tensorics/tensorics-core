@@ -1,25 +1,17 @@
 package org.tensorics.core.examples.meteo.history;
 
-import java.sql.Time;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.tensorics.core.examples.meteo.domain.City;
 import org.tensorics.core.examples.meteo.domain.EuropeanCapital;
-import org.tensorics.core.examples.meteo.domain.Sampling;
-import org.tensorics.core.examples.meteo.domain.TimeRange;
+import org.tensorics.core.examples.meteo.domain.Temperature;
 import org.tensorics.core.examples.meteo.domain.coordinates.Latitude;
-import org.tensorics.core.examples.meteo.externaldata.MeteoDataImporter;
 import org.tensorics.core.fields.doubles.Structures;
-import org.tensorics.core.lang.EnvironmentImpl;
-import org.tensorics.core.lang.ManipulationOptions;
 import org.tensorics.core.lang.TensoricSupport;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
-import org.tensorics.core.reduction.Averaging;
-import org.tensorics.core.reduction.ReductionStrategy;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.options.IntersectionShapingStrategy;
 
 public class WeatherHistoryInEurope extends AbstractWeatherHistory {
 
@@ -37,12 +29,22 @@ public class WeatherHistoryInEurope extends AbstractWeatherHistory {
 		Latitude romeLatitude = EuropeanCapital.ROMA.getLatitude();
 		Tensor<QuantifiedValue<Double>> sliceAtTropicCancerAndRome = from(
 				importedData).extractSliceAt(romeLatitude);
-		
+
+		Temperature temperature = new Temperature(importedData);
+
+		Tensor<QuantifiedValue<Double>> elementTimes = calculateQ(importedData)
+				.elementTimes(importedData);
+		Temperature elementTimes2 = calculateQ(temperature).elementTimes(
+				temperature);
+
 		/* dimension will be reduced to only Longitude and Time */
 		sliceAtTropicCancerAndRome.shape().dimensionSet();
-		
-//		from(sliceAtTropicCancerAndRome).reduce(Time.class).byAveragingIn(Structures);
-		
+		//
+		// from(sliceAtTropicCancerAndRome).reduce(Time.class).byAveragingIn(field)
+
+		TensoricSupport<Double> fullTensoricSupport = Tensorics
+				.using(Structures.doubles());
+
 	}
 	// end::import[]
 }

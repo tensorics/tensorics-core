@@ -6,24 +6,34 @@ package org.tensorics.core.reduction;
 
 import java.util.Map;
 
+import org.tensorics.core.tensor.Position;
+
 /**
- * A reduction strategy, which returns all values of which are at one exact value of the dimension to be reduced.
+ * A reduction strategy, which returns all values of which are at one exact
+ * value of the dimension to be reduced.
  * 
  * @author kfuchsbe
- * @param <C> the type of coordinate (aka 'the dimension') do be reduced
- * @param <E> the type of the tensor elements
+ * @param <C>
+ *            the type of coordinate (aka 'the dimension') do be reduced
+ * @param <E>
+ *            the type of the tensor elements
  */
 public class Slicing<C, E> implements ReductionStrategy<C, E> {
 
-    private final C slicePosition;
+	private final C slicePosition;
 
-    public Slicing(C slicePosition) {
-        this.slicePosition = slicePosition;
-    }
+	public Slicing(C slicePosition) {
+		this.slicePosition = slicePosition;
+	}
 
-    @Override
-    public E reduce(Map<? extends C, E> inputValues) {
-        return inputValues.get(slicePosition);
-    }
+	@Override
+	public E reduce(Map<? extends C, E> inputValues) {
+		return inputValues.get(slicePosition);
+	}
+
+	@Override
+	public Position context() {
+		return Position.of(slicePosition);
+	}
 
 }
