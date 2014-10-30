@@ -6,6 +6,7 @@ package org.tensorics.core.tensor.lang;
 
 import org.tensorics.core.commons.lang.OngoingOperation;
 import org.tensorics.core.expressions.BinaryOperationExpression;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
@@ -60,12 +61,12 @@ public class OngoingDeferredQuantifiedTensorOperation<S> implements
 
     @Override
     public Expression<Tensor<QuantifiedValue<S>>> elementDividedByV(QuantifiedValue<S> value) {
-        return elementDividedByQT(ImmutableTensor.zeroDimensionalOf(value));
+        return elementDividedByQT(Tensorics.zeroDimensionalOf(value));
     }
 
     @Override
     public Expression<Tensor<QuantifiedValue<S>>> elementTimesV(QuantifiedValue<S> right) {
-        return elementTimes(ResolvedExpression.of(ImmutableTensor.zeroDimensionalOf(right)));
+        return elementTimes(ResolvedExpression.of(Tensorics.zeroDimensionalOf(right)));
     }
 
     @Override

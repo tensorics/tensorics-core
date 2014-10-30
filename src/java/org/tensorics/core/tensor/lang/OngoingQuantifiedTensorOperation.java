@@ -5,6 +5,7 @@
 package org.tensorics.core.tensor.lang;
 
 import org.tensorics.core.commons.lang.OngoingOperation;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
@@ -49,7 +50,7 @@ public class OngoingQuantifiedTensorOperation<S> implements
 
     @Override
     public Tensor<QuantifiedValue<S>> elementTimesV(QuantifiedValue<S> right) {
-        return elementTimes(ImmutableTensor.zeroDimensionalOf(right));
+        return elementTimes(Tensorics.zeroDimensionalOf(right));
     }
 
     @Override
@@ -59,7 +60,7 @@ public class OngoingQuantifiedTensorOperation<S> implements
 
     @Override
     public Tensor<QuantifiedValue<S>> elementDividedByV(QuantifiedValue<S> value) {
-        Tensor<QuantifiedValue<S>> right = ImmutableTensor.zeroDimensionalOf(value);
+        Tensor<QuantifiedValue<S>> right = Tensorics.zeroDimensionalOf(value);
         return elementDividedBy(right);
     }
 

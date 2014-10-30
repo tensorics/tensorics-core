@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.tensorics.core.lang.DoubleScript;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -53,7 +54,7 @@ public class DeferredTensorBackedCalculationTest {
     }
 
     private Tensor<Double> prepareDoubleTensor(double factor) {
-        Builder<Double> builder = ImmutableTensor.builder(getDimensions());
+        Builder<Double> builder = Tensorics.builder(getDimensions());
         for (int i = 0; i < 10; i++) {
             builder.at(createCoordinates(i)).put(factor * i);
         }

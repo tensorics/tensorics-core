@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.lang.DoubleScript;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -56,7 +57,7 @@ public class DeferredTensoricCalculationTest {
 
             @Override
             protected Expression<Tensor<Double>> describe() {
-                return ResolvedExpression.of(ImmutableTensor.zeroDimensionalOf(0.4));
+                return ResolvedExpression.of(Tensorics.zeroDimensionalOf(0.4));
             }
         });
         assertEquals(0.4, result.get(), 0.00001);

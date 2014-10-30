@@ -9,6 +9,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -39,7 +40,7 @@ public class OngoingTensorManipulation<V> {
      * @return A tensor which will contain only those elements which have {@code true} flags in the mask
      */
     public Tensor<V> extractWhereTrue(Tensor<Boolean> mask) {
-        Builder<V> tensorBuilder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        Builder<V> tensorBuilder = Tensorics.builder(tensor.shape().dimensionSet());
         for (Entry<V> entry : tensor.entrySet()) {
             if (mask.get(entry.getPosition()).booleanValue()) {
                 tensorBuilder.at(entry.getPosition()).put(entry.getValue());

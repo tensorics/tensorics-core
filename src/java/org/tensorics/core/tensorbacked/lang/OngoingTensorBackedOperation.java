@@ -8,6 +8,7 @@ import static org.tensorics.core.tensorbacked.TensorbackedInternals.createBacked
 
 import org.tensorics.core.commons.lang.OngoingOperation;
 import org.tensorics.core.commons.options.Environment;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Tensor;
@@ -78,7 +79,7 @@ public class OngoingTensorBackedOperation<TB extends Tensorbacked<V>, V> impleme
 
     @Override
     public TB elementTimesV(V value) {
-        return elementTimesT(ImmutableTensor.zeroDimensionalOf(value));
+        return elementTimesT(Tensorics.zeroDimensionalOf(value));
     }
 
     @Override
@@ -99,7 +100,7 @@ public class OngoingTensorBackedOperation<TB extends Tensorbacked<V>, V> impleme
 
     @Override
     public TB elementDividedByV(V value) {
-        return elementDividedByT(ImmutableTensor.zeroDimensionalOf(value));
+        return elementDividedByT(Tensorics.zeroDimensionalOf(value));
     }
 
     private TB evaluate(Tensor<V> right, BinaryOperation<V> operation) {
