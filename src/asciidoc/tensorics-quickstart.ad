@@ -5,6 +5,7 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :sectanchors:
 :source-highlighter: highlightjs
 :examplesource: src/examples/org/tensorics/core/examples
+:sourcecoredir: src/java/org/tensorics/core
 
 Tensorics is a java framework for data processing of numerical data. 
 The core object is a ++Tensor++ which represents a collection of values of arbitrary
@@ -76,6 +77,64 @@ might be preferrable for many applications, sometimes it is simply a too strict 
 Using a two-dimensional tensor is more flexible in this case - and you can still perform all the mathematical 
 operations, as you will see later ;-)
 
+== Tensor manipulations
+
+=== Operation
+
+++Tensorics++ framework gives you an easy access to the most common calculations and operations you need such as:
+ 
+* adding, subtracting, multiplying and dividing;
+* relevant inversion calculation: like negative and 1 over;
+* performing a reduction of a tensors with provided behavior:
+** we can ++slice++ an input ++tensor++ at given ++coordinate(s)++
+** we can ++average++ an input ++tensor++ over specified ++coordinate++
+ 
+
+In order to have an operation completed a definition of the ++Shape++ has to be introduced - it is a 'raw' view on the coordinates (keys) in the tensor.
+An introduction to basic behaviours can be found in following class.
+[source,java]
+----
+include::{sourcecoredir}/lang/ManipulationOptions.java[tags=classdef]
+----
+
+Knowing about ++shapes++ it is possible to set/update a ++strategy++ in the framework such that any of the mentioned above operations can 
+be performed on a possibly differently shaped tensors for this one has to set proper ++BroadcastingStrategy++. For performing multiplication 
+a separate strategy ++filTheNameOfTheStrategy++ is foreseen since 2d tensors might be considered as a matrices for which this operation
+looks different.
+ 
+=== Reduction & Merge
+Result of such operation  will again be a ++tensor++ but with a simplified/improved set of 
+dimensions (accordingly to provided input). Simple, isn't it?
+ 
+Going further (we still stay in an example of temperature and pressure) one could imagine a situation when several cities 
+are sending the data built on a base of ++tensor++ with one ++dimension++ (Time) but containing a special ++context++ field
+informing about 'higher order' dimensions it can belongs to (ie. Latitude and Longitude of the city). 
+A ++Tensorics++ framework gives you and access to ++merge++ utility that will combine all provided tensors into one containing all data. 
+This all will of course be only done if all provided inputs will be marked with the same 'higher order' dimensions.
+ 
+Let's consider simple example of three ++dimension++ tensor of temperature and another one (same dimensionality) of an
+ atmospheric pressure. Let's define those three dimensions as following:
+ 
+ * Time
+ * Latitude 
+ * Longitude
+ 
+Let's fill it later with some real data from two decades, with a day sampling for a few European cities. 
+ 
+[source,java]
+----
+include::{examplesource}/meteo/history/AbstractWeatherHistory.java[tags=import]
+----  
+  
+And let's try to calculate some average temperature at some given latitude. With ++Tensorics++ framework it's easier than you think:
+
+[source,java]
+----
+include::{examplesource}/meteo/history/WeatherHistoryInEurope.java[tags=import]
+----  
+    
+  
+  
 == Backing up your objects.
 
 Very often there is a need to access the data in unique, special way. You can use ++Tensor<V>++ objects to hold data and expose it in 
@@ -89,7 +148,7 @@ A special ++@Dimensions++ annotation gives the meta data for the framework to kn
 The framework gives you a full support to perform all calculations (in direct and deferred way) directly with your customized objects.
 The return type of the calculation is always the same as the input type.
 
-Let's start with instantiation of the framework.
+Let's again start with instantiation of the framework.
 [source,java]
 ----
 fullTensoricSupport = Tensors.using(Structures.doubles());

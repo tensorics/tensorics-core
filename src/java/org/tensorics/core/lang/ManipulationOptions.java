@@ -26,7 +26,7 @@ public final class ManipulationOptions {
     private ManipulationOptions() {
         /* Only static methods */
     }
-
+  //tag::classdef[]
     /**
      * Creates a new instance of an Option registry, supporting the given field, which will contain the default options,
      * as there are:
@@ -50,4 +50,5 @@ public final class ManipulationOptions {
                 new UncorrelatedErrorPropagationStrategy<>(field), //
                 new JScienceQuantificationStrategy<>(field.cheating())));
     }
+  //end::classdef[]
 }
