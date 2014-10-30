@@ -1,5 +1,6 @@
 package org.tensorics.core.tensor.operations;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.CreationOperation;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
@@ -26,7 +27,7 @@ public class SingleValueTensorCreationOperation<V> implements CreationOperation<
 
     @Override
     public Tensor<V> perform() {
-        Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
+        Builder<V> builder = Tensorics.builder(shape.dimensionSet());
         for (Position position : shape.positionSet()) {
             builder.at(position).put(value);
         }

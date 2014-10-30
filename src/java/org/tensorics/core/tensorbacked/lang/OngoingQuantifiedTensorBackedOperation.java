@@ -7,6 +7,7 @@ package org.tensorics.core.tensorbacked.lang;
 import static org.tensorics.core.tensorbacked.TensorbackedInternals.createBackedByTensor;
 
 import org.tensorics.core.commons.lang.OngoingOperation;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
@@ -52,7 +53,7 @@ public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<Qua
 
     @Override
     public QTB elementTimesV(QuantifiedValue<S> right) {
-        return elementTimesQT(ImmutableTensor.zeroDimensionalOf(right));
+        return elementTimesQT(Tensorics.zeroDimensionalOf(right));
     }
 
     public QTB elementTimesQT(Tensor<QuantifiedValue<S>> right) {
@@ -70,7 +71,7 @@ public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<Qua
 
     @Override
     public QTB elementDividedByV(QuantifiedValue<S> value) {
-        return elementDividedByQT(ImmutableTensor.zeroDimensionalOf(value));
+        return elementDividedByQT(Tensorics.zeroDimensionalOf(value));
     }
 
     private QTB evaluate(Tensor<QuantifiedValue<S>> right, BinaryOperation<QuantifiedValue<S>> operation) {

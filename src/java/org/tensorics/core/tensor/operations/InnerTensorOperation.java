@@ -16,6 +16,7 @@ import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.commons.util.ValuePair;
 import org.tensorics.core.iterable.operations.IterableOperation;
 import org.tensorics.core.iterable.operations.IterableOperations;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.Operations;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -146,7 +147,7 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
 
         Map<Position, V> result = IterableOperations.reduce(targetPositionToValueSet, reductionOperation);
 
-        return ImmutableTensor.fromMap(targetDimensions, result);
+        return Tensorics.fromMap(targetDimensions, result);
     }
 
 }

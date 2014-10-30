@@ -8,6 +8,7 @@ import org.tensorics.core.commons.lang.OngoingOperation;
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.expressions.BinaryOperationExpression;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.ExplicitField;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -61,7 +62,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     @Override
     public Expression<Tensor<V>> elementDividedByV(V value) {
-        Tensor<V> right = ImmutableTensor.zeroDimensionalOf(value);
+        Tensor<V> right = Tensorics.zeroDimensionalOf(value);
         return elementDividedBy(ResolvedExpression.of(right));
     }
 
@@ -72,7 +73,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     @Override
     public Expression<Tensor<V>> elementTimesV(V value) {
-        Tensor<V> right = ImmutableTensor.zeroDimensionalOf(value);
+        Tensor<V> right = Tensorics.zeroDimensionalOf(value);
         return elementTimes(ResolvedExpression.of(right));
     }
 

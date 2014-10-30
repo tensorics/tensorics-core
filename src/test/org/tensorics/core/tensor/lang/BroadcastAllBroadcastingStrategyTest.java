@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
@@ -17,7 +18,7 @@ import org.tensorics.core.tensor.options.BroadcastingStrategy;
 
 public class BroadcastAllBroadcastingStrategyTest {
 
-	private static final Tensor<Double> ZERO_DIMENSIONAL_ZERO = ImmutableTensor.zeroDimensionalOf(0.0);
+	private static final Tensor<Double> ZERO_DIMENSIONAL_ZERO = Tensorics.zeroDimensionalOf(0.0);
 
 	private static final Position POS_A = Position.of("A");
 	private static final Position POS_B = Position.of("B");
@@ -60,15 +61,15 @@ public class BroadcastAllBroadcastingStrategyTest {
 	@Test
 	public void zeroDimensionalToZeroDimensional() {
 		TensorPair<Double> result = strategy.broadcast(ZERO_DIMENSIONAL_ZERO, ZERO_DIMENSIONAL_ZERO, emptyDimensions());
-		assertEquals(ZERO_DIMENSIONAL_ZERO, ImmutableTensor.copyOf(result.left()));
-		assertEquals(ZERO_DIMENSIONAL_ZERO, ImmutableTensor.copyOf(result.right()));
+		assertEquals(ZERO_DIMENSIONAL_ZERO, Tensorics.copyOf(result.left()));
+		assertEquals(ZERO_DIMENSIONAL_ZERO, Tensorics.copyOf(result.right()));
 	}
 
 	@Test
 	public void zeroDimensionalBroadcastedToAB() {
 		Tensor<Double> tensor = createAB();
 		TensorPair<Double> result = strategy.broadcast(ZERO_DIMENSIONAL_ZERO, tensor, emptyDimensions());
-		assertEquals(tensor, ImmutableTensor.copyOf(result.right()));
+		assertEquals(tensor, Tensorics.copyOf(result.right()));
 
 		Tensor<Double> left = result.left();
 		assertEquals(Shape.of(POS_A, POS_B), left.shape());
@@ -106,14 +107,14 @@ public class BroadcastAllBroadcastingStrategyTest {
 	}
 
 	private Tensor<Double> createAB() {
-		ImmutableTensor.Builder<Double> builder = ImmutableTensor.builder(String.class);
+		ImmutableTensor.Builder<Double> builder = Tensorics.builder(String.class);
 		builder.at(POS_A).put(1.0);
 		builder.at(POS_B).put(2.0);
 		return builder.build();
 	}
 
 	private Tensor<Double> create12() {
-		ImmutableTensor.Builder<Double> builder = ImmutableTensor.builder(Integer.class);
+		ImmutableTensor.Builder<Double> builder = Tensorics.builder(Integer.class);
 		builder.at(POS_1).put(0.1);
 		builder.at(POS_2).put(0.2);
 		return builder.build();

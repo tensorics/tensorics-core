@@ -7,6 +7,7 @@ package org.tensorics.core.tensor.lang;
 import org.tensorics.core.commons.lang.OngoingOperation;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.iterable.operations.IterableSum;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Tensor;
@@ -63,7 +64,7 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
 
     @Override
     public Tensor<V> elementDividedByV(V value) {
-        return elementDividedBy(ImmutableTensor.zeroDimensionalOf(value));
+        return elementDividedBy(Tensorics.zeroDimensionalOf(value));
     }
 
     private Tensor<V> evaluate(Tensor<V> right, BinaryOperation<V> operation) {
@@ -72,7 +73,7 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
 
     @Override
     public Tensor<V> elementTimesV(V right) {
-        return elementTimes(ImmutableTensor.zeroDimensionalOf(right));
+        return elementTimes(Tensorics.zeroDimensionalOf(right));
     }
 
     @Override

@@ -80,7 +80,7 @@ public class TensorBackedBySetOfTensorValuesTest {
     private Tensor<Double> createTensor() {
         ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
                 .of(XCoordinate.class, YCoordinate.class);
-        Builder<Double> builder = ImmutableTensor.builder(dimensions);
+        Builder<Double> builder = Tensorics.builder(dimensions);
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 builder.at(Position.of(coordinatesFor(i, j))).put(valueFor(i, j));

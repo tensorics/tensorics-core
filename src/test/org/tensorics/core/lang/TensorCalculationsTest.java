@@ -159,7 +159,7 @@ public class TensorCalculationsTest {
 		XCoordinate x = XCoordinate.of(6);
 		XCoordinate x2 = XCoordinate.of(3);
 
-		Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
+		Builder<Double> builder = Tensorics.builder(ImmutableSet.of(y.getClass(), x.getClass()));
 		builder.at(Position.of(ImmutableSet.of(x, y))).put(13.2);
 		builder.at(Position.of(ImmutableSet.of(x2, y))).put(-1.2);
 		Tensor<Double> testTensor = builder.build();
@@ -174,12 +174,12 @@ public class TensorCalculationsTest {
 		XCoordinate x = XCoordinate.of(6);
 		XCoordinate x2 = XCoordinate.of(3);
 
-		Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
+		Builder<Double> builder = Tensorics.builder(ImmutableSet.of(y.getClass(), x.getClass()));
 		builder.at(Position.of(ImmutableSet.of(x, y))).put(13.2);
 		builder.at(Position.of(ImmutableSet.of(x2, y))).put(-1.2);
 		Tensor<Double> testTensor = builder.build();
 
-		Builder<Double> builder2 = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
+		Builder<Double> builder2 = Tensorics.builder(ImmutableSet.of(y.getClass(), x.getClass()));
 		builder2.at(Position.of(ImmutableSet.of(x, y))).put(1.2);
 		builder2.at(Position.of(ImmutableSet.of(x2, y))).put(1.2);
 		Tensor<Double> testTensor2 = builder2.build();
@@ -208,7 +208,7 @@ public class TensorCalculationsTest {
 	public void testAdditionFrom2elementsTo100WithWrongShapes() {
 		XCoordinate x = XCoordinate.of(6);
 		XCoordinate x2 = XCoordinate.of(3);
-		Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.<Class<? extends TestCoordinate>> of(x
+		Builder<Double> builder = Tensorics.builder(ImmutableSet.<Class<? extends TestCoordinate>> of(x
 				.getClass()));
 		double x1Add = 13.2;
 		double x2Add = -1.2;
@@ -584,7 +584,7 @@ public class TensorCalculationsTest {
 	private Tensor<Double> prepareValues(double factor) {
 		ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
 				.of(XCoordinate.class, YCoordinate.class);
-		Builder<Double> builder = ImmutableTensor.builder(dimensions);
+		Builder<Double> builder = Tensorics.builder(dimensions);
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				builder.at(Position.of(coordinatesFor(i, j))).put(valueFor(i, j, factor));
@@ -596,7 +596,7 @@ public class TensorCalculationsTest {
 	private Tensor<Boolean> prepareOnlyEvenValuesTrueFlag() {
 		ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
 				.of(XCoordinate.class, YCoordinate.class);
-		Builder<Boolean> builder = ImmutableTensor.builder(dimensions);
+		Builder<Boolean> builder = Tensorics.builder(dimensions);
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				builder.at(Position.of(coordinatesFor(i, j))).put(flagFor(i, j));
@@ -643,7 +643,7 @@ public class TensorCalculationsTest {
 	private <V> Tensor<V> createTensor(CoordinateRange range, ValueFactory<V> factory) {
 		ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet.of(XCoordinate.class,
 				YCoordinate.class, ZCoordinate.class);
-		Builder<V> builder = ImmutableTensor.builder(dimensions);
+		Builder<V> builder = Tensorics.builder(dimensions);
 		for (XCoordinate x : range.getxCoordinates()) {
 			for (YCoordinate y : range.getyCoordinates()) {
 				for (ZCoordinate z : range.getzCoordinates()) {

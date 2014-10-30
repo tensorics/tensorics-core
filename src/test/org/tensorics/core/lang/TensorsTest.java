@@ -56,7 +56,7 @@ public class TensorsTest {
         Set<Tensor<Double>> toMerge = new HashSet<>();
         toMerge.add(tensor1);
         toMerge.add(tensor2);
-        Tensor<Double> merged = Tensorics.merge(toMerge);
+        Tensor<Double> merged = TensorStructurals.merge(toMerge);
         Shape shapeOfMerged = merged.shape();
         assertEquals(3, shapeOfMerged.dimensionality());
     }
@@ -74,7 +74,7 @@ public class TensorsTest {
         Set<Tensor<Double>> toMerge = new HashSet<>();
         toMerge.add(tensor1);
         toMerge.add(tensor2);
-        Tensorics.merge(toMerge);
+        TensorStructurals.merge(toMerge);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -87,7 +87,7 @@ public class TensorsTest {
         assertEquals(2, tensor1.shape().dimensionSet().size());
         assertEquals(2, tensor2.shape().dimensionSet().size());
 
-        Tensorics.merge(toMerge);
+        TensorStructurals.merge(toMerge);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -96,7 +96,7 @@ public class TensorsTest {
         Set<Tensor<Double>> toMerge = new HashSet<>();
         toMerge.add(tensor1);
         assertEquals(2, tensor1.shape().dimensionSet().size());
-        Tensorics.merge(toMerge);
+        TensorStructurals.merge(toMerge);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class TensorsTest {
         Set<TensorBackedTwoCoordinates> toMerge = new HashSet<>();
         toMerge.add(new TensorBackedTwoCoordinates(tensor1));
         toMerge.add(new TensorBackedTwoCoordinates(tensor2));
-        TensorBackedThreeCoordinates merged = Tensorics.mergeTo(toMerge, TensorBackedThreeCoordinates.class);
+        TensorBackedThreeCoordinates merged = TensorStructurals.mergeTo(toMerge, TensorBackedThreeCoordinates.class);
         Shape shapeOfMerged = merged.tensor().shape();
         assertEquals(3, shapeOfMerged.dimensionality());
     }

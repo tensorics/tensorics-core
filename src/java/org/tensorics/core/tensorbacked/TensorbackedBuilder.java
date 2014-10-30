@@ -9,6 +9,7 @@ import static org.tensorics.core.tensorbacked.TensorbackedInternals.dimensionsOf
 
 import java.util.Set;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.OngoingPut;
 import org.tensorics.core.tensor.Position;
@@ -37,7 +38,7 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
      */
     TensorbackedBuilder(Class<TB> tensorbackedClass) {
         this.tensorbackedClass = tensorbackedClass;
-        this.tensorBuilder = ImmutableTensor.builder(dimensionsOf(tensorbackedClass));
+        this.tensorBuilder = Tensorics.builder(dimensionsOf(tensorbackedClass));
     }
 
     @SuppressWarnings("PMD.ShortMethodName")

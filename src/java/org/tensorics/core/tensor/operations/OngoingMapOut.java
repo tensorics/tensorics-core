@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -35,7 +36,7 @@ public final class OngoingMapOut<V> {
     }
 
     public <C1> Tensor<Map<C1, V>> inDirectionOf(Class<? extends C1> dimension) {
-        Builder<Map<C1, V>> tensorBuilder = ImmutableTensor.builder(OngoingMapOut.dimensionsExcept(tensor.shape()
+        Builder<Map<C1, V>> tensorBuilder = Tensorics.builder(OngoingMapOut.dimensionsExcept(tensor.shape()
                 .dimensionSet(), dimension));
         Multimap<Set<?>, Tensor.Entry<V>> fullEntries = groupBy(tensor.entrySet(), dimension);
         for (Set<?> key : fullEntries.keySet()) {

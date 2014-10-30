@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.tensorics.core.lang.Tensorics;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -38,7 +40,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
     private final Context context; // NOSONAR
 
     /**
-     * Private constructor to be called from builder
+     * Package-private constructor to be called from builder
      * 
      * @param builder to be used when {@link ImmutableTensor} is created.
      */
@@ -69,7 +71,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
      * @param <T> the type of values of the tensor
      */
     public static final <T> Builder<T> builder(Class<?>... dimensions) {
-        return builder(ImmutableSet.copyOf(dimensions));
+        return Tensorics.builder(ImmutableSet.copyOf(dimensions));
     }
 
     /**
@@ -81,7 +83,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
      * @return a new immutable tensor
      */
     public static final <T> Tensor<T> fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map) {
-        Builder<T> builder = builder(dimensions);
+        Builder<T> builder = Tensorics.builder(dimensions);
         for (Map.Entry<Position, T> entry : map.entrySet()) {
             builder.at(entry.getKey()).put(entry.getValue());
         }
@@ -96,7 +98,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
      * @param <T> type of values in Tensor.
      */
     public static final <T> Tensor<T> zeroDimensionalOf(T value) {
-        Builder<T> builder = builder(Collections.<Class<?>> emptySet());
+        Builder<T> builder = Tensorics.builder(Collections.<Class<?>> emptySet());
         builder.at(Position.empty()).put(value);
         return builder.build();
     }
@@ -108,10 +110,23 @@ public class ImmutableTensor<T> implements Tensor<T> {
      * @return new immutable Tensor
      */
     public static final <T> Tensor<T> copyOf(Tensor<T> tensor) {
-        Builder<T> builder = builder(tensor.shape().dimensionSet());
+        Builder<T> builder = Tensorics.builder(tensor.shape().dimensionSet());
         builder.putAll(tensor.entrySet());
         builder.setTensorContext(tensor.context());
         return builder.build();
+    }
+
+    /**
+     * Returns a builder for an {@link ImmutableTensor} which is initiliased with the given {@link ImmutableTensor}.
+     * 
+     * @param tensor a Tensor with which the {@link Builder} is initialized
+     * @return a {@link Builder} for an {@link ImmutableTensor}
+     * @param <T> type of values in Tensor.
+     */
+    public static <T> Builder<T> builderFrom(ImmutableTensor<T> tensor) {
+        Builder<T> builder = Tensorics.builder(tensor.shape().dimensionSet());
+        builder.putAll(tensor.entrySet());
+        return builder;
     }
 
     @Override

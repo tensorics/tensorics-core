@@ -205,7 +205,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
     }
 
     private Tensor<Double> twoPlaneContravariant(double factor, Coord... coordinates) {
-        Builder<Double> builder1 = ImmutableTensor.builder(Coord.class, Plane.class);
+        Builder<Double> builder1 = Tensorics.builder(Coord.class, Plane.class);
         for (int i = 0; i < coordinates.length; i++) {
             for (Plane plane : Plane.values()) {
                 Coord coordinate = coordinates[i];
@@ -216,7 +216,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
     }
 
     private Tensor<Double> contravariant(double factor, Coord... coordinates) {
-        Builder<Double> builder1 = ImmutableTensor.builder(Coord.class);
+        Builder<Double> builder1 = Tensorics.builder(Coord.class);
         for (int i = 0; i < coordinates.length; i++) {
             Coord coordinate = coordinates[i];
             builder1.at(coordinate).put((coordinate.ordinal() + 1) * factor);
@@ -226,7 +226,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
 
     private Tensor<Double> covariant(double factor, Coord... coordinates) {
         Instantiator<Coord, CoCoord> intantiator = Covariants.instantiatorFor(CoCoord.class);
-        Builder<Double> builder1 = ImmutableTensor.builder(CoCoord.class);
+        Builder<Double> builder1 = Tensorics.builder(CoCoord.class);
         for (int i = 0; i < coordinates.length; i++) {
             Coord coordinate = coordinates[i];
             builder1.at(intantiator.create(coordinate)).put((coordinate.ordinal() + 1) * factor);
@@ -236,7 +236,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
 
     private Tensor<Double> coAndContravariant(double coFactor, double contraFactor, Coord... coordinates) {
         Instantiator<Coord, CoCoord> intantiator = Covariants.instantiatorFor(CoCoord.class);
-        Builder<Double> builder1 = ImmutableTensor.builder(Coord.class, CoCoord.class);
+        Builder<Double> builder1 = Tensorics.builder(Coord.class, CoCoord.class);
         for (Coord contra : coordinates) {
             for (Coord co : coordinates) {
                 builder1.at(contra, intantiator.create(co)).put(
