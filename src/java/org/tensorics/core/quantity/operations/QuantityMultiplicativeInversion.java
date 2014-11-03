@@ -4,6 +4,7 @@
 
 package org.tensorics.core.quantity.operations;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantificationStrategy;
@@ -28,7 +29,7 @@ public class QuantityMultiplicativeInversion<S> extends QuantityUnaryOperation<S
         QuantificationStrategy<S> quant = environment().quantification();
         Unit newUnit = quant.divide(quant.one(), scalar.unit());
         /* XXX is the error propagated correctly here? */
-        return ImmutableQuantifiedValue.of(newValue, newUnit).withError(scalar.error()).withValidity(scalar.validity());
+        return Tensorics.quantityOf(newValue, newUnit).withError(scalar.error()).withValidity(scalar.validity());
     }
 
 }

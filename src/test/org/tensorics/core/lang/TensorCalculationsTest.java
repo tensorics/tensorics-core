@@ -419,7 +419,7 @@ public class TensorCalculationsTest {
 
 					@Override
 					public QuantifiedValue<Double> create(int x, int y, int z) {
-						return ImmutableQuantifiedValue.of(valueForBig(x, y, z, 2.0), unit).withError(0.0);
+						return Tensorics.quantityOf(valueForBig(x, y, z, 2.0), unit).withError(0.0);
 					}
 				});
 		printProfileResult(results);

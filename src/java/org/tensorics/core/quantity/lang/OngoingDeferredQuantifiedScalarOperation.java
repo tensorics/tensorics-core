@@ -5,6 +5,7 @@
 package org.tensorics.core.quantity.lang;
 
 import org.tensorics.core.expressions.BinaryOperationExpression;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
@@ -33,19 +34,19 @@ public class OngoingDeferredQuantifiedScalarOperation<S> {
     }
 
     public Expression<QuantifiedValue<S>> plus(S rightValue, Unit rightUnit) {
-        return plus(ImmutableQuantifiedValue.of(rightValue, rightUnit));
+        return plus(Tensorics.quantityOf(rightValue, rightUnit));
     }
 
     public Expression<QuantifiedValue<S>> minus(S rightValue, Unit rightUnit) {
-        return minus(ImmutableQuantifiedValue.of(rightValue, rightUnit));
+        return minus(Tensorics.quantityOf(rightValue, rightUnit));
     }
 
     public Expression<QuantifiedValue<S>> plus(S rightValue, javax.measure.unit.Unit<?> rightUnit) {
-        return plus(ImmutableQuantifiedValue.of(rightValue, JScienceUnit.of(rightUnit)));
+        return plus(Tensorics.quantityOf(rightValue, JScienceUnit.of(rightUnit)));
     }
 
     public Expression<QuantifiedValue<S>> minus(S rightValue, javax.measure.unit.Unit<?> rightUnit) {
-        return minus(ImmutableQuantifiedValue.of(rightValue, JScienceUnit.of(rightUnit)));
+        return minus(Tensorics.quantityOf(rightValue, JScienceUnit.of(rightUnit)));
     }
 
     /*
@@ -69,11 +70,11 @@ public class OngoingDeferredQuantifiedScalarOperation<S> {
     }
 
     public Expression<QuantifiedValue<S>> times(S rightValue, javax.measure.unit.Unit<?> unit) {
-        return times(ImmutableQuantifiedValue.of(rightValue, JScienceUnit.of(unit)));
+        return times(Tensorics.quantityOf(rightValue, JScienceUnit.of(unit)));
     }
 
     public Expression<QuantifiedValue<S>> dividedBy(S rightValue, javax.measure.unit.Unit<?> unit) {
-        return dividedBy(ImmutableQuantifiedValue.of(rightValue, JScienceUnit.of(unit)));
+        return dividedBy(Tensorics.quantityOf(rightValue, JScienceUnit.of(unit)));
     }
 
     public Expression<QuantifiedValue<S>> times(QuantifiedValue<S> right) {

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.fields.doubles.DoubleCheating;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.options.JScienceQuantificationStrategy;
 import org.tensorics.core.quantity.options.OperandPair;
 import org.tensorics.core.quantity.options.QuantificationStrategy;
@@ -29,8 +30,8 @@ public class DoubleQuantificationStrategyTest {
 
     @Test
     public void testSameUnits() {
-        QuantifiedValue<Double> scalar1 = ImmutableQuantifiedValue.of(12.5, JScienceUnit.of(MILLI(AMPERE)));
-        QuantifiedValue<Double> scalar2 = ImmutableQuantifiedValue.of(7.5, JScienceUnit.of(MILLI(AMPERE)));
+        QuantifiedValue<Double> scalar1 = Tensorics.quantityOf(12.5, JScienceUnit.of(MILLI(AMPERE)));
+        QuantifiedValue<Double> scalar2 = Tensorics.quantityOf(7.5, JScienceUnit.of(MILLI(AMPERE)));
         OperandPair<Double, Unit> pair = strategy.asSameUnit(scalar1, scalar2);
         assertEquals(JScienceUnit.of(MILLI(AMPERE)), pair.unit());
         assertEquals(12.5, pair.left().value(), 0.00001);
@@ -39,8 +40,8 @@ public class DoubleQuantificationStrategyTest {
 
     @Test
     public void testDifferentUnits() throws Exception {
-        QuantifiedValue<Double> scalar1 = ImmutableQuantifiedValue.of(12.5, JScienceUnit.of(MILLI(AMPERE)));
-        QuantifiedValue<Double> scalar2 = ImmutableQuantifiedValue.of(7.5, JScienceUnit.of(MICRO(AMPERE)));
+        QuantifiedValue<Double> scalar1 = Tensorics.quantityOf(12.5, JScienceUnit.of(MILLI(AMPERE)));
+        QuantifiedValue<Double> scalar2 = Tensorics.quantityOf(7.5, JScienceUnit.of(MICRO(AMPERE)));
         OperandPair<Double, Unit> pair = strategy.asSameUnit(scalar1, scalar2);
         assertEquals(JScienceUnit.of(AMPERE), pair.unit());
         assertEquals(0.0125, pair.left().value(), 0.000000001);

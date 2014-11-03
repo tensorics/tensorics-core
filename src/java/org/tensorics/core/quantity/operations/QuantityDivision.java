@@ -4,6 +4,7 @@
 
 package org.tensorics.core.quantity.operations;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
@@ -25,7 +26,7 @@ public class QuantityDivision<S> extends QuantityBinaryOperation<S> {
     public QuantifiedValue<S> perform(QuantifiedValue<S> left, QuantifiedValue<S> right) {
         S value = operation().perform(left.value(), right.value());
         Unit unit = environment().quantification().divide(left.unit(), right.unit());
-        return ImmutableQuantifiedValue.of(value, unit).withValidity(validityFor(left, right))
+        return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right))
                 .withError(productError(left, right));
     }
 

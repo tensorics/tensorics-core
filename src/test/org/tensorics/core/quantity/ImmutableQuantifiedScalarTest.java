@@ -10,6 +10,7 @@ import javax.measure.unit.SI;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.units.JScienceUnit;
 
 public class ImmutableQuantifiedScalarTest {
@@ -18,7 +19,7 @@ public class ImmutableQuantifiedScalarTest {
 
     @Before
     public void setUp() {
-        scalar = ImmutableQuantifiedValue.of(10.5, JScienceUnit.of(SI.AMPERE));
+        scalar = Tensorics.quantityOf(10.5, JScienceUnit.of(SI.AMPERE));
     }
 
     @Test

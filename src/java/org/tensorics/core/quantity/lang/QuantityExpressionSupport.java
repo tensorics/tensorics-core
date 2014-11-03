@@ -5,6 +5,7 @@
 package org.tensorics.core.quantity.lang;
 
 import org.tensorics.core.expressions.UnaryOperationExpression;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
@@ -30,7 +31,7 @@ public class QuantityExpressionSupport<V> {
     }
 
     public Expression<QuantifiedValue<V>> valueOf(V value, Unit unit) {
-        return ResolvedExpression.of((QuantifiedValue<V>) ImmutableQuantifiedValue.of(value, unit));
+        return ResolvedExpression.of((QuantifiedValue<V>) Tensorics.quantityOf(value, unit));
     }
 
     public Expression<QuantifiedValue<V>> valueOf(V value, javax.measure.unit.Unit<?> unit) {

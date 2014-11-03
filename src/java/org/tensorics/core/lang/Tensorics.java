@@ -8,12 +8,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.quantity.ImmutableQuantifiedValue;
+import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.units.JScienceUnit;
+import org.tensorics.core.units.Unit;
 
 /**
  * Contains utility methods for tensors
@@ -97,4 +101,24 @@ public final class Tensorics {
     public static <T> Tensor<T> zeroDimensionalOf(T value) {
         return ImmutableTensor.zeroDimensionalOf(value);
     }
+
+    /**
+     * @see ImmutableQuantifiedValue#of(Object, Unit)
+     */
+    public static <V> ImmutableQuantifiedValue<V> quantityOf(V value, Unit unit) {
+        return ImmutableQuantifiedValue.of(value, unit);
+    }
+
+    /**
+     * Convenience method to create a quantity directly from a jscience unit.
+     * 
+     * @param value the of the quantity
+     * @param unit the unit of the quantity
+     * @return a new instance of the quantity
+     * @see Tensorics#quantityOf(Object, Unit)
+     */
+    public static <V> ImmutableQuantifiedValue<V> quantityOf(V value, javax.measure.unit.Unit<?> unit) {
+        return quantityOf(value, JScienceUnit.of(unit));
+    }
+
 }
