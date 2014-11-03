@@ -4,6 +4,7 @@
 
 package org.tensorics.core.quantity.lang;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
@@ -26,7 +27,7 @@ public class QuantitySupport<V> {
     }
 
     public QuantifiedValue<V> valueOf(V value, Unit unit) {
-        return ImmutableQuantifiedValue.of(value, unit);
+        return Tensorics.quantityOf(value, unit);
     }
 
     public QuantifiedValue<V> valueOf(V value, javax.measure.unit.Unit<?> unit) {

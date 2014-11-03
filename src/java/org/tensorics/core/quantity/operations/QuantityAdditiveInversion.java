@@ -4,6 +4,7 @@
 
 package org.tensorics.core.quantity.operations;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
@@ -24,7 +25,7 @@ public class QuantityAdditiveInversion<S> extends QuantityUnaryOperation<S> {
     @Override
     public QuantifiedValue<S> perform(QuantifiedValue<S> scalar) {
         S newValue = environment().field().additiveInversion().perform(scalar.value());
-        return ImmutableQuantifiedValue.of(newValue, scalar.unit()).withError(scalar.error())
+        return Tensorics.quantityOf(newValue, scalar.unit()).withError(scalar.error())
                 .withValidity(scalar.validity());
     }
 

@@ -5,6 +5,7 @@
 package org.tensorics.core.quantity.operations;
 
 import org.tensorics.core.commons.options.Environment;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
@@ -46,7 +47,7 @@ public class QuantityOperationRepository<S> {
     }
 
     private QuantifiedValue<S> createDimensionless(QuantityEnvironment<S> newEnvironment, S value) {
-        return ImmutableQuantifiedValue.of(value, newEnvironment.quantification().one());
+        return Tensorics.quantityOf(value, newEnvironment.quantification().one());
     }
 
     public BinaryOperation<QuantifiedValue<S>> addition() {

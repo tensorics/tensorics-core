@@ -81,7 +81,15 @@ public final class Shape {
      * @return {@code true} if the other shape is covered, {@code false} otherwise.
      */
     public boolean covers(Shape other) {
-        return this.positionSet().containsAll(other.positionSet());
+        return this.positions.containsAll(other.positionSet());
+    }
+
+    public boolean contains(Position position) {
+        return this.positions.contains(position);
+    }
+
+    public boolean contains(Object... coordinates) {
+        return contains(Position.of(coordinates));
     }
 
     /**

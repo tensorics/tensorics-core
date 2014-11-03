@@ -4,6 +4,7 @@
 
 package org.tensorics.core.quantity.operations;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
@@ -25,7 +26,7 @@ public class QuantityMultiplication<S> extends QuantityBinaryOperation<S> {
         S value = operation().perform(left.value(), right.value());
         org.tensorics.core.units.Unit unit = environment().quantification().multiply(left.unit(),
                 right.unit());
-        return ImmutableQuantifiedValue.of(value, unit).withValidity(validityFor(left, right))
+        return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right))
                 .withError(productError(left, right));
     }
 

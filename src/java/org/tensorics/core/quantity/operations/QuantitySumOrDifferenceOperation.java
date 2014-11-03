@@ -4,6 +4,7 @@
 
 package org.tensorics.core.quantity.operations;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
@@ -35,7 +36,7 @@ public class QuantitySumOrDifferenceOperation<S> extends QuantityBinaryOperation
         S value = operation().perform(pair.left().value(), pair.right().value());
         boolean validity = validityFor(left, right);
         Unit unit = pair.unit();
-        return ImmutableQuantifiedValue.of(value, unit).withError(error).withValidity(validity);
+        return Tensorics.quantityOf(value, unit).withError(error).withValidity(validity);
     }
 
 }
