@@ -84,10 +84,23 @@ public final class Shape {
         return this.positions.containsAll(other.positionSet());
     }
 
+    /**
+     * Returns {@code true} if the shape contains the given position, {@code false} otherwise.
+     * 
+     * @param position the position to be checked
+     * @return {@code true} if the position is contained in the shape, {@code false} otherwise.
+     */
     public boolean contains(Position position) {
         return this.positions.contains(position);
     }
 
+    /**
+     * Convenience method for {@link #contains(Position)}, with the position constructed from the given coordinates.
+     * 
+     * @param coordinates the coordinates which represent the position to be checked
+     * @return {@code true} if the position represented by the given coordinates is contained in the shape,
+     *         {@code false} otherwise.
+     */
     public boolean contains(Object... coordinates) {
         return contains(Position.of(coordinates));
     }
