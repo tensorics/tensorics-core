@@ -645,7 +645,7 @@ public class TensorCalculationsTest {
 		for (XCoordinate x : range.getxCoordinates()) {
 			for (YCoordinate y : range.getyCoordinates()) {
 				for (ZCoordinate z : range.getzCoordinates()) {
-					builder.putValueAt(factory.create(x.getValue(), y.getValue(), z.getValue()), Position.of(x, y, z));
+					builder.putAt(factory.create(x.getValue(), y.getValue(), z.getValue()), Position.of(x, y, z));
 				}
 			}
 		}
