@@ -26,7 +26,7 @@ public final class OngoingPut<T> {
      * @param entryValue as value to set
      */
     public void put(T entryValue) {
-        this.tensorBuilder.putValueAt(entryValue, this.position);
+        this.tensorBuilder.putAt(entryValue, this.position);
     }
 
 }

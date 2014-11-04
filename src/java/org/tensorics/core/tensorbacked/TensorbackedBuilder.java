@@ -60,6 +60,14 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
         tensorBuilder.put(entry);
     }
 
+    public final void putAt(V value, Position position) {
+        tensorBuilder.putAt(value, position);
+    }
+
+    public final void putAt(V value, Object... coordinates) {
+        tensorBuilder.putAt(value, coordinates);
+    }
+
     public final void putAll(Iterable<Entry<V>> entries) {
         tensorBuilder.putAll(entries);
     }

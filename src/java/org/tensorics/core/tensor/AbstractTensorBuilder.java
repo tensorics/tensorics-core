@@ -51,7 +51,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
     }
 
     @Override
-	public final void putValueAt(E value, Position position) {
+	public final void putAt(E value, Position position) {
         Preconditions.checkNotNull(value, "value must not be null!");
         Preconditions.checkNotNull(position, "position must not be null");
         Positions.assertConsistentDimensions(position, getDimensions());
@@ -63,8 +63,8 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
     protected abstract void putItAt(E value, Position position);
 
     @Override
-	public final void putValueAt(E value, Object... coordinates) {
-        this.putValueAt(value, Position.of(coordinates));
+	public final void putAt(E value, Object... coordinates) {
+        this.putAt(value, Position.of(coordinates));
     }
 
     @Override
@@ -99,7 +99,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
         checkNotNull(tensor, "The tensor must not be null!");
         checkNotNull(position, "The position must not be null!");
         for (Tensor.Entry<E> entry : tensor.entrySet()) {
-            putValueAt(entry.getValue(), Positions.union(position, entry.getPosition()));
+            putAt(entry.getValue(), Positions.union(position, entry.getPosition()));
         }
     }
 
@@ -112,7 +112,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
     @Override
 	public final void put(Tensor.Entry<E> entry) {
         checkNotNull(entry, "Entry to put must not be null!");
-        putValueAt(entry.getValue(), entry.getPosition());
+        putAt(entry.getValue(), entry.getPosition());
     }
 
     @Override

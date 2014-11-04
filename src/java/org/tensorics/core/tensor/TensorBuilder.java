@@ -3,9 +3,9 @@ package org.tensorics.core.tensor;
 
 public interface TensorBuilder<E> {
 
-	public abstract void putValueAt(E value, Position position);
+	public abstract void putAt(E value, Position position);
 
-	public abstract void putValueAt(E value, Object... coordinates);
+	public abstract void putAt(E value, Object... coordinates);
 
 	public abstract void setTensorContext(Context context);
 

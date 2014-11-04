@@ -67,8 +67,8 @@ public class BooleanStepFunctionExample {
         stepFunctionBuilder.at(ORIGIN, AMPLIFIER).put(false);
         stepFunctionBuilder.put(new ImmutableEntry<Boolean>(Position.of(PIXEL1, ORIGIN), false));
         stepFunctionBuilder.put(new ImmutableEntry<Boolean>(Position.of(PIXEL1, new Date(1L)), false));
-        stepFunctionBuilder.putValueAt(true, Position.of(new Date(2L), PIXEL1));
-        stepFunctionBuilder.putValueAt(true, Position.of(new Date(3L), PIXEL1));
+        stepFunctionBuilder.putAt(true, Position.of(new Date(2L), PIXEL1));
+        stepFunctionBuilder.putAt(true, Position.of(new Date(3L), PIXEL1));
         return stepFunctionBuilder.build();
     }
 
