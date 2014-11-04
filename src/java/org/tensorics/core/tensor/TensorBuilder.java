@@ -1,6 +1,5 @@
 package org.tensorics.core.tensor;
 
-import org.tensorics.core.tensor.Tensor.Entry;
 
 public interface TensorBuilder<E> {
 

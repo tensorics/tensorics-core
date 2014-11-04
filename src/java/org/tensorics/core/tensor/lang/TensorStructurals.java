@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.tensorics.core.lang.Tensorics;
-import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;

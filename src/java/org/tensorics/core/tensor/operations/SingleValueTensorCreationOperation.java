@@ -2,7 +2,6 @@ package org.tensorics.core.tensor.operations;
 
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.CreationOperation;
-import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;

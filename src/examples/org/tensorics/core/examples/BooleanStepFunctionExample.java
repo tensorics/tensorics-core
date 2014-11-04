@@ -6,7 +6,6 @@ package org.tensorics.core.examples;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 
@@ -20,7 +19,6 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
-import org.tensorics.core.tensor.operations.TensorInternals;
 
 public class BooleanStepFunctionExample {
 

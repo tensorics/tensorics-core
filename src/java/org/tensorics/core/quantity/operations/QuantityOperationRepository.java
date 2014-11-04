@@ -8,7 +8,6 @@ import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.math.operations.UnaryOperation;
-import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
 

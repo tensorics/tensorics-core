@@ -8,7 +8,6 @@ import org.tensorics.core.lang.DoubleScript;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
-import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvedExpression;

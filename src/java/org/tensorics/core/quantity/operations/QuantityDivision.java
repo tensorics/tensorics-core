@@ -5,7 +5,6 @@
 package org.tensorics.core.quantity.operations;
 
 import org.tensorics.core.lang.Tensorics;
-import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
 import org.tensorics.core.units.Unit;

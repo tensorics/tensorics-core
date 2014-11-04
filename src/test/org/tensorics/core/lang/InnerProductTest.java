@@ -13,7 +13,6 @@ import static org.tensorics.core.lang.InnerProductTest.Coord.C;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.variance.Covariant;

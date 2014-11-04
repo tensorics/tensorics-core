@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
-import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;

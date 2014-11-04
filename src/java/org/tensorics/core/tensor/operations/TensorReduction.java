@@ -10,7 +10,6 @@ import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.reduction.ReductionStrategy;
 import org.tensorics.core.tensor.Context;
-import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
 

@@ -21,7 +21,6 @@ import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.units.JScienceUnit;
-import org.tensorics.core.units.Unit;
 
 import com.google.common.collect.ImmutableSet;
 
