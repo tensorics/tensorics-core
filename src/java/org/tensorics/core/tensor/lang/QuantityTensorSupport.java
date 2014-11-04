@@ -9,7 +9,6 @@ import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
-import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensor.Entry;

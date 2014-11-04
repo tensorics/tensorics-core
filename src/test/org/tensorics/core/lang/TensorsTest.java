@@ -19,8 +19,6 @@ import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
-import org.tensorics.core.tensorbacked.Tensorbacked;
-import org.tensorics.core.tensorbacked.annotation.Dimensions;
 
 import com.google.common.collect.ImmutableSet;
 

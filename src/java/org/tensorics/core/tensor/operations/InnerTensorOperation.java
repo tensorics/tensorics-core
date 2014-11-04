@@ -19,7 +19,6 @@ import org.tensorics.core.iterable.operations.IterableOperations;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.Operations;
 import org.tensorics.core.math.operations.BinaryOperation;
-import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.PositionPair;
 import org.tensorics.core.tensor.Positions;

@@ -11,7 +11,6 @@ import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.ExplicitField;
 import org.tensorics.core.math.operations.BinaryOperation;
-import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tree.domain.Expression;
