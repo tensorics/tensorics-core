@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Collections;
 
 import org.junit.Test;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor.Entry;
 import org.tensorics.core.tensorbacked.orbit.SinglebeamOrbit;
@@ -26,12 +27,12 @@ public class TensorbackedBuilderTest {
 
     @Test
     public void emptyTensorbackedHasCorrectDimensionality() {
-        assertThat(Tensorbackeds.dimensionalityOf(emptyOrbit()), equalTo(2));
+        assertThat(Tensorics.dimensionalityOf(emptyOrbit()), equalTo(2));
     }
 
     @Test
     public void emptyTensorHasSizeZero() {
-        assertThat(Tensorbackeds.sizeOf(emptyOrbit()), equalTo(0));
+        assertThat(Tensorics.sizeOf(emptyOrbit()), equalTo(0));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -44,7 +45,7 @@ public class TensorbackedBuilderTest {
         TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         builder.at(BPM_A, Plane.H).put(1.0);
         SinglebeamOrbit orbit = builder.build();
-        assertThat(Tensorbackeds.sizeOf(orbit), equalTo(1));
+        assertThat(Tensorics.sizeOf(orbit), equalTo(1));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -54,7 +55,7 @@ public class TensorbackedBuilderTest {
 
     @Test
     public void putOneAtPositionHasCorrectSize() {
-        assertThat(Tensorbackeds.sizeOf(oneValuePosAH()), equalTo(1));
+        assertThat(Tensorics.sizeOf(oneValuePosAH()), equalTo(1));
     }
 
     @Test
@@ -93,7 +94,7 @@ public class TensorbackedBuilderTest {
     public void putEmptyCollectionResultsInEmptyTensor() {
         TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         builder.putAll(Collections.<Entry<Double>> emptySet());
-        assertThat(Tensorbackeds.sizeOf(builder.build()), equalTo(0));
+        assertThat(Tensorics.sizeOf(builder.build()), equalTo(0));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class TensorbackedBuilderTest {
 
     @Test
     public void copyByEntryEqualsHasCorrectSize() {
-        assertThat(Tensorbackeds.sizeOf(oneValuePosCopied()), equalTo(1));
+        assertThat(Tensorics.sizeOf(oneValuePosCopied()), equalTo(1));
     }
 
     private SinglebeamOrbit oneValuePosCopied() {
@@ -126,7 +127,7 @@ public class TensorbackedBuilderTest {
     }
 
     private TensorbackedBuilder<Double, SinglebeamOrbit> newBuilder() {
-        return Tensorbackeds.builderFor(SinglebeamOrbit.class);
+        return Tensorics.builderFor(SinglebeamOrbit.class);
     }
 
     private SinglebeamOrbit emptyOrbit() {

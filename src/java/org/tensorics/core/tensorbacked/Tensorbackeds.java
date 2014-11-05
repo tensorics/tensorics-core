@@ -60,7 +60,7 @@ public final class Tensorbackeds {
      * @return a new empty instance of the tensorbacked object.
      */
     public static <V, TB extends Tensorbacked<V>> TB empty(Class<TB> tensorbackedClass) {
-        return builderFor(tensorbackedClass).build();
+        return Tensorbackeds.builderFor(tensorbackedClass).build();
     }
 
     /*

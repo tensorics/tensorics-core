@@ -48,7 +48,7 @@ public class BooleanStepFunctionExample {
         ImmutableTensor<Boolean> tensor = stepFunctionTensor;
         Tensor<Boolean> slicedTensor = TensorStructurals.from(tensor).reduce(Signal.class).bySlicingAt(AMPLIFIER);
         assertFalse(slicedTensor.get(ORIGIN));
-        assertEquals(Position.empty(), slicedTensor.context().getPosition());
+        assertEquals(Position.of(AMPLIFIER), slicedTensor.context().getPosition());
 
         Builder<Boolean> builder = Tensorics.builderFrom(tensor);
         builder.at(Position.of(new Date(5L), AMPLIFIER)).put(false);

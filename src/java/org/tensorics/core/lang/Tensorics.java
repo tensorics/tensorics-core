@@ -15,6 +15,8 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.TensorbackedBuilder;
+import org.tensorics.core.tensorbacked.Tensorbackeds;
 import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
@@ -120,4 +122,31 @@ public final class Tensorics {
         return quantityOf(value, JScienceUnit.of(unit));
     }
 
+    /**
+     * @see Tensorbackeds#builderFor(Class)
+     */
+    public static <V, TB extends Tensorbacked<V>> TensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#sizeOf(Tensorbacked)
+     */
+    public static <TB extends Tensorbacked<?>> int sizeOf(TB tensorbacked) {
+        return Tensorbackeds.sizeOf(tensorbacked);
+    }
+
+    /**
+     * @see Tensorbackeds#dimensionalityOf(Tensorbacked)
+     */
+    public static <TB extends Tensorbacked<?>> int dimensionalityOf(TB tensorbacked) {
+        return Tensorbackeds.dimensionalityOf(tensorbacked);
+    }
+
+    /**
+     * @see Tensorbackeds#empty(Class)
+     */
+    public static <V, TB extends Tensorbacked<V>> TB empty(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.empty(tensorbackedClass);
+    }
 }
