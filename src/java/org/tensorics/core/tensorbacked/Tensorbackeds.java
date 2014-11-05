@@ -52,4 +52,19 @@ public final class Tensorbackeds {
         return tensorbacked.tensor().shape().dimensionality();
     }
 
+    /**
+     * Creates a new empty instance of a tensorbacked class of the given type. This is simply a convenience method for
+     * calling {@link TensorbackedBuilder#build()} on an empty builder.
+     * 
+     * @param tensorbackedClass the class of the tensor backed object to create
+     * @return a new empty instance of the tensorbacked object.
+     */
+    public static <V, TB extends Tensorbacked<V>> TB empty(Class<TB> tensorbackedClass) {
+        return builderFor(tensorbackedClass).build();
+    }
+
+    /*
+     * TODO:<p> <ul> <li> singleton </ul>
+     */
+
 }
