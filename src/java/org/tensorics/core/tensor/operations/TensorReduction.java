@@ -17,39 +17,33 @@ import org.tensorics.core.tensor.Tensor;
  * The operation which describes the reduction of a tensor in one direction.
  * 
  * @author kfuchsbe
- * @param <C>
- *            the dimension (direction, type of coordinate) in which the tensor
- *            will be reduced
- * @param <E>
- *            the type of the elements of the tensor
+ * @param <C> the dimension (direction, type of coordinate) in which the tensor will be reduced
+ * @param <E> the type of the elements of the tensor
  */
 public class TensorReduction<C, E> implements UnaryOperation<Tensor<E>> {
 
-	private final Class<? extends C> direction;
-	private final ReductionStrategy<? super C, E> reductionStrategy;
+    private final Class<? extends C> direction;
+    private final ReductionStrategy<? super C, E> reductionStrategy;
 
-	public TensorReduction(Class<? extends C> direction,
-			ReductionStrategy<? super C, E> strategy) {
-		super();
-		this.direction = direction;
-		this.reductionStrategy = strategy;
-	}
+    public TensorReduction(Class<? extends C> direction, ReductionStrategy<? super C, E> strategy) {
+        super();
+        this.direction = direction;
+        this.reductionStrategy = strategy;
+    }
 
-	@Override
-	public Tensor<E> perform(Tensor<E> value) {
-		Tensor<Map<C, E>> mapped = TensorInternals.mapOut(value).inDirectionOf(
-				direction);
+    @Override
+    public Tensor<E> perform(Tensor<E> value) {
+        Tensor<Map<C, E>> mapped = TensorInternals.mapOut(value).inDirectionOf(direction);
 
-		Builder<E> builder = Tensorics.builder(mapped.shape().dimensionSet());
-		builder.setTensorContext(Context.of(reductionStrategy.context()
-				.coordinates()));
-		for (Tensor.Entry<Map<C, E>> entry : mapped.entrySet()) {
-			E reducedValue = reductionStrategy.reduce(entry.getValue());
-			if (reducedValue != null) {
-				builder.at(entry.getPosition()).put(reducedValue);
-			}
-		}
-		return builder.build();
-	}
+        Builder<E> builder = Tensorics.builder(mapped.shape().dimensionSet());
+        builder.setTensorContext(Context.of(reductionStrategy.context(value.context().getPosition()).coordinates()));
+        for (Tensor.Entry<Map<C, E>> entry : mapped.entrySet()) {
+            E reducedValue = reductionStrategy.reduce(entry.getValue());
+            if (reducedValue != null) {
+                builder.at(entry.getPosition()).put(reducedValue);
+            }
+        }
+        return builder.build();
+    }
 
 }

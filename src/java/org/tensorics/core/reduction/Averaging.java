@@ -9,27 +9,26 @@ import java.util.Map;
 import org.tensorics.core.iterable.lang.ScalarIterableSupport;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Positions;
 
 /**
  * @author kfuchsbe
- * @param <V>
- *            the type of the elements of the field.
+ * @param <V> the type of the elements of the field.
  */
-public class Averaging<V> extends ScalarIterableSupport<V> implements
-		ReductionStrategy<Object, V> {
+public class Averaging<V> extends ScalarIterableSupport<V> implements ReductionStrategy<Object, V> {
 
-	public Averaging(ExtendedField<V> field) {
-		super(field);
-	}
+    public Averaging(ExtendedField<V> field) {
+        super(field);
+    }
 
-	@Override
-	public V reduce(Map<?, V> inputValues) {
-		return avarageOf(inputValues.values());
-	}
+    @Override
+    public V reduce(Map<?, V> inputValues) {
+        return avarageOf(inputValues.values());
+    }
 
-	@Override
-	public Position context() {
-		return Position.empty();
-	}
+    @Override
+    public Position context(Position originalContext) {
+        return originalContext;
+    }
 
 }

@@ -2,7 +2,7 @@
  * Copyright (c) 2013 European Organisation for Nuclear Research (CERN), All Rights Reserved.
  */
 
-package org.tensorics.core.reduction; 
+package org.tensorics.core.reduction;
 
 import java.util.Map;
 
@@ -19,6 +19,6 @@ import org.tensorics.core.tensor.Position;
 public interface ReductionStrategy<C, T> {
 
     T reduce(Map<? extends C, T> inputValues);
-    
-    Position context();
+
+    Position context(Position originalContext);
 }

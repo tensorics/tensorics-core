@@ -109,15 +109,4 @@ public final class Shapes {
         checkNotNull(right, "right shape must not be null");
     }
 
-    /**
-     * Extracts the provided class of the coordinate from the provided shape.
-     * 
-     * @param shape
-     * @param ofClass a class of the coordinate to be extracted
-     * @return a set of the extracted coordinates from provided shape
-     */
-    public static <T> Set<T> coordinatesOfType(Shape shape, Class<T> ofClass) {
-        return Positions.coordinatesOfType(shape.positionSet(), ofClass);
-    }
-
 }
