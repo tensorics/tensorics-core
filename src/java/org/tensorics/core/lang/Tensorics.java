@@ -12,6 +12,8 @@ import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Positions;
+import org.tensorics.core.tensor.Shapes;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
@@ -21,7 +23,15 @@ import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
 /**
- * Contains utility methods for tensors
+ * The main entry point for constructing and structural manipulation of tensorics. If mathematical operations are
+ * required, then you should either inherit from {@link TensoricSupport} (or one of its convenience implementations) or
+ * use the {@link #using(ExtendedField)} method (only recommended for one-liners).
+ * <p>
+ * Additional utilities for supporting classes can be found in the corresponding utility classes. E.g.
+ * <ul>
+ * <li> {@link Positions}
+ * <li> {@link Shapes}
+ * </ul>
  * 
  * @author kfuchsbe, agorzaws
  */

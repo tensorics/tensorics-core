@@ -263,7 +263,7 @@ public class TensorCalculationsTest {
 	}
 
 	@Test
-	// @Ignore
+	@Ignore
 	public void profileDoubleTensorPreparation() {
 		int maxY = 1000;
 		int step = 100;

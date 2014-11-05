@@ -196,6 +196,16 @@ public final class Shape {
     }
 
     /**
+     * Extracts the provided class of the coordinate from the provided shape.
+     * 
+     * @param ofClass a class of the coordinate to be extracted
+     * @return a set of the extracted coordinates from provided shape
+     */
+    public <T> Set<T> coordinatesOfType(Class<T> ofClass) {
+        return Positions.coordinatesOfType(positions, ofClass);
+    }
+
+    /**
      * The builder for a tensor shape. It has to be instantiated with a set of dimensions and provides methods to add
      * positions to the shape. It is only allowed to add positions which provide exactly one coordinate per dimension as
      * given in the constructor of the builder. To create a shape finally, the {@link #build()} method has to be called.
