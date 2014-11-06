@@ -9,7 +9,6 @@ import java.util.Map;
 import org.tensorics.core.iterable.lang.ScalarIterableSupport;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.tensor.Position;
-import org.tensorics.core.tensor.Positions;
 
 /**
  * @author kfuchsbe
