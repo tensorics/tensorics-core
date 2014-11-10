@@ -8,8 +8,8 @@ import java.util.Collections;
 
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.commons.options.OptionRegistry;
-import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
@@ -50,7 +50,7 @@ public class ElementBinaryOperation<V> implements BinaryOperation<Tensor<V>> {
     }
 
     private Tensor<V> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape) {
-        Builder<V> tensorBuilder = Tensorics.builder(resultingShape.dimensionSet());
+        Builder<V> tensorBuilder = ImmutableTensor.builder(resultingShape.dimensionSet());
         for (Position position : resultingShape.positionSet()) {
             tensorBuilder.at(position).put(operation.perform(left.get(position), right.get(position)));
         }

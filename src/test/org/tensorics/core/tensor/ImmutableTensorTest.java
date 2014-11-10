@@ -18,14 +18,14 @@ public class ImmutableTensorTest {
 
     @Test
     public void testDoubleToDoubleTensor() {
-        Builder<Double> tensorBuilder = Tensorics.builder(Collections.singleton(Double.class));
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(Collections.singleton(Double.class));
         Tensor<Double> tensor = tensorBuilder.build();
         assertEquals(1, tensor.shape().dimensionality());
     }
 
     @Test
     public void testNumber() {
-        Builder<Double> tensorBuilder = Tensorics.builder(ImmutableSet.of(Double.class, Integer.class));
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
         Tensor<Double> tensor = tensorBuilder.build();
         assertEquals(2, tensor.shape().dimensionality());
     }

@@ -89,6 +89,18 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
 			return new ImmutableDoubleArrayBackedTensor(this);
 		}
 
+        @Override
+        public void putAt(Double value, Set<?> coordinates) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void putAllAt(Tensor<Double> tensor, Set<?> coordinates) {
+            // TODO Auto-generated method stub
+            
+        }
+
 	}
 
 }

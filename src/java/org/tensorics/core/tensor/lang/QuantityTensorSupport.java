@@ -5,10 +5,10 @@
 package org.tensorics.core.tensor.lang;
 
 import org.tensorics.core.iterable.lang.QuantityIterableSupport;
-import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
+import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensor.Entry;
@@ -36,7 +36,7 @@ public class QuantityTensorSupport<S> extends QuantityIterableSupport<S> {
     }
 
     public Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
-        Builder<S> builder = Tensorics.builder(tensor.shape().dimensionSet());
+        Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
             builder.at(one.getPosition()).put(one.getValue().value());
         }
@@ -44,7 +44,7 @@ public class QuantityTensorSupport<S> extends QuantityIterableSupport<S> {
     }
 
     public Tensor<Optional<S>> errorsOf(Tensor<QuantifiedValue<S>> tensor) {
-        Builder<Optional<S>> builder = Tensorics.builder(tensor.shape().dimensionSet());
+        Builder<Optional<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
             builder.at(one.getPosition()).put(one.getValue().error());
         }
@@ -52,7 +52,7 @@ public class QuantityTensorSupport<S> extends QuantityIterableSupport<S> {
     }
 
     public Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
-        Builder<Boolean> builder = Tensorics.builder(tensor.shape().dimensionSet());
+        Builder<Boolean> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
             builder.at(one.getPosition()).put(one.getValue().validity());
         }

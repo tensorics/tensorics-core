@@ -10,11 +10,11 @@ import java.util.Set;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
-import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Shapes;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
@@ -74,14 +74,14 @@ public final class Tensorics {
     /**
      * @see ImmutableTensor#builder(Set)
      */
-    public static <T> Builder<T> builder(Set<? extends Class<?>> dimensions) {
+    public static <T> TensorBuilder<T> builder(Set<? extends Class<?>> dimensions) {
         return ImmutableTensor.builder(dimensions);
     }
 
     /**
      * @see ImmutableTensor#builder(Class...)
      */
-    public static <T> Builder<T> builder(Class<?>... dimensions) {
+    public static <T> TensorBuilder<T> builder(Class<?>... dimensions) {
         return ImmutableTensor.builder(dimensions);
     }
 
@@ -100,9 +100,9 @@ public final class Tensorics {
     }
 
     /**
-     * @see ImmutableTensor#builderFrom(ImmutableTensor)
+     * @see ImmutableTensor#builderFrom(Tensor)
      */
-    public static <T> Builder<T> builderFrom(ImmutableTensor<T> tensor) {
+    public static <T> TensorBuilder<T> builderFrom(Tensor<T> tensor) {
         return ImmutableTensor.builderFrom(tensor);
     }
 
