@@ -11,8 +11,6 @@ import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
-import org.tensorics.core.tensor.Positions;
-import org.tensorics.core.tensor.Shapes;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.lang.TensorStructurals;
@@ -29,8 +27,8 @@ import org.tensorics.core.units.Unit;
  * <p>
  * Additional utilities for supporting classes can be found in the corresponding utility classes. E.g.
  * <ul>
- * <li> {@link Positions}
- * <li> {@link Shapes}
+ * <li> {@link org.tensorics.core.tensor.Positions}
+ * <li> {@link org.tensorics.core.tensor.Shapes}
  * </ul>
  * 
  * @author kfuchsbe, agorzaws
