@@ -14,10 +14,9 @@ import org.junit.Test;
 import org.tensorics.core.lang.TensoricDoubleSupport;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Context;
-import org.tensorics.core.tensor.ImmutableTensor;
-import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorBuilder;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -26,16 +25,16 @@ public class SprintExample extends TensoricDoubleSupport {
     private static final Team TEAM_1 = new Team(1);
     private static final Team TEAM_3 = new Team(3);
 
-    private ImmutableTensor<Double> velocity;
-    private ImmutableTensor<Double> focusFactor;
+    private Tensor<Double> velocity;
+    private Tensor<Double> focusFactor;
     private Tensor<Double> team1Velocity;
     private Tensor<Double> team3Velocity;
     private Tensor<Double> mergedTensor;
 
     @Before
     public void setUp() {
-        Builder<Double> velocityBuilder = builder(Team.class, NumberOfDay.class);
-        Builder<Double> focusFactorBuilder = Tensorics.builder(Team.class);
+        TensorBuilder<Double> velocityBuilder = builder(Team.class, NumberOfDay.class);
+        TensorBuilder<Double> focusFactorBuilder = Tensorics.builder(Team.class);
 
         Random random = new Random();
 
@@ -70,10 +69,10 @@ public class SprintExample extends TensoricDoubleSupport {
 
     @Test
     public void testMergeEqualsPutAll() {
-        Builder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
+        TensorBuilder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
         putAllTensorBuilder.putAllAt(team1Velocity, TEAM_1);
         putAllTensorBuilder.putAllAt(team3Velocity, TEAM_3);
-        ImmutableTensor<Double> putAllTensor = putAllTensorBuilder.build();
+        Tensor<Double> putAllTensor = putAllTensorBuilder.build();
 
         assertEquals(putAllTensor, mergedTensor);
     }

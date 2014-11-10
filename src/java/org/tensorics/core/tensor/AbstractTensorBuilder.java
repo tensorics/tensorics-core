@@ -51,24 +51,33 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
     }
 
     @Override
-	public final void putAt(E value, Position position) {
+    public final void putAt(E value, Position position) {
         Preconditions.checkNotNull(value, "value must not be null!");
         Preconditions.checkNotNull(position, "position must not be null");
         Positions.assertConsistentDimensions(position, getDimensions());
         this.callback.verify(value);
         this.putItAt(value, position);
     }
-    
-    
+
     protected abstract void putItAt(E value, Position position);
 
     @Override
-	public final void putAt(E value, Object... coordinates) {
+    public final void putAt(E value, Object... coordinates) {
         this.putAt(value, Position.of(coordinates));
     }
 
     @Override
-	public final void setTensorContext(Context context) {
+    public void putAt(E value, Set<?> coordinates) {
+        putAt(value, Position.of(coordinates));
+    }
+
+    @Override
+    public void putAllAt(Tensor<E> tensor, Set<?> coordinates) {
+        putAllAt(tensor, Position.of(coordinates));
+    }
+
+    @Override
+    public final void setTensorContext(Context context) {
         checkIfContextValid(context);
         this.context = context;
     }
@@ -95,7 +104,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
     }
 
     @Override
-	public final void putAllAt(Tensor<E> tensor, Position position) {
+    public final void putAllAt(Tensor<E> tensor, Position position) {
         checkNotNull(tensor, "The tensor must not be null!");
         checkNotNull(position, "The position must not be null!");
         for (Tensor.Entry<E> entry : tensor.entrySet()) {
@@ -110,13 +119,13 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
     }
 
     @Override
-	public final void put(Tensor.Entry<E> entry) {
+    public final void put(Tensor.Entry<E> entry) {
         checkNotNull(entry, "Entry to put must not be null!");
         putAt(entry.getValue(), entry.getPosition());
     }
 
     @Override
-	public final void putAll(Iterable<Tensor.Entry<E>> newEntries) {
+    public final void putAll(Iterable<Tensor.Entry<E>> newEntries) {
         checkNotNull(newEntries, "Iterable of entries to put must not be null!");
         for (Tensor.Entry<E> entry : newEntries) {
             put(entry);

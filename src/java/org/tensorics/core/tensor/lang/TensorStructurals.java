@@ -7,7 +7,7 @@ package org.tensorics.core.tensor.lang;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
@@ -59,7 +59,7 @@ public final class TensorStructurals {
             throw new IllegalArgumentException("Cannot merge tensors with not specified context!");
         }
         outcomeDimensionSet.addAll(dimensionSet);
-        Builder<E> tensorBuilder = Tensorics.builder(outcomeDimensionSet);
+        Builder<E> tensorBuilder = ImmutableTensor.builder(outcomeDimensionSet);
     
         for (Tensor<E> oneTensor : tensors) {
             if (TensorStructurals.isValidInTermsOfDimensions(oneTensor, refDimensionSet, refContextPosition.dimensionSet())) {

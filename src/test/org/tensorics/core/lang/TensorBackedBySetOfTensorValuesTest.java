@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
@@ -79,7 +80,7 @@ public class TensorBackedBySetOfTensorValuesTest {
     private Tensor<Double> createTensor() {
         ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
                 .of(XCoordinate.class, YCoordinate.class);
-        Builder<Double> builder = Tensorics.builder(dimensions);
+        Builder<Double> builder = ImmutableTensor.builder(dimensions);
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 builder.at(Position.of(coordinatesFor(i, j))).put(valueFor(i, j));

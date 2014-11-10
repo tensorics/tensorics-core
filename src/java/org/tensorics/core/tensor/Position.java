@@ -37,6 +37,10 @@ public final class Position {
             throw new IllegalArgumentException("A position is contained in the collection of coordinates."
                     + "This is most-probably a programming mistake and therefore not allowed.");
         }
+        if (this.coordinates.containsKey(Position.class)) {
+            throw new IllegalArgumentException("A position is contained in the collection of coordinates."
+                    + "This is most-probably a programming mistake and therefore not allowed.");
+        }
     }
 
     @SuppressWarnings("PMD.ShortMethodName")

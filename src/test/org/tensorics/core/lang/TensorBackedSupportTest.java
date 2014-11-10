@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.QuantityTensorSupport;
@@ -183,7 +184,7 @@ public class TensorBackedSupportTest {
 	}
 
 	private Tensor<Double> prepareDoubleTensor(double factor) {
-		Builder<Double> builder = Tensorics.builder(getDimensions());
+		Builder<Double> builder = ImmutableTensor.builder(getDimensions());
 		for (int i = 0; i < 10; i++) {
 			builder.at(createCoordinates(i)).put(factor * i);
 		}
@@ -191,7 +192,7 @@ public class TensorBackedSupportTest {
 	}
 
 	private Tensor<QuantifiedValue<Double>> prepareTensorOfQuantifiedValues(double factor) {
-		Builder<QuantifiedValue<Double>> builder = Tensorics.builder(getDimensions());
+		Builder<QuantifiedValue<Double>> builder = ImmutableTensor.builder(getDimensions());
 		for (int i = 0; i < 10; i++) {
 			builder.at(createCoordinates(i))
 					.put(Tensorics.quantityOf(factor * i, JScienceUnit.of(MICRO(METER))));
@@ -200,7 +201,7 @@ public class TensorBackedSupportTest {
 	}
 
 	private Tensor<QuantifiedValue<Double>> prepareQuantifiedTensor(double factor, double error, boolean valid) {
-		Builder<QuantifiedValue<Double>> builder = Tensorics.builder(getDimensions());
+		Builder<QuantifiedValue<Double>> builder = ImmutableTensor.builder(getDimensions());
 		for (int i = 0; i < 10; i++) {
 
 			QuantifiedValue<Double> entryValue = Tensorics.quantityOf(factor * i, JScienceUnit.of(MICRO(METER)));

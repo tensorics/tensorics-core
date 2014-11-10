@@ -2,6 +2,7 @@ package org.tensorics.core.tensor.operations;
 
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.UnaryOperation;
+import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
@@ -26,7 +27,7 @@ public class ElementUnaryOperation<V> implements UnaryOperation<Tensor<V>> {
     @Override
     public Tensor<V> perform(Tensor<V> tensor) {
         Shape shape = tensor.shape();
-        Builder<V> builder = Tensorics.builder(shape.dimensionSet());
+        Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
         for (Position position : shape.positionSet()) {
             builder.at(position).put(elementOperation.perform(tensor.get(position)));
         }
