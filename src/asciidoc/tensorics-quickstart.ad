@@ -7,8 +7,8 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
 
-Tensorics is a java framework for data processing of numerical data. 
-The core object is a ++Tensor++ which represents a collection of values of arbitrary
+Tensorics is a java framework for data processing of multidimensional data. 
+The core object is a Tensor which represents a collection of values of arbitrary
 types, which are addressed by coordinates in an N-dimensional space. The framework
 provides several core features, which make it easy to work with big amounts of 
 numerical data and drastically simplify repetitive tasks:
@@ -29,19 +29,22 @@ possibilities for parallel processing and massive distribution of calculations.
 IMPORTANT: Both, the current implementation as well as this document, are work in progress. 
 The main purpose of the actual version is provide some functionality of every of the above 
 mentioned categories and proofing the concepts of their interplay. Still, already the available 
-subset of features should have useful applications in many contexts.
+subset of features should have useful applications in many contexts. Almost no effort put on 
+profiling and performance optimization. Therefore, it might well be that some operations are 
+quite inefficient and/or memory consuming for big objects. Such improvements are definitely planned 
+for later iterations. Any contributions are welcome.
  
 == Getting Started
 
 === Tensors
-The core object of tensorics is a ++Tensor++. 
+The core object of tensorics is a Tensor. 
 Therefore, lets start and create one. The simplest Tensor is a tensor of zero dimensions and 
-exactly one element, also called a ++Scalar++ in the future. This can be created in the simplest 
+exactly one element. This can be created in the simplest 
 case by
 
 [source,java]
 ----
-Scalar<String> name = ImmutableTensor.scalarOf("Bob");
+include::{examplesource}/TensorCreationExamples.java[tags=zerodimensionalString]
 ----
 
 More complicated tensors can be created using a builder:
@@ -76,6 +79,17 @@ a matrix by row/column indizes, you would be forced to have the same number of c
 might be preferrable for many applications, sometimes it is simply a too strict constraint for data in real live. 
 Using a two-dimensional tensor is more flexible in this case - and you can still perform all the mathematical 
 operations, as you will see later ;-)
+
+=== Working with Tensors
+
+== Structural Operations
+
+== Mathematical Operations
+
+== Fields
+
+
+=== Tensorbackeds
 
 == Tensor manipulations
 
