@@ -9,16 +9,20 @@ import java.util.Set;
 
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
+import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
 import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
+
+import com.google.common.base.Optional;
 
 /**
  * The main entry point for constructing and structural manipulation of tensorics. If mathematical operations are
@@ -156,5 +160,33 @@ public final class Tensorics {
      */
     public static <V, TB extends Tensorbacked<V>> TB empty(Class<TB> tensorbackedClass) {
         return Tensorbackeds.empty(tensorbackedClass);
+    }
+
+    /**
+     * @see QuantityTensors#valuesOf(Tensor)
+     */
+    public static <S> Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
+        return QuantityTensors.valuesOf(tensor);
+    }
+
+    /**
+     * @see QuantityTensors#errorsOf(Tensor)
+     */
+    public static <S> Tensor<Optional<S>> errorsOf(Tensor<QuantifiedValue<S>> tensor) {
+        return QuantityTensors.errorsOf(tensor);
+    }
+
+    /**
+     * @see QuantityTensors#validitiesOf(Tensor)
+     */
+    public static <S> Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
+        return QuantityTensors.validitiesOf(tensor);
+    }
+
+    /**
+     * @see QuantityTensors#unitOf(Tensor)
+     */
+    public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
+        return QuantityTensors.unitOf(tensor);
     }
 }

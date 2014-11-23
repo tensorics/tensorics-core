@@ -60,11 +60,11 @@ public class MeteoDataImporterTest extends TensoricDoubleSupport {
 	public void testAverageTemperatureByTime() {
 		Tensor<QuantifiedValue<Double>> importFromPast = FakeMeteoDataImporter
 				.importFromPast(null, null, null);
-		Tensor<Double> byAveragingIn = from(valuesOf(importFromPast)).reduce(
+		Tensor<Double> byAveragingIn = from(Tensorics.valuesOf(importFromPast)).reduce(
 				Time.class).byAveragingIn(Structures.doubles());
 
 		System.out.println("Averaged over time " + byAveragingIn);
-		Tensor<Double> tempAtTime4 = from(valuesOf(importFromPast))
+		Tensor<Double> tempAtTime4 = from(Tensorics.valuesOf(importFromPast))
 				.extractSliceAt(new Time(4));
 		System.out.println("Sliced on time = 4 " + tempAtTime4);
 	}
@@ -89,8 +89,8 @@ public class MeteoDataImporterTest extends TensoricDoubleSupport {
 
 	@Test
 	public void testMultiplyByScalar() throws Exception {
-		Tensor<Double> tensor = valuesOf(FakeMeteoDataImporter.importFromNow(
-				null, null));
+		Tensor<Double> tensor = Tensorics.valuesOf(FakeMeteoDataImporter.importFromNow(
+        null, null));
 		System.out.println("Before multiplication: " + tensor);
 		Tensor<Double> multiplitedTensor = calculate(tensor).elementTimesV(10D);
 		System.out.println("After multiplication: " + multiplitedTensor);
