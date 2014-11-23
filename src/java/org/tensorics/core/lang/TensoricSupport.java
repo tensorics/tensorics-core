@@ -13,7 +13,6 @@ import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.OngoingTensorOperation;
 import org.tensorics.core.tensor.lang.QuantityTensorSupport;
-import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorSupport;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.lang.OngoingQuantifiedTensorBackedOperation;
@@ -21,8 +20,6 @@ import org.tensorics.core.tensorbacked.lang.OngoingTensorBackedOperation;
 import org.tensorics.core.tensorbacked.lang.QuantityTensorbackedSupport;
 import org.tensorics.core.tensorbacked.lang.TensorbackedSupport;
 import org.tensorics.core.units.Unit;
-
-import com.google.common.base.Optional;
 
 /**
  * The main start point for expressions of the tensoric eDSL. Gives access to the quantified versions of the operations
