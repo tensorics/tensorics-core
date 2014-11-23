@@ -4,6 +4,7 @@
 
 package org.tensorics.core.tensor;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -18,19 +19,22 @@ public interface Tensor<E> {
      * @param position the position in the N-dimensional space where to find the value.
      * @return the value at the given position
      * @throws IllegalArgumentException when number of coordinates is not sufficient
+     * @throws NoSuchElementException if the tensor contains no element for the given position
      */
     E get(Position position);
 
     /**
      * @param coordinates form N-dimensional space where to find the value.
      * @return a value at the given coordinates.
+     * @throws IllegalArgumentException if the number of coordinates in incorrect
+     * @throws NoSuchElementException if the tensor contains no element for the given position
      */
     E get(Object... coordinates);
 
     /**
      * @return entry set of the tensor.
      */
-    Set<Entry<E>> entrySet();
+    Iterable<Entry<E>> entrySet();
 
     /**
      * @return the shape of the tensor. The RAW coordinates structure, no tensor values are returend here.

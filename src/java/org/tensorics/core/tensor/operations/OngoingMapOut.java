@@ -79,7 +79,7 @@ public final class OngoingMapOut<V> {
         return valuesBuilder.build();
     }
 
-    private static <T, C, C1 extends C> Multimap<Set<?>, Tensor.Entry<T>> groupBy(Set<Tensor.Entry<T>> entries,
+    private static <T, C, C1 extends C> Multimap<Set<?>, Tensor.Entry<T>> groupBy(Iterable<Tensor.Entry<T>> entries,
             Class<C1> dimension) {
         ImmutableMultimap.Builder<Set<?>, Tensor.Entry<T>> fullEntriesBuilder = ImmutableMultimap.builder();
         for (Tensor.Entry<T> entry : entries) {

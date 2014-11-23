@@ -3,6 +3,7 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 2014-07-12
 :icons: font
 :sectanchors:
+:experimental:
 :source-highlighter: highlightjs
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
@@ -10,9 +11,11 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 
 === Tensors
 The central object of tensorics is a ++Tensor++. The simplest way to imagine a tensor might be to see it as 
-a kind of map, where the map-key is actually a 'set of keys'. This 'set of keys' is denoted as a ++Position++
-in the N-dimensional space. Each position has exactly N elements (++coordinates++), corresponding to the dimensionality (N) of 
+a kind of map, where the map-key is actually a 'set of keys'. This 'set of keys' can be seen as a position
+in the N-dimensional space - and this is what we will call it: ++Position++ ;-). Each position has exactly N elements (++coordinates++), corresponding to the dimensionality (N) of 
 the respective tensor. The ++dimensions++ of a tensor are uniquely defined by the classes of the coordinates.
+
+*_This might have sound complicated - however, an example should make it obvious. Keep on reading ;-)_*
 
 ==== The weather example
 Lets take a (very simplistic ;-) example: Assume that we are are analyzing weather data. 
@@ -39,22 +42,22 @@ We have recorded temperature values for several cities and several days, for exa
 |24.7
 |===
 
-These measurements could, for example, be represented as a tensor with double values. 
+These measurements can be represented as a tensor with two dimensions (city and day) and double values. 
 Such a tensor can be created as follows: 
 [source,java]
 ----
 include::{examplesource}/meteo/simple/SimpleMeteoExample.java[tags=createTensor]
 ----
-<1> Creating the builder. The dimensions have to be given here. Dimensions are the classes of the coordinates.
-<2> Putting values to the builder. For each class, given as dimension, exactly one instance has to be given.
-<3> Creates the tensor. 
+<1> Create the builder. The dimensions have to be given here. Dimensions are the classes of the coordinates.
+<2> Put values to the builder. For each class, given as dimension, exactly one instance has to be given.
+<3> Create the tensor. 
 
 Hereby we assumed that the cities and days are defined as constants beforehand (or enum values). Ok, we are aware 
 that it is very simplistic assumption and not practical for a real application ;-) The point is, it does not matter: 
 Any instance of a java class can serve as a coordinate. However, There are some much more important points to be learned 
 from this example:
 
-IMPORTANT: Tensors are always immutable! Therefore always a builder has to be used (or some convenience factory methods).
+IMPORTANT: Tensors are always immutable! Therefore always a builder has to be used to create a tensor (or some convenience factory methods).
 
 TIP: There is one global entry point: The ++Tensorics++ class. It provides access to static methods of the most important 
 functionality of tensorics. It is convenient to use these methods by putting as a static import to your java files.
@@ -65,56 +68,20 @@ counter-intuitive at a first glance. However, there is a strong reason for this:
 while there is only one value. Therefore, to take advantage of the java varargs feature, it is necessary to place the 
 coordinate-arguments after the value argument.
 
+==== Using Tensors
 
-
-
-
-A tensor is an N-dimensional object. However, while in mathematics an
-element of a tensor is addressed by N indizes (where one has to remember which index represents which dimension), 
-tensorics uses types (classes) to define dimensions and the values of types as the coordinates
-Therefore, lets start and create one. The simplest Tensor is a tensor of zero dimensions and 
-exactly one element. This can be created in the simplest 
-case by
-
+As mentioned, the simplest way to see a tensor is as a map from positions to values. Therefore, values can be retrieved from the
+tensor in a similar way than from a map:
 [source,java]
 ----
-include::{examplesource}/TensorCreationExamples.java[tags=zerodimensionalString]
+include::{examplesource}/meteo/simple/SimpleMeteoExample.java[tags=getValue]
 ----
+IMPORTANT: All methods in tensorics are designed to fail fast. As a consequence, e.g. the get method will
+throw a NoSuchElementException, if the requested element is not contained in the tensor. Further, an 
+IllegalArgumentException might be thrown, if the number of the given coordinates do not match the dimensions
+of the tensor.
 
-More complicated tensors can be created using a builder:
-[source,java]
-----
-Builder<Double> builder = ImmutableTensor.builder(X.class, Y.class); # <1>
-
-builder.at(new X(1.0), new Y(0.0)).put(5.0); # <2>
-builder.at(new X(1.0), new Y(1.0)).put(6.0);
-
-Tensor<Double> tensor = builder.build(); # <3>
-----
-<1> Creating the builder. The dimensions have to be given here. Dimensions are the classes of the coordinates.
-<2> Putting values to the builder. For each class, given as dimension, exactly one instance has to be given in the ++at()++ clause.
-<3> Creates the real tensor. 
-
-=== Coordinates and Dimensions
-The above example illustrates already the most important concept of tensorics: Values of a tensor are addressed by 
-coordinates in an arbitrary N-dimensional space. Each dimension of this space is uniquely coupled to a type of 
-coordinate (The X and Y classes in the previous example). This might look a bit awkward at a first glance, because
-one has to define a class for each dimension. Further, many users might wonder, why we are not using indizes, 
-like you would expect for a tensor (as in mathematics). This design choice has the following advantages:
-
-* This approach can be considered as a natural generalization of a java map.
-* Having a class for each dimension, maps nicely to the way of speaking about multidimensional objects. Thing e.g. of
-'At this point, the Y-value is ...' or 'In direction of X ...'.
-* While addressing values by indizes might be ok for a small amount of dimensions, it becomes a hassle for many dimensions.
-Simply think about multidimensional arrays: How often did you mix up the order of indizes? Having a class per dimension
-clearly reveals its purpose.
-* This approach makes a tensor much more flexible. Consider the following example: If you would address elements of 
-a matrix by row/column indizes, you would be forced to have the same number of columns in all the rows. While this 
-might be preferrable for many applications, sometimes it is simply a too strict constraint for data in real live. 
-Using a two-dimensional tensor is more flexible in this case - and you can still perform all the mathematical 
-operations, as you will see later ;-)
-
-=== Working with Tensors
+Again similar to maps, there exists also an easy way to loop through the position/value pairs
 
 == Structural Operations
 
