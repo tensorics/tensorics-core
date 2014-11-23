@@ -1,4 +1,4 @@
-= Tensorics Quickstart Guide
+= Tensorics Manual
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
 2014-07-12
 :icons: font
@@ -7,71 +7,37 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
 
+Tensorics is a java framework for data processing of multidimensional data. 
+The core object is a Tensor which represents a collection of values of arbitrary
+types, which are addressed by coordinates in an N-dimensional space. The framework
+provides several core features, which make it easy to work with big amounts of 
+numerical data and drastically simplify repetitive tasks:
+
+---
+* Tensors of arbitrary dimensionality as central object.
+* Tensors can have elements of any (java) type.
+* Structural and numerical operations on tensors.
+* Java internal DSL (fluent API) for all operations on scalars and tensors.
+* Quantities (value - unit pair).
+* Full support for Tensors of quantities.
+* Error and Validity propagation for quantities and tensors of quantities.
+* Scripting of all functionality with deferred execution, which opens the 
+possibilities for parallel processing and massive distribution of calculations. 
+
+---
+ 
+IMPORTANT: Both, the current implementation as well as this document, are work in progress. 
+The main purpose of the actual version is provide some functionality of every of the above 
+mentioned categories and proofing the concepts of their interplay. Still, already the available 
+subset of features should have useful applications in many contexts. Almost no effort put on 
+profiling and performance optimization. Therefore, it might well be that some operations are 
+quite inefficient and/or memory consuming for big objects. Such improvements are definitely planned 
+for later iterations. Any contributions are welcome.
+ 
+== Getting Started
 
 === Tensors
-The central object of tensorics is a ++Tensor++. The simplest way to imagine a tensor might be to see it as 
-a kind of map, where the map-key is actually a 'set of keys'. This 'set of keys' is denoted as a ++Position++
-in the N-dimensional space. Each position has exactly N elements (++coordinates++), corresponding to the dimensionality (N) of 
-the respective tensor. The ++dimensions++ of a tensor are uniquely defined by the classes of the coordinates.
-
-==== The weather example
-Lets take a (very simplistic ;-) example: Assume that we are are analyzing weather data. 
-We have recorded temperature values for several cities and several days, for example:
-
-.Example Temperatures (random data!)
-|===
-|City|Day|Temperature [{deg}C]
-
-|New York
-|April 1, 2014
-|18.5
-
-|New York
-|June 1, 2014
-|25.0
-
-|Geneva
-|April 1, 2014
-|19.8
-
-|Geneva
-|June 1, 2014
-|24.7
-|===
-
-These measurements could, for example, be represented as a tensor with double values. 
-Such a tensor can be created as follows: 
-[source,java]
-----
-include::{examplesource}/meteo/simple/SimpleMeteoExample.java[tags=createTensor]
-----
-<1> Creating the builder. The dimensions have to be given here. Dimensions are the classes of the coordinates.
-<2> Putting values to the builder. For each class, given as dimension, exactly one instance has to be given.
-<3> Creates the tensor. 
-
-Hereby we assumed that the cities and days are defined as constants beforehand (or enum values). Ok, we are aware 
-that it is very simplistic assumption and not practical for a real application ;-) The point is, it does not matter: 
-Any instance of a java class can serve as a coordinate. However, There are some much more important points to be learned 
-from this example:
-
-IMPORTANT: Tensors are always immutable! Therefore always a builder has to be used (or some convenience factory methods).
-
-TIP: There is one global entry point: The ++Tensorics++ class. It provides access to static methods of the most important 
-functionality of tensorics. It is convenient to use these methods by putting as a static import to your java files.
-
-CAUTION: The 'put' - like methods in the builder are kind-of-reversed compared to put methods of a map: The parameters for 
-coordinates (which basically build the key/position) follow the parameter for the value. This might be 
-counter-intuitive at a first glance. However, there is a strong reason for this: The number of coordinates is variable for tensors, 
-while there is only one value. Therefore, to take advantage of the java varargs feature, it is necessary to place the 
-coordinate-arguments after the value argument.
-
-
-
-
-
-A tensor is an N-dimensional object. However, while in mathematics an
-element of a tensor is addressed by N indizes (where one has to remember which index represents which dimension), 
-tensorics uses types (classes) to define dimensions and the values of types as the coordinates
+The core object of tensorics is a Tensor. 
 Therefore, lets start and create one. The simplest Tensor is a tensor of zero dimensions and 
 exactly one element. This can be created in the simplest 
 case by
