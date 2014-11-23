@@ -13,6 +13,7 @@ import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.OngoingTensorOperation;
 import org.tensorics.core.tensor.lang.QuantityTensorSupport;
+import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorSupport;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.lang.OngoingQuantifiedTensorBackedOperation;
@@ -165,22 +166,6 @@ public class TensoricSupport<V> {
 
     public QuantifiedValue<V> valueOf(V value, javax.measure.unit.Unit<?> unit) {
         return quantifiedTensoricFieldUsage.valueOf(value, unit);
-    }
-
-    public Tensor<V> valuesOf(Tensor<QuantifiedValue<V>> tensor) {
-        return quantifiedTensoricFieldUsage.valuesOf(tensor);
-    }
-
-    public Tensor<Optional<V>> errorsOf(Tensor<QuantifiedValue<V>> tensor) {
-        return quantifiedTensoricFieldUsage.errorsOf(tensor);
-    }
-
-    public Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<V>> tensor) {
-        return quantifiedTensoricFieldUsage.validitiesOf(tensor);
-    }
-
-    public Unit unitOf(Tensor<QuantifiedValue<V>> tensor) {
-        return quantifiedTensoricFieldUsage.unitOf(tensor);
     }
 
     public <TB extends Tensorbacked<V>> TB negativeOf(TB tensorBacked) {
