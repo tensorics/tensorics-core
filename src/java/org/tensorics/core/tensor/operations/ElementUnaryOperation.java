@@ -1,6 +1,5 @@
 package org.tensorics.core.tensor.operations;
 
-import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;

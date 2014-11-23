@@ -13,8 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableEntry;
-import org.tensorics.core.tensor.ImmutableTensor;
-import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
