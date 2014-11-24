@@ -21,6 +21,7 @@ import com.google.common.collect.Sets.SetView;
  * 
  * @author kfuchsbe
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class Positions {
 
     /**
