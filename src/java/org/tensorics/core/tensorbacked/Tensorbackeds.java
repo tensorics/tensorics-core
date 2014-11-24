@@ -4,6 +4,13 @@
 
 package org.tensorics.core.tensorbacked;
 
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.QuantityTensors;
+
+import com.google.common.base.Optional;
+
 /**
  * Contains (public) utility methods for tensor backed objects.
  * 
@@ -61,6 +68,40 @@ public final class Tensorbackeds {
      */
     public static <V, TB extends Tensorbacked<V>> TB empty(Class<TB> tensorbackedClass) {
         return Tensorbackeds.builderFor(tensorbackedClass).build();
+    }
+
+    /**
+     * Retrieves the validities from a tensorbacked object which contains quantities as values. This is a convenience
+     * method to calling the {@link QuantityTensors#validitiesOf(Tensor)} method on the tensor contained in the
+     * tensorbacked.
+     * 
+     * @param tensorbacked the tensorbacked class from which to get the validities
+     * @return a tensor containing only the validities of the values of the tensorbacked class
+     */
+    public static <S> Tensor<Boolean> validitiesOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
+        return QuantityTensors.validitiesOf(tensorbacked.tensor());
+    }
+
+    /**
+     * Retrieves the values of a tensorbacked object which contains quantities as values. This is a convenience method
+     * to calling {@link QuantityTensors#valuesOf(Tensor)} on the tensor backing the tensorbacked object.
+     * 
+     * @param tensorbacked the tensorbacked object from which to retrieve the values
+     * @return a tensor containing the values of quantities in the tensorbacked object
+     */
+    public static <S> Tensor<S> valuesOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
+        return QuantityTensors.valuesOf(tensorbacked.tensor());
+    }
+
+    /**
+     * Retrieves the errors from the tensorbacked object. This is a convenience method to calling
+     * {@link QuantityTensors#errorsOf(Tensor)} on the tensor backing the tensorbacked object.
+     * 
+     * @param tensorbacked the tensorbacked object from which to retrieve the errors
+     * @return a tensor containing the errors of the quantities within the tensorbacked object
+     */
+    public static <S> Tensor<Optional<S>> errorsOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
+        return QuantityTensors.errorsOf(tensorbacked.tensor());
     }
 
     /*

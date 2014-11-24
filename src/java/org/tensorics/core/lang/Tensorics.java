@@ -190,4 +190,25 @@ public final class Tensorics {
     public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
         return QuantityTensors.unitOf(tensor);
     }
+
+    /**
+     * @see Tensorbackeds#validitiesOf(Tensorbacked)
+     */
+    public static <S> Tensor<Boolean> validitiesOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
+        return Tensorbackeds.validitiesOf(tensorbacked);
+    }
+
+    /**
+     * @see Tensorbackeds#valuesOf(Tensorbacked)
+     */
+    public static <S> Tensor<S> valuesOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
+        return Tensorbackeds.valuesOf(tensorbacked);
+    }
+
+    /**
+     * @see Tensorbackeds#errorsOf(Tensorbacked)
+     */
+    public static <S> Tensor<Optional<S>> errorsOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
+        return Tensorbackeds.errorsOf(tensorbacked);
+    }
 }
