@@ -37,6 +37,7 @@ import com.google.common.base.Optional;
  * 
  * @author kfuchsbe, agorzaws
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class Tensorics {
 
     /**
