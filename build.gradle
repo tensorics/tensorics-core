@@ -1,18 +1,16 @@
 //apply plugin: 'maven'
 
 buildscript {
-	
-	repositories {
-		 maven { 
-		jcenter()
-		url 'http://artifactory/development' 
-		}  
-		 }
-	
-	dependencies {
-		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
-		classpath 'org.asciidoctor:asciidoctorj:1.5.0'
-	}
+
+    repositories {
+        maven {  //jcenter()
+            url 'http://artifactory/development'  }
+    }
+
+    dependencies {
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
+        classpath 'org.asciidoctor:asciidoctorj:1.5.0'
+    }
 }
 
 
@@ -37,18 +35,16 @@ task show << {
 
 
 eclipse {
-  	jdt {
-    	sourceCompatibility = 1.7
-    	targetCompatibility = 1.7
-	}
+    jdt {
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+    }
 }
 
 
 sourceSets {
     main {
-        java {
-            srcDir 'src/java'
-        }
+        java { srcDir 'src/java' }
     }
     test {
         java {
