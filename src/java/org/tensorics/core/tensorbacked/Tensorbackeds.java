@@ -4,8 +4,11 @@
 
 package org.tensorics.core.tensorbacked;
 
+import java.util.Set;
+
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 
@@ -102,6 +105,16 @@ public final class Tensorbackeds {
      */
     public static <S> Tensor<Optional<S>> errorsOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
         return QuantityTensors.errorsOf(tensorbacked.tensor());
+    }
+
+    /**
+     * Retrieves a set of all positions within a tensorbacked class.
+     * 
+     * @param tensorbacked the tensor backed object
+     * @return a set containing all positions of the tensorbacked object
+     */
+    public static Set<Position> positionsOf(Tensorbacked<?> tensorbacked) {
+        return tensorbacked.tensor().shape().positionSet();
     }
 
     /*

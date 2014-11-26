@@ -184,6 +184,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
          * 
          * @return an {@link ImmutableTensor}.
          */
+        @Override
         public ImmutableTensor<S> build() {
             return new ImmutableTensor<S>(this);
         }
