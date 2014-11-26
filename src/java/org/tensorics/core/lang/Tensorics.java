@@ -33,6 +33,8 @@ import com.google.common.base.Optional;
  * <ul>
  * <li> {@link org.tensorics.core.tensor.Positions}
  * <li> {@link org.tensorics.core.tensor.Shapes}
+ * <li> {@link QuantityTensors}
+ * <li> {@link Tensorbackeds}
  * </ul>
  * 
  * @author kfuchsbe, agorzaws
@@ -164,34 +166,6 @@ public final class Tensorics {
     }
 
     /**
-     * @see QuantityTensors#valuesOf(Tensor)
-     */
-    public static <S> Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
-        return QuantityTensors.valuesOf(tensor);
-    }
-
-    /**
-     * @see QuantityTensors#errorsOf(Tensor)
-     */
-    public static <S> Tensor<Optional<S>> errorsOf(Tensor<QuantifiedValue<S>> tensor) {
-        return QuantityTensors.errorsOf(tensor);
-    }
-
-    /**
-     * @see QuantityTensors#validitiesOf(Tensor)
-     */
-    public static <S> Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
-        return QuantityTensors.validitiesOf(tensor);
-    }
-
-    /**
-     * @see QuantityTensors#unitOf(Tensor)
-     */
-    public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
-        return QuantityTensors.unitOf(tensor);
-    }
-
-    /**
      * @see Tensorbackeds#validitiesOf(Tensorbacked)
      */
     public static <S> Tensor<Boolean> validitiesOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
@@ -210,5 +184,12 @@ public final class Tensorics {
      */
     public static <S> Tensor<Optional<S>> errorsOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
         return Tensorbackeds.errorsOf(tensorbacked);
+    }
+
+    /**
+     * @see Tensorbackeds#positionsOf(Tensorbacked)
+     */
+    public static Set<Position> positionsOf(Tensorbacked<?> tensorbacked) {
+        return Tensorbackeds.positionsOf(tensorbacked);
     }
 }

@@ -57,4 +57,9 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E> {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " [backingTensor=" + backingTensor + "]";
+    }
+
 }

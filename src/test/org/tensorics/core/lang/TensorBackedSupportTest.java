@@ -19,6 +19,7 @@ import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.QuantityTensorSupport;
+import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorSupport;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.orbit.MultibeamOrbit;
@@ -115,7 +116,7 @@ public class TensorBackedSupportTest {
 		double value2 = multibeamTensorBackedOfQV2.getValueAt("name 9", Beam.B1, Plane.H).value();
 		assertEquals(3, multibeamTensorBackedOfQV2.tensor().shape().dimensionality());
 		assertEquals(9.9, value2, 0.001);
-		Tensor<Double> values = Tensorics.valuesOf(multibeamTensorBackedOfQV2.tensor());
+		Tensor<Double> values = QuantityTensors.valuesOf(multibeamTensorBackedOfQV2.tensor());
 		assertEquals(3, values.shape().dimensionality());
 		assertEquals(multibeamTensorBackedOfQV2.tensor().shape(), values.shape());
 	}
@@ -178,7 +179,7 @@ public class TensorBackedSupportTest {
 		double value2 = multibeamTensorBackedOfQV2.getValueAt("name 9", Beam.B1, Plane.H).value();
 		assertEquals(3, multibeamTensorBackedOfQV2.tensor().shape().dimensionality());
 		assertEquals(9.9, value2, 0.001);
-		Tensor<Double> values = Tensorics.valuesOf(multibeamTensorBackedOfQV2.tensor());
+		Tensor<Double> values = QuantityTensors.valuesOf(multibeamTensorBackedOfQV2.tensor());
 		assertEquals(3, values.shape().dimensionality());
 		assertEquals(multibeamTensorBackedOfQV2.tensor().shape(), values.shape());
 	}
