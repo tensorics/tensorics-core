@@ -6,7 +6,6 @@ package org.tensorics.core.tensorbacked;
 
 import java.util.Set;
 
-import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
