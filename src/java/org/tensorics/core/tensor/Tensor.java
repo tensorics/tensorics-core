@@ -5,7 +5,6 @@
 package org.tensorics.core.tensor;
 
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 /**
  * The top interface for {@link Tensor} like objects.
