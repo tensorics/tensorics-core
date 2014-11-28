@@ -70,4 +70,9 @@ public class ScalarSupport<V> implements BasicOperationSupport<V> {
         return calculate(value).toThePowerOf(two());
     }
 
+    @Override
+    public V absoluteValueOf(V value) {
+        return squareRootOf(squareOf(value));
+    }
+
 }

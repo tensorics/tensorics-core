@@ -19,5 +19,7 @@ public interface BasicOperationSupport<S> {
     S squareRootOf(S value);
 
     S squareOf(S value);
+    
+    S absoluteValueOf(S value);
 
 }
