@@ -8,6 +8,7 @@ import org.tensorics.core.math.Cheating;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.math.structures.ringlike.Field;
+import org.tensorics.core.math.structures.ringlike.OrderedField;
 
 /**
  * and allows to hook in different implementation for more complicated mathematical operations.
@@ -26,7 +27,7 @@ public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T> implements Extend
         }
     };
 
-    public ExtendedFieldImpl(Field<T> field, org.tensorics.core.math.Math<T> math, Cheating<T> cheating) {
+    public ExtendedFieldImpl(OrderedField<T> field, org.tensorics.core.math.Math<T> math, Cheating<T> cheating) {
         super(field);
         this.math = math;
         this.cheatingInstance = cheating;

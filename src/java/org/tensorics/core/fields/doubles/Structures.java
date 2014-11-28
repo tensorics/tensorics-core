@@ -9,6 +9,7 @@ import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.math.Math;
 import org.tensorics.core.math.impl.ExtendedFieldImpl;
 import org.tensorics.core.math.structures.ringlike.Field;
+import org.tensorics.core.math.structures.ringlike.OrderedField;
 
 /**
  * Utility class that provides methods to access mathematical structures which are available in the tensorics core
@@ -42,7 +43,7 @@ public final class Structures {
      * @param cheating the class that provides some methods for cheating the field-framework.
      * @return a view on the field, which provides more convenience methods.
      */
-    public static <T> ExtendedField<T> extended(Field<T> field, Math<T> math, Cheating<T> cheating) {
+    public static <T> ExtendedField<T> extended(OrderedField<T> field, Math<T> math, Cheating<T> cheating) {
         return new ExtendedFieldImpl<>(field, math, cheating);
     }
 
