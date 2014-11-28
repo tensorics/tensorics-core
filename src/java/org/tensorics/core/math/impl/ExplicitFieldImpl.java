@@ -4,11 +4,13 @@
 
 package org.tensorics.core.math.impl;
 
+import org.tensorics.core.math.BinaryPredicates;
 import org.tensorics.core.math.ExplicitField;
 import org.tensorics.core.math.Operations;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.math.operations.UnaryOperation;
-import org.tensorics.core.math.structures.ringlike.Field;
+import org.tensorics.core.math.predicates.BinaryPredicate;
+import org.tensorics.core.math.structures.ringlike.OrderedField;
 
 /**
  * @author kfuchsbe
@@ -16,16 +18,25 @@ import org.tensorics.core.math.structures.ringlike.Field;
  */
 public class ExplicitFieldImpl<T> implements ExplicitField<T> {
 
-    private final Field<T> field;
+    private final OrderedField<T> field;
     private final BinaryOperation<T> subtractionOperation;
     private final BinaryOperation<T> divisionOperation;
     private final T twoValue;
+    private final BinaryPredicate<T> greaterPredicate;
+    private final BinaryPredicate<T> greaterOrEqualPredicate;
+    private final BinaryPredicate<T> lessPredicate;
+    private final BinaryPredicate<T> equalPredicate;
 
-    public ExplicitFieldImpl(Field<T> field) {
+    public ExplicitFieldImpl(OrderedField<T> field) {
         this.field = field;
         subtractionOperation = Operations.inverseBinaryFor(field.additionStructure());
         divisionOperation = Operations.inverseBinaryFor(field.multiplicationStructure());
         twoValue = addition().perform(one(), one());
+
+        greaterPredicate = BinaryPredicates.not(field.lessOrEqualPredicate());
+        greaterOrEqualPredicate = BinaryPredicates.invert(field.lessOrEqualPredicate());
+        lessPredicate = BinaryPredicates.not(greaterOrEqualPredicate);
+        equalPredicate = BinaryPredicates.and(field.lessOrEqualPredicate(), greaterOrEqualPredicate);
     }
 
     @Override
@@ -71,6 +82,31 @@ public class ExplicitFieldImpl<T> implements ExplicitField<T> {
     @Override
     public final T two() {
         return twoValue;
+    }
+
+    @Override
+    public BinaryPredicate<T> less() {
+        return lessPredicate;
+    }
+
+    @Override
+    public BinaryPredicate<T> lessOrEqual() {
+        return field.lessOrEqualPredicate();
+    }
+
+    @Override
+    public BinaryPredicate<T> equal() {
+        return equalPredicate;
+    }
+
+    @Override
+    public BinaryPredicate<T> greaterOrEqual() {
+        return greaterOrEqualPredicate;
+    }
+
+    @Override
+    public BinaryPredicate<T> greater() {
+        return greaterPredicate;
     }
 
 }
