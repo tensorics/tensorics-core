@@ -6,8 +6,9 @@ package org.tensorics.core.fields.doubles;
 
 import org.tensorics.core.math.operations.CommutativeAssociativeOperation;
 import org.tensorics.core.math.operations.UnaryOperation;
+import org.tensorics.core.math.predicates.BinaryPredicate;
 import org.tensorics.core.math.structures.grouplike.AbelianGroup;
-import org.tensorics.core.math.structures.ringlike.Field;
+import org.tensorics.core.math.structures.ringlike.OrderedField;
 
 /**
  * Provides mathematical structures for double values (which form a field). Usually, users will not construct instances
@@ -19,7 +20,7 @@ import org.tensorics.core.math.structures.ringlike.Field;
  * @see Structures
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public final class DoubleField implements Field<Double> {
+public final class DoubleField implements OrderedField<Double> {
 
     private static final double ZERO = 0.0;
     private static final double ONE = 1.0;
@@ -89,6 +90,14 @@ public final class DoubleField implements Field<Double> {
         }
     };
 
+    private final BinaryPredicate<Double> lessOrEqual = new BinaryPredicate<Double>() {
+
+        @Override
+        public boolean test(Double left, Double right) {
+            return left <= right;
+        }
+    };
+
     /**
      * Package visible constructor to allow the structures class to instantiate the class. Use the lookup methods in the
      * {@link Structures} class to retrieve an instance of the field.
@@ -105,6 +114,11 @@ public final class DoubleField implements Field<Double> {
     @Override
     public AbelianGroup<Double> multiplicationStructure() {
         return multiplicationGroup;
+    }
+
+    @Override
+    public BinaryPredicate<Double> lessOrEqualPredicate() {
+        return lessOrEqual;
     }
 
 }
