@@ -29,7 +29,7 @@ public class ScalarIsCloseTo<S> extends TypeSafeMatcher<S> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendText(" is within " + tolerance + " close to " + value);
+        description.appendText(" within " + tolerance + " close to " + value);
     }
 
     @Override
