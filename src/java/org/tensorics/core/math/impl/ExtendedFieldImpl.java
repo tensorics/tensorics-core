@@ -7,11 +7,10 @@ package org.tensorics.core.math.impl;
 import org.tensorics.core.math.Cheating;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.math.operations.BinaryOperation;
-import org.tensorics.core.math.structures.ringlike.Field;
 import org.tensorics.core.math.structures.ringlike.OrderedField;
 
 /**
- * and allows to hook in different implementation for more complicated mathematical operations.
+ * allows to hook in different implementations for more complicated mathematical operations.
  * 
  * @author kfuchsbe
  * @param <T> the type of elements of the field

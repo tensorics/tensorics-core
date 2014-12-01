@@ -29,6 +29,10 @@ public class ScalarSupport<V> implements BasicOperationSupport<V> {
         return new OngoingScalarBinaryOperation<V>(this.field, operand);
     }
 
+    public OngoingScalarBinaryPredicate<V> testIf(V left) {
+        return new OngoingScalarBinaryPredicate<V>(field, left);
+    }
+
     @Override
     public final V negativeOf(V element) {
         return this.field.additiveInversion().perform(element);

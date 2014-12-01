@@ -4,8 +4,12 @@
 
 package org.tensorics.core.testing.hamcrest;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
+import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.scalar.lang.ScalarSupport;
 
 public class ScalarIsCloseTo<S> extends TypeSafeMatcher<S> {
@@ -14,25 +18,25 @@ public class ScalarIsCloseTo<S> extends TypeSafeMatcher<S> {
     private final S value;
     private final S tolerance;
 
-    public ScalarIsCloseTo(ScalarSupport<S> scalarSupport, S value, S tolerance) {
+    public ScalarIsCloseTo(ExtendedField<S> field, S value, S tolerance) {
         super();
-        this.support = scalarSupport;
-        this.value = value;
-        this.tolerance = tolerance;
+        checkNotNull(field, "scalarSupport must not be null");
+        this.support = new ScalarSupport<>(field);
+        this.value = checkNotNull(value, "value must not be null");
+        this.tolerance = checkNotNull(tolerance, "tolerance must not be null");
+        checkArgument(support.testIf(tolerance).isGreaterOrEqualTo(support.zero()), "Tolerance must be positive!");
     }
 
     @Override
     public void describeTo(Description description) {
-        // TODO Auto-generated method stub
-
+        description.appendText("less or equal than " + tolerance);
     }
 
     @Override
     protected boolean matchesSafely(S valueToAssert) {
         S diff = support.calculate(valueToAssert).minus(value);
         S absoluteDiff = support.absoluteValueOf(diff);
-        // TODO Auto-generated method stub
-        return false;
+        return support.testIf(absoluteDiff).isLessOrEqualTo(tolerance);
     }
 
 }

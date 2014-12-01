@@ -7,6 +7,8 @@ package org.tensorics.core.lang;
 import org.tensorics.core.commons.lang.OngoingBinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
+import org.tensorics.core.quantity.options.QuantityEnvironment;
+import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
@@ -33,11 +35,12 @@ import org.tensorics.core.units.Unit;
 @SuppressWarnings("PMD.TooManyMethods")
 public class TensoricSupport<V> {
 
+   
     private final TensorSupport<V> tensoricFieldUsage;
     private final QuantityTensorSupport<V> quantifiedTensoricFieldUsage;
     private final QuantityTensorbackedSupport<V> quantifiedTensorbackedSupport;
     private final TensorbackedSupport<V> tensorbackedSupport;
-
+    
     public TensoricSupport(EnvironmentImpl<V> environment) {
         this.tensoricFieldUsage = new TensorSupport<>(environment);
         this.quantifiedTensoricFieldUsage = new QuantityTensorSupport<>(environment);
@@ -182,4 +185,12 @@ public class TensoricSupport<V> {
         return quantifiedTensorbackedSupport.calculate(left);
     }
 
+    public OngoingScalarBinaryPredicate<V> testIf(V left) {
+        return tensoricFieldUsage.testIf(left);
+    }
+
+    public V absoluteValueOf(V value) {
+        return tensoricFieldUsage.absoluteValueOf(value);
+    }
+    
 }
