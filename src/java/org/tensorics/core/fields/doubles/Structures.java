@@ -8,7 +8,6 @@ import org.tensorics.core.math.Cheating;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.math.Math;
 import org.tensorics.core.math.impl.ExtendedFieldImpl;
-import org.tensorics.core.math.structures.ringlike.Field;
 import org.tensorics.core.math.structures.ringlike.OrderedField;
 
 /**

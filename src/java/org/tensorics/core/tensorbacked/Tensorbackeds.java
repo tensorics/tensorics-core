@@ -10,6 +10,7 @@ import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.QuantityTensors;
+import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
 
@@ -104,6 +105,17 @@ public final class Tensorbackeds {
      */
     public static <S> Tensor<Optional<S>> errorsOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
         return QuantityTensors.errorsOf(tensorbacked.tensor());
+    }
+
+    /**
+     * Retrieves the unit of a tensorbacked object by looking at the underlaying tensor.
+     * 
+     * @param tensorbacked the tensorbacked object from which to retrieve the unit
+     * @return the unit
+     * @throws IllegalArgumentException if the unit cannot be determined
+     */
+    public static <S> Unit unitOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
+        return QuantityTensors.unitOf(tensorbacked.tensor());
     }
 
     /**
