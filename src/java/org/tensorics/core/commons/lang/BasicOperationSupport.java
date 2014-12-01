@@ -11,7 +11,7 @@ package org.tensorics.core.commons.lang;
 public interface BasicOperationSupport<S> {
 
     OngoingBinaryOperation<S> calculate(S operand);
-
+    
     S negativeOf(S element);
 
     S inverseOf(S element);
