@@ -24,12 +24,12 @@ public class ScalarIsCloseTo<S> extends TypeSafeMatcher<S> {
         this.support = new ScalarSupport<>(field);
         this.value = checkNotNull(value, "value must not be null");
         this.tolerance = checkNotNull(tolerance, "tolerance must not be null");
-        checkArgument(support.testIf(tolerance).isGreaterOrEqualTo(support.zero()), "Tolerance must be positive!");
+        checkArgument(support.testIf(tolerance).isGreaterOrEqualTo(support.zero()), "Tolerance must be positive.");
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("less or equal than " + tolerance);
+        description.appendText(" is within " + tolerance + " close to " + value);
     }
 
     @Override

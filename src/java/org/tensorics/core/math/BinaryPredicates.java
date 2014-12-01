@@ -77,7 +77,7 @@ public final class BinaryPredicates {
 
         @Override
         public boolean test(T left, T right) {
-            return !original.test(right, left);
+            return original.test(right, left);
         }
 
     }
