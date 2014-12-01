@@ -20,21 +20,14 @@ import org.tensorics.core.lang.TensoricSupport;
 public class TensoricTestingSupport<S> extends TensoricSupport<S> {
 
     private Environment<S> environment;
-    
+
     public TensoricTestingSupport(EnvironmentImpl<S> environment) {
         super(environment);
         this.environment = environment;
     }
-    
-    
-    public OngoingScalarCloseToMatcherCreation<S> within(S tolerance) {
-        return new OngoingScalarCloseToMatcherCreation<>(environment.field(), tolerance);
+
+    public OngoingCloseToMatcherCreation<S> within(S tolerance) {
+        return new OngoingCloseToMatcherCreation<>(environment, tolerance);
     }
-    
-    
-    
-    
-    
-    
 
 }

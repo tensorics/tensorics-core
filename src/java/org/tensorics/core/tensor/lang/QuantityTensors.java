@@ -55,7 +55,7 @@ public class QuantityTensors {
         for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
             return one.getValue().unit();
         }
-        throw new IllegalStateException("No entries in the given tensor! Cannot find out what is the unit.");
+        throw new IllegalArgumentException("No entries in the given tensor! Cannot find out what is the unit.");
     }
 
 }

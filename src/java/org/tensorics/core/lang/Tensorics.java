@@ -192,4 +192,19 @@ public final class Tensorics {
     public static Set<Position> positionsOf(Tensorbacked<?> tensorbacked) {
         return Tensorbackeds.positionsOf(tensorbacked);
     }
+
+    /**
+     * @see QuantityTensors#unitOf(Tensor)
+     */
+    public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
+        return QuantityTensors.unitOf(tensor);
+    }
+
+    /**
+     * @see Tensorbackeds#unitOf(Tensorbacked)
+     */
+    public static <S> Unit unitOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
+        return Tensorbackeds.unitOf(tensorbacked);
+    }
+
 }

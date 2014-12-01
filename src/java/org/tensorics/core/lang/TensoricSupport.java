@@ -7,7 +7,6 @@ package org.tensorics.core.lang;
 import org.tensorics.core.commons.lang.OngoingBinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
-import org.tensorics.core.quantity.options.QuantityEnvironment;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
