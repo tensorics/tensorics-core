@@ -7,9 +7,10 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :source-highlighter: highlightjs
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
+:javadocdir: ../../build/docs/javadoc
 
 
-=== Tensors
+== Tensors
 The central object of tensorics is a ++Tensor++. The simplest way to imagine a tensor might be to see it as 
 a kind of map, where the map-key is actually a 'set of keys'. This 'set of keys' can be seen as a position
 in the N-dimensional space - and this is what we will call it: ++Position++ ;-). Each position has exactly N elements (++coordinates++), corresponding to the dimensionality (N) of 
@@ -17,7 +18,7 @@ the respective tensor. The ++dimensions++ of a tensor are uniquely defined by th
 
 *_This might have sound complicated - however, an example should make it obvious. Keep on reading ;-)_*
 
-==== The weather example
+=== The weather example
 Lets take a (very simplistic ;-) example: Assume that we are are analyzing weather data. 
 We have recorded temperature values for several cities and several days, for example:
 
@@ -44,7 +45,7 @@ We have recorded temperature values for several cities and several days, for exa
 
 These measurements can be represented as a tensor with two dimensions (city and day) and double values. 
 Such a tensor can be created as follows: 
-[source,java]
+[source, java, indent=0]
 ----
 include::{examplesource}/meteo/simple/SimpleMeteoExample.java[tags=createTensor]
 ----
@@ -68,11 +69,12 @@ counter-intuitive at a first glance. However, there is a strong reason for this:
 while there is only one value. Therefore, to take advantage of the java varargs feature, it is necessary to place the 
 coordinate-arguments after the value argument.
 
-==== Using Tensors
+=== Using Tensors
 
-As mentioned, the simplest way to see a tensor is as a map from positions to values. Therefore, values can be retrieved from the
-tensor in a similar way than from a map:
-[source,java]
+The simplest way to think of a tensor (in the sense of tensorics) is to imagine a map from positions to values. 
+Therefore, values can be retrieved from the tensor in a similar way than from a map:
+[source, java, indent=0]
+.Building a tensor
 ----
 include::{examplesource}/meteo/simple/SimpleMeteoExample.java[tags=getValue]
 ----
@@ -81,7 +83,30 @@ throw a NoSuchElementException, if the requested element is not contained in the
 IllegalArgumentException might be thrown, if the number of the given coordinates do not match the dimensions
 of the tensor.
 
-Again similar to maps, there exists also an easy way to loop through the position/value pairs
+Again similar to maps, there exists also an easy way to loop through the position/value pairs:
+[source, java, indent=0]
+.Looping through tensor entries
+----
+include::{examplesource}/meteo/simple/SimpleMeteoExample.java[tags=loopThroughEntries]
+----
+This would print to the console something like this:
+----
+[NEW_YORK, APRIL_1_2014]	->	18.5
+[GENEVA, APRIL_1_2014]  	->	19.8
+[NEW_YORK, JUNE_1_2014] 	->	25.0
+[GENEVA, JUNE_1_2014]   	->	24.7
+----
+
+=== Tensor Shape
+Very often it is useful to see what for which positions in the N-dimensional space values are available within a tensor. 
+The object which holds this information is called the (tensor-) Shape. Although this is comparable to the key-set of a map, 
+there are several important differences:
+* A tensor can have different dimensions. This information is very important to compare different tensors, for example
+to determine if the two tensors are compatible for certain operations or not.
+* Very often there will be similar tensors, which contain the same positions but different values: For example, if a tensor 
+(in mathematics) is multiplied by a scalar value, the resulting tensor will be of the same 'Shape' as the original tensor.
+
+link:{javadocdir}/org/tensorics/core/tensor/Shape.html[aLink]
 
 == Structural Operations
 
