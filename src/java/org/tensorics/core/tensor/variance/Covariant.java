@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * an argument. This inheritance structure is necessary, to be able to have several covariant coordinates in one tensor
  * (because tensorics treats coordinates of the same class as the same coordinate-dimension).
  * 
- * @param <C> the type of the (contravariant!) coordinate 
+ * @param <C> the type of the (contravariant!) coordinate
  * @see <a href="http://en.wikipedia.org/wiki/Covariance_and_contravariance_of_vectors">
  *      http://en.wikipedia.org/wiki/Covariance_and_contravariance_of_vectors</a>
  * @author kfuchsbe
@@ -86,6 +86,6 @@ public class Covariant<C> {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() +  " [" + coordinate + "]";
+        return getClass().getSimpleName() + " [" + coordinate + "]";
     }
 }

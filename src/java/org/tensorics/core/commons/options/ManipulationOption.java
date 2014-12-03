@@ -4,7 +4,6 @@
 
 package org.tensorics.core.commons.options;
 
-
 /**
  * Marker interface for options which can be used to define the behaviour of iterable- and tensor operations.
  * 

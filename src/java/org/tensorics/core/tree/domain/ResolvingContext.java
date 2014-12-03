@@ -4,7 +4,6 @@
 
 package org.tensorics.core.tree.domain;
 
-
 /**
  * A container for resolved expressions which can be used by resolvers of expressions that need these results.
  * 

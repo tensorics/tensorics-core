@@ -24,8 +24,7 @@ public class QuantityAdditiveInversion<S> extends QuantityUnaryOperation<S> {
     @Override
     public QuantifiedValue<S> perform(QuantifiedValue<S> scalar) {
         S newValue = environment().field().additiveInversion().perform(scalar.value());
-        return Tensorics.quantityOf(newValue, scalar.unit()).withError(scalar.error())
-                .withValidity(scalar.validity());
+        return Tensorics.quantityOf(newValue, scalar.unit()).withError(scalar.error()).withValidity(scalar.validity());
     }
 
 }

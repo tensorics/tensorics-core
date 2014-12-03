@@ -29,5 +29,5 @@ public interface BroadcastingStrategy extends ManipulationOption {
      * @return the result of the broadcasting
      */
     <V> TensorPair<V> broadcast(Tensor<V> left, Tensor<V> right, Set<Class<?>> excludedDimensions);
-    
+
 }

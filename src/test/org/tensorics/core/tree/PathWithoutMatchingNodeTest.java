@@ -102,7 +102,7 @@ public class PathWithoutMatchingNodeTest {
     }
 
     @Test(expected = PathDoesNotExistException.class)
-    public void testPathRootTo22() { 
+    public void testPathRootTo22() {
         assertNotNull(rootNode);
         assertNotNull(child21);
         Trees.getPathsFromChildToAncestor(rootNode, child21);

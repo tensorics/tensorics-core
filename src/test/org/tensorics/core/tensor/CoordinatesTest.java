@@ -6,9 +6,9 @@ import org.junit.Test;
 
 public class CoordinatesTest {
 
-	@Test
-	public void verifyUtiliyClass() { 
-		assertUtilityClass(Coordinates.class);
-	}
+    @Test
+    public void verifyUtiliyClass() {
+        assertUtilityClass(Coordinates.class);
+    }
 
 }

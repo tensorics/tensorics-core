@@ -13,7 +13,7 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Bpm;
 import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 
 /**
- * Test case. Multibeam class supported with TensorBacked(QuantifiedValue(Double)) 
+ * Test case. Multibeam class supported with TensorBacked(QuantifiedValue(Double))
  * 
  * @author agorzaws
  */

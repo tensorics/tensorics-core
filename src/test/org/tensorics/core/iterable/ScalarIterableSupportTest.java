@@ -27,7 +27,7 @@ public class ScalarIterableSupportTest {
     private ScalarIterableSupport<Double> usage() {
         return new ScalarIterableSupport<>(doubles());
     }
- 
+
     @Test
     public void testOneElementOne() {
         assertEquals(1.0, usage().avarageOf(ImmutableList.<Double> of(1.0)), 0.000001);

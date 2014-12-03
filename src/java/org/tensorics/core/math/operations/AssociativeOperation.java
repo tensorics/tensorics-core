@@ -4,7 +4,6 @@
 
 package org.tensorics.core.math.operations;
 
-
 /**
  * Represents a binary operation which guarantees that it is associative. In other words:
  * <p>

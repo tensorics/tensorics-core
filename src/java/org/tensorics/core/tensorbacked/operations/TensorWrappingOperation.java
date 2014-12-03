@@ -16,8 +16,7 @@ import org.tensorics.core.tensorbacked.TensorbackedInternals;
  * @param <V> the type of the values of the tensors and tensorbacked objects
  * @param <TB> the type of the tensorbacked objects into which tensors will be wrapped
  */
-public class TensorWrappingOperation<V, TB extends Tensorbacked<V>> implements
-        Conversion<Tensor<V>, TB> {
+public class TensorWrappingOperation<V, TB extends Tensorbacked<V>> implements Conversion<Tensor<V>, TB> {
 
     private final Class<TB> tensorbackedClass;
 

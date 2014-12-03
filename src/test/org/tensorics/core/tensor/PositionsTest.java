@@ -15,7 +15,7 @@ public class PositionsTest {
     private final static Position POS_1A = Position.of(1, "A");
 
     @Test
-    public void verifyUtilityClass() { 
+    public void verifyUtilityClass() {
         assertUtilityClass(Positions.class);
     }
 

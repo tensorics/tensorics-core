@@ -42,16 +42,15 @@ public interface ExplicitField<T> {
     T one();
 
     T two();
-    
+
     BinaryPredicate<T> less();
-    
+
     BinaryPredicate<T> lessOrEqual();
-    
+
     BinaryPredicate<T> equal();
-    
+
     BinaryPredicate<T> greaterOrEqual();
-    
+
     BinaryPredicate<T> greater();
-    
 
 }

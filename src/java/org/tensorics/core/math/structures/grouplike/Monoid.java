@@ -4,7 +4,6 @@
 
 package org.tensorics.core.math.structures.grouplike;
 
-
 /**
  * Represents the algebraic structure of a Monoid, which extends a semigroup by having an identity element.
  * 

@@ -13,7 +13,7 @@ import org.tensorics.core.units.Unit;
 /**
  * An unary operation describing the multiplicative inversion of a physical quantity (aka '1/x').
  * 
- * @author kfuchsbe 
+ * @author kfuchsbe
  * @param <S> the type of the scalars (field elements) on which all the operations are based
  */
 public class QuantityMultiplicativeInversion<S> extends QuantityUnaryOperation<S> {

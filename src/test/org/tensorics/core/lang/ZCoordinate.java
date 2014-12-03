@@ -4,7 +4,6 @@
 
 package org.tensorics.core.lang;
 
-
 /**
  * @author agorzaws
  */

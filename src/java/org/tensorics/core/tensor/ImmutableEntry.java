@@ -4,7 +4,6 @@
 
 package org.tensorics.core.tensor;
 
-
 /**
  * @author kfuchsbe
  * @param <T> The type of the value of the tensor entry

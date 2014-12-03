@@ -14,7 +14,5 @@ public class TensorbackedsTest {
     public void verifyUtilityClass() {
         assertUtilityClass(Tensorbackeds.class);
     }
-    
-    
 
 }

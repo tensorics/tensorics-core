@@ -4,7 +4,6 @@
 
 package org.tensorics.core.math.operations;
 
-
 /**
  * Represents a binary operation on elements of a set, where the following condition is fullfilled:
  * <p>

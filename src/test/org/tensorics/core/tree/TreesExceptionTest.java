@@ -156,7 +156,7 @@ public class TreesExceptionTest {
     }
 
     @Test
-    public void testFindClosesHandlingNode11() { 
+    public void testFindClosesHandlingNode11() {
         assertFoundNodes(child11, child1);
     }
 
@@ -166,7 +166,7 @@ public class TreesExceptionTest {
     }
 
     @Test
-    public void testFindClosestHandlingNodeCommon() { 
+    public void testFindClosestHandlingNodeCommon() {
         assertFoundNodes(childCommon, child1, child2);
     }
 

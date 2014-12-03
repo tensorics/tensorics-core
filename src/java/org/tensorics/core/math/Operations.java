@@ -40,8 +40,7 @@ public final class Operations {
         return builder.build();
     }
 
-    public static <K, V> ListMultimap<K, V> mapAll(Multimap<K, ValuePair<V>> valuePairs,
-            BinaryOperation<V> operation) {
+    public static <K, V> ListMultimap<K, V> mapAll(Multimap<K, ValuePair<V>> valuePairs, BinaryOperation<V> operation) {
         ImmutableListMultimap.Builder<K, V> builder = ImmutableListMultimap.builder();
         for (Entry<K, Collection<ValuePair<V>>> entry : valuePairs.asMap().entrySet()) {
             builder.putAll(entry.getKey(), performOnAll(entry.getValue(), operation));

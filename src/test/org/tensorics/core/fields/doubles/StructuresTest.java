@@ -11,7 +11,7 @@ import org.junit.Test;
 public class StructuresTest {
 
     @Test
-    public void verifyUtilityClass() { 
+    public void verifyUtilityClass() {
         assertUtilityClass(Structures.class);
     }
 
