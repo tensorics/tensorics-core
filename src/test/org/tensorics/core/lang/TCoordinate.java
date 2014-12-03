@@ -4,7 +4,6 @@
 
 package org.tensorics.core.lang;
 
-
 public class TCoordinate implements TestCoordinate {
 
     private final int coor;

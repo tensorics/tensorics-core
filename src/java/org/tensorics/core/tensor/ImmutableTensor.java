@@ -198,7 +198,6 @@ public class ImmutableTensor<T> implements Tensor<T> {
             this.entries.put(position, new ImmutableEntry<>(position, value));
         }
 
-        
     }
 
     /**

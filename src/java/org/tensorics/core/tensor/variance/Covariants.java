@@ -30,8 +30,7 @@ public final class Covariants {
      * @return an instantiator to create instances of the given covariant class
      */
     public static <C, CC extends Covariant<C>> Instantiator<C, CC> instantiatorFor(Class<CC> covariantClass) {
-        return Instantiators.instantiatorFor(covariantClass).withArgumentType(
-                coordinateClassFor(covariantClass));
+        return Instantiators.instantiatorFor(covariantClass).withArgumentType(coordinateClassFor(covariantClass));
     }
 
     @SuppressWarnings("unchecked")

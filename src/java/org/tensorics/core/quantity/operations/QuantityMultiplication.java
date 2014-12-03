@@ -23,8 +23,7 @@ public class QuantityMultiplication<S> extends QuantityBinaryOperation<S> {
     @Override
     public QuantifiedValue<S> perform(QuantifiedValue<S> left, QuantifiedValue<S> right) {
         S value = operation().perform(left.value(), right.value());
-        org.tensorics.core.units.Unit unit = environment().quantification().multiply(left.unit(),
-                right.unit());
+        org.tensorics.core.units.Unit unit = environment().quantification().multiply(left.unit(), right.unit());
         return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right))
                 .withError(productError(left, right));
     }

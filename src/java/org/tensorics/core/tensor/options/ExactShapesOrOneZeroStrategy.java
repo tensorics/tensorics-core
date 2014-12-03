@@ -8,8 +8,8 @@ import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
 /**
- * Implementation of {@link ShapingStrategy} that checks if for two given {@link Tensor} objects shapes are exactly
- * the same (type of the coordinates, number of dimensions and coordinates instances). Otherwise it throws and
+ * Implementation of {@link ShapingStrategy} that checks if for two given {@link Tensor} objects shapes are exactly the
+ * same (type of the coordinates, number of dimensions and coordinates instances). Otherwise it throws and
  * IllegalArgumentException.
  * 
  * @author agorzaws

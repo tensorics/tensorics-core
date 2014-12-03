@@ -27,7 +27,7 @@ public final class Classes {
             throw new IllegalArgumentException("The class '" + classToSearch
                     + "' is not a super class of the given class.");
         }
-    
+
         Type type = clazz.getGenericSuperclass();
         if ((type instanceof ParameterizedType)) {
             if (!superClass.equals(classToSearch)) {

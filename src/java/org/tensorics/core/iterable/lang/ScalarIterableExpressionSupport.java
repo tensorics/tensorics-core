@@ -19,7 +19,7 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
 public class ScalarIterableExpressionSupport<V> extends ScalarExpressionSupport<V> {
 
     private final IterableOperationRepository<V> repository;
-    
+
     public ScalarIterableExpressionSupport(ExtendedField<V> field) {
         super(field);
         this.repository = new IterableOperationRepository<>(field);

@@ -147,7 +147,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
         /* the last element of the resulting tensor */
         assertThat(calculate(left).times(right).get(C, CoCoord.of(C)), equalTo(416.0));
     }
-    
+
     @Test
     public void coContraTimesCoContraCaresAboutOrderSinceItTakesTheCovariantFromTheLeftTensor() {
         Tensor<Double> left = coAndContravariant(3.0, 4.0, Coord.values());

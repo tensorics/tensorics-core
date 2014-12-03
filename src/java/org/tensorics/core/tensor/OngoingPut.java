@@ -4,7 +4,6 @@
 
 package org.tensorics.core.tensor;
 
-
 /**
  * Inner Builder object to manage between positions and values.
  * 

@@ -60,9 +60,10 @@ public final class TensorStructurals {
         }
         outcomeDimensionSet.addAll(dimensionSet);
         Builder<E> tensorBuilder = ImmutableTensor.builder(outcomeDimensionSet);
-    
+
         for (Tensor<E> oneTensor : tensors) {
-            if (TensorStructurals.isValidInTermsOfDimensions(oneTensor, refDimensionSet, refContextPosition.dimensionSet())) {
+            if (TensorStructurals.isValidInTermsOfDimensions(oneTensor, refDimensionSet,
+                    refContextPosition.dimensionSet())) {
                 tensorBuilder.putAllAt(oneTensor, oneTensor.context().getPosition());
             } else {
                 throw new IllegalArgumentException(
@@ -90,7 +91,7 @@ public final class TensorStructurals {
         }
         Tensor<E> tensor = merge(internalTensors);
         return TensorbackedInternals.createBackedByTensor(classToReturn, tensor);
-    
+
     }
 
     /**

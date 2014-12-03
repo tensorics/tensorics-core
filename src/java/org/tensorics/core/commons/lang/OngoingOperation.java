@@ -4,7 +4,6 @@
 
 package org.tensorics.core.commons.lang;
 
-
 /**
  * The top interface that defines all required common operations in the tensorics world.
  * 

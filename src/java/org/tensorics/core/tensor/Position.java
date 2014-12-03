@@ -22,7 +22,7 @@ import com.google.common.collect.Interners;
 public final class Position {
 
     private static final Interner<Position> INTERNER = Interners.newWeakInterner();
-    
+
     /*
      * NOTE: This has to be after the cachedPositions initialization, because the 'of' method uses it!
      */

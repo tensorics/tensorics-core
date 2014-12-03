@@ -4,7 +4,6 @@
 
 package org.tensorics.core.tree.domain;
 
-
 /**
  * Interface for node that can ultimately handle exception propagation from bottom nodes.
  * 

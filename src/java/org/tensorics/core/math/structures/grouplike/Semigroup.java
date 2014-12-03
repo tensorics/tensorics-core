@@ -2,7 +2,7 @@
  * Copyright (c) 2014 European Organisation for Nuclear Research (CERN), All Rights Reserved.
  */
 
-package org.tensorics.core.math.structures.grouplike; 
+package org.tensorics.core.math.structures.grouplike;
 
 import org.tensorics.core.math.operations.AssociativeOperation;
 

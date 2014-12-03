@@ -54,8 +54,7 @@ public class InstantiatorsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void instantiatorWithThrowingConstructorThrows() {
-        instantiatorFor(TestClassWithIntThrowingConstructor.class).withArgumentType(Integer.class).create(
-                TEST_VALUE_5);
+        instantiatorFor(TestClassWithIntThrowingConstructor.class).withArgumentType(Integer.class).create(TEST_VALUE_5);
     }
 
     private Instantiator<Integer, TestClassWithIntConstructor> workingInstantiator() {

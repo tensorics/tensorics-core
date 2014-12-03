@@ -4,7 +4,6 @@
 
 package org.tensorics.core.math.structures.grouplike;
 
-
 /**
  * The algebraic structure of a Magma (or also called groupoid). It has the following properties:
  * <ul>

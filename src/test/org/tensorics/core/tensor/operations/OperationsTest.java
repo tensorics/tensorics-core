@@ -12,7 +12,7 @@ import org.tensorics.core.math.Operations;
 public class OperationsTest {
 
     @Test
-    public void verifyUtilityClass() {   
+    public void verifyUtilityClass() {
         assertUtilityClass(Operations.class);
     }
 

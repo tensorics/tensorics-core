@@ -3,7 +3,6 @@
  */
 package org.tensorics.core.tree.domain;
 
-
 /**
  * {@link EditableResolvingContext} corresponding to the mutable version of the {@link ResolvingContext}
  * 

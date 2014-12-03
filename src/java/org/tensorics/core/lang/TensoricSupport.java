@@ -34,12 +34,11 @@ import org.tensorics.core.units.Unit;
 @SuppressWarnings("PMD.TooManyMethods")
 public class TensoricSupport<V> {
 
-   
     private final TensorSupport<V> tensoricFieldUsage;
     private final QuantityTensorSupport<V> quantifiedTensoricFieldUsage;
     private final QuantityTensorbackedSupport<V> quantifiedTensorbackedSupport;
     private final TensorbackedSupport<V> tensorbackedSupport;
-    
+
     public TensoricSupport(EnvironmentImpl<V> environment) {
         this.tensoricFieldUsage = new TensorSupport<>(environment);
         this.quantifiedTensoricFieldUsage = new QuantityTensorSupport<>(environment);
@@ -191,5 +190,5 @@ public class TensoricSupport<V> {
     public V absoluteValueOf(V value) {
         return tensoricFieldUsage.absoluteValueOf(value);
     }
-    
+
 }

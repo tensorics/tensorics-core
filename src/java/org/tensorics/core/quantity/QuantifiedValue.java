@@ -4,7 +4,6 @@
 
 package org.tensorics.core.quantity;
 
-
 /**
  * A scalar-type value representing a physical quantity. It contains:
  * <ul>
