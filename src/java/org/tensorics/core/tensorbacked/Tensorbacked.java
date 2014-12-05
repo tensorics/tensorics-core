@@ -19,4 +19,9 @@ public interface Tensorbacked<T> {
      * @return a {@link Tensor} for given types.
      */
     Tensor<T> tensor();
+
+    /**
+     * @return an iterable to loop through the tensor entries
+     */
+    Iterable<Tensor.Entry<T>> entries();
 }
