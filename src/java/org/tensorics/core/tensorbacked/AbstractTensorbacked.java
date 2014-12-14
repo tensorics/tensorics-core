@@ -29,11 +29,6 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E> {
     }
 
     @Override
-    public Iterable<Entry<E>> entries() {
-        return this.backingTensor.entrySet();
-    }
-
-    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
