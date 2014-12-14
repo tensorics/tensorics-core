@@ -20,8 +20,4 @@ public interface Tensorbacked<T> {
      */
     Tensor<T> tensor();
 
-    /**
-     * @return an iterable to loop through the tensor entries
-     */
-    Iterable<Tensor.Entry<T>> entries();
 }
