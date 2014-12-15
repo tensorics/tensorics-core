@@ -194,6 +194,13 @@ public final class Tensorics {
     }
 
     /**
+     * @see QuantityTensors#from(Tensor)
+     */
+    public static <S> Tensor<QuantifiedValue<S>> from(Tensor<S> tensor, Unit unit) {
+        return QuantityTensors.from(tensor, unit);
+    }
+
+    /**
      * @see QuantityTensors#unitOf(Tensor)
      */
     public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {

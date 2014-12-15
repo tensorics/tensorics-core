@@ -4,6 +4,7 @@
 
 package org.tensorics.core.tensor.lang;
 
+import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
@@ -56,6 +57,21 @@ public class QuantityTensors {
             return one.getValue().unit();
         }
         throw new IllegalArgumentException("No entries in the given tensor! Cannot find out what is the unit.");
+    }
+
+    /**
+     * Provides the way how to convert back the tensor of values into Quantified tensor of values
+     * 
+     * @param tensor
+     * @param unit
+     * @return
+     */
+    public static <S> Tensor<QuantifiedValue<S>> from(Tensor<S> tensor, Unit unit) {
+        Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        for (Entry<S> oneEntry : tensor.entrySet()) {
+            builder.at(oneEntry.getPosition()).put(ImmutableQuantifiedValue.of(oneEntry.getValue(), unit));
+        }
+        return builder.build();
     }
 
 }
