@@ -6,7 +6,6 @@ package org.tensorics.core.lang;
 
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.AbstractTensorbacked;
-import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
 
 @Dimensions({ XCoordinate.class, YCoordinate.class })

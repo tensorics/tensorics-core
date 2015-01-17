@@ -4,6 +4,11 @@
 
 package org.tensorics.core.testing;
 
+/**
+ * Static methods for unit tests involving tensorics objects.
+ * 
+ * @author kfuchsbe
+ */
 public class TensoricTests {
-
+    /* nothing yet */
 }

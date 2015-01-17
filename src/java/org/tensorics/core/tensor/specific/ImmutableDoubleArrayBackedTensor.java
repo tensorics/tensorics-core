@@ -83,6 +83,7 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
             this.values[indexer.indexFor(position)] = value;
         }
 
+        @Override
         public ImmutableDoubleArrayBackedTensor build() {
             return new ImmutableDoubleArrayBackedTensor(this);
         }
