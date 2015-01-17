@@ -13,6 +13,7 @@ import org.tensorics.core.math.predicates.BinaryPredicate;
  * 
  * @param <T> the type of the elements of the field
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public interface ExplicitField<T> {
 
     /**

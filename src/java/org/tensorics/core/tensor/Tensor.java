@@ -4,7 +4,6 @@
 
 package org.tensorics.core.tensor;
 
-import java.util.NoSuchElementException;
 
 /**
  * The top interface for {@link Tensor} like objects.
@@ -18,7 +17,7 @@ public interface Tensor<E> {
      * @param position the position in the N-dimensional space where to find the value.
      * @return the value at the given position
      * @throws IllegalArgumentException when number of coordinates is not sufficient
-     * @throws NoSuchElementException if the tensor contains no element for the given position
+     * @throws java.util.NoSuchElementException if the tensor contains no element for the given position
      */
     E get(Position position);
 
@@ -26,7 +25,7 @@ public interface Tensor<E> {
      * @param coordinates form N-dimensional space where to find the value.
      * @return a value at the given coordinates.
      * @throws IllegalArgumentException if the number of coordinates in incorrect
-     * @throws NoSuchElementException if the tensor contains no element for the given position
+     * @throws java.util.NoSuchElementException if the tensor contains no element for the given position
      */
     E get(Object... coordinates);
 

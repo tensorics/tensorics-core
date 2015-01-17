@@ -26,6 +26,7 @@ import org.tensorics.core.tensor.Tensor.Entry;
  * @param <V> the type of the values of the tensor (and thus also the tensor backed object)
  * @param <TB> the type of the tensor backed object
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 
     private final Class<TB> tensorbackedClass;

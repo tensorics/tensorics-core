@@ -47,7 +47,7 @@ public final class TensorStructurals {
      *             context positions dimensionality is not equal OR tensor context is empty.
      */
     public static <E> Tensor<E> merge(Set<Tensor<E>> tensors) {
-        if (tensors.size() <= 1) {
+        if (tensors.isEmpty() || tensors.size() == 1) {
             throw new IllegalArgumentException("Cannot merge empty or one element list of tensors!");
         }
         Tensor<E> firstTensor = tensors.iterator().next();
@@ -55,7 +55,7 @@ public final class TensorStructurals {
         Position refContextPosition = firstTensor.context().getPosition();
         Set<Class<?>> outcomeDimensionSet = new HashSet<>(refDimensionSet);
         Set<Class<?>> dimensionSet = refContextPosition.dimensionSet();
-        if (dimensionSet.size() == 0) {
+        if (dimensionSet.isEmpty()) {
             throw new IllegalArgumentException("Cannot merge tensors with not specified context!");
         }
         outcomeDimensionSet.addAll(dimensionSet);

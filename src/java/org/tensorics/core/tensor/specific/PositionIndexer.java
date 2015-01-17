@@ -19,6 +19,7 @@ import com.google.common.collect.Sets;
  * 
  * @author kaifox
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class PositionIndexer {
 
     private final Map<Class<?>, Map<?, Integer>> mapping;
@@ -29,7 +30,7 @@ public final class PositionIndexer {
         builder.checkBoundary();
         this.mapping = builder.createMapping();
         this.dimensionFactors = builder.createFactors();
-        this.size = new Long(builder.arrayDimension()).intValue();
+        this.size = (int) builder.arrayDimension();
     }
 
     public int indexFor(Position position) {
@@ -73,9 +74,14 @@ public final class PositionIndexer {
         return mapping.keySet();
     }
 
+    /**
+     * The builder for a position indexer.
+     * 
+     * @author kfuchsbe
+     */
     public static class Builder {
 
-        private Map<Class<?>, Set<?>> coordinates = new HashMap<>();
+        private final Map<Class<?>, Set<?>> coordinates = new HashMap<>();
 
         Builder() {
             /* only created from within the class */
@@ -134,7 +140,7 @@ public final class PositionIndexer {
              */
             long factor = 1;
             for (Entry<Class<?>, Set<?>> entry : coordinates.entrySet()) {
-                builder.put(entry.getKey(), Long.valueOf(factor).intValue());
+                builder.put(entry.getKey(), (int) factor);
                 factor *= entry.getValue().size();
             }
             return builder.build();

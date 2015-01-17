@@ -4,6 +4,8 @@
 
 package org.tensorics.core.tensor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ClassToInstanceMap;
@@ -69,15 +71,11 @@ public final class Coordinates {
      * @return a reduced string
      */
     public static String dimensionsWithoutClassPath(Set<Class<?>> dimensionSet) {
-        String toReturn = "[";
-        int i = 0;
+        List<String> classNames = new ArrayList<String>();
         for (Class<?> oneClass : dimensionSet) {
-            toReturn += oneClass.getSimpleName();
-            if (i++ < dimensionSet.size() - 1) {
-                toReturn += ", ";
-            }
+            classNames.add(oneClass.getSimpleName());
         }
-        return toReturn + "]";
+        return classNames.toString();
     }
 
 }

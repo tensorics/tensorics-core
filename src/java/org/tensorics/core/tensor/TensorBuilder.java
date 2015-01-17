@@ -2,6 +2,12 @@ package org.tensorics.core.tensor;
 
 import java.util.Set;
 
+/**
+ * The interface any builder of a tensor has to implement
+ * 
+ * @author kfuchsbe
+ * @param <E> the type of the tensor values
+ */
 public interface TensorBuilder<E> {
 
     void putAt(E value, Position position);

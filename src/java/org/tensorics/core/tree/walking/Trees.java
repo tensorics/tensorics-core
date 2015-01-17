@@ -112,7 +112,7 @@ public final class Trees {
             }
 
         });
-        if (paths.size() < 1) {
+        if (paths.isEmpty()) {
             throw new PathDoesNotExistException(childNode, ancestorNode);
         }
         return paths;
