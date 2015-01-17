@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableSet;
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.TooManyMethods" })
 public class ImmutableTensor<T> implements Tensor<T> {
 
+    private static final int TOSTRING_BUFFER_SIZE = 64;
     private static final int POSITION_TO_DISPLAY = 10;
     private final Map<Position, Tensor.Entry<T>> entries; // NOSONAR
     private final Shape shape; // NOSONAR
@@ -206,7 +207,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
      */
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer(20);
+        StringBuffer buffer = new StringBuffer(TOSTRING_BUFFER_SIZE);
         int totalSize = this.shape.positionSet().size();
         int index = 1;
         for (Position position : this.shape.positionSet()) {
