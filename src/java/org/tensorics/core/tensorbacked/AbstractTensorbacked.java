@@ -5,7 +5,6 @@
 package org.tensorics.core.tensorbacked;
 
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensor.Entry;
 
 /**
  * An abstract class for classes that are backed by a tensor. The purpose of such classes is that they can be used for

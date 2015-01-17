@@ -81,10 +81,10 @@ public final class PositionIndexer {
             /* only created from within the class */
         }
 
-        public <C> Builder put(Class<C> dimension, Set<C> coordinates) {
+        public <C> Builder put(Class<C> dimension, Set<C> newCoordinates) {
             Preconditions.checkArgument(!this.coordinates.containsKey(dimension), "The dimension '" + dimension
                     + "' is already present. Setting twice is not allowed.");
-            this.coordinates.put(dimension, coordinates);
+            this.coordinates.put(dimension, newCoordinates);
             return this;
         }
 
