@@ -22,12 +22,12 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
 
     private final PositionIndexer indexer;
     private final double[] values;
-    private final Context context;
+    private final Context tensorContext;
 
     public ImmutableDoubleArrayBackedTensor(Builder builder) {
         this.indexer = builder.indexer;
         this.values = Arrays.copyOf(builder.values, builder.values.length);
-        this.context = builder.getContext();
+        this.tensorContext = builder.getContext();
     }
 
     @Override
@@ -56,13 +56,18 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
 
     @Override
     public Context context() {
-        return this.context;
+        return this.tensorContext;
     }
 
     public static Builder builder(PositionIndexer indexer) {
         return new Builder(indexer);
     }
 
+    /**
+     * A builder for tensor which only will contain doubles
+     * 
+     * @author kfuchsbe
+     */
     public static class Builder extends AbstractTensorBuilder<Double> {
 
         private final PositionIndexer indexer;
@@ -86,18 +91,6 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
         @Override
         public ImmutableDoubleArrayBackedTensor build() {
             return new ImmutableDoubleArrayBackedTensor(this);
-        }
-
-        @Override
-        public void putAt(Double value, Set<?> coordinates) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void putAllAt(Tensor<Double> tensor, Set<?> coordinates) {
-            // TODO Auto-generated method stub
-
         }
 
     }

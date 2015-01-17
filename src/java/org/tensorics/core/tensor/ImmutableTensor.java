@@ -189,7 +189,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
             return new ImmutableTensor<S>(this);
         }
 
-        protected final Map<Position, Tensor.Entry<S>> createEntries() {
+        protected Map<Position, Tensor.Entry<S>> createEntries() {
             return this.entries.build();
         }
 
@@ -206,8 +206,7 @@ public class ImmutableTensor<T> implements Tensor<T> {
      */
     @Override
     public String toString() {
-        // XXX put/extract it to proper class? I have no idea where for time being...
-        StringBuffer buffer = new StringBuffer();
+        StringBuffer buffer = new StringBuffer(20);
         int totalSize = this.shape.positionSet().size();
         int index = 1;
         for (Position position : this.shape.positionSet()) {

@@ -19,7 +19,7 @@ import org.tensorics.core.lang.TensoricSupport;
  */
 public class TensoricTestingSupport<S> extends TensoricSupport<S> {
 
-    private Environment<S> environment;
+    private final Environment<S> environment;
 
     public TensoricTestingSupport(EnvironmentImpl<S> environment) {
         super(environment);

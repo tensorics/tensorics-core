@@ -9,6 +9,7 @@ import org.tensorics.core.math.ExplicitField;
 /**
  * Part of a fluent API clause, which allows to test binary conditions on scalar values.
  * 
+ * @param <S> the type of the scalar values
  * @author kfuchsbe
  */
 public class OngoingScalarBinaryPredicate<S> {

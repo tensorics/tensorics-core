@@ -84,17 +84,17 @@ public final class BinaryPredicates {
 
     private static final class AndBinaryPredicateView<T> implements BinaryPredicate<T> {
 
-        private final BinaryPredicate<T> p1;
-        private final BinaryPredicate<T> p2;
+        private final BinaryPredicate<T> leftPredicate;
+        private final BinaryPredicate<T> rightPredicate;
 
         public AndBinaryPredicateView(BinaryPredicate<T> left, BinaryPredicate<T> right) {
-            this.p1 = left;
-            this.p2 = right;
+            this.leftPredicate = left;
+            this.rightPredicate = right;
         }
 
         @Override
         public boolean test(T left, T right) {
-            return (p1.test(left, right) && p2.test(left, right));
+            return (leftPredicate.test(left, right) && rightPredicate.test(left, right));
         }
 
     }

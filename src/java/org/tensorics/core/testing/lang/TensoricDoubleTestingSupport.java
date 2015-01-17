@@ -8,6 +8,12 @@ import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.lang.EnvironmentImpl;
 import org.tensorics.core.lang.ManipulationOptions;
 
+/**
+ * This class is the specialization to provide methods which deal with tensorics of double values. This class is
+ * intended to be inherited from.
+ * 
+ * @author kfuchsbe
+ */
 public class TensoricDoubleTestingSupport extends TensoricTestingSupport<Double> {
 
     public TensoricDoubleTestingSupport() {

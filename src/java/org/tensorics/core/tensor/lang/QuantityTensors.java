@@ -19,7 +19,7 @@ import com.google.common.base.Optional;
  * 
  * @author kfuchsbe
  */
-public class QuantityTensors {
+public final class QuantityTensors {
 
     /**
      * private constructor to avoid instantiation

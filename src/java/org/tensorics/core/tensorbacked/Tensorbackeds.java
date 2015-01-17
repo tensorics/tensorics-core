@@ -128,8 +128,4 @@ public final class Tensorbackeds {
         return tensorbacked.tensor().shape().positionSet();
     }
 
-    /*
-     * TODO:<p> <ul> <li> singleton </ul>
-     */
-
 }

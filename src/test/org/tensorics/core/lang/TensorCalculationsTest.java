@@ -567,7 +567,7 @@ public class TensorCalculationsTest {
 
     public long getMemoryUsage() {
         for (int i = 0; i < 10; i++) {
-            System.gc(); // NOSONAR benchmarking code
+            System.gc(); // NOSONAR
         }
 
         int kb = 1024;
