@@ -61,4 +61,7 @@ public class QuantitySupport<V> {
         return operationRepository.two();
     }
 
+    public OngoingQuantifiedScalarConversion<V> convert(QuantifiedValue<V> value) {
+        return new OngoingQuantifiedScalarConversion<>(value, operationRepository.environment().quantification());
+    }
 }

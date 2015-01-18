@@ -4,7 +4,6 @@
 
 package org.tensorics.core.quantity.operations;
 
-import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.math.operations.UnaryOperation;
@@ -30,7 +29,7 @@ public class QuantityOperationRepository<S> {
     private final QuantifiedValue<S> zeroOfUnitOne;
     private final QuantifiedValue<S> oneOfUnitOne;
     private final QuantifiedValue<S> twoOfUnitOne;
-    private final Environment<S> mathsEnvironment;
+    private final QuantityEnvironment<S> mathsEnvironment;
 
     public QuantityOperationRepository(QuantityEnvironment<S> environment) {
         this.mathsEnvironment = environment;
@@ -85,7 +84,7 @@ public class QuantityOperationRepository<S> {
         return twoOfUnitOne;
     }
 
-    public Environment<S> environment() {
+    public QuantityEnvironment<S> environment() {
         return mathsEnvironment;
     }
 }

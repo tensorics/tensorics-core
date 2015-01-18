@@ -51,6 +51,11 @@ public class JScienceQuantificationStrategy<T> implements QuantificationStrategy
         Unit unit = scalar.unit();
         throwIfNotJScience(unit);
         UnitConverter converter = extract(unit).toStandardUnit();
+        return convert(converter, scalar);
+    }
+
+    private <S extends ErronousValue<T> & Quantified> ImmutableErronousValue<T> convert(UnitConverter converter,
+            S scalar) {
         T value = convert(converter, scalar.value());
         if (scalar.error().isPresent()) {
             return ImmutableErronousValue.ofValueAndError(value, convert(converter, scalar.error().get()));
@@ -72,6 +77,13 @@ public class JScienceQuantificationStrategy<T> implements QuantificationStrategy
     public Unit divide(Unit left, Unit right) {
         throwIfNotJScience(left, right);
         return JScienceUnit.of(extract(left).divide(extract(right)));
+    }
+
+    @Override
+    public <V extends ErronousValue<T> & Quantified> ErronousValue<T> convertValueToUnit(V value, Unit targetUnit) {
+        throwIfNotJScience(value.unit(), targetUnit);
+        UnitConverter converter = extract(value.unit()).getConverterTo(extract(targetUnit));
+        return convert(converter, value);
     }
 
     private javax.measure.unit.Unit<?> extract(Unit unit) {

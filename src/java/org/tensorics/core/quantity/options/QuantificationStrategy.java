@@ -24,4 +24,6 @@ public interface QuantificationStrategy<T> extends ManipulationOption {
     Unit divide(Unit left, Unit right);
 
     Unit one();
+
+    <V extends ErronousValue<T> & Quantified> ErronousValue<T> convertValueToUnit(V value, Unit unit);
 }
