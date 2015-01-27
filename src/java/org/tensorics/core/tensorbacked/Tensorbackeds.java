@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.units.Unit;
@@ -126,6 +127,16 @@ public final class Tensorbackeds {
      */
     public static Set<Position> positionsOf(Tensorbacked<?> tensorbacked) {
         return tensorbacked.tensor().shape().positionSet();
+    }
+
+    /**
+     * Retrieves the shape of the tensor backed object.
+     * 
+     * @param tensorbacked the tensorbacke object from which to retrieve the shape
+     * @return the shape of the internal tensor of the object
+     */
+    public static final Shape shapeOf(Tensorbacked<?> tensorbacked) {
+        return tensorbacked.tensor().shape();
     }
 
 }
