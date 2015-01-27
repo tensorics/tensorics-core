@@ -12,6 +12,7 @@ import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.lang.QuantityTensors;
@@ -212,6 +213,14 @@ public final class Tensorics {
      */
     public static <S> Unit unitOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
         return Tensorbackeds.unitOf(tensorbacked);
+    }
+
+    /**
+     * @param tensorbacked
+     * @return
+     */
+    public static Shape shapeOf(Tensorbacked<?> tensorbacked) {
+        return Tensorbackeds.shapeOf(tensorbacked);
     }
 
 }
