@@ -212,16 +212,16 @@ public class ImmutableTensor<T> implements Tensor<T> {
         int index = 1;
         for (Position position : this.shape.positionSet()) {
             if (index < POSITION_TO_DISPLAY || index > totalSize - POSITION_TO_DISPLAY) {
-                buffer.append(position + "=" + get(position) + "; ");
+                buffer.append(position + "=(" + get(position) + "), ");
             } else if (index == POSITION_TO_DISPLAY) {
-                buffer.append("(.." + (totalSize - 2 * POSITION_TO_DISPLAY) + "skipped positions..)");
+                buffer.append(".. [" + (totalSize - 2 * POSITION_TO_DISPLAY) + " skipped entries] .. , ");
             }
             index++;
         }
         if (buffer.length() > 1) {
             buffer.setLength(buffer.length() - 2);
         }
-        return Coordinates.dimensionsWithoutClassPath(this) + "{" + buffer + "}";
+        return Coordinates.dimensionsWithoutClassPath(this) + ", Content:{" + buffer + "}";
     }
 
     @Override
