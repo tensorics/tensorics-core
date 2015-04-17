@@ -7,8 +7,8 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :source-highlighter: highlightjs
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
-:javadocdir: ../../build/docs/javadoc
-
+:javadoc-baseurl: ../../build/docs/javadoc/org/tensorics
+:simple-meteo-example: src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
 
 == Tensors
 The central object of tensorics is a ++Tensor++. The simplest way to imagine a tensor might be to see it as 
@@ -16,7 +16,7 @@ a kind of map, where the map-key is actually a 'set of keys'. This 'set of keys'
 in the N-dimensional space - and this is what we will call it: ++Position++ ;-). Each position has exactly N elements (++coordinates++), corresponding to the dimensionality (N) of 
 the respective tensor. The ++dimensions++ of a tensor are uniquely defined by the classes of the coordinates.
 
-*_This might have sound complicated - however, an example should make it obvious. Keep on reading ;-)_*
+*_This might have sound complicated - however, an example should make it obvious. Give it a chance and keep on reading ;-)_*
 
 === The weather example
 Lets take a (very simplistic ;-) example: Assume that we are are analyzing weather data. 
@@ -46,6 +46,7 @@ We have recorded temperature values for several cities and several days, for exa
 These measurements can be represented as a tensor with two dimensions (city and day) and double values. 
 Such a tensor can be created as follows: 
 [source, java, indent=0]
+.Building a Tensor
 ----
 include::{examplesource}/meteo/simple/SimpleMeteoExample.java[tags=createTensor]
 ----
@@ -74,7 +75,7 @@ coordinate-arguments after the value argument.
 The simplest way to think of a tensor (in the sense of tensorics) is to imagine a map from positions to values. 
 Therefore, values can be retrieved from the tensor in a similar way than from a map:
 [source, java, indent=0]
-.Building a tensor
+.Getting Values
 ----
 include::{examplesource}/meteo/simple/SimpleMeteoExample.java[tags=getValue]
 ----
@@ -99,16 +100,50 @@ This would print to the console something like this:
 
 === Tensor Shape
 Very often it is useful to see what for which positions in the N-dimensional space values are available within a tensor. 
-The object which holds this information is called the (tensor-) Shape. Although this is comparable to the key-set of a map, 
-there are several important differences:
-* A tensor can have different dimensions. This information is very important to compare different tensors, for example
-to determine if the two tensors are compatible for certain operations or not.
+This is comparable to the key-set of a map. However, there are several important differences:
+
+* Tensors can have different dimensions (number and types of coordinates), while a map has exactly one type of the key. 
+This information is very important to compare different tensors, for example to determine if the two tensors are compatible 
+for certain operations or not.
 * Very often there will be similar tensors, which contain the same positions but different values: For example, if a tensor 
 (in mathematics) is multiplied by a scalar value, the resulting tensor will be of the same 'Shape' as the original tensor.
 
-link:{javadocdir}/org/tensorics/core/tensor/Shape.html[aLink]
+A dedicated object, the link:{javadoc-baseurl}/core/tensor/Shape.html[Shape] holds all this information and can be retrieved from a tensor by the
+link:{javadoc-baseurl}/core/tensor/Tensor.html#shape--[shape()] method. Like most objects in the tensorics library, a shape is also an immutable object.
 
 == Structural Operations
+In the above example, the get() method of the tensor was used to get values at a certain position. However, you might notice that the API of 
+the tensor interface appears to be quite sparse: It contains only the really necessary methods to access the data of the tensor. 
+The philosophy of the tensorics library in this context is, that all more complicated manipulations are done by the use of static utility methods.
+This allows to easily extend the library by new functionality without breaking the core interfaces. Many of this utility methods are 
+implemented such, that they are starting points for fluent clauses, which allows a (hopefully) very expressive and intuitive usage.
+The second reason for this decision is, that in this way it is possible to provide an API with the same syntax for other objects,
+like numbers or tensor expressions (To be explained later ;-).
+
+So, instead of the above example, which uses the get() method directly, it is equivalent to write:
+[source, java, indent=0]
+----
+include::{simple-meteo-example}[tags=getByStaticMethods]
+----
+Together, with static imports for the from() method and the enum constants, this reads even nicer as:
+[source, java, indent=0]
+----
+include::{simple-meteo-example}[tags=getByStaticMethodsWithStaticImports]
+----
+
+So far, this is of course not very impressive. However, the from(..) clause provides various other methods 
+which provide access to the data of the tensor. The most important ones of them are:
+.Structural Operations
+|===
+|clause|description
+
+|from(tensor).get(Object... coordinates);
+|Retrieves the value at the given coordinates.
+
+|link:{javadoc-baseurl}/core/tensor/lang/OngoingTensorManipulation.html[from(tensor).extract(Object... coordinates);]
+|Extracts the sub tensor at the given coordinates.
+|===
+
 
 == Mathematical Operations
 

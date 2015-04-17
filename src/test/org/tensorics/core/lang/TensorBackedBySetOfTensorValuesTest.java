@@ -58,14 +58,14 @@ public class TensorBackedBySetOfTensorValuesTest {
     @Test
     public void orderOfSliceOfTensor() {
         XCoordinate x = XCoordinate.of(8);
-        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
+        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extract(x);
         assertEquals(tensorToTest.shape().dimensionSet().size() - 1, tensorOnXCoordinate.shape().dimensionSet().size());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void sliceOfTensorGetSameCoordinate() {
         XCoordinate x = XCoordinate.of(8);
-        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
+        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extract(x);
         assertEquals(1.0, tensorOnXCoordinate.get(x), DOUBLE_LIMIT);
     }
 
@@ -73,7 +73,7 @@ public class TensorBackedBySetOfTensorValuesTest {
     public void sliceOfTensorGetValue() {
         XCoordinate x = XCoordinate.of(8);
         YCoordinate y = YCoordinate.of(8);
-        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extractSliceAt(x);
+        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extract(x);
         assertEquals(64.0, tensorOnXCoordinate.get(y), DOUBLE_LIMIT);
     }
 
