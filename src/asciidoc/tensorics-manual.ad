@@ -6,6 +6,7 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :source-highlighter: highlightjs
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
+:javadoc-baseurl: file://c:/Users/kaifox/Documents/work/workspace/tensorics-core/build/docs/javadoc/org/tensorics/core/tensor
 
 Tensorics is a java framework for data processing of multidimensional data. 
 The core object is a Tensor which represents a collection of values of arbitrary
@@ -81,6 +82,8 @@ Using a two-dimensional tensor is more flexible in this case - and you can still
 operations, as you will see later ;-)
 
 === Working with Tensors
+
+The {javadoc-baseurl}/Tensor.html[Tensor] is the base interface.
 
 == Structural Operations
 

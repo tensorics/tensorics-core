@@ -1,5 +1,7 @@
 package org.tensorics.core.examples.meteo.history;
 
+import static org.tensorics.core.lang.Tensorics.from;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,23 +29,19 @@ public class WeatherHistoryInEurope extends AbstractWeatherHistory {
 
 		Tensor<QuantifiedValue<Double>> importedData = importDataForCities();
 		Latitude romeLatitude = EuropeanCapital.ROMA.getLatitude();
-		Tensor<QuantifiedValue<Double>> sliceAtTropicCancerAndRome = from(
-				importedData).extractSliceAt(romeLatitude);
+		Tensor<QuantifiedValue<Double>> sliceAtTropicCancerAndRome = from(importedData).extract(romeLatitude);
 
 		Temperature temperature = new Temperature(importedData);
 
-		Tensor<QuantifiedValue<Double>> elementTimes = calculateQ(importedData)
-				.elementTimes(importedData);
-		Temperature elementTimes2 = calculateQ(temperature).elementTimes(
-				temperature);
+		Tensor<QuantifiedValue<Double>> elementTimes = calculateQ(importedData).elementTimes(importedData);
+		Temperature elementTimes2 = calculateQ(temperature).elementTimes(temperature);
 
 		/* dimension will be reduced to only Longitude and Time */
 		sliceAtTropicCancerAndRome.shape().dimensionSet();
 		//
 		// from(sliceAtTropicCancerAndRome).reduce(Time.class).byAveragingIn(field)
 
-		TensoricSupport<Double> fullTensoricSupport = Tensorics
-				.using(Structures.doubles());
+		TensoricSupport<Double> fullTensoricSupport = Tensorics.using(Structures.doubles());
 
 	}
 	// end::import[]

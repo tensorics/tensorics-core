@@ -123,7 +123,7 @@ public class TensorCalculationsTest {
     @Test
     public void testMeanCalculation() {
         YCoordinate y = YCoordinate.of(1);
-        double mean2 = TensorStructurals.from(TensorStructurals.from(tensor1).extractSliceAt(y))
+        double mean2 = TensorStructurals.from(TensorStructurals.from(tensor1).extract(y))
                 .reduce(XCoordinate.class).byAveragingIn(doubles()).get(Position.empty());
         assertEquals(4.5, mean2, 0.0);
     }
@@ -237,7 +237,7 @@ public class TensorCalculationsTest {
 
     @Test(expected = IllegalStateException.class)
     public void testReductionOnNonExistingCoordinate() {
-        TensorStructurals.from(tensor1).extractSliceAt(ZCoordinate.of(1));
+        TensorStructurals.from(tensor1).extract(ZCoordinate.of(1));
     }
 
     @Test
@@ -540,7 +540,7 @@ public class TensorCalculationsTest {
                     + (date5.getTime() - date4.getTime()) + "ms)");
         }
 
-        TensorStructurals.from(TensorStructurals.from(tensorOut).extractSliceAt(z, y)).reduce(XCoordinate.class)
+        TensorStructurals.from(TensorStructurals.from(tensorOut).extract(z, y)).reduce(XCoordinate.class)
                 .byAveragingIn(doubles());
 
         Date date6 = new Date();
