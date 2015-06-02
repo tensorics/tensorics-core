@@ -4,6 +4,8 @@
 
 package org.tensorics.core.tensorbacked;
 
+import java.io.Serializable;
+
 import org.tensorics.core.tensor.Tensor;
 
 /**
@@ -14,7 +16,9 @@ import org.tensorics.core.tensor.Tensor;
  * @param <E> the type of the elements of the tensor, which backs this class
  * @see Tensorbacked
  */
-public abstract class AbstractTensorbacked<E> implements Tensorbacked<E> {
+public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     protected final Tensor<E> backingTensor;
 

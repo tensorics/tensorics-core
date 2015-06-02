@@ -4,12 +4,16 @@
 
 package org.tensorics.core.tensor;
 
+import java.io.Serializable;
+
 /**
  * @author kfuchsbe
  * @param <T> The type of the value of the tensor entry
  */
 @SuppressWarnings("PMD.CyclomaticComplexity")
-public class ImmutableEntry<T> implements Tensor.Entry<T> {
+public class ImmutableEntry<T> implements Tensor.Entry<T>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final T value;
     private final Position position;

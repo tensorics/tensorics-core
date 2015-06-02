@@ -4,6 +4,7 @@
 
 package org.tensorics.core.tensor;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -14,7 +15,9 @@ import java.util.Set;
  * 
  * @author agorzaws
  */
-public final class Context {
+public final class Context implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final Position position;
 

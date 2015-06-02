@@ -4,6 +4,7 @@
 
 package org.tensorics.core.tensor;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,9 @@ import com.google.common.collect.Interners;
  * 
  * @author agorzaws
  */
-public final class Position {
+public final class Position implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Interner<Position> INTERNER = Interners.newWeakInterner();
 

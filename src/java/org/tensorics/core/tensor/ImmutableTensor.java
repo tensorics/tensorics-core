@@ -4,6 +4,7 @@
 
 package org.tensorics.core.tensor;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -30,8 +31,10 @@ import com.google.common.collect.ImmutableSet;
  * @param <T> type of values in Tensor.
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.TooManyMethods" })
-public class ImmutableTensor<T> implements Tensor<T> {
+public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     private static final int TOSTRING_BUFFER_SIZE = 64;
     private static final int POSITION_TO_DISPLAY = 10;
     private final Map<Position, Tensor.Entry<T>> entries; // NOSONAR
