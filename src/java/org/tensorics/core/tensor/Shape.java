@@ -4,6 +4,7 @@
 
 package org.tensorics.core.tensor;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,7 +20,9 @@ import com.google.common.collect.ImmutableSet;
  * @author kfuchsbe
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.TooManyMethods" })
-public final class Shape {
+public final class Shape implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Shape EMPTY_SHAPE = of();
     private static final Shape ZERO_DIMENSIONAL_SHAPE = of(Position.empty());
