@@ -12,6 +12,8 @@ package org.tensorics.core.units;
 public final class JScienceUnit implements Unit {
     private static final long serialVersionUID = 1L;
 
+    public static final JScienceUnit ONE = JScienceUnit.of(javax.measure.unit.Unit.ONE);
+
     private final javax.measure.unit.Unit<?> unit;
 
     private JScienceUnit(javax.measure.unit.Unit<?> unit) {

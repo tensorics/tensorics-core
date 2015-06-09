@@ -44,6 +44,14 @@ public final class QuantityTensors {
         return builder.build();
     }
 
+    public static <S> Tensor<S> errorsOfOr(Tensor<QuantifiedValue<S>> tensor, S defaultValue) {
+        Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
+            builder.at(one.getPosition()).put(one.getValue().error().or(defaultValue));
+        }
+        return builder.build();
+    }
+
     public static <S> Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
         Builder<Boolean> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {

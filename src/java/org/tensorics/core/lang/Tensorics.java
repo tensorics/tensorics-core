@@ -229,5 +229,29 @@ public final class Tensorics {
     public static <V> OngoingTensorManipulation<V> from(Tensor<V> tensor) {
         return TensorStructurals.from(tensor);
     }
+    
+    public static Set<Class<?>> dimensionsOf(Tensor<?> tensor) {
+        return tensor.shape().dimensionSet();
+    }
+
+    public static Set<Position> positionsOf(Tensor<?> tensor) {
+        return tensor.shape().positionSet();
+    }
+
+    public static <S> Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
+        return QuantityTensors.validitiesOf(tensor);
+    }
+
+    public static <S> Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
+        return QuantityTensors.valuesOf(tensor);
+    }
+
+    public static <S> Tensor<Optional<S>> errorsOf(Tensor<QuantifiedValue<S>> tensor) {
+        return QuantityTensors.errorsOf(tensor);
+    }
+
+    public static <S> Tensor<S> errorsOfOr(Tensor<QuantifiedValue<S>> tensor, S defaultValue) {
+        return QuantityTensors.errorsOfOr(tensor, defaultValue);
+    }
 
 }

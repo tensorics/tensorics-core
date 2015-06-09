@@ -4,6 +4,7 @@
 
 package org.tensorics.core.tensor;
 
+import java.util.Map;
 
 /**
  * The top interface for {@link Tensor} like objects.
