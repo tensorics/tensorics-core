@@ -10,7 +10,9 @@ import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.QuantityTensors;
+import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
@@ -137,6 +139,17 @@ public final class Tensorbackeds {
      */
     public static final Shape shapeOf(Tensorbacked<?> tensorbacked) {
         return tensorbacked.tensor().shape();
+    }
+
+    /**
+     * Starting for a fluent clause, that allows to flatten one or multiple dimensions of the internal tensor of the
+     * tensor backed object into maps or tensors of lists.
+     * 
+     * @param tensorbacked the tensor backed object whose internal tensor is subject to flattening of values
+     * @return an object which allows to further specify the flattening operation
+     */
+    public static final <S> OngoingFlattening<S> flatten(Tensorbacked<S> tensorbacked) {
+        return TensorStructurals.flatten(tensorbacked.tensor());
     }
 
 }
