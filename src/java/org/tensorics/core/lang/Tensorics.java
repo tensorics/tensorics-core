@@ -15,6 +15,7 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
@@ -229,7 +230,7 @@ public final class Tensorics {
     public static <V> OngoingTensorManipulation<V> from(Tensor<V> tensor) {
         return TensorStructurals.from(tensor);
     }
-    
+
     public static Set<Class<?>> dimensionsOf(Tensor<?> tensor) {
         return tensor.shape().dimensionSet();
     }
@@ -252,6 +253,14 @@ public final class Tensorics {
 
     public static <S> Tensor<S> errorsOfOr(Tensor<QuantifiedValue<S>> tensor, S defaultValue) {
         return QuantityTensors.errorsOfOr(tensor, defaultValue);
+    }
+
+    public static <S> OngoingFlattening<S> flatten(Tensor<S> tensor) {
+        return TensorStructurals.flatten(tensor);
+    }
+
+    public static <S> OngoingFlattening<S> flatten(Tensorbacked<S> tensorbacked) {
+        return Tensorbackeds.flatten(tensorbacked);
     }
 
 }
