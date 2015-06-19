@@ -15,10 +15,12 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
@@ -261,6 +263,14 @@ public final class Tensorics {
 
     public static <S> OngoingFlattening<S> flatten(Tensorbacked<S> tensorbacked) {
         return Tensorbackeds.flatten(tensorbacked);
+    }
+
+    public static <S> Tensor<S> sameValues(Shape shape, S value) {
+        return new SingleValueTensorCreationOperation<S>(shape, value).perform();
+    }
+
+    public static <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
+        return TensorStructurals.complete(tensor);
     }
 
 }
