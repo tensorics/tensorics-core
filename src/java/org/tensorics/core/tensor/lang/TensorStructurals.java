@@ -113,5 +113,9 @@ public final class TensorStructurals {
     public static <S> OngoingFlattening<S> flatten(Tensor<S> tensor) {
         return new OngoingFlattening<S>(tensor);
     }
+    
+    public static final <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
+        return new OngoingCompletion<S>(tensor);
+    }
 
 }
