@@ -1,6 +1,7 @@
 package org.tensorics.core.tensor.specific;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 
 import org.tensorics.core.tensor.AbstractTensorBuilder;
@@ -10,6 +11,7 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -41,6 +43,7 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
     }
 
     @Override
+    @Deprecated
     public Set<Tensor.Entry<Double>> entrySet() {
         ImmutableSet.Builder<Tensor.Entry<Double>> builder = ImmutableSet.builder();
         for (Position position : indexer.allPositions()) {
@@ -49,6 +52,16 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
         return null;
     }
 
+
+	@Override
+	public Map<Position, Double> asMap() {
+		ImmutableMap.Builder<Position, Double> builder = ImmutableMap.builder();
+        for (Position position : indexer.allPositions()) {
+            builder.put(position, get(position));
+        }
+		return builder.build();
+	}
+    
     @Override
     public Shape shape() {
         return Shape.viewOf(indexer.dimensions(), indexer.allPositions());
@@ -93,6 +106,13 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
             return new ImmutableDoubleArrayBackedTensor(this);
         }
 
+		@Override
+		public void putAll(Map<Position, Double> newEntries) {
+			// TODO Auto-generated method stub
+			
+		}
+
     }
+
 
 }
