@@ -1,5 +1,6 @@
 package org.tensorics.core.tensor;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -41,10 +42,14 @@ public interface TensorBuilder<E> {
 
     void putAllAt(Tensor<E> tensor, Set<?> coordinates);
 
+    @Deprecated
     void put(Tensor.Entry<E> entry);
 
+    @Deprecated
     void putAll(Iterable<Tensor.Entry<E>> newEntries);
-
+    
+    void putAll(Map<Position, E> newEntries);
+  
     Tensor<E> build();
 
 }

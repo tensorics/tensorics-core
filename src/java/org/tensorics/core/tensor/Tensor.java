@@ -33,8 +33,14 @@ public interface Tensor<E> {
     /**
      * @return entry set of the tensor.
      */
+    @Deprecated
     Iterable<Entry<E>> entrySet();
 
+    /**
+     * @return all the entries as a map of Position to value.
+     */
+    Map<Position, E> asMap();
+    
     /**
      * @return the shape of the tensor. The RAW coordinates structure, no tensor values are returend here.
      */
@@ -51,6 +57,7 @@ public interface Tensor<E> {
      * @author agorzaws
      * @param <E> type of the values in the tensor.
      */
+    @Deprecated
     interface Entry<E> {
 
         /**
