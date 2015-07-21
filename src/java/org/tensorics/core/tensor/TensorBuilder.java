@@ -17,6 +17,8 @@ public interface TensorBuilder<E> {
 	void putAt(E value, Object... coordinates);
 
 	void putAt(E value, Set<?> coordinates);
+	
+	void removeAt(Position position);
 
 	void setTensorContext(Context context);
 
