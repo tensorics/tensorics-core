@@ -5,12 +5,14 @@
 package org.tensorics.core.tensor.operations;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.reduction.ReductionStrategy;
 import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
 /**
@@ -37,10 +39,10 @@ public class TensorReduction<C, E> implements UnaryOperation<Tensor<E>> {
 
         Builder<E> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());
         builder.setTensorContext(Context.of(reductionStrategy.context(value.context().getPosition()).coordinates()));
-        for (Tensor.Entry<Map<C, E>> entry : mapped.entrySet()) {
+        for (Entry<Position, Map<C, E>> entry : mapped.asMap().entrySet()) {
             E reducedValue = reductionStrategy.reduce(entry.getValue());
             if (reducedValue != null) {
-                builder.at(entry.getPosition()).put(reducedValue);
+                builder.at(entry.getKey()).put(reducedValue);
             }
         }
         return builder.build();

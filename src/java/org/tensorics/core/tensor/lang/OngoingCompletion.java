@@ -7,13 +7,13 @@ package org.tensorics.core.tensor.lang;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensor.Entry;
 
 import com.google.common.base.Preconditions;
 
@@ -30,8 +30,8 @@ public class OngoingCompletion<S> {
         checkArgument(second.shape().dimensionSet().equals(dimensions()),
                 "Tensors do not have the same dimensions! Completion not supported!");
         Builder<S> builder = ImmutableTensor.builder(dimensions());
-        for (Entry<S> entry : second.entrySet()) {
-            Position position = entry.getPosition();
+        for (Entry<Position, S> entry: second.asMap().entrySet()) {
+            Position position = entry.getKey();
             if (tensor.shape().contains(position)) {
                 builder.putAt(tensor.get(position), position);
             } else {

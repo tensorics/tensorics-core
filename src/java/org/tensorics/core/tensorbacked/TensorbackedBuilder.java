@@ -56,7 +56,12 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
         return tensorBuilder.at(coordinates);
     }
 
+    @Deprecated
     public final void put(Entry<V> entry) {
+        tensorBuilder.put(entry);
+    }
+
+    public final void put(java.util.Map.Entry<Position, V> entry) {
         tensorBuilder.put(entry);
     }
 
@@ -67,9 +72,16 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
     public final void putAt(V value, Object... coordinates) {
         tensorBuilder.putAt(value, coordinates);
     }
-
+    
+    @Deprecated
     public final void putAll(Iterable<Entry<V>> entries) {
         tensorBuilder.putAll(entries);
+    }
+    
+    public final void putAll(Set<java.util.Map.Entry<Position, V>> entries) {
+        for (java.util.Map.Entry<Position, V> entry : entries) {
+        tensorBuilder.put(entry);
+        }
     }
 
     public final void putAllAt(Tensor<V> tensor, Position position) {

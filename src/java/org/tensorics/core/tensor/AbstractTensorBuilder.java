@@ -6,6 +6,7 @@ package org.tensorics.core.tensor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
@@ -107,8 +108,8 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
     public final void putAllAt(Tensor<E> tensor, Position position) {
         checkNotNull(tensor, "The tensor must not be null!");
         checkNotNull(position, "The position must not be null!");
-        for (Tensor.Entry<E> entry : tensor.entrySet()) {
-            putAt(entry.getValue(), Positions.union(position, entry.getPosition()));
+        for (Entry<Position, E> entry : tensor.asMap().entrySet()) {
+            putAt(entry.getValue(), Positions.union(position, entry.getKey()));
         }
     }
 
@@ -118,12 +119,14 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
         putAllAt(tensor, Position.of(coordinates));
     }
 
+    @Deprecated
     @Override
     public final void put(Tensor.Entry<E> entry) {
         checkNotNull(entry, "Entry to put must not be null!");
         putAt(entry.getValue(), entry.getPosition());
     }
 
+    @Deprecated
     @Override
     public final void putAll(Iterable<Tensor.Entry<E>> newEntries) {
         checkNotNull(newEntries, "Iterable of entries to put must not be null!");

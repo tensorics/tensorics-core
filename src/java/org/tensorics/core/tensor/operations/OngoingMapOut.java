@@ -7,6 +7,7 @@ package org.tensorics.core.tensor.operations;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -37,7 +38,7 @@ public final class OngoingMapOut<V> {
     public <C1> Tensor<Map<C1, V>> inDirectionOf(Class<? extends C1> dimension) {
         Builder<Map<C1, V>> tensorBuilder = ImmutableTensor.builder(OngoingMapOut.dimensionsExcept(tensor.shape()
                 .dimensionSet(), dimension));
-        Multimap<Set<?>, Tensor.Entry<V>> fullEntries = groupBy(tensor.entrySet(), dimension);
+        Multimap<Set<?>, Entry<Position, V>> fullEntries = groupBy(tensor.asMap().entrySet(), dimension);
         for (Set<?> key : fullEntries.keySet()) {
             Map<C1, V> values = mapByDimension(fullEntries.get(key), dimension);
             tensorBuilder.at(Position.of(key)).put(values);
@@ -65,25 +66,25 @@ public final class OngoingMapOut<V> {
         return toReturn;
     }
 
-    private static <C, C1 extends C, T> Map<C1, T> mapByDimension(Collection<Tensor.Entry<T>> entries,
+    private static <C, C1 extends C, T> Map<C1, T> mapByDimension(Collection<Entry<Position, T>> entries,
             Class<? extends C1> dimension) {
         ImmutableMap.Builder<C1, T> valuesBuilder = ImmutableMap.builder();
-        for (Tensor.Entry<T> entry : entries) {
-            C1 coordinateFor = entry.getPosition().coordinateFor(dimension);
+        for (Entry<Position, T> entry : entries) {
+            C1 coordinateFor = entry.getKey().coordinateFor(dimension);
             if (coordinateFor == null) {
                 throw new IllegalStateException("Cannot operate with [" + dimension + "] while having only "
-                        + entry.getPosition());
+                        + entry.getKey());
             }
             valuesBuilder.put(coordinateFor, entry.getValue());
         }
         return valuesBuilder.build();
     }
 
-    private static <T, C, C1 extends C> Multimap<Set<?>, Tensor.Entry<T>> groupBy(Iterable<Tensor.Entry<T>> entries,
-            Class<C1> dimension) {
-        ImmutableMultimap.Builder<Set<?>, Tensor.Entry<T>> fullEntriesBuilder = ImmutableMultimap.builder();
-        for (Tensor.Entry<T> entry : entries) {
-            Collection<?> coordinates = entry.getPosition().coordinates();
+    private static <T, C, C1 extends C> Multimap<Set<?>, Entry<Position, T>> groupBy(
+            Iterable<Entry<Position, T>> entries, Class<C1> dimension) {
+        ImmutableMultimap.Builder<Set<?>, Entry<Position, T>> fullEntriesBuilder = ImmutableMultimap.builder();
+        for (Entry<Position, T> entry : entries) {
+            Collection<?> coordinates = entry.getKey().coordinates();
             fullEntriesBuilder.put(OngoingMapOut.coordinatesExcept(coordinates, dimension), entry);
         }
         return fullEntriesBuilder.build();
