@@ -123,8 +123,8 @@ public class TensorCalculationsTest {
     @Test
     public void testMeanCalculation() {
         YCoordinate y = YCoordinate.of(1);
-        double mean2 = TensorStructurals.from(TensorStructurals.from(tensor1).extract(y))
-                .reduce(XCoordinate.class).byAveragingIn(doubles()).get(Position.empty());
+        double mean2 = TensorStructurals.from(TensorStructurals.from(tensor1).extract(y)).reduce(XCoordinate.class)
+                .byAveragingIn(doubles()).get(Position.empty());
         assertEquals(4.5, mean2, 0.0);
     }
 
@@ -227,8 +227,8 @@ public class TensorCalculationsTest {
     }
 
     private void checkCorrectlyAdded(XCoordinate x, double x1Add, Tensor<Double> result) {
-        for (Entry<Double> entry : result.entrySet()) {
-            Position position = entry.getPosition();
+        for (java.util.Map.Entry<Position, Double> entry : result.asMap().entrySet()) {
+            Position position = entry.getKey();
             if (x.equals(position.coordinateFor(XCoordinate.class))) {
                 assertEquals(tensor1.get(position) + x1Add, entry.getValue(), 0.0000001);
             }

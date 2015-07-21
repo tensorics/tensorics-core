@@ -87,7 +87,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      */
     public static final <T> Tensor<T> fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map) {
         Builder<T> builder = builder(dimensions);
-        builder.putAll(map);
+        builder.putAllMap(map);
         return builder.build();
     }
 
@@ -112,7 +112,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      */
     public static final <T> Tensor<T> copyOf(Tensor<T> tensor) {
         Builder<T> builder = builder(tensor.shape().dimensionSet());
-        builder.putAll(tensor.asMap());
+        builder.putAllMap(tensor.asMap());
         builder.setTensorContext(tensor.context());
         return builder.build();
     }
@@ -126,7 +126,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      */
     public static <T> Builder<T> builderFrom(Tensor<T> tensor) {
         Builder<T> builder = builder(tensor.shape().dimensionSet());
-        builder.putAll(tensor.asMap());
+        builder.putAllMap(tensor.asMap());
         return builder;
     }
 
@@ -219,13 +219,18 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
         }
 
         @Override
-        public void putAll(Map<Position, S> newEntries) {
+        public void putAllMap(Map<Position, S> newEntries) {
             this.entries.putAll(newEntries);
         }
 
         @Override
         public void removeAt(Position position) {
             entries.remove(position);
+        }
+
+        @Override
+        public void put(java.util.Map.Entry<Position, S> entry) {
+            this.putAt(entry.getValue(), entry.getKey());
         }
 
     }

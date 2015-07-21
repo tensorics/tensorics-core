@@ -8,11 +8,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.util.Collections;
+import java.util.Set;
 
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
-import org.tensorics.core.tensor.Tensor.Entry;
 import org.tensorics.core.tensorbacked.orbit.SinglebeamOrbit;
 import org.tensorics.core.tensorbacked.orbit.coordinates.Bpm;
 import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
@@ -75,25 +75,27 @@ public class TensorbackedBuilderTest {
 
     @Test(expected = NullPointerException.class)
     public void putNullEntryThrows() {
-        newBuilder().put(null);
+        java.util.Map.Entry<Position, Double> toPut = null;
+        newBuilder().put(toPut);
     }
 
     @Test
     public void putOneEntryIsEqualToOriginal() {
         TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
-        builder.put(Iterables.getFirst(oneValuePosAH().tensor().entrySet(), null));
+        builder.put(Iterables.getFirst(oneValuePosAH().tensor().asMap().entrySet(), null));
         assertThat(builder.build(), equalTo(oneValuePosAH()));
     }
 
     @Test(expected = NullPointerException.class)
     public void putNullEntriesThrows() {
-        newBuilder().putAll(null);
+        Set<java.util.Map.Entry<Position, Double>> toPut = null;
+        newBuilder().putAll(toPut);
     }
 
     @Test
     public void putEmptyCollectionResultsInEmptyTensor() {
         TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
-        builder.putAll(Collections.<Entry<Double>> emptySet());
+        builder.putAll(Collections.<java.util.Map.Entry<Position, Double>> emptySet());
         assertThat(Tensorics.sizeOf(builder.build()), equalTo(0));
     }
 
@@ -109,7 +111,7 @@ public class TensorbackedBuilderTest {
 
     private SinglebeamOrbit oneValuePosCopied() {
         TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
-        builder.putAll(oneValuePosAH().tensor().entrySet());
+        builder.putAll(oneValuePosAH().tensor().asMap().entrySet());
         SinglebeamOrbit copiedOrbit = builder.build();
         return copiedOrbit;
     }

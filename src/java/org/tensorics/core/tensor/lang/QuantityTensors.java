@@ -7,6 +7,7 @@ package org.tensorics.core.tensor.lang;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensor.Entry;
@@ -30,39 +31,39 @@ public final class QuantityTensors {
 
     public static <S> Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
-            builder.at(one.getPosition()).put(one.getValue().value());
+        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
+            builder.at(entry.getKey()).put(entry.getValue().value());
         }
         return builder.build();
     }
 
     public static <S> Tensor<Optional<S>> errorsOf(Tensor<QuantifiedValue<S>> tensor) {
         Builder<Optional<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
-            builder.at(one.getPosition()).put(one.getValue().error());
+        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
+            builder.at(entry.getKey()).put(entry.getValue().error());
         }
         return builder.build();
     }
 
     public static <S> Tensor<S> errorsOfOr(Tensor<QuantifiedValue<S>> tensor, S defaultValue) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
-            builder.at(one.getPosition()).put(one.getValue().error().or(defaultValue));
+        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
+            builder.at(entry.getKey()).put(entry.getValue().error().or(defaultValue));
         }
         return builder.build();
     }
 
     public static <S> Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
         Builder<Boolean> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
-            builder.at(one.getPosition()).put(one.getValue().validity());
+        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
+            builder.at(entry.getKey()).put(entry.getValue().validity());
         }
         return builder.build();
     }
 
     public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
-        for (Entry<QuantifiedValue<S>> one : tensor.entrySet()) {
-            return one.getValue().unit();
+        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
+            return entry.getValue().unit();
         }
         throw new IllegalArgumentException("No entries in the given tensor! Cannot find out what is the unit.");
     }
@@ -76,8 +77,8 @@ public final class QuantityTensors {
      */
     public static <S> Tensor<QuantifiedValue<S>> from(Tensor<S> tensor, Unit unit) {
         Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        for (Entry<S> oneEntry : tensor.entrySet()) {
-            builder.at(oneEntry.getPosition()).put(ImmutableQuantifiedValue.of(oneEntry.getValue(), unit));
+        for (java.util.Map.Entry<Position, S> entry : tensor.asMap().entrySet()) {
+            builder.at(entry.getKey()).put(ImmutableQuantifiedValue.of(entry.getValue(), unit));
         }
         return builder.build();
     }
