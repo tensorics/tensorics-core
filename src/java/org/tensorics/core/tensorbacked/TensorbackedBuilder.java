@@ -7,6 +7,7 @@ package org.tensorics.core.tensorbacked;
 import static org.tensorics.core.tensorbacked.TensorbackedInternals.createBackedByTensor;
 import static org.tensorics.core.tensorbacked.TensorbackedInternals.dimensionsOf;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -72,15 +73,15 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
     public final void putAt(V value, Object... coordinates) {
         tensorBuilder.putAt(value, coordinates);
     }
-    
+
     @Deprecated
     public final void putAll(Iterable<Entry<V>> entries) {
         tensorBuilder.putAll(entries);
     }
-    
+
     public final void putAll(Set<java.util.Map.Entry<Position, V>> entries) {
         for (java.util.Map.Entry<Position, V> entry : entries) {
-        tensorBuilder.put(entry);
+            tensorBuilder.put(entry);
         }
     }
 
@@ -98,6 +99,22 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 
     public final void putAllAt(Tensorbacked<V> tensorbacked, Object... coordinates) {
         tensorBuilder.putAllAt(tensorbacked.tensor(), coordinates);
+    }
+
+    public final void putAll(TB tensorBacked) {
+        tensorBuilder.putAll(tensorBacked.tensor());
+    }
+
+    public final void putAll(Tensor<V> tensor) {
+        tensorBuilder.putAll(tensor);
+    }
+
+    public final void putAllMap(Map<Position, V> newEntries) {
+        tensorBuilder.putAllMap(newEntries);
+    }
+
+    public final void removeAt(Position position) {
+        tensorBuilder.removeAt(position);
     }
 
     /**
