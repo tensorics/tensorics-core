@@ -32,6 +32,9 @@ public interface TensorBuilder<E> {
      * @param position the position which will be merged with the tensor in the source tensor
      */
     /* Not too nice yet. Should be refactored into ongoing put */
+
+    void putAll(Tensor<E> tensor);
+
     void putAllAt(Tensor<E> tensor, Position position);
 
     /**
