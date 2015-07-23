@@ -233,6 +233,11 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
             this.putAt(entry.getValue(), entry.getKey());
         }
 
+        @Override
+        public void putAll(Tensor<S> tensor) {
+            this.putAllMap(tensor.asMap());
+        }
+
     }
 
     /**

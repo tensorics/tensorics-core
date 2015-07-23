@@ -122,5 +122,10 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
             putAt(entry.getValue(), entry.getKey());
 
         }
+
+        @Override
+        public void putAll(Tensor<Double> tensor) {
+            putAllMap(tensor.asMap());
+        }
     }
 }
