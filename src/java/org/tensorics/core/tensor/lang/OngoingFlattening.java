@@ -31,4 +31,7 @@ public final class OngoingFlattening<S> {
         return new OngoingDimensionFlattening<S>(tensor, dimensions);
     }
 
+    public <C extends Comparable<C>> OngoingOrderedFlattening<S, C> orderedInDirectionOf(Class<C> dimension) {
+        return new OngoingOrderedFlattening<S, C>(tensor, dimension);
+    }
 }

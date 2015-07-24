@@ -75,7 +75,7 @@ public final class QuantityTensors {
      * @param unit
      * @return
      */
-    public static <S> Tensor<QuantifiedValue<S>> from(Tensor<S> tensor, Unit unit) {
+    public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
         Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (java.util.Map.Entry<Position, S> entry : tensor.asMap().entrySet()) {
             builder.at(entry.getKey()).put(ImmutableQuantifiedValue.of(entry.getValue(), unit));

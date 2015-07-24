@@ -14,8 +14,10 @@ import org.tensorics.core.tensor.Positions.DimensionStripper;
 import org.tensorics.core.tensor.Tensor;
 
 import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
 
@@ -30,12 +32,12 @@ public class OngoingDimensionFlattening<S> {
         this.dimensionsToFlatten = dimensions;
     }
 
-    public Tensor<List<S>> intoTensorOfLists() {
-        return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoListMultimap()));
+    public Tensor<Set<S>> intoTensorOfSets() {
+        return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoSetMultimap()));
     }
 
-    private ListMultimap<Position, S> intoListMultimap() {
-        ImmutableListMultimap.Builder<Position, S> builder = ImmutableListMultimap.builder();
+    private SetMultimap<Position, S> intoSetMultimap() {
+        ImmutableSetMultimap.Builder<Position, S> builder = ImmutableSetMultimap.builder();
         DimensionStripper dimensionStripper = Positions.stripping(dimensionsToFlatten);
         for (java.util.Map.Entry<Position, S> entry : tensor.asMap().entrySet()) {
             Position newPosition = dimensionStripper.apply(entry.getKey());

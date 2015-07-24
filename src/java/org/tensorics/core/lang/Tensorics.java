@@ -199,10 +199,18 @@ public final class Tensorics {
     }
 
     /**
-     * @see QuantityTensors#from(Tensor)
+     * @deprecated use renamed method {@link #quantityTensorOf(Tensor, Unit)}
      */
+    @Deprecated
     public static <S> Tensor<QuantifiedValue<S>> convertToQuantified(Tensor<S> tensor, Unit unit) {
-        return QuantityTensors.from(tensor, unit);
+        return QuantityTensors.quantityTensorOf(tensor, unit);
+    }
+
+    /**
+     * @see QuantityTensors#quantityTensorOf(Tensor, Unit)
+     */
+    public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
+        return QuantityTensors.quantityTensorOf(tensor, unit);
     }
 
     /**
