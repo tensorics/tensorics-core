@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
-	<product name="tensorics-core" version="0.0.3" directory="org/tensorics/tensorics-core">
+	<product name="tensorics-core" version="0.0.4" directory="org/tensorics/tensorics-core">
 		<desc>
 			Framework of tensor-like objects for numerical data analysis,
 			statistics and backing of domain objects.
