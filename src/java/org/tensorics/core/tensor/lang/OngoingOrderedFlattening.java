@@ -48,6 +48,23 @@ public class OngoingOrderedFlattening<S, C extends Comparable<C>> {
         }
         return builder.build();
     }
+    
+    public Tensor<List<C>> intoTensorOfKeyLists() {
+        return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoKeyListMultimap()));
+    }
+
+    private ListMultimap<Position, C> intoKeyListMultimap() {
+        ImmutableListMultimap.Builder<Position, C> builder = ImmutableListMultimap.builder();
+        Tensor<Map<C, S>> maps = TensorInternals.mapOut(tensor).inDirectionOf(dimensionToFlatten);
+        for (Entry<Map<C, S>> entry : maps.entrySet()) {
+            Position newPosition = entry.getPosition();
+            Map<C, S> map = entry.getValue();
+            List<C> keys = new ArrayList<>(map.keySet());
+            Collections.sort(keys);
+            builder.putAll(newPosition, keys);
+        }
+        return builder.build();
+    }
 
     private SetView<Class<?>> remainingDimensions() {
         return Sets.difference(tensor.shape().dimensionSet(), singleton(dimensionToFlatten));
