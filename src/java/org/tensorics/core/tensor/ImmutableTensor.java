@@ -235,7 +235,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
         @Override
         public void putAll(Tensor<S> tensor) {
-            this.putAllMap(tensor.asMap());
+            this.putAllAt(tensor);
         }
 
     }

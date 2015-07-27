@@ -4,6 +4,7 @@
 
 package org.tensorics.incubate.function;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +29,26 @@ public final class Functions {
             errors[i] = ZERO;
         }
         return convertToDiscreteFunctionFrom(times, values, errors);
+    }
+
+    public static List<Double> getXsIntersection(DiscreteFunction<Double, ?> first, DiscreteFunction<Double, ?> second) {
+
+        List<Double> firstTs = first.getXs();
+        List<Double> secondTs = second.getXs();
+
+        List<Double> tsToReturn = new ArrayList<Double>();
+        if (firstTs.size() == 0 || secondTs.size() == 0) {
+            return tsToReturn;
+        }
+
+        double upperLimit = Math.min(firstTs.get(firstTs.size() - 1), secondTs.get(secondTs.size() - 1));
+        double lowerLimit = Math.max(firstTs.get(0), secondTs.get(0));
+
+        for (Double one : firstTs) {
+            if (one > lowerLimit && one < upperLimit)
+                tsToReturn.add(one);
+        }
+        return tsToReturn;
     }
 
     @SuppressWarnings("boxing")
