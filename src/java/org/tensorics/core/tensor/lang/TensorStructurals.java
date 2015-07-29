@@ -5,14 +5,18 @@
 package org.tensorics.core.tensor.lang;
 
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedInternals;
+
+import com.google.common.base.Function;
 
 /**
  * Structural manipulations of tensors (which do not require any knowledge about the mathematical behaviour of the
@@ -113,9 +117,25 @@ public final class TensorStructurals {
     public static <S> OngoingFlattening<S> flatten(Tensor<S> tensor) {
         return new OngoingFlattening<S>(tensor);
     }
-    
+
     public static final <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
         return new OngoingCompletion<S>(tensor);
+    }
+
+    public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {
+        Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        for (Entry<Position, S> entry : tensor.asMap().entrySet()) {
+            builder.putAt(function.apply(entry), entry.getKey());
+        }
+        return builder.build();
+    }
+
+    public static <S, T> Tensor<T> transformScalars(Tensor<S> tensor, Function<S, T> function) {
+        Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        for (Entry<Position, S> entry : tensor.asMap().entrySet()) {
+            builder.putAt(function.apply(entry.getValue()), entry.getKey());
+        }
+        return builder.build();
     }
 
 }

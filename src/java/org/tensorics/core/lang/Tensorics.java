@@ -4,7 +4,10 @@
 
 package org.tensorics.core.lang;
 
+import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier;
+
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.tensorics.core.math.ExtendedField;
@@ -20,6 +23,8 @@ import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensor.operations.FunctionTensorCreationOperation;
+import org.tensorics.core.tensor.operations.PositionFunctions;
 import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
@@ -27,7 +32,9 @@ import org.tensorics.core.tensorbacked.Tensorbackeds;
 import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.base.Supplier;
 
 /**
  * The main entry point for constructing and structural manipulation of tensorics. If mathematical operations are
@@ -277,8 +284,24 @@ public final class Tensorics {
         return new SingleValueTensorCreationOperation<S>(shape, value).perform();
     }
 
+    public static <S> Tensor<S> createFrom(Shape shape, Supplier<S> supplier) {
+        return new FunctionTensorCreationOperation<>(shape, forSupplier(supplier)).perform();
+    }
+
+    public static <S> Tensor<S> createFrom(Shape shape, Function<Position, S> function) {
+        return new FunctionTensorCreationOperation<>(shape, function).perform();
+    }
+
     public static <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
         return TensorStructurals.complete(tensor);
+    }
+
+    public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {
+        return TensorStructurals.transformEntries(tensor, function);
+    }
+
+    public static <S, T> Tensor<T> transform(Tensor<S> tensor, Function<S, T> function) {
+        return TensorStructurals.transformScalars(tensor, function);
     }
 
 }

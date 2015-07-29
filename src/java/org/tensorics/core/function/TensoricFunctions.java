@@ -4,12 +4,8 @@
 
 package org.tensorics.core.function;
 
-import static org.tensorics.core.lang.Tensorics.dimensionsOf;
-
-import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 
 import com.google.common.base.Function;
@@ -46,12 +42,5 @@ public final class TensoricFunctions {
         return forSingleCoordinate(tensorbacked.tensor());
     }
 
-    public final static <T, R> Tensor<R> transform(Tensor<T> inTensor, Function<T, R> transformation) {
-        TensorBuilder<R> builder = Tensorics.builder(dimensionsOf(inTensor));
-        for (java.util.Map.Entry<Position, T> entry : inTensor.asMap().entrySet()) {
-            builder.putAt(transformation.apply(entry.getValue()), entry.getKey());
-        }
-        return builder.build();
-    }
-
+    
 }
