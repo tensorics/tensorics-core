@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
-	<product name="tensorics-core" version="0.0.8
+	<product name="tensorics-core" version="0.0.8" directory="org/tensorics/tensorics-core">
+		<desc>
+			Framework of tensor-like objects for numerical data analysis,
+			statistics and backing of domain objects.
 		</desc>
 		<dependencies>
 			<dep product="jscience" />
