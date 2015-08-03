@@ -10,15 +10,6 @@ package org.tensorics.core.math.operations;
  * @author kfuchsbe
  * @param <T> the type of the elements of the algebraic structures.
  */
-public interface BinaryOperation<T> {
+public interface BinaryOperation<T> extends BinaryFunction<T, T> {
 
-    /**
-     * Has to be implemented to perform the actual operation. The order of operands might be important or not,
-     * depending, if the operation is commutative or not.
-     * 
-     * @param left the left operand to be used in the operation
-     * @param right the right operand to be used in the operation
-     * @return the result of the operation
-     */
-    T perform(T left, T right);
 }

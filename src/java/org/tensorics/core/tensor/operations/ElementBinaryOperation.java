@@ -4,17 +4,10 @@
 
 package org.tensorics.core.tensor.operations;
 
-import java.util.Collections;
-
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.math.operations.BinaryOperation;
-import org.tensorics.core.tensor.ImmutableTensor;
-import org.tensorics.core.tensor.ImmutableTensor.Builder;
-import org.tensorics.core.tensor.Position;
-import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.TensorPair;
 import org.tensorics.core.tensor.options.BroadcastingStrategy;
 import org.tensorics.core.tensor.options.ShapingStrategy;
 
@@ -32,39 +25,10 @@ import org.tensorics.core.tensor.options.ShapingStrategy;
  * @author kfuchsbe
  * @param <V> The type of the tensor values
  */
-public class ElementBinaryOperation<V> implements BinaryOperation<Tensor<V>> {
-    private final BinaryOperation<V> operation;
-    private final OptionRegistry<ManipulationOption> optionRegistry;
+public class ElementBinaryOperation<V> extends ElementBinaryFunction<V, V> implements BinaryOperation<Tensor<V>> {
 
     public ElementBinaryOperation(BinaryOperation<V> operation, OptionRegistry<ManipulationOption> optionRegistry) {
-        super();
-        this.operation = operation;
-        this.optionRegistry = optionRegistry;
-    }
-
-    @Override
-    public Tensor<V> perform(Tensor<V> left, Tensor<V> right) {
-        TensorPair<V> broadcastedPair = broadcast(left, right);
-        Shape resultingShape = shape(broadcastedPair);
-        return performOperation(broadcastedPair.left(), broadcastedPair.right(), resultingShape);
-    }
-
-    private Tensor<V> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape) {
-        Builder<V> tensorBuilder = ImmutableTensor.builder(resultingShape.dimensionSet());
-        for (Position position : resultingShape.positionSet()) {
-            tensorBuilder.at(position).put(operation.perform(left.get(position), right.get(position)));
-        }
-        return tensorBuilder.build();
-    }
-
-    private Shape shape(TensorPair<V> broadcasted) {
-        ShapingStrategy strategy = optionRegistry.get(ShapingStrategy.class);
-        return strategy.shapeLeftRight(broadcasted.left(), broadcasted.right());
-    }
-
-    private TensorPair<V> broadcast(Tensor<V> left, Tensor<V> right) {
-        BroadcastingStrategy broadcastingStrategy = optionRegistry.get(BroadcastingStrategy.class);
-        return broadcastingStrategy.broadcast(left, right, Collections.<Class<?>> emptySet());
+        super(operation, optionRegistry);
     }
 
 }

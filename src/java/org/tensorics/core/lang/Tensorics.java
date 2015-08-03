@@ -10,7 +10,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.commons.options.OptionRegistry;
+import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -23,12 +27,14 @@ import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensor.operations.FunctionTensorCreationOperation;
 import org.tensorics.core.tensor.operations.PositionFunctions;
 import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
+import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
@@ -300,7 +306,7 @@ public final class Tensorics {
         return TensorStructurals.transformEntries(tensor, function);
     }
 
-    public static <S, T> Tensor<T> transform(Tensor<S> tensor, Function<S, T> function) {
+    public static <S, T> Tensor<T> map(Tensor<S> tensor, Function<S, T> function) {
         return TensorStructurals.transformScalars(tensor, function);
     }
 
