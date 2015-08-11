@@ -49,7 +49,7 @@ public class TensorBackedBySetOfTensorValuesTest {
         assertEquals(64.0, tensorToTest.get(x, y), DOUBLE_LIMIT);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void valueOfTensorWithNotEnoughCoordinates() {
         YCoordinate y = YCoordinate.of(8);
         assertEquals(64.0, tensorToTest.get(y), DOUBLE_LIMIT);
@@ -62,7 +62,7 @@ public class TensorBackedBySetOfTensorValuesTest {
         assertEquals(tensorToTest.shape().dimensionSet().size() - 1, tensorOnXCoordinate.shape().dimensionSet().size());
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void sliceOfTensorGetSameCoordinate() {
         XCoordinate x = XCoordinate.of(8);
         Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extract(x);

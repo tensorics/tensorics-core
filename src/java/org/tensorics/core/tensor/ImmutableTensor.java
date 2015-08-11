@@ -171,7 +171,16 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     private T findValueOrThrow(Position position) {
         T entry = findEntryOrNull(position);
         if (entry == null) {
-            throw new NoSuchElementException("Entry for position '" + position + "' is not contained in this tensor.");
+            String message = "Entry for position '" + position + "' is not contained in this tensor.";
+            Set<Class<?>> tensorDimensions = this.shape.dimensionSet();
+            Set<Class<?>> positionDimensions = position.dimensionSet();
+            if (tensorDimensions.equals(positionDimensions)) {
+                throw new NoSuchElementException(message);
+            } else {
+                message += "\nThe dimensions of the tensor (" + tensorDimensions
+                        + ") do not match the dimensions of the requested position (" + positionDimensions + ").";
+                throw new IllegalArgumentException(message);
+            }
         }
         return entry;
     }
