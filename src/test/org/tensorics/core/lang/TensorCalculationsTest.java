@@ -111,13 +111,11 @@ public class TensorCalculationsTest {
         assertEquals(5.33, rms2, 0.01);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testRMSCalculationTooManyCoordiantes() {
         YCoordinate y = YCoordinate.of(1);
         XCoordinate x = XCoordinate.of(2);
-        double rms = TensorStructurals.from(tensor1).reduce(XCoordinate.class).byRmsIn(doubles()).get(x, y);
-
-        assertEquals(5.33, rms, 0.01);
+        TensorStructurals.from(tensor1).reduce(XCoordinate.class).byRmsIn(doubles()).get(x, y);
     }
 
     @Test
