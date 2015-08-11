@@ -79,6 +79,10 @@ public class OngoingTensorManipulation<V> {
         return extractTensor(Arrays.asList(coordinates));
     }
 
+    public OngoingEitherGet<V> either(V defaultValue) {
+        return new OngoingEitherGet<>(tensor, defaultValue);
+    }
+
     private Tensor<V> extractTensor(Collection<?> coordinates) {
         checkArgument(coordinates != null, "Argument '" + "coordinate" + "' must not be null!");
         checkArgument(coordinates.size() > 0, "Coordinates must have at least one element.");
