@@ -79,6 +79,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 
     @Override
     public final void setTensorContext(Context context) {
+        Preconditions.checkNotNull(context, "context must not be null");
         checkIfContextValid(context);
         this.context = context;
     }

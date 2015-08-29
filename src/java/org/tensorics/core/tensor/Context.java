@@ -4,6 +4,8 @@
 
 package org.tensorics.core.tensor;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -19,14 +21,12 @@ public final class Context implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private static final Context EMPTY_CONTEXT = Context.of(Position.empty());
+
     private final Position position;
 
-    private Context() {
-        this.position = Position.empty();
-    }
-
-    private Context(Set<?> coordinates) {
-        this.position = Position.of(coordinates);
+    private Context(Position position) {
+        this.position = checkNotNull(position, "position must not be null");
     }
 
     /**
@@ -42,14 +42,24 @@ public final class Context implements Serializable {
      */
     @SuppressWarnings("PMD.ShortMethodName")
     public static Context of(Set<?> coordinates) {
-        return new Context(coordinates);
+        return of(Position.of(coordinates));
+    }
+
+    @SuppressWarnings("PMD.ShortMethodName")
+    public static Context of(Object... coordinates) {
+        return of(Position.of(coordinates));
+    }
+
+    @SuppressWarnings("PMD.ShortMethodName")
+    public static Context of(Position position) {
+        return new Context(position);
     }
 
     /**
      * @return creates a default empty context.
      */
     public static Context empty() {
-        return new Context();
+        return EMPTY_CONTEXT;
     }
 
     @Override

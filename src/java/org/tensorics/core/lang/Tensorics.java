@@ -310,4 +310,14 @@ public final class Tensorics {
         return TensorStructurals.transformScalars(tensor, function);
     }
 
+    public static final Tensor<QuantifiedValue<Double>> zeroDimensionalOf(double value, javax.measure.unit.Unit<?> unit) {
+        QuantifiedValue<Double> quantity = quantityOf(value, unit);
+        return zeroDimensionalOf(quantity);
+    }
+
+    public static final Tensor<QuantifiedValue<Double>> zeroDimensionalOf(double value, Unit unit) {
+        QuantifiedValue<Double> quantity = quantityOf(value, unit);
+        return zeroDimensionalOf(quantity);
+    }
+
 }
