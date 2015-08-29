@@ -10,6 +10,7 @@ import static org.tensorics.core.tensorbacked.TensorbackedInternals.dimensionsOf
 import java.util.Map;
 import java.util.Set;
 
+import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.OngoingPut;
 import org.tensorics.core.tensor.Position;
@@ -62,16 +63,19 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
         tensorBuilder.put(entry);
     }
 
-    public final void put(java.util.Map.Entry<Position, V> entry) {
+    public final TensorbackedBuilder<V, TB> put(java.util.Map.Entry<Position, V> entry) {
         tensorBuilder.put(entry);
+        return this;
     }
 
-    public final void putAt(V value, Position position) {
+    public final TensorbackedBuilder<V, TB> putAt(V value, Position position) {
         tensorBuilder.putAt(value, position);
+        return this;
     }
 
-    public final void putAt(V value, Object... coordinates) {
+    public final TensorbackedBuilder<V, TB> putAt(V value, Object... coordinates) {
         tensorBuilder.putAt(value, coordinates);
+        return this;
     }
 
     @Deprecated
@@ -79,42 +83,66 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
         tensorBuilder.putAll(entries);
     }
 
-    public final void putAll(Set<java.util.Map.Entry<Position, V>> entries) {
+    public final TensorbackedBuilder<V, TB> putAll(Set<java.util.Map.Entry<Position, V>> entries) {
         for (java.util.Map.Entry<Position, V> entry : entries) {
             tensorBuilder.put(entry);
         }
+        return this;
     }
 
-    public final void putAllAt(Tensor<V> tensor, Position position) {
+    public final TensorbackedBuilder<V, TB> putAllAt(Tensor<V> tensor, Position position) {
         tensorBuilder.putAllAt(tensor, position);
+        return this;
     }
 
-    public final void putAllAt(Tensorbacked<V> tensorbacked, Position position) {
+    public final TensorbackedBuilder<V, TB> putAllAt(Tensorbacked<V> tensorbacked, Position position) {
         tensorBuilder.putAllAt(tensorbacked.tensor(), position);
+        return this;
     }
 
-    public final void putAllAt(Tensor<V> tensor, Object... coordinates) {
+    public final TensorbackedBuilder<V, TB> putAllAt(Tensor<V> tensor, Object... coordinates) {
         tensorBuilder.putAllAt(tensor, coordinates);
+        return this;
     }
 
-    public final void putAllAt(Tensorbacked<V> tensorbacked, Object... coordinates) {
+    public final TensorbackedBuilder<V, TB> putAllAt(Tensorbacked<V> tensorbacked, Object... coordinates) {
         tensorBuilder.putAllAt(tensorbacked.tensor(), coordinates);
+        return this;
     }
 
-    public final void putAll(TB tensorBacked) {
+    public final TensorbackedBuilder<V, TB> putAll(TB tensorBacked) {
         tensorBuilder.putAll(tensorBacked.tensor());
+        return this;
     }
 
-    public final void putAll(Tensor<V> tensor) {
+    public final TensorbackedBuilder<V, TB> putAll(Tensor<V> tensor) {
         tensorBuilder.putAll(tensor);
+        return this;
     }
 
-    public final void putAllMap(Map<Position, V> newEntries) {
+    public final TensorbackedBuilder<V, TB> putAllMap(Map<Position, V> newEntries) {
         tensorBuilder.putAllMap(newEntries);
+        return this;
     }
 
-    public final void removeAt(Position position) {
+    public final TensorbackedBuilder<V, TB> removeAt(Position position) {
         tensorBuilder.removeAt(position);
+        return this;
+    }
+
+    public final TensorbackedBuilder<V, TB> withContext(Context context) {
+        tensorBuilder.setTensorContext(context);
+        return this;
+    }
+
+    public final TensorbackedBuilder<V, TB> withContext(Position context) {
+        tensorBuilder.setTensorContext(Context.of(context));
+        return this;
+    }
+
+    public final TensorbackedBuilder<V, TB> withContext(Object... coordinates) {
+        tensorBuilder.setTensorContext(Context.of(coordinates));
+        return this;
     }
 
     /**
