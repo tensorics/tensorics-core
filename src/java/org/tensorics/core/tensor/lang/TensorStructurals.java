@@ -4,6 +4,7 @@
 
 package org.tensorics.core.tensor.lang;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -13,10 +14,9 @@ import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensorbacked.Tensorbacked;
-import org.tensorics.core.tensorbacked.TensorbackedInternals;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 
 /**
  * Structural manipulations of tensors (which do not require any knowledge about the mathematical behaviour of the
@@ -50,8 +50,8 @@ public final class TensorStructurals {
      * @throws IllegalArgumentException if zero or one tensor is put to be merged OR if tensors dimensionality and their
      *             context positions dimensionality is not equal OR tensor context is empty.
      */
-    public static <E> Tensor<E> merge(Set<Tensor<E>> tensors) {
-        if (tensors.isEmpty() || tensors.size() == 1) {
+    public static <E> Tensor<E> merge(Iterable<Tensor<E>> tensors) {
+        if (Iterables.isEmpty(tensors) || Iterables.size(tensors) == 1) {
             throw new IllegalArgumentException("Cannot merge empty or one element list of tensors!");
         }
         Tensor<E> firstTensor = tensors.iterator().next();
@@ -76,26 +76,6 @@ public final class TensorStructurals {
             }
         }
         return tensorBuilder.build();
-    }
-
-    /**
-     * Merges the given {@link Tensorbacked}s into one {@link Tensorbacked} of the given class. The resulting dimensions
-     * must match the dimensions required by the resulting object's class.
-     * <p>
-     * 
-     * @param toBeMerged the tensor backed objects that shall be merged into one
-     * @param classToReturn the type of the tensor backed that should be resulting from the merge
-     * @return a new tensor backed object resulting from the the merge of the tensors
-     */
-    public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Set<TB> toBeMerged,
-            Class<TBOUT> classToReturn) {
-        Set<Tensor<E>> internalTensors = new HashSet<>();
-        for (TB oneTensorBacked : toBeMerged) {
-            internalTensors.add(oneTensorBacked.tensor());
-        }
-        Tensor<E> tensor = merge(internalTensors);
-        return TensorbackedInternals.createBackedByTensor(classToReturn, tensor);
-
     }
 
     /**

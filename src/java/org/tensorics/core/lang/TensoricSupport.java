@@ -5,10 +5,12 @@
 package org.tensorics.core.lang;
 
 import org.tensorics.core.commons.lang.OngoingBinaryOperation;
+import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
+import org.tensorics.core.quantity.lang.OngoingQuantityValueExtraction;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -199,4 +201,12 @@ public class TensoricSupport<V> {
         return tensoricFieldUsage.elementwise(operation, left, right);
     }
 
+    public OngoingQuantityValueExtraction<V> valueOf(QuantifiedValue<V> quantity) {
+        return quantifiedTensoricFieldUsage.valueOf(quantity);
+    }
+
+    public final OngoingQuantityIterableValueExtraction<V> valuesOfI(Iterable<QuantifiedValue<V>> quantities) {
+        return quantifiedTensoricFieldUsage.valuesOf(quantities);
+    }
+    
 }

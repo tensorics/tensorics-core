@@ -68,13 +68,6 @@ public final class QuantityTensors {
         throw new IllegalArgumentException("No entries in the given tensor! Cannot find out what is the unit.");
     }
 
-    /**
-     * Provides the way how to convert back the tensor of values into Quantified tensor of values
-     * 
-     * @param tensor
-     * @param unit
-     * @return
-     */
     public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
         Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (java.util.Map.Entry<Position, S> entry : tensor.asMap().entrySet()) {

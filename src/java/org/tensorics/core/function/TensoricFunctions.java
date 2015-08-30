@@ -34,13 +34,12 @@ public final class TensoricFunctions {
         return new CoordinateToPositionFunction<C>();
     }
 
-    public final static <C, S> Function<C, S> forSingleCoordinate(Tensor<S> tensor) {
+    public final static <C, S> Function<C, S> singleCoordinateToValue(Tensor<S> tensor) {
         return Functions.compose(forTensor(tensor), TensoricFunctions.<C> singleCoordinate());
     }
 
     public final static <C, S> Function<C, S> singleCoordinateToValue(Tensorbacked<S> tensorbacked) {
-        return forSingleCoordinate(tensorbacked.tensor());
+        return singleCoordinateToValue(tensorbacked.tensor());
     }
 
-    
 }
