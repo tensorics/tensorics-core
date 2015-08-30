@@ -13,6 +13,7 @@ import org.tensorics.core.quantity.options.RequireBothValidStrategy;
 import org.tensorics.core.quantity.options.UncorrelatedErrorPropagationStrategy;
 import org.tensorics.core.tensor.options.BroadcastMissingDimensionsStrategy;
 import org.tensorics.core.tensor.options.IntersectionShapingStrategy;
+import org.tensorics.core.tensor.options.LeftContextPreservedStrategy;
 
 import com.google.common.collect.ImmutableList;
 
@@ -37,6 +38,7 @@ public final class ManipulationOptions {
      * <li> {@link RequireBothValidStrategy}</li>
      * <li> {@link UncorrelatedErrorPropagationStrategy}</li>
      * <li> {@link JScienceQuantificationStrategy}</li>
+     * <li> {@link LeftContextPreservedStrategy}</li>
      * </ul>
      * 
      * @param field the for which to create the option-instances
@@ -49,7 +51,8 @@ public final class ManipulationOptions {
                 new BroadcastMissingDimensionsStrategy(), //
                 new RequireBothValidStrategy(), //
                 new UncorrelatedErrorPropagationStrategy<>(field), //
-                new JScienceQuantificationStrategy<>(field.cheating())));
+                new JScienceQuantificationStrategy<>(field.cheating()), //
+                new LeftContextPreservedStrategy()));
     }
     // end::classdef[]
 }

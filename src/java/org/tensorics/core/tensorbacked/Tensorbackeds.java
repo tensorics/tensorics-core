@@ -4,6 +4,9 @@
 
 package org.tensorics.core.tensorbacked;
 
+import static org.tensorics.core.tensor.lang.TensorStructurals.merge;
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.tensorsOf;
+
 import java.util.Set;
 
 import org.tensorics.core.quantity.QuantifiedValue;
@@ -13,6 +16,7 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
@@ -74,6 +78,27 @@ public final class Tensorbackeds {
      */
     public static <V, TB extends Tensorbacked<V>> TB empty(Class<TB> tensorbackedClass) {
         return Tensorbackeds.builderFor(tensorbackedClass).build();
+    }
+
+    /**
+     * Starting point for a fluent clause to construct tensor backed objects by different means from other objects. For
+     * example:
+     * 
+     * <pre>
+     * <code>
+     *     // Assume that Orbit and OrbitTimeseries are tensorbacked objects
+     *     List<> orbits = new ArrayList<>();
+     *     // assume the list is filled
+     *     OrbitTimeseries orbitTimeseries = construct(OrbitTimeseries.class).byMerging(orbits);
+     * </code>
+     * </pre>
+     * 
+     * @param tensorbackedClass the type of the tensorbacked object that should be constructed
+     * @return an object which provides further methods to define the construction of the object
+     */
+    public static <V, TB extends Tensorbacked<V>> OngoingTensorbackedConstruction<V, TB> construct(
+            Class<TB> tensorbackedClass) {
+        return new OngoingTensorbackedConstruction<>(tensorbackedClass);
     }
 
     /**
@@ -150,6 +175,32 @@ public final class Tensorbackeds {
      */
     public static final <S> OngoingFlattening<S> flatten(Tensorbacked<S> tensorbacked) {
         return TensorStructurals.flatten(tensorbacked.tensor());
+    }
+
+    /**
+     * Retrieves the tensor from each tensorbacked in the given iterable and returns them in a new iterable. The order
+     * of iteration is conserved from the input iterable and also duplicated entries are returned in a duplicated
+     * manner.
+     * 
+     * @param tensorbackeds the iterable of tensorbackeds from which to retrieve the tensors
+     * @return an iterable containing the tensors from the given iterable of tensorbackeds
+     */
+    public static final <S> Iterable<Tensor<S>> tensorsOf(Iterable<? extends Tensorbacked<S>> tensorbackeds) {
+        return TensorbackedInternals.tensorsOf(tensorbackeds);
+    }
+
+    /**
+     * Merges the given {@link Tensorbacked}s into one {@link Tensorbacked} of the given class. The resulting dimensions
+     * must match the dimensions required by the resulting object's class.
+     * <p>
+     * 
+     * @param toBeMerged the tensor backed objects that shall be merged into one
+     * @param classToReturn the type of the tensor backed that should be resulting from the merge
+     * @return a new tensor backed object resulting from the the merge of the tensors
+     */
+    public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Iterable<TB> toBeMerged,
+            Class<TBOUT> classToReturn) {
+        return construct(classToReturn).byMergingTb(toBeMerged);
     }
 
 }

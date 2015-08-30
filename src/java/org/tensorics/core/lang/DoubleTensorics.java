@@ -1,10 +1,12 @@
 package org.tensorics.core.lang;
 
 import org.tensorics.core.commons.lang.OngoingBinaryOperation;
+import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
+import org.tensorics.core.quantity.lang.OngoingQuantityValueExtraction;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -179,6 +181,15 @@ public final class DoubleTensorics {
 
     public static final QuantifiedValue<Double> valueOf(Double value, javax.measure.unit.Unit<?> unit) {
         return SUPPORT.valueOf(value, unit);
+    }
+
+    public static final OngoingQuantityValueExtraction<Double> valueOf(QuantifiedValue<Double> quantity) {
+        return SUPPORT.valueOf(quantity);
+    }
+
+    public static final OngoingQuantityIterableValueExtraction<Double> valuesOfI(
+            Iterable<QuantifiedValue<Double>> quantities) {
+        return SUPPORT.valuesOfI(quantities);
     }
 
 }

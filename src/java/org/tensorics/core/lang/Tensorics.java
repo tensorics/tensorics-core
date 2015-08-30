@@ -6,6 +6,7 @@ package org.tensorics.core.lang;
 
 import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -34,6 +35,7 @@ import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
+import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
@@ -82,16 +84,16 @@ public final class Tensorics {
     /**
      * @see TensorStructurals#merge(Set)
      */
-    public static <E> Tensor<E> merge(Set<Tensor<E>> tensors) {
+    public static <E> Tensor<E> merge(Iterable<Tensor<E>> tensors) {
         return TensorStructurals.merge(tensors);
     }
 
     /**
-     * @see TensorStructurals#mergeTo(Set, Class)
+     * @see Tensorbackeds#mergeTo(Set, Class)
      */
     public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Set<TB> toBeMerged,
             Class<TBOUT> classToReturn) {
-        return TensorStructurals.mergeTo(toBeMerged, classToReturn);
+        return Tensorbackeds.mergeTo(toBeMerged, classToReturn);
     }
 
     /**
@@ -318,6 +320,21 @@ public final class Tensorics {
     public static final Tensor<QuantifiedValue<Double>> zeroDimensionalOf(double value, Unit unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
         return zeroDimensionalOf(quantity);
+    }
+
+    /**
+     * @see Tensorbackeds#tensorsOf(Iterable)
+     */
+    public static <S> Iterable<Tensor<S>> tensorsOf(Iterable<? extends Tensorbacked<S>> tensorbackeds) {
+        return Tensorbackeds.tensorsOf(tensorbackeds);
+    }
+
+    /**
+     * @see Tensorbackeds#construct(Class)
+     */
+    public static <V, TB extends Tensorbacked<V>> OngoingTensorbackedConstruction<V, TB> construct(
+            Class<TB> tensorbackedClass) {
+        return Tensorbackeds.construct(tensorbackedClass);
     }
 
 }

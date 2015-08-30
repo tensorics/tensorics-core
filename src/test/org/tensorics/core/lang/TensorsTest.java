@@ -19,6 +19,7 @@ import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensorbacked.Tensorbackeds;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -104,7 +105,7 @@ public class TensorsTest {
         Set<TensorBackedTwoCoordinates> toMerge = new HashSet<>();
         toMerge.add(new TensorBackedTwoCoordinates(tensor1));
         toMerge.add(new TensorBackedTwoCoordinates(tensor2));
-        TensorBackedThreeCoordinates merged = TensorStructurals.mergeTo(toMerge, TensorBackedThreeCoordinates.class);
+        TensorBackedThreeCoordinates merged = Tensorbackeds.mergeTo(toMerge, TensorBackedThreeCoordinates.class);
         Shape shapeOfMerged = merged.tensor().shape();
         assertEquals(3, shapeOfMerged.dimensionality());
     }

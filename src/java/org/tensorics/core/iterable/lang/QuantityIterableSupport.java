@@ -8,6 +8,8 @@ import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.QuantitySupport;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
 
+import com.google.common.collect.Iterables;
+
 /**
  * Contains methods of the tensorics eDSL which deal with iterables of quantities.
  * 
@@ -22,7 +24,7 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
     }
 
     public final QuantifiedValue<V> avarageOf(Iterable<QuantifiedValue<V>> values) {
-        if (isEmpty(values)) {
+        if (Iterables.isEmpty(values)) {
             throw new IllegalArgumentException("Averaging of empty value set is not possible.");
         }
         return calculate(sumOf(values)).dividedBy(sizeOf(values));
@@ -46,8 +48,8 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
         return sum;
     }
 
-    private boolean isEmpty(Iterable<?> iterable) {
-        return !iterable.iterator().hasNext();
+    public final OngoingQuantityIterableValueExtraction<V> valuesOf(Iterable<QuantifiedValue<V>> quantities) {
+        return new OngoingQuantityIterableValueExtraction<>(quantities, operationRepository());
     }
 
 }

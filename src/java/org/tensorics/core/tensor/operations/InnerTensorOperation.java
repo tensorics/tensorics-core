@@ -19,13 +19,16 @@ import org.tensorics.core.iterable.operations.IterableOperations;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.Operations;
 import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.PositionPair;
 import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Positions.DimensionStripper;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.TensorPair;
 import org.tensorics.core.tensor.options.BroadcastingStrategy;
+import org.tensorics.core.tensor.options.ContextPropagationStrategy;
 import org.tensorics.core.tensor.variance.CoContraDimensionPair;
 import org.tensorics.core.tensor.variance.CoContraDimensionPairs;
 
@@ -95,8 +98,7 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
         List<CoContraDimensionPair> pairsToReduce = CoContraDimensionPairs.chooseOnePerContravariantPart(allPairs);
         Set<Class<?>> dimensionsNotToBroadcast = CoContraDimensionPairs.allDimensionsIn(pairsToReduce);
 
-        BroadcastingStrategy broadcasting = optionRegistry.get(BroadcastingStrategy.class);
-        TensorPair<V> broadcasted = broadcasting.broadcast(left, right, dimensionsNotToBroadcast);
+        TensorPair<V> broadcasted = broadcast(left, right, dimensionsNotToBroadcast);
 
         Set<Class<?>> leftDimensionsToReduce = CoContraDimensionPairs.leftDimensionsIn(pairsToReduce);
         Set<Class<?>> rightDimensionsToReduce = CoContraDimensionPairs.rightDimensionsIn(pairsToReduce);
@@ -146,7 +148,18 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
 
         Map<Position, V> result = IterableOperations.reduce(targetPositionToValueSet, reductionOperation);
 
-        return Tensorics.fromMap(targetDimensions, result);
+        ContextPropagationStrategy cps = optionRegistry.get(ContextPropagationStrategy.class);
+        Context resultingContext = cps.contextForLeftRight(left.context(), right.context());
+
+        TensorBuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
+        finalBuilder.putAllMap(result);
+        finalBuilder.setTensorContext(resultingContext);
+        return finalBuilder.build();
+    }
+
+    private TensorPair<V> broadcast(Tensor<V> left, Tensor<V> right, Set<Class<?>> dimensionsNotToBroadcast) {
+        BroadcastingStrategy broadcasting = optionRegistry.get(BroadcastingStrategy.class);
+        return broadcasting.broadcast(left, right, dimensionsNotToBroadcast);
     }
 
 }

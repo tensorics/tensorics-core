@@ -7,6 +7,9 @@ package org.tensorics.core.tensorbacked;
 import static org.tensorics.core.util.InstantiatorType.CONSTRUCTOR;
 import static org.tensorics.core.util.Instantiators.instantiatorFor;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.tensorics.core.tensor.Tensor;
@@ -62,6 +65,14 @@ public final class TensorbackedInternals {
             throw new IllegalArgumentException("Dimensions of target class (" + targetDimensions
                     + ") do not match dimensions of given tensor (" + tensorDimensions + "). Cannot create object.");
         }
+    }
+
+    public static <S> Iterable<Tensor<S>> tensorsOf(Iterable<? extends Tensorbacked<S>> tensorbackeds) {
+        List<Tensor<S>> tensors = new ArrayList<>();
+        for (Tensorbacked<S> tensorbacked : tensorbackeds) {
+            tensors.add(tensorbacked.tensor());
+        }
+        return tensors;
     }
 
 }
