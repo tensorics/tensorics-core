@@ -9,6 +9,7 @@ import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarConversion;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
 import org.tensorics.core.quantity.lang.OngoingQuantityValueExtraction;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
@@ -136,20 +137,12 @@ public class TensoricSupport<V> {
         return quantifiedTensoricFieldUsage.calculate(left);
     }
 
-    public final QuantifiedValue<V> sizeOfQ(Iterable<QuantifiedValue<V>> values) {
-        return quantifiedTensoricFieldUsage.sizeOf(values);
-    }
-
     public QuantifiedValue<V> valueOf(V value, Unit unit) {
         return quantifiedTensoricFieldUsage.valueOf(value, unit);
     }
 
     public OngoingQuantifiedScalarOperation<V> calculate(V value, javax.measure.unit.Unit<?> unit) {
         return quantifiedTensoricFieldUsage.calculate(value, unit);
-    }
-
-    public final QuantifiedValue<V> sumOfQ(Iterable<QuantifiedValue<V>> values) {
-        return quantifiedTensoricFieldUsage.sumOf(values);
     }
 
     public OngoingQuantifiedScalarOperation<V> calculate(QuantifiedValue<V> scalar) {
@@ -208,5 +201,21 @@ public class TensoricSupport<V> {
     public final OngoingQuantityIterableValueExtraction<V> valuesOfI(Iterable<QuantifiedValue<V>> quantities) {
         return quantifiedTensoricFieldUsage.valuesOf(quantities);
     }
-    
+
+    public final QuantifiedValue<V> sizeOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.sizeOf(values);
+    }
+
+    public final QuantifiedValue<V> sumOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.sumOf(values);
+    }
+
+    public final OngoingQuantityIterableValueExtraction<V> valuesOf(Iterable<QuantifiedValue<V>> quantities) {
+        return quantifiedTensoricFieldUsage.valuesOf(quantities);
+    }
+
+    public OngoingQuantifiedScalarConversion<V> convert(QuantifiedValue<V> value) {
+        return quantifiedTensoricFieldUsage.convert(value);
+    }
+
 }

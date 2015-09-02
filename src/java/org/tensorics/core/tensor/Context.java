@@ -91,4 +91,9 @@ public final class Context implements Serializable {
         result = prime * result + ((position == null) ? 0 : position.hashCode());
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Context [position=" + position + "]";
+    }
 }

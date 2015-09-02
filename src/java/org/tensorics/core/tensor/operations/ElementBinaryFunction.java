@@ -45,6 +45,7 @@ public class ElementBinaryFunction<V, R> implements BinaryFunction<Tensor<V>, Te
         for (Position position : resultingShape.positionSet()) {
             tensorBuilder.at(position).put(operation.perform(left.get(position), right.get(position)));
         }
+        tensorBuilder.setTensorContext(resultingContext);
         return tensorBuilder.build();
     }
 
