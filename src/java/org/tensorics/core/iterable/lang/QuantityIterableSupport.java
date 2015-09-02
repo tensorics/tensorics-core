@@ -48,6 +48,18 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
         return sum;
     }
 
+    public final QuantifiedValue<V> sumOfSquaresOf(Iterable<QuantifiedValue<V>> values) {
+        QuantifiedValue<V> sum = zero();
+        for (QuantifiedValue<V> value : values) {
+            sum = calculate(sum).plus(squareOf(value));
+        }
+        return sum;
+    }
+
+    private QuantifiedValue<V> squareOf(QuantifiedValue<V> value) {
+        return calculate(value).times(value);
+    }
+
     public final OngoingQuantityIterableValueExtraction<V> valuesOf(Iterable<QuantifiedValue<V>> quantities) {
         return new OngoingQuantityIterableValueExtraction<>(quantities, operationRepository());
     }
