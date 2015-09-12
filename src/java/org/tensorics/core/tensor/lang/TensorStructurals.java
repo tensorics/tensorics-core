@@ -60,7 +60,7 @@ public final class TensorStructurals {
         Set<Class<?>> outcomeDimensionSet = new HashSet<>(refDimensionSet);
         Set<Class<?>> dimensionSet = refContextPosition.dimensionSet();
         if (dimensionSet.isEmpty()) {
-            throw new IllegalArgumentException("Cannot merge tensors with not specified context!");
+            throw new IllegalArgumentException("Cannot merge tensors with empty context!");
         }
         outcomeDimensionSet.addAll(dimensionSet);
         Builder<E> tensorBuilder = ImmutableTensor.builder(outcomeDimensionSet);
