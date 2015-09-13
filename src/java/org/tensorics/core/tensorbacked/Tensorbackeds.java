@@ -9,6 +9,7 @@ import static org.tensorics.core.tensorbacked.TensorbackedInternals.tensorsOf;
 
 import java.util.Set;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
@@ -201,6 +202,10 @@ public final class Tensorbackeds {
     public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Iterable<TB> toBeMerged,
             Class<TBOUT> classToReturn) {
         return construct(classToReturn).byMergingTb(toBeMerged);
+    }
+
+    public static final <V, TB extends Tensorbacked<V>> TB stripContext(TB tensorbacked) {
+        return (TB) builderFor(tensorbacked.getClass()).putAll(tensorbacked.tensor()).build();
     }
 
 }
