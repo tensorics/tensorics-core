@@ -118,4 +118,10 @@ public final class TensorStructurals {
         return builder.build();
     }
 
+    public static final <S> Tensor<S> stripContext(Tensor<S> tensor) {
+        Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        builder.putAll(tensor);
+        return builder.build();
+    }
+
 }

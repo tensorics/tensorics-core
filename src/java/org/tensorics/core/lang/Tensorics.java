@@ -337,4 +337,18 @@ public final class Tensorics {
         return Tensorbackeds.construct(tensorbackedClass);
     }
 
+    /**
+     * @see Tensorbackeds#stripContext(Tensorbacked)
+     */
+    public static <V, TB extends Tensorbacked<V>> TB stripContext(TB tensorbacked) {
+        return Tensorbackeds.stripContext(tensorbacked);
+    }
+
+    /**
+     * @see TensorStructurals#stripContext(Tensor)
+     */
+    public static <S> Tensor<S> stripContext(Tensor<S> tensor) {
+        return TensorStructurals.stripContext(tensor);
+    }
+
 }
