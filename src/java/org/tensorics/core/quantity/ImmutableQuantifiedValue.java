@@ -86,7 +86,7 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
 
     private String validityToString() {
         if (validity) {
-            return "[VALID]";
+            return "";
         }
         return "[INVALID]";
     }
