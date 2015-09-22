@@ -6,16 +6,11 @@ package org.tensorics.core.lang;
 
 import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.tensorics.core.commons.options.ManipulationOption;
-import org.tensorics.core.commons.options.OptionRegistry;
-import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.math.ExtendedField;
-import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -25,18 +20,17 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
+import org.tensorics.core.tensor.lang.OngoingTensorFiltering;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
-import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensor.operations.FunctionTensorCreationOperation;
-import org.tensorics.core.tensor.operations.PositionFunctions;
 import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
-import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
@@ -349,6 +343,20 @@ public final class Tensorics {
      */
     public static <S> Tensor<S> stripContext(Tensor<S> tensor) {
         return TensorStructurals.stripContext(tensor);
+    }
+
+    /**
+     * @see TensorStructurals#filter(Tensor)
+     */
+    public static <S> OngoingTensorFiltering<S> filter(Tensor<S> tensor) {
+        return TensorStructurals.filter(tensor);
+    }
+
+    /**
+     * @see Tensorbackeds#filter(Tensorbacked)
+     */
+    public static <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {
+        return Tensorbackeds.filter(tensorbacked);
     }
 
 }

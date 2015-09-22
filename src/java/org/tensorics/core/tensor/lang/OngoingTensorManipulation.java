@@ -84,7 +84,7 @@ public class OngoingTensorManipulation<V> {
     }
 
     private Tensor<V> extractTensor(Collection<?> coordinates) {
-        checkArgument(coordinates != null, "Argument '" + "coordinate" + "' must not be null!");
+        checkArgument(coordinates != null, "Argument 'coordinates' must not be null!");
         checkArgument(coordinates.size() > 0, "Coordinates must have at least one element.");
         Tensor<V> slice = tensor;
         for (Object coordinate : coordinates) {

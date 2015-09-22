@@ -18,6 +18,7 @@ import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
+import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
@@ -198,7 +199,10 @@ public final class Tensorbackeds {
      * @param toBeMerged the tensor backed objects that shall be merged into one
      * @param classToReturn the type of the tensor backed that should be resulting from the merge
      * @return a new tensor backed object resulting from the the merge of the tensors
+     * @deprecated use construct(classToReturn).byMergingTb(toBeMerged);
+     * @see #construct(Class)
      */
+    @Deprecated
     public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Iterable<TB> toBeMerged,
             Class<TBOUT> classToReturn) {
         return construct(classToReturn).byMergingTb(toBeMerged);
@@ -206,6 +210,10 @@ public final class Tensorbackeds {
 
     public static final <V, TB extends Tensorbacked<V>> TB stripContext(TB tensorbacked) {
         return (TB) builderFor(tensorbacked.getClass()).putAll(tensorbacked.tensor()).build();
+    }
+
+    public static final <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {
+        return new OngoingTensorbackedFiltering<>(tensorbacked);
     }
 
 }

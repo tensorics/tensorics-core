@@ -4,7 +4,6 @@
 
 package org.tensorics.core.tensor.lang;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -12,7 +11,6 @@ import java.util.Set;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
-import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
 import com.google.common.base.Function;
@@ -122,6 +120,10 @@ public final class TensorStructurals {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.putAll(tensor);
         return builder.build();
+    }
+
+    public static final <S> OngoingTensorFiltering<S> filter(Tensor<S> tensor) {
+        return new OngoingTensorFiltering<>(tensor);
     }
 
 }
