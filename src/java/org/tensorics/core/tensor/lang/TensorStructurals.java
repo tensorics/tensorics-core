@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -118,6 +119,13 @@ public final class TensorStructurals {
 
     public static final <S> Tensor<S> stripContext(Tensor<S> tensor) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        builder.putAll(tensor);
+        return builder.build();
+    }
+
+    public static final <S> Tensor<S> setContext(Tensor<S> tensor, Context context) {
+        Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        builder.setTensorContext(context);
         builder.putAll(tensor);
         return builder.build();
     }

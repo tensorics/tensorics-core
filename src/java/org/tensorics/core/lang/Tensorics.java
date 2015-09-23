@@ -13,6 +13,7 @@ import java.util.Set;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
@@ -357,6 +358,20 @@ public final class Tensorics {
      */
     public static <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {
         return Tensorbackeds.filter(tensorbacked);
+    }
+
+    /**
+     * @see TensorStructurals#setContext(Tensor, Context)
+     */
+    public static <S> Tensor<S> setContext(Tensor<S> tensor, Context context) {
+        return TensorStructurals.setContext(tensor, context);
+    }
+
+    /**
+     * @see Tensorbackeds#setContext(Tensorbacked, Context)
+     */
+    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Context context) {
+        return Tensorbackeds.setContext(tensorbacked, context);
     }
 
 }

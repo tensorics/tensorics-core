@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -210,6 +211,10 @@ public final class Tensorbackeds {
 
     public static final <V, TB extends Tensorbacked<V>> TB stripContext(TB tensorbacked) {
         return (TB) builderFor(tensorbacked.getClass()).putAll(tensorbacked.tensor()).build();
+    }
+
+    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Context context) {
+        return (TB) builderFor(tensorbacked.getClass()).withContext(context).putAll(tensorbacked.tensor()).build();
     }
 
     public static final <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {
