@@ -21,13 +21,7 @@
 // @formatter:on
 package org.tensorics.core.tensor.operations;
 
-import org.tensorics.core.math.operations.CreationOperation;
-import org.tensorics.core.tensor.ImmutableTensor;
-import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Shape;
-import org.tensorics.core.tensor.Tensor;
-
-import com.google.common.base.Functions;
 
 /**
  * Uses one value and a given shape to create a tensor, which has the same values at all positions.

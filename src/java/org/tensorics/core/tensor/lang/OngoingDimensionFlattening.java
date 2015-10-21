@@ -22,7 +22,6 @@
 
 package org.tensorics.core.tensor.lang;
 
-import java.util.List;
 import java.util.Set;
 
 import org.tensorics.core.lang.Tensorics;
@@ -31,9 +30,7 @@ import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Positions.DimensionStripper;
 import org.tensorics.core.tensor.Tensor;
 
-import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableSetMultimap;
-import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;

@@ -23,9 +23,6 @@
 package org.tensorics.core.tensor.lang;
 
 import org.tensorics.core.commons.options.Environment;
-import org.tensorics.core.commons.options.ManipulationOption;
-import org.tensorics.core.commons.options.OptionRegistry;
-import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.iterable.lang.ScalarIterableSupport;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.math.operations.BinaryOperation;
@@ -35,7 +32,6 @@ import org.tensorics.core.tensor.operations.ElementBinaryFunction;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensor.operations.ElementUnaryOperation;
 import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
-import org.tensorics.core.tree.domain.Expression;
 
 /**
  * Extends the usage of fields by operations defined on tensors

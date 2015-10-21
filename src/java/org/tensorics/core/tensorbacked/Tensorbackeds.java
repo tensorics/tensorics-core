@@ -22,12 +22,8 @@
 
 package org.tensorics.core.tensorbacked;
 
-import static org.tensorics.core.tensor.lang.TensorStructurals.merge;
-import static org.tensorics.core.tensorbacked.TensorbackedInternals.tensorsOf;
-
 import java.util.Set;
 
-import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
