@@ -33,8 +33,8 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorPair;
-import org.tensorics.core.tensor.options.ContextPropagationStrategy;
 import org.tensorics.core.tensor.options.BroadcastingStrategy;
+import org.tensorics.core.tensor.options.ContextPropagationStrategy;
 import org.tensorics.core.tensor.options.ShapingStrategy;
 
 public class ElementBinaryFunction<V, R> implements BinaryFunction<Tensor<V>, Tensor<R>> {

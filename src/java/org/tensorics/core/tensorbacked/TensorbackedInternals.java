@@ -26,7 +26,6 @@ import static org.tensorics.core.util.InstantiatorType.CONSTRUCTOR;
 import static org.tensorics.core.util.Instantiators.instantiatorFor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

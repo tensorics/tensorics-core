@@ -25,10 +25,9 @@ package org.tensorics.core.tensor.lang;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
-import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensor.Entry;
 import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;

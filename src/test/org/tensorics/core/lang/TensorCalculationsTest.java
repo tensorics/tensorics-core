@@ -50,7 +50,6 @@ import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensor.Entry;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensor.specific.ImmutableDoubleArrayBackedTensor;
 import org.tensorics.core.tensor.specific.PositionIndexer;

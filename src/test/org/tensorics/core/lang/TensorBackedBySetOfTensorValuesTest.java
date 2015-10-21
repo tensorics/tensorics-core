@@ -25,7 +25,6 @@ package org.tensorics.core.lang;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.junit.Before;
