@@ -22,12 +22,17 @@
 
 package org.tensorics.core.tensor.operations;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -37,6 +42,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 
 /**
  * Provides methods to describe how to produce a map out of a tensor.
@@ -56,6 +62,18 @@ public final class OngoingMapOut<V> {
     public <C1> Tensor<Map<C1, V>> inDirectionOf(Class<? extends C1> dimension) {
         Builder<Map<C1, V>> tensorBuilder = ImmutableTensor.builder(OngoingMapOut.dimensionsExcept(tensor.shape()
                 .dimensionSet(), dimension));
+
+        if (Comparable.class.isAssignableFrom(dimension)) {
+            List<? extends Comparable> dimcoordinates = (List<? extends Comparable>) new ArrayList<>(tensor.shape()
+                    .coordinatesOfType(dimension));
+            C1 lastElement = (C1) Collections.max(dimcoordinates);
+            Set<Object> set = new HashSet<>();
+            set.addAll(tensor.context().getPosition().coordinates());
+            set.add(lastElement);
+            Context newContext = Context.of(set);
+            tensorBuilder.setTensorContext(newContext);
+        }
+
         Multimap<Set<?>, Entry<Position, V>> fullEntries = groupBy(tensor.asMap().entrySet(), dimension);
         for (Set<?> key : fullEntries.keySet()) {
             Map<C1, V> values = mapByDimension(fullEntries.get(key), dimension);
