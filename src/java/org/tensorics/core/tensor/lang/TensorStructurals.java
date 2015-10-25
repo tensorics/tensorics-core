@@ -129,6 +129,7 @@ public final class TensorStructurals {
 
     public static <S, T> Tensor<T> transformScalars(Tensor<S> tensor, Function<S, T> function) {
         Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        builder.setTensorContext(tensor.context());
         for (Entry<Position, S> entry : tensor.asMap().entrySet()) {
             builder.putAt(function.apply(entry.getValue()), entry.getKey());
         }
