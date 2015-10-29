@@ -6,36 +6,32 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :source-highlighter: highlightjs
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
+:javadoc-baseurl: file://c:/Users/kaifox/Documents/work/workspace/tensorics-core/build/docs/javadoc/org/tensorics/core/tensor
 
-image:https://travis-ci.org/tensorics/tensorics-core.svg?branch=master["Build Status", link="https://travis-ci.org/tensorics/tensorics-core"]
-image:https://coveralls.io/repos/tensorics/tensorics-core/badge.svg?branch=master&service=github["Code coverage", link="https://coveralls.io/github/tensorics/tensorics-core?branch=master"]
 
-Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors. 
+Tensorics is a java framework for data processing of multidimensional data. 
+The core object is a Tensor which represents a collection of values of arbitrary
+types, which are addressed by coordinates in an N-dimensional space. The framework
+provides several core features, which make it easy to work with big amounts of 
+numerical data and drastically simplify repetitive tasks:
 
-Just as a quick glimpse, another way to see a tensor (in the sense of tensorics) is a map from a set of partial keys to a value. Into this it can be transformed:
-[source, java]
-----
-Tensor<Double> aTensor = /* whatever it might be */;
-Map<Position, Double> map = aTensor.asMap();
-----
-Here, 'Position' denotes the set of partial keys. For example a position could be something like:
-[source, java]
-----
-Position position = Position.of("kaifox", Date.now());
-----
-where the two coordinates of in the forementioned N-dimensional space (where N=2 in this case) are "kaifox" and Date.now(). The types of the coordinates are denoted as the dimensions (String.class and Date.class in this case - with the disclaimer that Date is not a good choice, because it's not immutable - but let this aside ;-). Tensorics provides a big featureset of operations to work with such tensors, for example:
-
-* Structural operations (extractions, slicing) for any value type of tensors
-* Fluent API for all operations on scalars and tensors.
-* Mathematical operations based on algebraic structures (e.g. Field). Mathematical operations are possible any value for which those structures are defined. A default implementation is currently provided for doubles.
-* Physical Quantities (value - unit pair), currently by the use of jscience.
-* Tensors of quantities.
+---
+* Tensors of arbitrary dimensionality as central object.
+* Tensors can have elements of any (java) type.
+* Structural and numerical operations on tensors.
+* Java internal DSL (fluent API) for all operations on scalars and tensors.
+* Quantities (value - unit pair).
+* Full support for Tensors of quantities.
 * Error and Validity propagation for quantities and tensors of quantities.
-* Expression language for deferred execution, which opens the 
-possibility for parallel processing and massive distribution of calculations. 
+* Scripting of all functionality with deferred execution, which opens the 
+possibilities for parallel processing and massive distribution of calculations. 
 
+---
  
-IMPORTANT: The current implementation is work in progress. The main purpose of the actual version is provide basic functionality of every of the above mentioned categories and proofing the concepts of their interplay. 
-However, the available has useful applications in many contexts and is used in many applications. 
-Almost no effort was put up to now on profiling and performance optimization. Therefore, it might well be that some operations are quite inefficient and/or memory consuming for big objects. Such improvements are definitely planned
-for future iterations. Any contributions are welcome.
+IMPORTANT: Both, the current implementation as well as this document, are work in progress. 
+The main purpose of the actual version is provide some functionality of every of the above 
+mentioned categories and proofing the concepts of their interplay. Still, already the available 
+subset of features should have useful applications in many contexts. Almost no effort put on 
+profiling and performance optimization. Therefore, it might well be that some operations are 
+quite inefficient and/or memory consuming for big objects. Such improvements are definitely planned 
+for later iterations. Any contributions are welcome.
