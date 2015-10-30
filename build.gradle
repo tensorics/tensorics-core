@@ -1,8 +1,8 @@
 /* Build script */
 buildscript {
 	repositories {
-		mavenCentral()
-		jcenter()
+              mavenCentral()
+              jcenter()
 	}
 
 	dependencies {
