@@ -18,7 +18,6 @@ Map<Position, Double> map = aTensor.asMap();
 
 However, in the original form (as tensor), tensorics provides a big featureset of operations, for example:
 
----
 * Structural operations (extractions, slicing) for any value type of tensors
 * Fluent API for all operations on scalars and tensors.
 * Mathematical operations based on algebraic structures (e.g. Field). Mathematical operations are possible any value for which those structures are defined. A default implementation is currently provided for doubles.
@@ -27,7 +26,7 @@ However, in the original form (as tensor), tensorics provides a big featureset o
 * Error and Validity propagation for quantities and tensors of quantities.
 * Expression language for deferred execution, which opens the 
 possibility for parallel processing and massive distribution of calculations. 
----
+
  
 IMPORTANT: The current implementation is work in progress. The main purpose of the actual version is provide basic functionality of every of the above mentioned categories and proofing the concepts of their interplay. 
 However, the available has useful applications in many contexts and is used in many applications. 
