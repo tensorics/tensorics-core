@@ -22,6 +22,8 @@
 
 package org.tensorics.core.tensor.lang;
 
+import org.tensorics.core.reduction.InterpolatedSlicing;
+import org.tensorics.core.reduction.InterpolationStrategy;
 import org.tensorics.core.reduction.ReductionStrategy;
 import org.tensorics.core.reduction.Slicing;
 import org.tensorics.core.tensor.Tensor;
@@ -53,6 +55,10 @@ public class OngoingStructuralReduction<C, E> {
 
     public Tensor<E> bySlicingAt(C slicePosition) {
         return reduceBy(new Slicing<C, E>(slicePosition));
+    }
+
+    public <C extends Comparable<C>> OngoingStructuralReductionOptions<E, C> byInterpolatedSlicingAt(C slicePosition) {
+        return new OngoingStructuralReductionOptions(slicePosition, tensor, dimension);
     }
 
     protected Tensor<E> reduceBy(ReductionStrategy<? super C, E> strategy) {

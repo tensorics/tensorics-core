@@ -36,14 +36,14 @@ import org.tensorics.core.tensor.Positions;
  */
 public class Slicing<C, E> implements ReductionStrategy<C, E> {
 
-    private final C slicePosition;
+    protected final C slicePosition;
 
     public Slicing(C slicePosition) {
         this.slicePosition = slicePosition;
     }
 
     @Override
-    public E reduce(Map<? extends C, E> inputValues) {
+    public E reduce(Map<? extends C, E> inputValues, Position position) {
         return inputValues.get(slicePosition);
     }
 

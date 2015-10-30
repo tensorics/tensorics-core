@@ -58,7 +58,7 @@ public class TensorReduction<C, E> implements UnaryOperation<Tensor<E>> {
         Builder<E> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());
         builder.setTensorContext(Context.of(reductionStrategy.context(value.context().getPosition()).coordinates()));
         for (Entry<Position, Map<C, E>> entry : mapped.asMap().entrySet()) {
-            E reducedValue = reductionStrategy.reduce(entry.getValue());
+            E reducedValue = reductionStrategy.reduce(entry.getValue(), entry.getKey());
             if (reducedValue != null) {
                 builder.at(entry.getKey()).put(reducedValue);
             }
