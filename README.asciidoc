@@ -8,6 +8,10 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :sourcecodedir: src/java/org/tensorics/core
 :javadoc-baseurl: file://c:/Users/kaifox/Documents/work/workspace/tensorics-core/build/docs/javadoc/org/tensorics/core/tensor
 
+image:https://travis-ci.org/KamilKrol/tensorics-core.svg?branch=master["Build Status", link="https://travis-ci.org/KamilKrol/tensorics-core"]
+image:https://coveralls.io/repos/KamilKrol/tensorics-core/badge.svg?branch=master&service=github["Code coverage", link="https://coveralls.io/github/KamilKrol/tensorics-core?branch=master"]
+
+Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors. 
 
 Tensorics is a java framework for data processing of multidimensional data. 
 The core object is a Tensor which represents a collection of values of arbitrary

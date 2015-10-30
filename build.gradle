@@ -1,19 +1,21 @@
-apply plugin: 'maven'
-
+/* Build script */
 buildscript {
-
 	repositories {
-              mavenCentral()
-              jcenter()
+		mavenCentral()
+		jcenter()
 	}
 
 	dependencies {
-		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
-		classpath 'org.asciidoctor:asciidoctorj:1.5.0'
+		classpath 'net.saliman:gradle-cobertura-plugin:2.0.0'
+		classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:+'
+		classpath 'org.asciidoctor:asciidoctorj:+'
 	}
 }
 
 apply plugin: 'java'
+apply plugin: 'cobertura'
+apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
 sourceSets {
@@ -28,3 +30,24 @@ sourceSets {
 
 javadoc { options.encoding = "UTF-8" }
 
+cobertura.coverageFormats = ['html', 'xml']
+cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
+/* End of build script */
+
+/* Project dependencies */
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	compile 'org.jscience:jscience:+'
+	compile 'com.google.guava:guava:17.0'
+	//TODO: hamcrest-all or hamcrest-core is enough?
+	compile 'org.hamcrest:hamcrest-all:+'
+
+	testCompile 'junit:junit:+'
+	testCompile 'org.mockito:mockito-core:1.+'
+	testCompile 'org.objenesis:objenesis:+'
+	testCompile 'com.openpojo:openpojo:+'
+}
