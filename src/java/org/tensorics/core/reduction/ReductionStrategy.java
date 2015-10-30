@@ -30,13 +30,18 @@ import org.tensorics.core.tensor.Position;
  * A strategy which reduces the one dimension (= type of coordinate) and summarizes all the values in this direction
  * into one. Typical examples of this are, e.g. summing up one dimension, or just slicing out at one coordinate.
  * 
- * @author kfuchsbe
+ * @author kfuchsbe, agorzaws
  * @param <C> The type of the coordinate (aka 'the dimension') which should be reduced.
  * @param <T> The type of values that can be reduced by this strategy
  */
 public interface ReductionStrategy<C, T> {
 
-    T reduce(Map<? extends C, T> inputValues);
+    /**
+     * @param inputValues the sub values of the tensor from which the reduction is performed
+     * @param position a remaining position in the tensor for which reduction is performed
+     * @return the value of reduction
+     */
+    T reduce(Map<? extends C, T> inputValues, Position position);
 
     Position context(Position originalContext);
 }

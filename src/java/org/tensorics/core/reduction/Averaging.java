@@ -39,7 +39,7 @@ public class Averaging<V> extends ScalarIterableSupport<V> implements ReductionS
     }
 
     @Override
-    public V reduce(Map<?, V> inputValues) {
+    public V reduce(Map<?, V> inputValues, Position position) {
         return avarageOf(inputValues.values());
     }
 
