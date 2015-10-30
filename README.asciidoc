@@ -7,16 +7,20 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
 
-Tensorics is a java framework which uses a tensor as a central object and provides methods to create, transform and performing calculations with those tensors. 
+Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors. 
 
-Just as a quick glimpse, another way to see a tensor (in the sense of tensorics) is a map from a set of partial keys (which is denoted as position) to a value. Into this it can be transformed:
+Just as a quick glimpse, another way to see a tensor (in the sense of tensorics) is a map from a set of partial keys to a value. Into this it can be transformed:
 [source, java]
 ----
 Tensor<Double> aTensor = /* whatever it might be */;
 Map<Position, Double> map = aTensor.asMap();
 ----
-
-However, in the original form (as tensor), tensorics provides a big featureset of operations, for example:
+Here, 'Position' denotes the set of partial keys. For example a position could be something like:
+[source, java]
+----
+Position position = Position.of("kaifox", Date.now());
+----
+where the two coordinates of in the forementioned N-dimensional space (where N=2 in this case) are "kaifox" and Date.now(). The types of the coordinates are denoted as the dimensions (String.class and Date.class in this case - with the disclaimer that Date is not a good choice, because it's not immutable - but let this aside ;-). Tensorics provides a big featureset of operations to work with such tensors, for example:
 
 * Structural operations (extractions, slicing) for any value type of tensors
 * Fluent API for all operations on scalars and tensors.
