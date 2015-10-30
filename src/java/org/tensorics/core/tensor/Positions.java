@@ -226,7 +226,10 @@ public final class Positions {
     public static <T> Set<T> coordinatesOfType(Set<Position> positions, Class<T> ofClass) {
         Set<T> toReturn = new HashSet<>();
         for (Position onePosition : positions) {
-            toReturn.add(onePosition.coordinateFor(ofClass));
+            T coordinate = onePosition.coordinateFor(ofClass);
+            if (coordinate != null) {
+                toReturn.add(coordinate);
+            }
         }
         return toReturn;
     }
