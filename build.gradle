@@ -3,10 +3,8 @@ apply plugin: 'maven'
 buildscript {
 
 	repositories {
-        // Note: Never (!) use jcenter repository, because it's blacklisted (see artifactory)
-		maven { 
-            url 'http://artifactory/development'
-		}
+              mavenCentral()
+              jcenter()
 	}
 
 	dependencies {
