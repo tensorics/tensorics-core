@@ -1,0 +1,30 @@
+apply plugin: 'maven'
+
+buildscript {
+
+	repositories {
+              mavenCentral()
+              jcenter()
+	}
+
+	dependencies {
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
+		classpath 'org.asciidoctor:asciidoctorj:1.5.0'
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'org.asciidoctor.gradle.asciidoctor'
+
+sourceSets {
+	main { java { srcDir 'src/java' } }
+	test {
+		java {
+			srcDir 'src/examples'
+			srcDir 'src/test'
+		}
+	}
+}
+
+javadoc { options.encoding = "UTF-8" }
+
