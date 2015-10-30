@@ -7,8 +7,8 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
 
-image:https://travis-ci.org/KamilKrol/tensorics-core.svg?branch=master["Build Status", link="https://travis-ci.org/KamilKrol/tensorics-core"]
-image:https://coveralls.io/repos/KamilKrol/tensorics-core/badge.svg?branch=master&service=github["Code coverage", link="https://coveralls.io/github/KamilKrol/tensorics-core?branch=master"]
+image:https://travis-ci.org/tensorics/tensorics-core.svg?branch=master["Build Status", link="https://travis-ci.org/tensorics/tensorics-core"]
+image:https://coveralls.io/repos/tensorics/tensorics-core/badge.svg?branch=master&service=github["Code coverage", link="https://coveralls.io/github/tensorics/tensorics-core?branch=master"]
 
 Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors. 
 
