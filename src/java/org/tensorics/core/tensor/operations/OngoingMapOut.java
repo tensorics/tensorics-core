@@ -63,16 +63,19 @@ public final class OngoingMapOut<V> {
         Builder<Map<C1, V>> tensorBuilder = ImmutableTensor.builder(OngoingMapOut.dimensionsExcept(tensor.shape()
                 .dimensionSet(), dimension));
 
+        Set<Object> set = new HashSet<>();
+        set.addAll(tensor.context().getPosition().coordinates());
+
         if (Comparable.class.isAssignableFrom(dimension)) {
             List<? extends Comparable> dimcoordinates = (List<? extends Comparable>) new ArrayList<>(tensor.shape()
                     .coordinatesOfType(dimension));
-            C1 lastElement = (C1) Collections.max(dimcoordinates);
-            Set<Object> set = new HashSet<>();
-            set.addAll(tensor.context().getPosition().coordinates());
-            set.add(lastElement);
-            Context newContext = Context.of(set);
-            tensorBuilder.setTensorContext(newContext);
+            if (!dimcoordinates.isEmpty()) {
+                C1 lastElement = (C1) Collections.max(dimcoordinates);
+                set.add(lastElement);
+            }
         }
+        Context newContext = Context.of(set);
+        tensorBuilder.setTensorContext(newContext);
 
         Multimap<Set<?>, Entry<Position, V>> fullEntries = groupBy(tensor.asMap().entrySet(), dimension);
         for (Set<?> key : fullEntries.keySet()) {
