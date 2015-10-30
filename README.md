@@ -1,12 +1,4 @@
-= Tensorics Readme
-Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
-2014-07-12
-:icons: font
-:sectanchors:
-:source-highlighter: highlightjs
-:examplesource: src/examples/org/tensorics/core/examples
-:sourcecodedir: src/java/org/tensorics/core
-:javadoc-baseurl: file://c:/Users/kaifox/Documents/work/workspace/tensorics-core/build/docs/javadoc/org/tensorics/core/tensor
+#readme
 
 Tensorics is a java framework for data processing of multidimensional data. 
 The core object is a Tensor which represents a collection of values of arbitrary
