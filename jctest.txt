@@ -1,3 +1,0 @@
-This is the first line of the file
-I'm adding the second line from lab client
-I'm adding the 2nd line from hub client
