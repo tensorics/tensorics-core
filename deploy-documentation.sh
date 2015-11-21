@@ -1,17 +1,18 @@
 #!/bin/bash
 set -e # exit with nonzero exit code if anything fails
 
-cd build/asciidoc
-git init
-git add .
-git commit -m "Automatically generated GitHub Pages"
-
-#cd ../docs
-#git add .
-#git commit -m "Automatically generated Javadocs Pages"
-
 git config user.name "Travis CI"
 git config user.email "${E_MAIL}"
+
+mkdir -p build/documentation
+
+mv build/asciidoc/* build/documentation/
+mv build/docs/* build/documentation/
+
+cd build/documentation
+git init
+git add .
+git commit -m "Automatically generated GitHub Pages and Javadocs"
 
 # Force push from the current repo's master branch to the remote
 # repo's gh-pages branch. (All previous history on the gh-pages branch
