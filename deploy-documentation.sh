@@ -3,8 +3,8 @@ set -e # exit with nonzero exit code if anything fails
 
 mkdir -p build/documentation
 
-cp build/asciidoc/* build/documentation/
-cp build/docs/* build/documentation/
+cp -r build/asciidoc/* build/documentation/
+cp -r build/docs/* build/documentation/
 
 cd build/documentation
 git init
