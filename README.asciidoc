@@ -37,7 +37,7 @@ where the two coordinates of in the forementioned N-dimensional space (where N=2
 * Scripting of all functionality with deferred execution, which opens the 
 possibilities for parallel processing and massive distribution of calculations. 
 
-More on: http://tensorics.gitlab.io/tensorics-core/tensorics-quickstart.html
+More on: http://tensorics.github.io/tensorics-core/tensorics-quickstart.html
 ---
  
 IMPORTANT: Both, the current implementation as well as this document, are work in progress. 
