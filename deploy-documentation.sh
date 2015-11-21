@@ -11,8 +11,8 @@ git init
 git add .
 git commit -m "Automatically generated GitHub Pages and Javadocs"
 
-git config user.name "Travis CI"
-git config user.email "${E_MAIL}"
+git --global config user.name "Travis CI"
+git --global config user.email "${E_MAIL}"
 
 # Force push from the current repo's master branch to the remote
 # repo's gh-pages branch. (All previous history on the gh-pages branch
