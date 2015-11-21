@@ -1,4 +1,9 @@
-== tensorics-org
+== tensorics-core
+
+image:https://travis-ci.org/tensorics/tensorics-core.svg?branch=master["Travis-CI build", link="https://travis-ci.org/tensorics/tensorics-core"]
+image:https://coveralls.io/repos/tensorics/tensorics-core/badge.svg?branch=master&service=github["Code coverage", link="https://coveralls.io/github/tensorics/tensorics-core?branch=master"]
+
+Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors. 
 
 = Latest release
 TO BE COMPLETED
@@ -10,12 +15,7 @@ TO BE COMPLETED
 * http://tensorics.org
 * javadoc
 
-= Tensorics Core
-
-image:https://travis-ci.org/tensorics/tensorics-core.svg?branch=master["Travis-CI build", link="https://travis-ci.org/tensorics/tensorics-core"]
-image:https://coveralls.io/repos/tensorics/tensorics-core/badge.svg?branch=master&service=github["Code coverage", link="https://coveralls.io/github/tensorics/tensorics-core?branch=master"]
-
-Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors. 
+= Getting started
 
 ----
 Tensor<Double> aTensor = /* whatever it might be */;
@@ -37,6 +37,7 @@ where the two coordinates of in the forementioned N-dimensional space (where N=2
 * Scripting of all functionality with deferred execution, which opens the 
 possibilities for parallel processing and massive distribution of calculations. 
 
+More on: http://tensorics.gitlab.io/tensorics-core/tensorics-quickstart.html
 ---
  
 IMPORTANT: Both, the current implementation as well as this document, are work in progress. 
