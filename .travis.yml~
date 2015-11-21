@@ -1,0 +1,10 @@
+language: java
+
+script:
+- gradle asciidoctor
+
+after_script:
+- ./deploy-asciidoc.sh
+
+after_success:
+- gradle cobertura coveralls
