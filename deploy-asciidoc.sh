@@ -19,4 +19,4 @@ git commit -m "Deploy to GitHub Pages"
 # will be lost, since we are overwriting it.) We redirect any output to
 # /dev/null to hide any sensitive credential data that might otherwise be exposed.
 #git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1
-git push --force "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
+git push --force "https://${GH_TOKEN}@github.com/tensorics/tensorics-core.git" master:gh-pages

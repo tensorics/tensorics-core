@@ -1,8 +1,13 @@
 language: java
 
+env:
+  global:
+  - GH_REF: "github.com/tensorics/tensorics-core.git"
+  - secure: "0UbgpdALG1DKxB/UgyimwADcWliOt52iWCkahUFv2v2u9R8B/Vn8f9d4HOiKrVxuu1q38Hwimkse/+r5a2IFroJCFQk+R0D8gc61GeKFlwN+dkNJ/CSVF17LehnA0vPkFSTvfAjqkhiOZUcTxdEKz97aAaFN5Wr2n8GpXzhIK59LC2hL8uF87NbTS2UXzrIErEUfqfX/dul0AnSKD9ZmTUDEmQDEvnutMhcqLFw1ED9N8wcSEfqu05/GGQeC1SjYwK+PT6nHSGSiEulPI4odsFGObmC8GeyAn6F+lg8AiUwJ8zWzWGXKsIO8ngohWpRC0TUu164IeB9fm2zXDHH9Rg2cK1d7P3xUu5ohRY5tH7YCJg33Ixv7FD3E/oH592TarKD42dsk19f/5sZtqVCJ0/A0NzFoLdLzaZNJpWEI6wnF7B9j8mIYWcsKpWUcxzvgSw/ZvVvcQYBiroD4UGeHs+LNJsYwN3+fzfMa1LUxDik/qe/+mzJfHRl2jBA06WlCqNgDSQ62MLNvHdLQvLOblkYxDyzrZv3VNIQ65ec9MmhCd5nD6QPiTP/TWl2eXYlZACWMIkJaRAEFbX6kZsym7f180NQjSeS2fPPG2rmYXL7z6Ygg2NPAbLt/pOVjpKwKSe4g3B1o396y+TfZfDhH/RBeugu9BWDh9OAe649sQQY="
+
 script:
-- gradle asciidoctor
-- bash ./deploy-asciidoc.sh
+  - gradle asciidoctor
+  - bash ./deploy-asciidoc.sh
 
 after_success:
-- gradle cobertura coveralls
+  - gradle cobertura coveralls
