@@ -1,3 +1,13 @@
+= Latest release
+TO BE COMPLETED
+
+= Snapshots
+TO BE COMPLETED
+
+= Links
+* http://tensorics.org
+* javadoc
+
 = Tensorics Core
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
 2014-07-12
