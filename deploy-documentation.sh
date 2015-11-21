@@ -1,18 +1,16 @@
 #!/bin/bash
 set -e # exit with nonzero exit code if anything fails
 
+git init
+
 git config user.name "Travis CI"
 git config user.email "${E_MAIL}"
 
 cd build/asciidoc
-git init
-
 git add .
 git commit -m "Automatically generated GitHub Pages"
 
 cd ../docs
-git init
-
 git add .
 git commit -m "Automatically generated Javadocs Pages"
 
