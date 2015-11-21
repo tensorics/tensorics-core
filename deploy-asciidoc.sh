@@ -11,7 +11,7 @@ git config user.email "${E_MAIL}"
 
 # The first and only commit to this new Git repo contains all the
 # files present with the commit message "Deploy to GitHub Pages".
-git add --all
+git add tensorics*
 git reset index.html
 git commit -m "Deploy to GitHub Pages"
 
