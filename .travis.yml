@@ -7,8 +7,8 @@ env:
   - secure: "v8X4M0kGy5EF0m3fwEkJzscWYZyW7tMEHpSkPVff7WRkiu9AR/koKWnKQZnK9CNOFNbHUVTQXCOwZ2dS31erbH6u0J6XuSyJWgGr+abvDFsHfNNrmJH3WMSSYe8qnG/x8zVuQtcZQVd0DA2+bfX+wl5zxYb3qBKwulrTL3z+cGC0N/ik/exucMeU5IpwhMa24MUhnVKzeX3Qyzy2u4k79qS9nV/spkqFNeTJ0IPxtkBWru1JcbAUobERjv9FrV/ZjKRByAAskgFBogms0UvwYCwKSWY7L/LACywfMAzAQLJSY+k6JP6V/xdR+sK5gntgp19To0bhC2jDKlEHDJR4RksvLVYg8f7vtq1Uqsrvy7mFScQuRmMSIBzRxDhj3ajK+csnprMvoEltC9GVlN+CH7IfNJTK3rD3dYshkxCKDFWGf21IrCMNhMnXyeZwSDbjA0/u6/zva/33xCP2KxWiKvR9c/X9DYyevPO/ZDkhvvaYePZOQsRjGLbjodpjWHkZxElsTstPAmTLDEPRgaW/ThOOdFqiEi0JMMhGSl0Xusg0EciT0P3l9bPUCEGIe0/XbBZwkDu5zjKHHhW9JHZn4bo9y5+38Fq3LYCBL7dCIyLkRgSsMzKmqLz69apKKI2krC33NxaWtvP4MuEXJKPVh/Yf5pCXxmNa5k9y01MW8tA="
 
 script:
-  - gradle asciidoctor
-  - bash ./deploy-asciidoc.sh
+  - gradle asciidoctor javadoc
+  - bash ./deploy-documentation.sh
 
 after_success:
   - gradle cobertura coveralls
