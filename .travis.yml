@@ -2,8 +2,6 @@ language: java
 
 script:
 - gradle asciidoctor
-
-after_script:
 - bash ./deploy-asciidoc.sh
 
 after_success:
