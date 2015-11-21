@@ -2,7 +2,9 @@ language: java
 
 script:
 - gradle asciidoctor
-- bash ./deploy-asciidoc.sh
+
+after_script:
+- ./deploy-asciidoc.sh
 
 after_success:
 - gradle cobertura coveralls

@@ -8,8 +8,11 @@ buildscript {
 	dependencies {
 		classpath 'net.saliman:gradle-cobertura-plugin:2.0.0'
 		classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
-		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:+'
-		classpath 'org.asciidoctor:asciidoctorj:+'
+//		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:+'
+//		classpath 'org.asciidoctor:asciidoctorj:+'
+		/* Versions needs to be hardcoded to work properly. */
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
+		classpath 'org.asciidoctor:asciidoctorj:1.5.0'
 	}
 }
 
