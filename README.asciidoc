@@ -1,3 +1,5 @@
+== tensorics-org
+
 = Latest release
 TO BE COMPLETED
 
@@ -9,14 +11,6 @@ TO BE COMPLETED
 * javadoc
 
 = Tensorics Core
-Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
-2014-07-12
-:icons: font
-:sectanchors:
-:source-highlighter: highlightjs
-:examplesource: src/examples/org/tensorics/core/examples
-:sourcecodedir: src/java/org/tensorics/core
-:javadoc-baseurl: file://c:/Users/kaifox/Documents/work/workspace/tensorics-core/build/docs/javadoc/org/tensorics/core/tensor
 
 image:https://travis-ci.org/tensorics/tensorics-core.svg?branch=master["Travis-CI build", link="https://travis-ci.org/tensorics/tensorics-core"]
 image:https://coveralls.io/repos/tensorics/tensorics-core/badge.svg?branch=master&service=github["Code coverage", link="https://coveralls.io/github/tensorics/tensorics-core?branch=master"]
