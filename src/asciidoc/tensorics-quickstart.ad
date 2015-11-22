@@ -1,7 +1,5 @@
 = Tensorics Quickstart Guide
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
-Last change:	2014-07-12 Last build:		{localdatetime}
-
 :icons: font
 :sectanchors:
 :experimental:
@@ -144,3 +142,5 @@ which provide access to the data of the tensor. The most important ones of them 
 |link:{javadoc-baseurl}/core/tensor/lang/OngoingTensorManipulation.html[from(tensor).extract(Object... coordinates);]
 |Extracts the sub tensor at the given coordinates.
 |===
+
+Last change:	2014-07-12 Last build:		{localdatetime}
