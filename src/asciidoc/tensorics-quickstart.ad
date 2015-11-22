@@ -143,4 +143,4 @@ which provide access to the data of the tensor. The most important ones of them 
 |Extracts the sub tensor at the given coordinates.
 |===
 
-Last change:	2014-07-12 Last build:		{localdatetime}
+Last built:		{localdatetime}
