@@ -1,7 +1,5 @@
 = Tensorics Manual
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
-Last change:	2014-07-12 Last build:		{localdatetime}
-
 :icons: font
 :sectanchors:
 :source-highlighter: highlightjs
@@ -181,3 +179,5 @@ include::{examplesource}/MultibeamOrbit.java[tags=classdef]
 ----
 
 TIP: The ++ Beam.class, Plane.class, Bpm.class++ are the coordinate classes that are declared to be used by ++@Dimensions++ annotation.
+
+Last build:		{localdatetime}
