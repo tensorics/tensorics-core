@@ -13,7 +13,7 @@ TO BE COMPLETED
 
 = Links
 * http://tensorics.org
-* javadoc
+* http://tensorics.github.io/tensorics-core/javadoc
 
 = Getting started
 
