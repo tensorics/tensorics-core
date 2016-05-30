@@ -24,6 +24,7 @@ package org.tensorics.core.scalar.lang;
 
 import org.tensorics.core.expressions.UnaryOperationExpression;
 import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvedExpression;
 
@@ -98,4 +99,7 @@ public class ScalarExpressionSupport<V> {
         return new OngoingDeferredBinaryOperation<>(extendedField, left);
     }
 
+    public OngoingDeferredBinaryOperation<V> testIf(Expression<V> expression) {
+        return new OngoingDeferredBinaryOperation<>(extendedField, expression);
+    }
 }

@@ -35,25 +35,25 @@ public class ScriptingExampleTry {
 
         UnresolvedSignal signalId = UnresolvedSignal.ofName("testSignal");
 
-        DoubleScript<Double> script = new DoubleScript<Double>() {
+        DoubleScript<Boolean> script = new DoubleScript<Boolean>() {
 
             @Override
-            protected Expression<Double> describe() {
+            protected Expression<Boolean> describe() {
                 Expression<Double> averageOf = averageOf(signalId);
                 Expression<Double> rmsOf = rmsOf(signalId);
-                return rmsOf;
+                return testIf(rmsOf).isLessThan(3D);
             }
         };
 
-        Expression<Double> expression = script.getInternalExpression();
+        Expression<Boolean> expression = script.getInternalExpression();
 
-        Observable<Double> resolved = buffer.map(signalValues -> contextOf(signalId, signalValues))
+        Observable<Boolean> resolved = buffer.map(signalValues -> contextOf(signalId, signalValues))
                 .map((context) -> resolve(context, expression));
 
         resolved.subscribe(System.out::println);
     }
 
-    private Double resolve(EditableResolvingContext context, Expression<Double> expression) {
+    private <T> T resolve(EditableResolvingContext context, Expression<T> expression) {
         return engine.resolve(expression, context);
     }
 

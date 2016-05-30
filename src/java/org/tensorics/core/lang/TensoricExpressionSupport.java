@@ -228,4 +228,7 @@ public class TensoricExpressionSupport<V> {
         return quantityTensorbackedExpressionSupport.calculateTB(resultClass, tensor);
     }
 
+    public OngoingDeferredBinaryOperation<V> testIf(Expression<V> expression) {
+        return tensoricFieldUsage.testIf(expression);
+    }
 }
