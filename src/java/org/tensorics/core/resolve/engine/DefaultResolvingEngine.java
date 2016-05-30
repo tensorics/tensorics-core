@@ -1,22 +1,20 @@
 // @formatter:off
- /*******************************************************************************
- *
+/*******************************************************************************
  * This file is part of tensorics.
- * 
+ * <p>
  * Copyright (c) 2008-2011, CERN. All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
  ******************************************************************************/
 // @formatter:on
 
@@ -36,7 +34,7 @@ import com.google.common.base.Preconditions;
 
 /**
  * Processes the expression tree in a way, that it tries to give the biggest possible chunks to a resolver.
- * 
+ *
  * @author kfuchsbe
  */
 public class DefaultResolvingEngine implements ResolvingEngine {
@@ -51,9 +49,16 @@ public class DefaultResolvingEngine implements ResolvingEngine {
 
     @Override
     public <R> R resolve(Expression<R> rootNode, ResolvingOption... options) {
+        return resolve(rootNode, Contexts.newResolvingContext(), options);
+    }
+
+    @Override
+    public <R> R resolve(Expression<R> rootNode, ResolvingContext initialContext, ResolvingOption... options) {
         Preconditions.checkNotNull(resolverRepository, "resolverRepository must not be null.");
+        Preconditions.checkNotNull(initialContext, "initialContext must not be null.");
         int count = 0;
         EditableResolvingContext fullContext = Contexts.newResolvingContext();
+        fullContext.putAllNew(initialContext);
 
         OptionRegistry<ResolvingOption> optionsRegistry = ResolvingOptions.createRegistryWithDefaultsExcept(options);
         while (!(fullContext.resolves(rootNode))) {
@@ -87,5 +92,4 @@ public class DefaultResolvingEngine implements ResolvingEngine {
     public void setResolverRepository(ResolverRepository resolverRepository) {
         this.resolverRepository = resolverRepository;
     }
-
 }
