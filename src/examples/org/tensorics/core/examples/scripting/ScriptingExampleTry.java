@@ -27,7 +27,7 @@ public class ScriptingExampleTry {
     public void resolveScriptWithDifferentConditions() {
 
         Observable<Double> signal = Observable.<Double> create(subscriber -> {
-            DoubleStream stream = new Random(33).doubles(0, 100);
+            DoubleStream stream = new Random(33).doubles(0, 100).limit(100);
             stream.forEach(subscriber::onNext);
         });
 
