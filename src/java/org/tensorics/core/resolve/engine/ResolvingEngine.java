@@ -24,6 +24,7 @@ package org.tensorics.core.resolve.engine;
 
 import org.tensorics.core.resolve.options.ResolvingOption;
 import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvingContext;
 
 /**
  * Can resolve deferred values. It has a very 'weak' interface, thus, basically any deferred object can be passed in.
@@ -34,4 +35,6 @@ import org.tensorics.core.tree.domain.Expression;
 public interface ResolvingEngine {
 
     <R> R resolve(Expression<R> deferred, ResolvingOption... options);
+
+    <R> R resolve(Expression<R> deferred, ResolvingContext initialContext, ResolvingOption... options);
 }
