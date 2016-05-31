@@ -23,6 +23,7 @@
 package org.tensorics.core.lang;
 
 import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
 import org.tensorics.core.scalar.lang.OngoingDeferredBinaryOperation;
@@ -229,7 +230,11 @@ public class TensoricExpressionSupport<V> {
         return quantityTensorbackedExpressionSupport.calculateTB(resultClass, tensor);
     }
 
-    public OngoingDeferredBinaryPredicate<V> testIf(Expression<V> expression) {
+    public final OngoingDeferredBinaryPredicate<V> testIf(Expression<V> expression) {
         return tensoricFieldUsage.testIf(expression);
+    }
+
+    public final OngoingDeferredIterableBinaryPredicate<V> testIfIt(Expression<Iterable<V>> iterableExpression) {
+        return tensoricFieldUsage.testIfIt(iterableExpression);
     }
 }

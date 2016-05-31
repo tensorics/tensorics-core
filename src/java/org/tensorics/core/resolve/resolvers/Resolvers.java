@@ -50,6 +50,7 @@ public final class Resolvers {
         resolvers.add(new TensoricScriptResolver<>());
         resolvers.add(new ConversionOperationResolver<>());
         resolvers.add(new BinaryPredicateResolver<>());
+        resolvers.add(new BinaryPredicateIterableResolver<>());
 
         ListBackedResolverRepository repository = new ListBackedResolverRepository();
         repository.setResolvers(resolvers);

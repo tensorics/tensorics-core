@@ -14,7 +14,6 @@ import org.tensorics.core.tree.domain.EditableResolvingContext;
 import org.tensorics.core.tree.domain.Expression;
 import rx.Observable;
 
-
 import java.util.List;
 import java.util.Random;
 import java.util.stream.DoubleStream;
@@ -26,8 +25,8 @@ public class ScriptingExampleTry {
     @Test
     public void resolveScriptWithDifferentConditions() {
 
-        Observable<Double> signal = Observable.<Double> create(subscriber -> {
-            DoubleStream stream = new Random(33).doubles(0, 100).limit(140);
+        Observable<Double> signal = Observable.<Double>create(subscriber -> {
+            DoubleStream stream = new Random(33).doubles(0, 10).limit(140);
             stream.forEach(subscriber::onNext);
         });
 
@@ -41,7 +40,7 @@ public class ScriptingExampleTry {
             protected Expression<Boolean> describe() {
                 Expression<Double> averageOf = averageOf(signalId);
                 Expression<Double> rmsOf = rmsOf(signalId);
-                return testIf(rmsOf).isLessThan(3D);
+                return testIfIt(signalId).isLessThan(33D);
             }
         };
 

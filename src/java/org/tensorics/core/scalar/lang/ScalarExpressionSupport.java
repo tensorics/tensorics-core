@@ -22,7 +22,6 @@ package org.tensorics.core.scalar.lang;
 
 import org.tensorics.core.expressions.UnaryOperationExpression;
 import org.tensorics.core.math.ExtendedField;
-import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvedExpression;
 
