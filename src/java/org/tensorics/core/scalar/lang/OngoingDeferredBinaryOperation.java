@@ -1,27 +1,28 @@
 // @formatter:off
 /*******************************************************************************
+ *
  * This file is part of tensorics.
- * <p>
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
- * <p>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  ******************************************************************************/
 // @formatter:on
 
 package org.tensorics.core.scalar.lang;
 
 import org.tensorics.core.expressions.BinaryOperationExpression;
-import org.tensorics.core.expressions.PredicateExpression;
 import org.tensorics.core.expressions.UnaryOperationExpression;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.tree.domain.Expression;
@@ -94,16 +95,8 @@ public class OngoingDeferredBinaryOperation<S> {
         return new BinaryOperationExpression<>(field.power(), left, inverseOf(root));
     }
 
-    public Expression<Boolean> isLessThan(Expression<S> expression) {
-        throw new UnsupportedOperationException("Do not be eager for features!");
-    }
-
-    public Expression<Boolean> isLessThan(S value) {
-        // XXX: isLessThanOperator has to produce a boolean expression
-        return (PredicateExpression<Boolean>) new PredicateExpression<>(field.less(), left, ResolvedExpression.of(value));
-    }
-
     private UnaryOperationExpression<S> inverseOf(Expression<S> value) {
         return new UnaryOperationExpression<S>(field.multiplicativeInversion(), value);
     }
+
 }
