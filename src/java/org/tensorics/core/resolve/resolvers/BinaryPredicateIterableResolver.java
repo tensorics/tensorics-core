@@ -31,21 +31,21 @@ import java.util.stream.StreamSupport;
 /**
  * A resolver that takes a predicate of Iterable whose two operands are resolved and resolves it into a result.
  *
- * @param <R> the return type of the expression
+ * @param <T> the input type of the expression
  * @author caguiler
  */
-public class BinaryPredicateIterableResolver<R> extends AbstractResolver<Boolean, BinaryPredicateIterableExpression<R>> {
+public class BinaryPredicateIterableResolver<T> extends AbstractResolver<Boolean, BinaryPredicateIterableExpression<T>> {
 
     @Override
-    public boolean canResolve(BinaryPredicateIterableExpression<R> expression, ResolvingContext context) {
+    public boolean canResolve(BinaryPredicateIterableExpression<T> expression, ResolvingContext context) {
         return context.resolves(expression.getLeft()) && context.resolves(expression.getRight());
     }
 
     @Override
-    public Boolean resolve(BinaryPredicateIterableExpression<R> expression, ResolvingContext context) {
-        Iterable<R> left = context.resolvedValueOf(expression.getLeft());
-        R right = context.resolvedValueOf(expression.getRight());
-        BinaryPredicate<R> predicate = expression.getPredicate();
+    public Boolean resolve(BinaryPredicateIterableExpression<T> expression, ResolvingContext context) {
+        Iterable<T> left = context.resolvedValueOf(expression.getLeft());
+        T right = context.resolvedValueOf(expression.getRight());
+        BinaryPredicate<T> predicate = expression.getPredicate();
         return StreamSupport.stream(left.spliterator(),true).allMatch(e -> predicate.test(e,right));
     }
 }

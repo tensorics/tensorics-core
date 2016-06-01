@@ -27,8 +27,13 @@ import org.tensorics.core.lang.DoubleScript;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
 import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvedExpression;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * The aim of this test is to ensure the correct resolving of binary predicates
@@ -45,7 +50,7 @@ public class BinaryPredicateExpressionTest {
     }
 
     @Test
-    public void testIsLessThan() throws Exception {
+    public void testIsLessThanForScalarExpressions() throws Exception {
         Boolean trueResult = engine.resolve(new DoubleScript<Boolean>() {
             @Override
             protected Expression<Boolean> describe() {
@@ -54,7 +59,7 @@ public class BinaryPredicateExpressionTest {
             }
         });
 
-        assertEquals(true, trueResult);
+        assertTrue(trueResult);
 
         Boolean falseResult = engine.resolve(new DoubleScript<Boolean>() {
             @Override
@@ -64,6 +69,29 @@ public class BinaryPredicateExpressionTest {
             }
         });
 
-        assertEquals(false, falseResult);
+        assertFalse(falseResult);
+    }
+    @Test
+    public void testIsLessThanForIterableExpressions() throws Exception {
+
+        Expression<Iterable<Double>> iterableExpression = ResolvedExpression.of(Arrays.asList(1D, 2D, 3D, 4D, 5D));
+
+        Boolean trueResult = engine.resolve(new DoubleScript<Boolean>() {
+            @Override
+            protected Expression<Boolean> describe() {
+                return testIfIt(iterableExpression).isLessThan(10D);
+            }
+        });
+
+        assertTrue(trueResult);
+
+        Boolean falseResult = engine.resolve(new DoubleScript<Boolean>() {
+            @Override
+            protected Expression<Boolean> describe() {
+                return testIfIt(iterableExpression).isLessThan(2D);
+            }
+        });
+
+        assertFalse(falseResult);
     }
 }

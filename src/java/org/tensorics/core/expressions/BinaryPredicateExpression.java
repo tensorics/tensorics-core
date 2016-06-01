@@ -31,7 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * An unresolved expression which can be resolved by applying a binary predicate on the results of the two operands
- * (left, right). Any instance contains the binary operation itself as well as expressions for both operands.
+ * (left, right). Any instance contains the binary predicate itself as well as expressions for both operands.
  *
  * @param <T> the type of the results of the operands
  * @author caguiler
