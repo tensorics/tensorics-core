@@ -48,6 +48,6 @@ public class OngoingDeferredBinaryPredicate<S> {
     }
 
     public Expression<Boolean> isLessThan(S value) {
-        return new BinaryPredicateExpression<>(field.less(), left, ResolvedExpression.of(value));
+        return isLessThan(ResolvedExpression.of(value));
     }
 }
