@@ -30,7 +30,6 @@ import java.util.Set;
 import org.tensorics.incubate.function.IllegalDiscreteFunctionUsageException;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * This implementation of {@link DiscreteFunction} only provides values at discrete points of X argument. If a y-value
@@ -68,13 +67,13 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
 
     @Override
     public Set<X> definedXValues() {
-        return ImmutableSet.copyOf(function.keySet());
+        return function.keySet();
     }
 
     /**
      * The builder for the function based on a map. This class provides methods to add values to the function.
      * 
-     * @author kfuchsbe
+     * @author kfuchsbe, caguiler
      * @param <X> the type of the values in x-direction (Independent variable)
      * @param <Y> the type of the values in y-direction (Dependent variable)
      */

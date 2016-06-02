@@ -15,11 +15,11 @@ import com.google.common.base.Function;
 
 public class MathFunctions {
 
-    <X, Y> Tensor<DiscreteFunction<X, Y>> functionsFrom(Tensor<Y> tensor, Class<X> dimensionClass) {
+  public static  <X, Y> Tensor<DiscreteFunction<X, Y>> functionsFrom(Tensor<Y> tensor, Class<X> dimensionClass) {
         return Tensorics.from(tensor).reduce(dimensionClass).by(toFunctionsOf(dimensionClass));
     }
 
-    private <Y, X> ReductionStrategy<X, Y, DiscreteFunction<X, Y>> toFunctionsOf(Class<X> dimensionClass) {
+    private static <Y, X> ReductionStrategy<X, Y, DiscreteFunction<X, Y>> toFunctionsOf(Class<X> dimensionClass) {
         return new ReductionStrategy<X, Y, DiscreteFunction<X, Y>>() {
 
             @Override
@@ -35,7 +35,7 @@ public class MathFunctions {
         };
     }
 
-    <X, Y> DiscreteFunction<X, Y> functionFrom1DTensor(Tensor<Y> tensor, Class<X> dimensionClass) {
+    public static <X, Y> DiscreteFunction<X, Y> functionFrom1DTensor(Tensor<Y> tensor, Class<X> dimensionClass) {
         return functionsFrom(tensor, dimensionClass).get();
     }
 
