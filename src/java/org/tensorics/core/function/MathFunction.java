@@ -23,6 +23,13 @@ package org.tensorics.core.function;
 
 import com.google.common.base.Function;
 
-public interface MathFunction<T> extends Function<T, T> {
-
+/**
+ * The general function from X to Y
+ * 
+ * @author kfuchsbe 
+ * @param <X>
+ * @param <Y>
+ */
+public interface MathFunction<X, Y> extends Function<X, Y> {
+    
 }
