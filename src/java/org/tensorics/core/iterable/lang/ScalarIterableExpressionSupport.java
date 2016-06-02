@@ -83,4 +83,7 @@ public class ScalarIterableExpressionSupport<V> extends ScalarExpressionSupport<
         return new IterableOperationExpression<>(repository.sumOfSquares(), iterableExpression);
     }
 
+    public final OngoingDeferredIterableBinaryPredicate<V> testIfIt(Expression<Iterable<V>> iterableExpression) {
+        return new OngoingDeferredIterableBinaryPredicate<>(field(), iterableExpression);
+    }
 }

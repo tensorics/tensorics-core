@@ -23,9 +23,11 @@
 package org.tensorics.core.lang;
 
 import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
 import org.tensorics.core.scalar.lang.OngoingDeferredBinaryOperation;
+import org.tensorics.core.scalar.lang.OngoingDeferredBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.OngoingDeferredQuantifiedTensorOperation;
@@ -228,4 +230,11 @@ public class TensoricExpressionSupport<V> {
         return quantityTensorbackedExpressionSupport.calculateTB(resultClass, tensor);
     }
 
+    public final OngoingDeferredBinaryPredicate<V> testIf(Expression<V> expression) {
+        return tensoricFieldUsage.testIf(expression);
+    }
+
+    public final OngoingDeferredIterableBinaryPredicate<V> testIfIt(Expression<Iterable<V>> iterableExpression) {
+        return tensoricFieldUsage.testIfIt(iterableExpression);
+    }
 }

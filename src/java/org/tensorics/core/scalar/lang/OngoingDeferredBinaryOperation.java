@@ -1,8 +1,8 @@
 // @formatter:off
- /*******************************************************************************
+/*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -32,9 +32,9 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
  * Provides methods to describe the right hand part of a binary operations for scalar expressions.
  * <p>
  * This class is part of the tensorcs fluent API.
- * 
- * @author kfuchsbe
+ *
  * @param <S> the type of the scalar values (elements of the field)
+ * @author kfuchsbe
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class OngoingDeferredBinaryOperation<S> {
