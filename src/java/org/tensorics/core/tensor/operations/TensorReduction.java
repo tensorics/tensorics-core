@@ -25,6 +25,7 @@ package org.tensorics.core.tensor.operations;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.reduction.ReductionStrategy;
 import org.tensorics.core.tensor.Context;
@@ -33,6 +34,8 @@ import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
+import com.google.common.base.Function;
+
 /**
  * The operation which describes the reduction of a tensor in one direction.
  * 
@@ -40,25 +43,25 @@ import org.tensorics.core.tensor.Tensor;
  * @param <C> the dimension (direction, type of coordinate) in which the tensor will be reduced
  * @param <E> the type of the elements of the tensor
  */
-public class TensorReduction<C, E> implements UnaryOperation<Tensor<E>> {
+public class TensorReduction<C, E, R> implements Conversion<Tensor<E>, Tensor<R>> {
 
     private final Class<? extends C> direction;
-    private final ReductionStrategy<? super C, E> reductionStrategy;
+    private final ReductionStrategy<? super C, E, R> reductionStrategy;
 
-    public TensorReduction(Class<? extends C> direction, ReductionStrategy<? super C, E> strategy) {
+    public TensorReduction(Class<? extends C> direction, ReductionStrategy<? super C, E, R> strategy) {
         super();
         this.direction = direction;
         this.reductionStrategy = strategy;
     }
 
     @Override
-    public Tensor<E> perform(Tensor<E> value) {
+    public Tensor<R> perform(Tensor<E> value) {
         Tensor<Map<C, E>> mapped = TensorInternals.mapOut(value).inDirectionOf(direction);
 
-        Builder<E> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());
+        Builder<R> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());
         builder.setTensorContext(Context.of(reductionStrategy.context(value.context().getPosition()).coordinates()));
         for (Entry<Position, Map<C, E>> entry : mapped.asMap().entrySet()) {
-            E reducedValue = reductionStrategy.reduce(entry.getValue(), entry.getKey());
+            R reducedValue = reductionStrategy.reduce(entry.getValue(), entry.getKey());
             if (reducedValue != null) {
                 builder.at(entry.getKey()).put(reducedValue);
             }

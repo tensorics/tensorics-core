@@ -20,34 +20,19 @@
  ******************************************************************************/
 // @formatter:on
 
-package org.tensorics.core.reduction;
-
-import java.util.Map;
-
-import org.tensorics.core.iterable.lang.ScalarIterableSupport;
-import org.tensorics.core.math.ExtendedField;
-import org.tensorics.core.tensor.Position;
+package org.tensorics.core.function;
 
 /**
- * Performs an rms calculation over all in one direction of a tensor, if used for tensor reduction.
+ * A builder for discrete functions. It provides methods to put new values and to decide on the interpolation strategies
+ * to use.
  * 
  * @author kfuchsbe
- * @param <S> the type of the scalars (field elements) on which all the operations are based on.
+ * @param <X> the type of the values along the X-axis
+ * @param <Y> the type of the values along the Y-axis
  */
-public class RootMeanSquare<S> extends ScalarIterableSupport<S> implements ReductionStrategy<Object, S, S> {
+public interface DiscreteFunctionBuilder<X, Y> {
 
-    public RootMeanSquare(ExtendedField<S> field) {
-        super(field);
-    }
+    DiscreteFunctionBuilder<X, Y> put(X key, Y value);
 
-    @Override
-    public S reduce(Map<? extends Object, S> inputValues, Position position) {
-        return rmsOf(inputValues.values());
-    }
-
-    @Override
-    public Position context(Position originalContext) {
-        return originalContext;
-    }
-
+    DiscreteFunction<X, Y> build();
 }

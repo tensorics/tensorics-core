@@ -32,7 +32,7 @@ import org.tensorics.core.tensor.Position;
  * @author kfuchsbe
  * @param <V> the type of the elements of the field.
  */
-public class Averaging<V> extends ScalarIterableSupport<V> implements ReductionStrategy<Object, V> {
+public class Averaging<V> extends ScalarIterableSupport<V> implements ReductionStrategy<Object, V, V> {
 
     public Averaging(ExtendedField<V> field) {
         super(field);

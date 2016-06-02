@@ -33,15 +33,16 @@ import org.tensorics.core.tensor.Position;
  * @author kfuchsbe, agorzaws
  * @param <C> The type of the coordinate (aka 'the dimension') which should be reduced.
  * @param <T> The type of values that can be reduced by this strategy
+ * @param <R> The type of the values after the reduction
  */
-public interface ReductionStrategy<C, T> {
+public interface ReductionStrategy<C, T, R> {
 
     /**
      * @param inputValues the sub values of the tensor from which the reduction is performed
      * @param position a remaining position in the tensor for which reduction is performed
      * @return the value of reduction
      */
-    T reduce(Map<? extends C, T> inputValues, Position position);
+    R reduce(Map<? extends C, T> inputValues, Position position);
 
     Position context(Position originalContext);
 }

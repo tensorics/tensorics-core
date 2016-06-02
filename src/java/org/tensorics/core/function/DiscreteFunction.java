@@ -4,6 +4,8 @@
 
 package org.tensorics.core.function;
 
+import java.util.Set;
+
 /**
  * A function which has only a discrete set of points (X/Y pairs). The {@link #apply(Object)} method will throw if an Y
  * value is requested for an unknown X.
@@ -19,5 +21,8 @@ public interface DiscreteFunction<X, Y> extends MathFunction<X, Y> {
      */
     @Override
     Y apply(X input);
+    
+    
+    Set<X> definedXValues();
     
 }

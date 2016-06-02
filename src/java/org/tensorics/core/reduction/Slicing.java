@@ -34,7 +34,7 @@ import org.tensorics.core.tensor.Positions;
  * @param <C> the type of coordinate (aka 'the dimension') do be reduced
  * @param <E> the type of the tensor elements
  */
-public class Slicing<C, E> implements ReductionStrategy<C, E> {
+public class Slicing<C, E> implements ReductionStrategy<C, E, E> {
 
     protected final C slicePosition;
 

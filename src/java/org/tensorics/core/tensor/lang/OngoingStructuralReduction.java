@@ -49,7 +49,7 @@ public class OngoingStructuralReduction<C, E> {
     }
 
     @SuppressWarnings("PMD.ShortMethodName")
-    public Tensor<E> by(ReductionStrategy<? super C, E> strategy) {
+    public <R> Tensor<R> by(ReductionStrategy<? super C, E, R> strategy) {
         return reduceBy(strategy);
     }
 
@@ -61,7 +61,7 @@ public class OngoingStructuralReduction<C, E> {
         return new OngoingStructuralReductionOptions(slicePosition, tensor, dimension);
     }
 
-    protected Tensor<E> reduceBy(ReductionStrategy<? super C, E> strategy) {
+    protected <R> Tensor<R> reduceBy(ReductionStrategy<? super C, E, R> strategy) {
         return new TensorReduction<>(dimension, strategy).perform(tensor);
     }
 
