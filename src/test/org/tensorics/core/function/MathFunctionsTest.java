@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,6 +16,8 @@ import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
+import com.google.common.base.Function;
+
 /**
  * Unit tests for {@link MathFunctions}
  * 
@@ -24,21 +27,40 @@ public class MathFunctionsTest {
 
     private static final int LIMIT_OF_FIRST_DIMENSION = 4;
     private static final char LIMIT_OF_SECOND_DIMENSION = 'd';
-    private static Tensor<Double> ZERO_DIMENSIONAL_TENSOR;
-    private Tensor<Double> ONE_DIMENSIONAL_TENSOR;
-    private ImmutableTensor<Boolean> TWO_DIMENSIONAL_TENSOR;
+
+    private static final Function<Integer, Double> INTEGER_TO_DOUBLE = new Function<Integer, Double>() {
+        @Override
+        public Double apply(Integer input) {
+            return input.doubleValue();
+        }
+    };
+
+    private static final Function<Double, Integer> DOUBLE_TO_INTEGER = new Function<Double, Integer>() {
+        @Override
+        public Integer apply(Double input) {
+            return input.intValue();
+        }
+    };
+
+    private static Tensor<Double> zeroDimensionalTensor;
+    private Tensor<Double> oneDimensionalTensor;
+    private DiscreteFunction<Integer, Double> discreteFunction;
+    private ImmutableTensor<Boolean> twoDimensionalTensor;
 
     @Before
     public void setUp() {
         initOneDimensionalTensor();
         initTwoDimensionalTensor();
-        ZERO_DIMENSIONAL_TENSOR = ImmutableTensor.zeroDimensionalOf(0D);
+        zeroDimensionalTensor = ImmutableTensor.zeroDimensionalOf(0D);
+
+        initDiscreteFunction();
+
     }
 
     /**
      * /@formatter:off
      * 
-     * Initialises {@link #ONE_DIMENSIONAL_TENSOR} as it follows:
+     * Initialises {@link #oneDimensionalTensor} as it follows:
      * 
      *       1   2   3   4
      *       
@@ -52,16 +74,16 @@ public class MathFunctionsTest {
         //@formatter:off
         evenNumbersTo(LIMIT_OF_FIRST_DIMENSION)
                  .forEach(i-> builder
-                 .putAt(i.doubleValue(), i));
+                 .putAt(INTEGER_TO_DOUBLE.apply(i), i));
         //@formatter:on
 
-        ONE_DIMENSIONAL_TENSOR = builder.build();
+        oneDimensionalTensor = builder.build();
     }
 
     /**
      * /@formatter:off
      * 
-     * Initialises {@link #TWO_DIMENSIONAL_TENSOR} as it follows:
+     * Initialises {@link #twoDimensionalTensor} as it follows:
      * 
      *        a b c d 
      *       
@@ -88,7 +110,13 @@ public class MathFunctionsTest {
             }
         }
 
-        TWO_DIMENSIONAL_TENSOR = builder.build();
+        twoDimensionalTensor = builder.build();
+    }
+
+    private void initDiscreteFunction() {
+        MapBackedDiscreteFunction.Builder<Integer, Double> builder = MapBackedDiscreteFunction.builder();
+        evenNumbersTo(LIMIT_OF_FIRST_DIMENSION).forEach(i -> builder.put(i, INTEGER_TO_DOUBLE.apply(i)));
+        discreteFunction = builder.build();
     }
 
     @Test(expected = NullPointerException.class)
@@ -98,29 +126,19 @@ public class MathFunctionsTest {
 
     @Test(expected = NullPointerException.class)
     public void testFunctionFrom1DTensorWithNullDimensionClassThrowsNPE() {
-        MathFunctions.functionFrom1DTensor(ONE_DIMENSIONAL_TENSOR, null);
+        MathFunctions.functionFrom1DTensor(oneDimensionalTensor, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFunctionFrom1DTensorWithZeroDimensionalTensorThrowsIllegalArgumentException() {
-        MathFunctions.functionFrom1DTensor(ZERO_DIMENSIONAL_TENSOR, Object.class);
+        MathFunctions.functionFrom1DTensor(zeroDimensionalTensor, Object.class);
     }
 
     @Test
     public void testFunctionFrom1DTensorWithSimpleTensorReturnsExpectedFunction() {
-        DiscreteFunction<Integer, Double> function = MathFunctions.functionFrom1DTensor(ONE_DIMENSIONAL_TENSOR,
+        DiscreteFunction<Integer, Double> function = MathFunctions.functionFrom1DTensor(oneDimensionalTensor,
                 Integer.class);
-
-        //@formatter:off
-        Set<Integer> expectedDefinedValues = evenNumbersTo(LIMIT_OF_FIRST_DIMENSION)
-                .collect(Collectors.toSet());
-        //@formatter:on
-
-        assertEquals(function.definedXValues(), expectedDefinedValues);
-
-        for (Integer x : expectedDefinedValues) {
-            assertTrue(function.apply(x).equals(x.doubleValue()));
-        }
+        assertEquals(discreteFunction, function);
     }
 
     @Test(expected = NullPointerException.class)
@@ -130,18 +148,18 @@ public class MathFunctionsTest {
 
     @Test(expected = NullPointerException.class)
     public void testFunctionsFromWithNullDimensionClassThrowsNPE() {
-        MathFunctions.functionsFrom(ONE_DIMENSIONAL_TENSOR, null);
+        MathFunctions.functionsFrom(oneDimensionalTensor, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFunctionsFromWithZeroDimensionalTensorThrowsIllegalArgumentException() {
-        MathFunctions.functionsFrom(ZERO_DIMENSIONAL_TENSOR, Object.class);
+        MathFunctions.functionsFrom(zeroDimensionalTensor, Object.class);
     }
 
     @Test
     public void testFunctionsFromWithTwoDimensionalTensorReturnsExpectedTensorOfDiscreteFunctions() {
-        Tensor<DiscreteFunction<Character, Boolean>> tensorFunction = MathFunctions
-                .functionsFrom(TWO_DIMENSIONAL_TENSOR, Character.class);
+        Tensor<DiscreteFunction<Character, Boolean>> tensorFunction = MathFunctions.functionsFrom(twoDimensionalTensor,
+                Character.class);
 
         assertEquals(1, tensorFunction.shape().dimensionality());
 
@@ -155,8 +173,46 @@ public class MathFunctionsTest {
             }
         }
 
+        assertFalse(tensorFunction.shape().dimensionSet().contains(Character.class));
         assertEquals(numbersTo(LIMIT_OF_FIRST_DIMENSION).collect(Collectors.toSet()),
                 tensorFunction.shape().coordinatesOfType(Integer.class));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testSingleTypedWithNullConversionThrowsNPE() {
+        MathFunctions.toSingleTyped(null, INTEGER_TO_DOUBLE);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testSingleTypedWithNullDiscreteFunctionThrowsNPE() {
+        MathFunctions.toSingleTyped(null, null);
+    }
+
+    @Test
+    public void testSingleTypedWithSimpleFunctionReturnsExpectedSingleTypedDiscreteFunction() {
+        Set<Integer> expectedOldXValues = discreteFunction.definedXValues();
+
+        //@formatter:off
+        Set<Double> expectedYValues = discreteFunction.definedXValues().stream()
+                .map(i->discreteFunction.apply(i)).collect(Collectors.toSet());
+        //@formatter:on
+
+        SingleTypedDiscreteFunction<Double> singleTypedFunction = MathFunctions.toSingleTyped(discreteFunction,
+                INTEGER_TO_DOUBLE);
+
+        Set<Integer> calculatedOldXValues = new HashSet<>();
+        Set<Double> newYValues = new HashSet<>();
+
+        for (Double x : singleTypedFunction.definedXValues()) {
+            Integer oldXValue = DOUBLE_TO_INTEGER.apply(x);
+            calculatedOldXValues.add(oldXValue);
+
+            Double newYvalue = singleTypedFunction.apply(x);
+            newYValues.add(newYvalue);
+        }
+
+        assertEquals(expectedOldXValues, calculatedOldXValues);
+        assertEquals(expectedYValues, newYValues);
     }
 
     private Stream<Integer> evenNumbersTo(int to) {

@@ -4,7 +4,6 @@
 
 package org.tensorics.core.function;
 
-import com.google.common.collect.Range;
 
 /**
  * This math funciton can return x values for (almost) any X values. The exact allowed x range depoends on the

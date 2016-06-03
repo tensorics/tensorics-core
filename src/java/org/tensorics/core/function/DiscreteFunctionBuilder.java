@@ -22,9 +22,11 @@
 
 package org.tensorics.core.function;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
- * A builder for discrete functions. It provides methods to put new values and to decide on the interpolation strategies
- * to use.
+ * A builder for discrete functions. It provides methods to easily build {@link DiscreteFunction}s
  * 
  * @author kfuchsbe
  * @param <X> the type of the values along the X-axis
@@ -33,6 +35,10 @@ package org.tensorics.core.function;
 public interface DiscreteFunctionBuilder<X, Y> {
 
     DiscreteFunctionBuilder<X, Y> put(X key, Y value);
+
+    DiscreteFunctionBuilder<X, Y> put(Entry<? extends X, ? extends Y> entry);
+
+    DiscreteFunctionBuilder<X, Y> putAll(Map<? extends X, ? extends Y> values);
 
     DiscreteFunction<X, Y> build();
 }

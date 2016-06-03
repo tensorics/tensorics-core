@@ -70,6 +70,37 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
         return function.keySet();
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((function == null) ? 0 : function.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof MapBackedDiscreteFunction)) {
+            return false;
+        }
+        @SuppressWarnings("rawtypes")
+        MapBackedDiscreteFunction other = (MapBackedDiscreteFunction) obj;
+        if (function == null) {
+            if (other.function != null) {
+                return false;
+            }
+        } else if (!function.equals(other.function)) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * The builder for the function based on a map. This class provides methods to add values to the function.
      * 
@@ -85,6 +116,7 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
             /* Should only be instantiated from the static method */
         }
 
+        @Override
         public DiscreteFunctionBuilder<X, Y> put(Entry<? extends X, ? extends Y> entry) {
             mapBuilder.put(entry);
             return this;
@@ -96,6 +128,7 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
             return this;
         }
 
+        @Override
         public DiscreteFunctionBuilder<X, Y> putAll(Map<? extends X, ? extends Y> values) {
             mapBuilder.putAll(values);
             return this;
