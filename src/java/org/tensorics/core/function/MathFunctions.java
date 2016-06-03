@@ -12,10 +12,12 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 
 public class MathFunctions {
 
-  public static  <X, Y> Tensor<DiscreteFunction<X, Y>> functionsFrom(Tensor<Y> tensor, Class<X> dimensionClass) {
+    public static <X, Y> Tensor<DiscreteFunction<X, Y>> functionsFrom(Tensor<Y> tensor, Class<X> dimensionClass) {
+        Preconditions.checkArgument(tensor.shape().dimensionality() >= 1, "tensor must contain at least one dimension");
         return Tensorics.from(tensor).reduce(dimensionClass).by(toFunctionsOf(dimensionClass));
     }
 
@@ -36,6 +38,7 @@ public class MathFunctions {
     }
 
     public static <X, Y> DiscreteFunction<X, Y> functionFrom1DTensor(Tensor<Y> tensor, Class<X> dimensionClass) {
+        Preconditions.checkArgument(tensor.shape().dimensionality() == 1, "tensor must be one-dimensional");
         return functionsFrom(tensor, dimensionClass).get();
     }
 
