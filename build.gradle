@@ -17,7 +17,7 @@ buildscript {
 }
 
 apply plugin: 'java'
-//apply plugin: 'cobertura'
+apply plugin: 'cobertura'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
