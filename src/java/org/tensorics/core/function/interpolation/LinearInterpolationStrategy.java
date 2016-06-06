@@ -1,9 +1,10 @@
-package org.tensorics.core.function;
+package org.tensorics.core.function.interpolation;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.scalar.lang.ScalarSupport;
 
@@ -11,7 +12,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 
 /**
- * A strategy for interpolating linearly {@link DiscreteFunction}s.
+ * An {@link InterpolationStrategy} for interpolating linearly {@link DiscreteFunction}s.
  * 
  * @see InterpolationStrategy
  * @author agorzaws, caguiler

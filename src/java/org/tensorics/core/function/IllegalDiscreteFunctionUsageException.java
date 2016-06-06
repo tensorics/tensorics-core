@@ -22,18 +22,17 @@
 
 package org.tensorics.core.function;
 
-import java.io.Serializable;
-
 /**
- * A strategy defines how to calculate output values of a function from the a finite set of discrete values (from a
- * discrete function).
+ * This exception is thrown, if a discrete function is use in a wrong way.
  * 
  * @author agorzaws
- * @param <X> the type of the independent variable (in)
- * @param <Y> the type of the dependent variable (output)
  */
-public interface InterpolationStrategy<X extends Comparable<? super X>, Y> extends Serializable {
+public class IllegalDiscreteFunctionUsageException extends RuntimeException {
 
-    Y interpolate(X xValue, DiscreteFunction<X, Y> function);
+    private static final long serialVersionUID = 1L;
+
+    public IllegalDiscreteFunctionUsageException(String message) {
+        super(message);
+    }
 
 }

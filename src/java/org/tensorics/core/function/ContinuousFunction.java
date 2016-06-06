@@ -6,7 +6,7 @@ package org.tensorics.core.function;
 
 
 /**
- * This math funciton can return x values for (almost) any X values. The exact allowed x range depoends on the
+ * This math funciton can return x values for (almost) any X values. The exact allowed x range depends on the
  * implementation.
  * 
  * @author kfuchsbe

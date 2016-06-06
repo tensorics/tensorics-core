@@ -2,6 +2,7 @@ package org.tensorics.core.function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
@@ -12,6 +13,9 @@ import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.fields.doubles.Structures;
+import org.tensorics.core.function.interpolation.LinearInterpolationStrategy;
+import org.tensorics.core.function.interpolation.SingleTypedLinearInterpolationStrategy;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
@@ -221,6 +225,30 @@ public class MathFunctionsTest {
 
     private Stream<Integer> numbersTo(int to) {
         return IntStream.iterate(1, i -> i + 1).limit(to).boxed();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testInterpolatedWithNullSingleTypedDiscreteFunctionThrowsNPE() {
+        MathFunctions.interpolated(null, new SingleTypedLinearInterpolationStrategy<>(Structures.doubles()));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testInterpolatedWithNullSingleTypedInterpolationStrategyThrowsNPE() {
+        SingleTypedDiscreteFunction<Double> singleTyped = MapBackedSingleTypedDiscreteFunction.<Double> builder()
+                .build();
+        MathFunctions.interpolated(singleTyped, null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testInterpolatedWithNullDiscreteFunctionThrowsNPE() {
+        MathFunctions.interpolated(null, new LinearInterpolationStrategy(Structures.doubles(), DOUBLE_TO_INTEGER));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testInterpolatedWithNullInterpolationStrategyThrowsNPE() {
+        MapBackedDiscreteFunction<Double, Double> function = MapBackedDiscreteFunction.<Double, Double> builder()
+                .build();
+        MathFunctions.interpolated(function, null);
     }
 
 }

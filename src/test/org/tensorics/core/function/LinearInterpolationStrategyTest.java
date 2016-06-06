@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.fields.doubles.Structures;
+import org.tensorics.core.function.interpolation.LinearInterpolationStrategy;
 
 import com.google.common.base.Function;
 

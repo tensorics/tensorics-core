@@ -4,6 +4,8 @@
 
 package org.tensorics.core.function;
 
+import org.tensorics.core.function.interpolation.InterpolationStrategy;
+import org.tensorics.core.function.interpolation.SingleTypedInterpolationStrategy;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.reduction.ToFunctions;
 import org.tensorics.core.tensor.Tensor;
@@ -39,15 +41,14 @@ public class MathFunctions {
         return builder.build();
     }
 
-    <V extends Comparable<V>> SingleTypedInterpolatedFunction<V> interpolated(SingleTypedDiscreteFunction<V> function,
+    public static <V extends Comparable<V>> SingleTypedInterpolatedFunction<V> interpolated(SingleTypedDiscreteFunction<V> function,
             SingleTypedInterpolationStrategy<V> strategy) {
-        return null;
+        return new DefaultSingleTypedInterpolatedFunction<>(function, strategy);
     }
 
-    // not sure if this makes sense
-    <X extends Comparable<X>, Y> InterpolatedFunction<X, Y> interpolated(DiscreteFunction<X, Y> function,
+    public static <X extends Comparable<X>, Y> InterpolatedFunction<X, Y> interpolated(DiscreteFunction<X, Y> function,
             InterpolationStrategy<X, Y> strategy) {
-        return null;
+        return new DefaultInterpolatedFunction<>(function, strategy);
     }
 
 }
