@@ -25,6 +25,7 @@ package org.tensorics.core.lang;
 import org.tensorics.core.commons.options.ImmutableOptionRegistry;
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.commons.options.OptionRegistry;
+import org.tensorics.core.function.interpolation.LinearInterpolationStrategy;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.options.JScienceQuantificationStrategy;
 import org.tensorics.core.quantity.options.RequireBothValidStrategy;
@@ -51,12 +52,13 @@ public final class ManipulationOptions {
      * Creates a new instance of an Option registry, supporting the given field, which will contain the default options,
      * as there are:
      * <ul>
-     * <li> {@link IntersectionShapingStrategy} for shaping strategy.</li>
-     * <li> {@link BroadcastMissingDimensionsStrategy} for broadcasting strategy</li>
-     * <li> {@link RequireBothValidStrategy}</li>
-     * <li> {@link UncorrelatedErrorPropagationStrategy}</li>
-     * <li> {@link JScienceQuantificationStrategy}</li>
-     * <li> {@link LeftContextPreservedStrategy}</li>
+     * <li>{@link IntersectionShapingStrategy} for shaping strategy.</li>
+     * <li>{@link BroadcastMissingDimensionsStrategy} for broadcasting strategy</li>
+     * <li>{@link RequireBothValidStrategy}</li>
+     * <li>{@link UncorrelatedErrorPropagationStrategy}</li>
+     * <li>{@link JScienceQuantificationStrategy}</li>
+     * <li>{@link LeftContextPreservedStrategy}</li>
+     * <li>{@link LinearInterpolationStrategy}
      * </ul>
      * 
      * @param field the for which to create the option-instances
@@ -70,7 +72,8 @@ public final class ManipulationOptions {
                 new RequireBothValidStrategy(), //
                 new UncorrelatedErrorPropagationStrategy<>(field), //
                 new JScienceQuantificationStrategy<>(field.cheating()), //
-                new LeftContextPreservedStrategy()));
+                new LeftContextPreservedStrategy(), 
+                new LinearInterpolationStrategy<>(field)));
     }
     // end::classdef[]
 }

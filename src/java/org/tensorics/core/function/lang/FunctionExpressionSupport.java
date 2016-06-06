@@ -5,16 +5,15 @@
 package org.tensorics.core.function.lang;
 
 import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.scalar.lang.ScalarExpressionSupport;
 
-public class ScalarFunctionSupport<V> {
+public class FunctionExpressionSupport<V> extends ScalarExpressionSupport<V> {
 
     private final ExtendedField<V> field;
 
-    public ScalarFunctionSupport(ExtendedField<V> field) {
+    public FunctionExpressionSupport(ExtendedField<V> field) {
+        super(field);
         this.field = field;
     }
-
-    
-    // methods
-
+  
 }

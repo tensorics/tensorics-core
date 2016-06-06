@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.tensorics.core.function.interpolation.InterpolationStrategy;
 
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 
 /**
@@ -18,13 +19,16 @@ import com.google.common.base.Preconditions;
 public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> implements InterpolatedFunction<X, Y> {
 
     private DiscreteFunction<X, Y> backingFunction;
-    private InterpolationStrategy<X, Y> strategy;
+    private InterpolationStrategy<Y> strategy;
+    private Function<X,Y> conversion;
 
-    public DefaultInterpolatedFunction(DiscreteFunction<X, Y> function, InterpolationStrategy<X, Y> strategy) {
+    public DefaultInterpolatedFunction(DiscreteFunction<X, Y> function, InterpolationStrategy<Y> strategy,
+            Function<X, Y> conversion) {
         Preconditions.checkNotNull(function, "function cannot be null");
         Preconditions.checkNotNull(strategy, "strategy cannot be null");
         this.backingFunction = function;
         this.strategy = strategy;
+        this.conversion = conversion;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> imp
         if (backingFunction.definedXValues().contains(input)) {
             return backingFunction.apply(input);
         }
-        return strategy.interpolate(input, backingFunction);
+        return strategy.interpolate(input, backingFunction, conversion);
     }
 
     @Override

@@ -28,26 +28,26 @@ public class LinearInterpolationStrategyTest {
         }
     };
 
-    private LinearInterpolationStrategy<Double, Double> strategy;
+    private LinearInterpolationStrategy<Double> strategy;
 
     @Before
     public void setUp() {
-        strategy = new LinearInterpolationStrategy<>(Structures.doubles(), IDENTITY_FOR_DOUBLES);
+        strategy = new LinearInterpolationStrategy<>(Structures.doubles());
     }
 
     @Test(expected = NullPointerException.class)
     public void testInterpolationWithNullxValueThrowsNPE() {
-        strategy.interpolate(null, xAxis(0, 1));
+        strategy.interpolate(null, xAxis(0, 1), IDENTITY_FOR_DOUBLES);
     }
 
     @Test(expected = NullPointerException.class)
     public void testInterpolationWithNullFunctionThrowsNPE() {
-        strategy.interpolate(1.0, null);
+        strategy.interpolate(1.0, null, IDENTITY_FOR_DOUBLES);
     }
 
     @Test(expected = IllegalStateException.class)
     public void testInterpolationWithFunctionThatContainsOnlyOneXValueThrowsIllegalStateException() {
-        strategy.interpolate(33.0, functionWithOnlyOneXValue());
+        strategy.interpolate(33.0, functionWithOnlyOneXValue(), IDENTITY_FOR_DOUBLES);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class LinearInterpolationStrategyTest {
         DiscreteFunction<Double, Double> xAxisFrom1to20 = xAxis(from, to);
 
         for (double i = from + 1; i < to; ++i) {
-            Double interpolated = strategy.interpolate(i, xAxisFrom1to20);
+            Double interpolated = strategy.interpolate(i, xAxisFrom1to20, IDENTITY_FOR_DOUBLES);
             Double expected = i;
             assertEquals(expected, interpolated, ERROR_TOLERANCE);
         }
@@ -70,7 +70,7 @@ public class LinearInterpolationStrategyTest {
         DiscreteFunction<Double, Double> xAxisFrom1to2 = xAxis(from, to);
 
         for (double i = from + 1; i < 20 * to; ++i) {
-            Double interpolated = strategy.interpolate(i, xAxisFrom1to2);
+            Double interpolated = strategy.interpolate(i, xAxisFrom1to2, IDENTITY_FOR_DOUBLES);
             Double expected = i;
             assertEquals(expected, interpolated, ERROR_TOLERANCE);
         }
@@ -82,43 +82,43 @@ public class LinearInterpolationStrategyTest {
 
         Double interpolatedValue;
 
-        interpolatedValue = strategy.interpolate(1.5, function);
+        interpolatedValue = strategy.interpolate(1.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(1.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(2.5, function);
+        interpolatedValue = strategy.interpolate(2.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(1.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(3.5, function);
+        interpolatedValue = strategy.interpolate(3.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(2, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(4.5, function);
+        interpolatedValue = strategy.interpolate(4.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(2, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(5.5, function);
+        interpolatedValue = strategy.interpolate(5.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(2.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(6.5, function);
+        interpolatedValue = strategy.interpolate(6.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(2.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(6.5, function);
+        interpolatedValue = strategy.interpolate(6.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(2.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(8.0, function);
+        interpolatedValue = strategy.interpolate(8.0, function, IDENTITY_FOR_DOUBLES);
         assertEquals(3.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(9.5, function);
+        interpolatedValue = strategy.interpolate(9.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(3.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(9.5, function);
+        interpolatedValue = strategy.interpolate(9.5, function, IDENTITY_FOR_DOUBLES);
         assertEquals(3.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(9.9, function);
+        interpolatedValue = strategy.interpolate(9.9, function, IDENTITY_FOR_DOUBLES);
         assertEquals(1.5, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(11.0, function);
+        interpolatedValue = strategy.interpolate(11.0, function, IDENTITY_FOR_DOUBLES);
         assertEquals(1.0, interpolatedValue, ERROR_TOLERANCE);
 
-        interpolatedValue = strategy.interpolate(12.0, function);
+        interpolatedValue = strategy.interpolate(12.0, function, IDENTITY_FOR_DOUBLES);
         assertEquals(1.0, interpolatedValue, ERROR_TOLERANCE);
     }
 
@@ -129,12 +129,12 @@ public class LinearInterpolationStrategyTest {
         Double interpolatedValue;
 
         for (double i = 0; i > -20; i--) {
-            interpolatedValue = strategy.interpolate(i, function);
+            interpolatedValue = strategy.interpolate(i, function, IDENTITY_FOR_DOUBLES);
             assertEquals(i, interpolatedValue, ERROR_TOLERANCE);
         }
 
         for (double i = 15; i < 35; i++) {
-            interpolatedValue = strategy.interpolate(15.0, function);
+            interpolatedValue = strategy.interpolate(15.0, function, IDENTITY_FOR_DOUBLES);
             assertEquals(1.0, interpolatedValue, ERROR_TOLERANCE);
         }
     }

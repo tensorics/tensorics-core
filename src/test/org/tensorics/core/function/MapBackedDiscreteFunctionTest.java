@@ -11,7 +11,6 @@ import java.util.stream.DoubleStream;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tensorics.incubate.function.IllegalDiscreteFunctionUsageException;
 
 /**
  * Unit tests for {@link MapBackedDiscreteFunction}

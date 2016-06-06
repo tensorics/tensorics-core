@@ -7,27 +7,19 @@ package org.tensorics.core.function.interpolation;
 import org.tensorics.core.function.SingleTypedDiscreteFunction;
 import org.tensorics.core.math.ExtendedField;
 
-import com.google.common.base.Function;
-
 /**
- * An {@link InterpolationStrategy} for interpolating linearly {@link SingleTypedDiscreteFunction}
+ * A {@link SingleTypedInterpolationStrategy} for interpolating linearly {@link SingleTypedDiscreteFunction}
  * 
  * @author caguiler
  * @param <X> the type of the independent variable (in) and the type of the dependent variable (output)
- * @see LinearInterpolationStrategy
+ * @see LinearInterpolationStrategy, SingleTypedInterpolationStrategy
  */
 public class SingleTypedLinearInterpolationStrategy<X extends Comparable<? super X>>
-        extends LinearInterpolationStrategy<X, X> implements SingleTypedInterpolationStrategy<X> {
+        extends LinearInterpolationStrategy<X> implements SingleTypedInterpolationStrategy<X> {
 
     private static final long serialVersionUID = 1L;
 
     public SingleTypedLinearInterpolationStrategy(ExtendedField<X> field) {
-        super(field, new Function<X, X>() {
-
-            @Override
-            public X apply(X input) {
-                return input;
-            }
-        });
+        super(field);
     }
 }

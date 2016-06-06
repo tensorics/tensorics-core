@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.scalar.lang.ScalarSupport;
@@ -17,20 +18,17 @@ import com.google.common.base.Preconditions;
  * @see InterpolationStrategy
  * @author agorzaws, caguiler
  */
-public class LinearInterpolationStrategy<X extends Comparable<? super X>, Y> extends ScalarSupport<Y>
-        implements InterpolationStrategy<X, Y> {
+public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements InterpolationStrategy<Y> {
 
     private static final long serialVersionUID = 1L;
-    private Function<X, Y> conversion;
 
-    public LinearInterpolationStrategy(ExtendedField<Y> field, Function<X, Y> conversion) {
+    public LinearInterpolationStrategy(ExtendedField<Y> field) {
         super(field);
-        Preconditions.checkNotNull(conversion, "conversion cannot be null!");
-        this.conversion = conversion;
     }
 
     @Override
-    public Y interpolate(X x, DiscreteFunction<X, Y> function) {
+    public <X extends Comparable<? super X>> Y interpolate(X x, DiscreteFunction<X, Y> function,
+            Function<X, Y> conversion) {
         Preconditions.checkNotNull(x, "x cannot be null!");
         Preconditions.checkNotNull(function, "function cannot be null!");
 

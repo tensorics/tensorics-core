@@ -24,6 +24,8 @@ package org.tensorics.incubate.function;
 
 import java.io.Serializable;
 
+import org.tensorics.core.commons.options.ManipulationOption;
+
 /**
  * A strategy defines how to calculate output values of a function from the a finite set of discrete values (from a
  * discrete function).
@@ -32,8 +34,12 @@ import java.io.Serializable;
  * @param <X> the type of the independent variable (in)
  * @param <Y> the type of the dependent variable (output)
  */
-public interface InterpolationStrategy<X extends Comparable<? super X>, Y> extends Serializable {
+public interface InterpolationStrategy<X extends Comparable<? super X>, Y> extends Serializable, ManipulationOption {
 
     Y interpolate(X xValue, DiscreteFunction<X, Y> function);
 
+    @Override
+    public default Class<? extends ManipulationOption> getMarkerInterface() {
+        return InterpolationStrategy.class;
+    }
 }

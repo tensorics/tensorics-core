@@ -241,14 +241,14 @@ public class MathFunctionsTest {
 
     @Test(expected = NullPointerException.class)
     public void testInterpolatedWithNullDiscreteFunctionThrowsNPE() {
-        MathFunctions.interpolated(null, new LinearInterpolationStrategy(Structures.doubles(), DOUBLE_TO_INTEGER));
+        MathFunctions.interpolated(null, new LinearInterpolationStrategy(Structures.doubles()), DOUBLE_TO_INTEGER);
     }
 
     @Test(expected = NullPointerException.class)
     public void testInterpolatedWithNullInterpolationStrategyThrowsNPE() {
-        MapBackedDiscreteFunction<Double, Double> function = MapBackedDiscreteFunction.<Double, Double> builder()
+        MapBackedDiscreteFunction<Integer, Double> function = MapBackedDiscreteFunction.<Integer, Double> builder()
                 .build();
-        MathFunctions.interpolated(function, null);
+        MathFunctions.interpolated(function, null, INTEGER_TO_DOUBLE);
     }
 
 }

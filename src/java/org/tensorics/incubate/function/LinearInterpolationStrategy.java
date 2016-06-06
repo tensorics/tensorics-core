@@ -24,6 +24,8 @@ package org.tensorics.incubate.function;
 
 import java.util.List;
 
+import org.tensorics.core.commons.options.ManipulationOption;
+
 /**
  * A strategy for interpolating linearly between two values of doubles, with also the x-direction of the function being
  * double values.
@@ -68,4 +70,5 @@ public class LinearInterpolationStrategy implements InterpolationStrategy<Double
         return function.getY(timeBefore) + (Math.abs(xValue - timeBefore) / Math.abs(timeAfter - timeBefore))
                 * (function.getY(timeAfter) - function.getY(timeBefore));
     }
+
 }

@@ -24,7 +24,10 @@ package org.tensorics.core.function.interpolation;
 
 import java.io.Serializable;
 
+import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.function.DiscreteFunction;
+
+import com.google.common.base.Function;
 
 /**
  * A strategy defines how to calculate output values of a function from the a finite set of discrete values (from a
@@ -34,8 +37,13 @@ import org.tensorics.core.function.DiscreteFunction;
  * @param <X> the type of the independent variable (in)
  * @param <Y> the type of the dependent variable (output)
  */
-public interface InterpolationStrategy<X extends Comparable<? super X>, Y> extends Serializable {
+public interface InterpolationStrategy<Y> extends Serializable, ManipulationOption {
 
-    Y interpolate(X xValue, DiscreteFunction<X, Y> function);
+    <X extends Comparable<? super X>> Y interpolate(X xValue, DiscreteFunction<X, Y> function,
+            Function<X, Y> conversion);
 
+    @Override
+    public default Class<? extends ManipulationOption> getMarkerInterface() {
+        return InterpolationStrategy.class;
+    }
 }

@@ -41,14 +41,14 @@ public class MathFunctions {
         return builder.build();
     }
 
-    public static <V extends Comparable<V>> SingleTypedInterpolatedFunction<V> interpolated(SingleTypedDiscreteFunction<V> function,
-            SingleTypedInterpolationStrategy<V> strategy) {
+    public static <V extends Comparable<V>> SingleTypedInterpolatedFunction<V> interpolated(
+            SingleTypedDiscreteFunction<V> function, SingleTypedInterpolationStrategy<V> strategy) {
         return new DefaultSingleTypedInterpolatedFunction<>(function, strategy);
     }
 
     public static <X extends Comparable<X>, Y> InterpolatedFunction<X, Y> interpolated(DiscreteFunction<X, Y> function,
-            InterpolationStrategy<X, Y> strategy) {
-        return new DefaultInterpolatedFunction<>(function, strategy);
+            InterpolationStrategy<Y> strategy, Function<X, Y> conversion) {
+        return new DefaultInterpolatedFunction<>(function, strategy, conversion);
     }
 
 }
