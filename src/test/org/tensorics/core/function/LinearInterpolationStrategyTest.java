@@ -8,55 +8,162 @@ import org.tensorics.core.fields.doubles.Structures;
 
 import com.google.common.base.Function;
 
+/**
+ * <p>
+ * Tests that {@link LinearInterpolationStrategy} calculates interpolations properly.
+ * <p>
+ * <b>Notice:</b> In this test suite only {@link Structures#doubles()} is taken into account as mathematical field.
+ * 
+ * @author caguiler
+ */
 public class LinearInterpolationStrategyTest {
 
-	private static final double ERROR_TOLERANCE = 0.0001;
+    private static final double ERROR_TOLERANCE = 0.000001;
 
-	public static final Function<Integer, Double> INTEGER_TO_DOUBLE = new Function<Integer, Double>() {
-		@Override
-		public Double apply(Integer t) {
-			return t.doubleValue();
-		}
-	};
+    public static final Function<Double, Double> IDENTITY_FOR_DOUBLES = new Function<Double, Double>() {
+        @Override
+        public Double apply(Double t) {
+            return t;
+        }
+    };
 
-	private LinearInterpolationStrategy<Integer, Double> strategy;
+    private LinearInterpolationStrategy<Double, Double> strategy;
 
-	@Before
-	public void setUp() {
-		strategy = new LinearInterpolationStrategy<Integer, Double>(Structures.doubles(), INTEGER_TO_DOUBLE);
-	}
+    @Before
+    public void setUp() {
+        strategy = new LinearInterpolationStrategy<>(Structures.doubles(), IDENTITY_FOR_DOUBLES);
+    }
 
-	@Test
-	public void testSimpleInterpolationWithValuesWithinDefinedXValuesInterval() {
-		int from = 1;
-		int to = 20;
-		DiscreteFunction<Integer, Double> xAxisFrom1to20 = xAxis(from, to);
+    @Test(expected = NullPointerException.class)
+    public void testInterpolationWithNullxValueThrowsNPE() {
+        strategy.interpolate(null, xAxis(0, 1));
+    }
 
-		for (int i = from + 1; i < to; ++i) {
-			Double interpolated = strategy.interpolate(i, xAxisFrom1to20);
-			Double expected = INTEGER_TO_DOUBLE.apply(i);
-			assertEquals(expected, interpolated, ERROR_TOLERANCE);
-		}
-	}
+    @Test(expected = NullPointerException.class)
+    public void testInterpolationWithNullFunctionThrowsNPE() {
+        strategy.interpolate(1.0, null);
+    }
 
-	@Test
-	public void testSimpleInterpolationWithValuesOutsideDefinedXValuesInterval() {
-		DiscreteFunction<Integer, Double> xAxisFrom1to2 = xAxis(1, 2);
+    @Test(expected = IllegalStateException.class)
+    public void testInterpolationWithFunctionThatContainsOnlyOneXValueThrowsIllegalStateException() {
+        strategy.interpolate(33.0, functionWithOnlyOneXValue());
+    }
 
-		for (int i = 3; i < 20; ++i) {
-			Double interpolated = strategy.interpolate(i, xAxisFrom1to2);
-			Double expected = INTEGER_TO_DOUBLE.apply(i);
-			assertEquals(expected, interpolated, 0.0001);
-		}
-	}
+    @Test
+    public void testSimpleInterpolationWithValuesWithinDefinedXValuesInterval() {
+        int from = 1;
+        int to = 20;
+        DiscreteFunction<Double, Double> xAxisFrom1to20 = xAxis(from, to);
 
-	private DiscreteFunction<Integer, Double> xAxis(int from, int to) {
-		MapBackedDiscreteFunction.Builder<Integer, Double> builder = MapBackedDiscreteFunction.builder();
-		Double y1 = INTEGER_TO_DOUBLE.apply(from);
-		Double y2 = INTEGER_TO_DOUBLE.apply(to);
-		builder.put(from, y1);
-		builder.put(to, y2);
-		return builder.build();
-	}
+        for (double i = from + 1; i < to; ++i) {
+            Double interpolated = strategy.interpolate(i, xAxisFrom1to20);
+            Double expected = i;
+            assertEquals(expected, interpolated, ERROR_TOLERANCE);
+        }
+    }
+
+    @Test
+    public void testSimpleInterpolationWithValuesOutsideDefinedXValuesInterval() {
+        int from = 1;
+        int to = 2;
+        DiscreteFunction<Double, Double> xAxisFrom1to2 = xAxis(from, to);
+
+        for (double i = from + 1; i < 20 * to; ++i) {
+            Double interpolated = strategy.interpolate(i, xAxisFrom1to2);
+            Double expected = i;
+            assertEquals(expected, interpolated, ERROR_TOLERANCE);
+        }
+    }
+
+    @Test
+    public void testFancyInterpolationWithValuesWithinDefinedXValuesInterval() {
+        DiscreteFunction<Double, Double> function = createComplexDiscreteFunction();
+
+        Double interpolatedValue;
+
+        interpolatedValue = strategy.interpolate(1.5, function);
+        assertEquals(1.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(2.5, function);
+        assertEquals(1.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(3.5, function);
+        assertEquals(2, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(4.5, function);
+        assertEquals(2, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(5.5, function);
+        assertEquals(2.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(6.5, function);
+        assertEquals(2.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(6.5, function);
+        assertEquals(2.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(8.0, function);
+        assertEquals(3.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(9.5, function);
+        assertEquals(3.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(9.5, function);
+        assertEquals(3.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(9.9, function);
+        assertEquals(1.5, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(11.0, function);
+        assertEquals(1.0, interpolatedValue, ERROR_TOLERANCE);
+
+        interpolatedValue = strategy.interpolate(12.0, function);
+        assertEquals(1.0, interpolatedValue, ERROR_TOLERANCE);
+    }
+
+    @Test
+    public void testFancyInterpolationWithValuesOutsideDefinedXValuesInterval() {
+        DiscreteFunction<Double, Double> function = createComplexDiscreteFunction();
+
+        Double interpolatedValue;
+
+        for (double i = 0; i > -20; i--) {
+            interpolatedValue = strategy.interpolate(i, function);
+            assertEquals(i, interpolatedValue, ERROR_TOLERANCE);
+        }
+
+        for (double i = 15; i < 35; i++) {
+            interpolatedValue = strategy.interpolate(15.0, function);
+            assertEquals(1.0, interpolatedValue, ERROR_TOLERANCE);
+        }
+    }
+
+    private DiscreteFunction<Double, Double> createComplexDiscreteFunction() {
+        MapBackedDiscreteFunction.Builder<Double, Double> builder = MapBackedDiscreteFunction.builder();
+
+        double[] xAxis = { 1, 2, 3, 4, 5, 6, 7, 9, 10, 13 };
+        double[] yAxis = { 1, 2, 1, 3, 1, 4, 1, 6, 1, 1 };
+
+        for (int i = 0; i < yAxis.length; i++) {
+            builder.put(xAxis[i], yAxis[i]);
+        }
+
+        return builder.build();
+    }
+
+    private DiscreteFunction<Double, Double> xAxis(double from, double to) {
+        MapBackedDiscreteFunction.Builder<Double, Double> builder = MapBackedDiscreteFunction.builder();
+        Double y1 = from;
+        Double y2 = to;
+        builder.put(from, y1);
+        builder.put(to, y2);
+        return builder.build();
+    }
+
+    private DiscreteFunction<Double, Double> functionWithOnlyOneXValue() {
+        MapBackedDiscreteFunction.Builder<Double, Double> builder = MapBackedDiscreteFunction.builder();
+        builder.put(1D, 1D);
+        return builder.build();
+    }
 
 }
