@@ -2,20 +2,14 @@ package org.tensorics.core.function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tensorics.core.fields.doubles.Structures;
-import org.tensorics.core.function.interpolation.LinearInterpolationStrategy;
-import org.tensorics.core.function.interpolation.SingleTypedLinearInterpolationStrategy;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
@@ -182,73 +176,12 @@ public class MathFunctionsTest {
                 tensorFunction.shape().coordinatesOfType(Integer.class));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testSingleTypedWithNullConversionThrowsNPE() {
-        MathFunctions.toSingleTyped(null, INTEGER_TO_DOUBLE);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testSingleTypedWithNullDiscreteFunctionThrowsNPE() {
-        MathFunctions.toSingleTyped(null, null);
-    }
-
-    @Test
-    public void testSingleTypedWithSimpleFunctionReturnsExpectedSingleTypedDiscreteFunction() {
-        Set<Integer> expectedOldXValues = discreteFunction.definedXValues();
-
-        //@formatter:off
-        Set<Double> expectedYValues = discreteFunction.definedXValues().stream()
-                .map(i->discreteFunction.apply(i)).collect(Collectors.toSet());
-        //@formatter:on
-
-        SingleTypedDiscreteFunction<Double> singleTypedFunction = MathFunctions.toSingleTyped(discreteFunction,
-                INTEGER_TO_DOUBLE);
-
-        Set<Integer> calculatedOldXValues = new HashSet<>();
-        Set<Double> newYValues = new HashSet<>();
-
-        for (Double x : singleTypedFunction.definedXValues()) {
-            Integer oldXValue = DOUBLE_TO_INTEGER.apply(x);
-            calculatedOldXValues.add(oldXValue);
-
-            Double newYvalue = singleTypedFunction.apply(x);
-            newYValues.add(newYvalue);
-        }
-
-        assertEquals(expectedOldXValues, calculatedOldXValues);
-        assertEquals(expectedYValues, newYValues);
-    }
-
     private Stream<Integer> evenNumbersTo(int to) {
         return numbersTo(to).filter(i -> i % 2 == 0);
     }
 
     private Stream<Integer> numbersTo(int to) {
         return IntStream.iterate(1, i -> i + 1).limit(to).boxed();
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testInterpolatedWithNullSingleTypedDiscreteFunctionThrowsNPE() {
-        MathFunctions.interpolated(null, new SingleTypedLinearInterpolationStrategy<>(Structures.doubles()));
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testInterpolatedWithNullSingleTypedInterpolationStrategyThrowsNPE() {
-        SingleTypedDiscreteFunction<Double> singleTyped = MapBackedSingleTypedDiscreteFunction.<Double> builder()
-                .build();
-        MathFunctions.interpolated(singleTyped, null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testInterpolatedWithNullDiscreteFunctionThrowsNPE() {
-        MathFunctions.interpolated(null, new LinearInterpolationStrategy(Structures.doubles()), DOUBLE_TO_INTEGER);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testInterpolatedWithNullInterpolationStrategyThrowsNPE() {
-        MapBackedDiscreteFunction<Integer, Double> function = MapBackedDiscreteFunction.<Integer, Double> builder()
-                .build();
-        MathFunctions.interpolated(function, null, INTEGER_TO_DOUBLE);
     }
 
 }

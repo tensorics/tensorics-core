@@ -20,12 +20,13 @@ public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> imp
 
     private DiscreteFunction<X, Y> backingFunction;
     private InterpolationStrategy<Y> strategy;
-    private Function<X,Y> conversion;
+    private Function<X, Y> conversion;
 
     public DefaultInterpolatedFunction(DiscreteFunction<X, Y> function, InterpolationStrategy<Y> strategy,
             Function<X, Y> conversion) {
         Preconditions.checkNotNull(function, "function cannot be null");
         Preconditions.checkNotNull(strategy, "strategy cannot be null");
+        Preconditions.checkNotNull(conversion, "conversion cannot be null");
         this.backingFunction = function;
         this.strategy = strategy;
         this.conversion = conversion;

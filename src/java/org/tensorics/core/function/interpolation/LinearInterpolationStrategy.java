@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.scalar.lang.ScalarSupport;
@@ -31,6 +30,7 @@ public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements 
             Function<X, Y> conversion) {
         Preconditions.checkNotNull(x, "x cannot be null!");
         Preconditions.checkNotNull(function, "function cannot be null!");
+        Preconditions.checkNotNull(conversion, "conversion cannot be null!");
 
         int size = function.definedXValues().size();
 
