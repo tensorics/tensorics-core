@@ -37,7 +37,7 @@ public class MathFunctions {
         return new DefaultInterpolatedFunction<>(function, strategy, conversion);
     }
 
-    public static <X extends Comparable<? super X>, Y> Collection<Y> yValuesOf(DiscreteFunction<X, Y> function) {
+    public static <X, Y> Collection<Y> yValuesOf(DiscreteFunction<X, Y> function) {
         Preconditions.checkNotNull(function, "function cannot be null!");
         return function.definedXValues().stream().map(function::apply).collect(Collectors.toList());
     }

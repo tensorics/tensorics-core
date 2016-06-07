@@ -21,42 +21,13 @@ import com.google.common.base.Functions;
  * @author caguiler
  * @param <Y> the type of the scalar values (elements of the field) on which to operate
  */
-public class FunctionSupport<Y> {
-
-    private final Environment<Y> environment;
+public class FunctionSupport<Y> extends FunctionSupportWithConversion<Y, Y> {
 
     public FunctionSupport(Environment<Y> environment) {
-        this.environment = environment;
+        super(environment, Functions.identity());
     }
 
-    public final <X extends Comparable<? super X>> FunctionSupportWithConversion<X, Y> withConversion(
-            Function<X, Y> conversion) {
-        return new FunctionSupportWithConversion<>(environment, conversion);
+    public final <X> FunctionSupportWithConversion<X, Y> withConversion(Function<X, Y> conversion) {
+        return new FunctionSupportWithConversion<>(environment(), conversion);
     }
-
-    public final <Z extends Comparable<? super Z>> OngoingDiscreteFunctionOperation<Z, Z> calculate(
-            DiscreteFunction<Z, Z> left) {
-        FunctionSupport<Z> support = toSupportOfComparable();
-        return new OngoingDiscreteFunctionOperation<>(support.environment, left, Functions.identity());
-    }
-
-    public final <Z extends Comparable<? super Z>> Z averageOf(DiscreteFunction<Z, Z> function) {
-        FunctionSupport<Z> support = toSupportOfComparable();
-        return new FunctionSupportWithConversion<>(support.environment, Functions.identity()).averageOf(function);
-    }
-
-    public final <Z extends Comparable<? super Z>> Z rmsOf(DiscreteFunction<Z, Z> function) {
-        FunctionSupport<Z> support = toSupportOfComparable();
-        return new FunctionSupportWithConversion<>(support.environment, Functions.identity()).rmsOf(function);
-    }
-
-    @SuppressWarnings("unchecked")
-    <Z extends Comparable<? super Z>> FunctionSupport<Z> toSupportOfComparable() {
-        try {
-            return (FunctionSupport<Z>) this;
-        } catch (ClassCastException exception) {
-            throw new IllegalStateException("The type of the FunctionSupport that you use MUST implement Comparable");
-        }
-    }
-
 }

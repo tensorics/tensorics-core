@@ -4,34 +4,41 @@
 
 package org.tensorics.core.function.lang;
 
+import static org.tensorics.core.function.MathFunctions.yValuesOf;
+
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
-import org.tensorics.core.function.MathFunctions;
-import org.tensorics.core.iterable.lang.IterableOperationRepository;
+import org.tensorics.core.iterable.lang.ScalarIterableSupport;
 
 import com.google.common.base.Function;
 
-public class FunctionSupportWithConversion<X extends Comparable<? super X>, Y> {
+public class FunctionSupportWithConversion<X, Y> extends ScalarIterableSupport<Y> {
 
     private Environment<Y> environment;
     private Function<X, Y> conversion;
-    private IterableOperationRepository<Y> repository;
 
     public FunctionSupportWithConversion(Environment<Y> environment, Function<X, Y> conversion) {
+        super(environment.field());
         this.environment = environment;
         this.conversion = conversion;
-        this.repository = new IterableOperationRepository<>(environment.field());
     }
 
-    public OngoingDiscreteFunctionOperation<X, Y> calculate(DiscreteFunction<X, Y> left) {
-        return new OngoingDiscreteFunctionOperation<>(environment, left, conversion);
+    // XXX: check that the cast is OK, otherwise throw an exception
+    @SuppressWarnings("unchecked")
+    public <Z extends Comparable<? super Z>> OngoingDiscreteFunctionOperation<Z, Y> calculate(
+            DiscreteFunction<Z, Y> left) {
+        return new OngoingDiscreteFunctionOperation<>(environment, left, (Function<Z, Y>) conversion);
     }
 
     public final Y averageOf(DiscreteFunction<X, Y> function) {
-        return repository.average().perform(MathFunctions.yValuesOf(function));
+        return avarageOf(yValuesOf(function));
     }
 
     public Y rmsOf(DiscreteFunction<X, Y> function) {
-        return repository.rms().perform(MathFunctions.yValuesOf(function));
+        return rmsOf(yValuesOf(function));
+    }
+
+    protected Environment<Y> environment() {
+        return environment;
     }
 }

@@ -29,8 +29,8 @@ public class OngoingDeferredDiscreteFunctionOperation<X extends Comparable<? sup
         return new BinaryOperationExpression<>(new DiscreteFunctionAddition<>(environment, conversion), left, right);
     }
 
-    public Expression<Y> averageOf(Expression<DiscreteFunction<X, Y>> function) {
-        return new FunctionExpressionSupportWithConversion<>(environment, conversion).averageOf(function);
-    }
+//    public Expression<Y> averageOf(Expression<DiscreteFunction<X, Y>> function) {
+//        return new FunctionExpressionSupportWithConversion<>(environment, conversion).averageOf(function);
+//    }
 
 }

@@ -40,6 +40,7 @@ public class ScriptingExampleTry {
             protected Expression<Boolean> describe() {
                 Expression<Double> averageOf = averageOf(signalId);
                 Expression<Double> rmsOf = rmsOf(signalId);
+                
                 return testIfIt(signalId).isLessThan(33D);
             }
         };
