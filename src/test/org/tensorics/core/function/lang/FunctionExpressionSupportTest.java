@@ -52,6 +52,9 @@ public class FunctionExpressionSupportTest {
     @Test
     public void testPlus() {
         Expression<DiscreteFunction<Double, Double>> plus = support.calculateF(two).plus(three);
+        
+        Expression<DiscreteFunction<?, Double>> bah = null;
+        support.averageOfF(two);
 
         DiscreteFunction<Double, Double> five = engine.resolve(plus);
 
