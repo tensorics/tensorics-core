@@ -11,7 +11,7 @@ import com.google.common.base.Functions;
 
 public class FunctionExpressionSupport<Y> extends FunctionExpressionSupportWithConversion<Y, Y> {
 
-    public FunctionExpressionSupport(Environment<Y> environment) {
+    FunctionExpressionSupport(Environment<Y> environment) {
         super(environment, Functions.identity());
     }
 

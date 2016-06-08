@@ -23,7 +23,6 @@ package org.tensorics.core.function.operations;
 
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
-import org.tensorics.core.function.lang.FunctionSupportWithConversion;
 
 import com.google.common.base.Function;
 
@@ -34,15 +33,10 @@ import com.google.common.base.Function;
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public class DiscreteFunctionAddition<X extends Comparable<? super X>, Y> extends FunctionSupportWithConversion<X, Y>
-        implements DiscreteFunctionBinaryOperation<X, Y> {
+public class DiscreteFunctionAddition<X extends Comparable<? super X>, Y>
+        extends DiscreteFunctionBinaryOperation<X, Y> {
 
-    public DiscreteFunctionAddition(Environment<Y> environment, Function<X, Y> conversion) {
-        super(environment, conversion);
-    }
-
-    @Override
-    public DiscreteFunction<X, Y> perform(DiscreteFunction<X, Y> left, DiscreteFunction<X, Y> right) {
-        return calculate(left).plus(right);
+    DiscreteFunctionAddition(Environment<Y> environment, Function<X, Y> conversion) {
+        super(environment, conversion, environment.field().addition());
     }
 }

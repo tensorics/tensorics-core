@@ -19,7 +19,7 @@ public class FunctionExpressionSupportWithConversion<X, Y> extends ScalarIterabl
     private CodomainExtraction<X, Y> toYValues;
     private Function<X, Y> conversion;
 
-    public FunctionExpressionSupportWithConversion(Environment<Y> environment, Function<X, Y> conversion) {
+    FunctionExpressionSupportWithConversion(Environment<Y> environment, Function<X, Y> conversion) {
         super(environment.field());
         this.environment = environment;
         this.conversion = conversion;

@@ -22,8 +22,16 @@
 
 package org.tensorics.core.function.operations;
 
+import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
+import org.tensorics.core.function.InterpolatedFunction;
+import org.tensorics.core.function.MapBackedDiscreteFunction;
+import org.tensorics.core.function.MathFunctions;
+import org.tensorics.core.function.interpolation.InterpolationStrategy;
 import org.tensorics.core.math.operations.BinaryOperation;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Sets;
 
 /**
  * A binary operation that takes two {@link DiscreteFunction}s and produces a {@link DiscreteFunction}.
@@ -32,6 +40,40 @@ import org.tensorics.core.math.operations.BinaryOperation;
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public interface DiscreteFunctionBinaryOperation<X, Y> extends BinaryOperation<DiscreteFunction<X, Y>> {
-    /* Marker interface */
+public abstract class DiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y>
+        implements BinaryOperation<DiscreteFunction<X, Y>> {
+
+    private final Function<X, Y> conversion;
+    private final Environment<Y> environment;
+    private final BinaryOperation<Y> operation;
+
+    DiscreteFunctionBinaryOperation(Environment<Y> environment, Function<X, Y> conversion,
+            BinaryOperation<Y> operation) {
+        this.environment = environment;
+        this.conversion = conversion;
+        this.operation = operation;
+    }
+
+    @Override
+    public DiscreteFunction<X, Y> perform(DiscreteFunction<X, Y> left, DiscreteFunction<X, Y> right) {
+        @SuppressWarnings("unchecked")
+        InterpolationStrategy<Y> strategy = environment.options().get(InterpolationStrategy.class);
+
+        InterpolatedFunction<X, Y> rigthInterpolated = MathFunctions.interpolated(right, strategy, conversion);
+        InterpolatedFunction<X, Y> leftInterpolated = MathFunctions.interpolated(left, strategy, conversion);
+
+        MapBackedDiscreteFunction.Builder<X, Y> builder = MapBackedDiscreteFunction.builder();
+
+        for (X x : Sets.union(left.definedXValues(), right.definedXValues())) {
+
+            Y y1 = leftInterpolated.apply(x);
+            Y y2 = rigthInterpolated.apply(x);
+
+            Y result = operation.perform(y1, y2);
+
+            builder.put(x, result);
+        }
+
+        return builder.build();
+    }
 }

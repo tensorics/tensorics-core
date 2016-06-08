@@ -17,7 +17,7 @@ public class FunctionSupportWithConversion<X, Y> extends ScalarIterableSupport<Y
     private Environment<Y> environment;
     private Function<X, Y> conversion;
 
-    public FunctionSupportWithConversion(Environment<Y> environment, Function<X, Y> conversion) {
+    FunctionSupportWithConversion(Environment<Y> environment, Function<X, Y> conversion) {
         super(environment.field());
         this.environment = environment;
         this.conversion = conversion;

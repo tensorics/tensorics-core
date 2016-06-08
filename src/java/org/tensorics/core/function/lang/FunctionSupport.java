@@ -23,7 +23,7 @@ import com.google.common.base.Functions;
  */
 public class FunctionSupport<Y> extends FunctionSupportWithConversion<Y, Y> {
 
-    public FunctionSupport(Environment<Y> environment) {
+    FunctionSupport(Environment<Y> environment) {
         super(environment, Functions.identity());
     }
 
