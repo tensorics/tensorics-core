@@ -27,8 +27,8 @@ import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.tree.domain.Expression;
 
 /**
- * Represents an expression which takes expressions of {@link DiscreteFunction} and converts them into expressions of
- * iterable.
+ * Represents a deferred expression which takes expressions of {@link DiscreteFunction} and converts them into
+ * expressions of iterable.
  * 
  * @author kfuchsbe, caguiler
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.

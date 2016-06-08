@@ -30,7 +30,7 @@ import org.tensorics.core.function.DiscreteFunction;
 import com.google.common.base.Function;
 
 /**
- * A strategy defines how to calculate y-values of a {@link DiscreteFunction} from a finite set of x-values.
+ * A strategy defines how to calculate values of Y of a {@link DiscreteFunction} from a finite set of values of X.
  * 
  * @author agorzaws, caguiler
  * @param <X> the type of the independent variable (input) of the discrete function
