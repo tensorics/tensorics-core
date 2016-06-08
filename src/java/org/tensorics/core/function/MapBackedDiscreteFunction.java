@@ -3,7 +3,7 @@
  *
  * This file is part of tensorics.
  * 
- * Copyright (c) 2008-2011, CERN. All rights reserved.
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,33 +30,28 @@ import java.util.Set;
 import com.google.common.collect.ImmutableMap;
 
 /**
- * This implementation of {@link DiscreteFunction} only provides values at discrete points of X argument. If a y-value
- * is requested for unavailable x-value an {@link IllegalDiscreteFunctionUsageException} is thrown.
+ * Implementation of {@link DiscreteFunction} backed by a {@link Map}
  * 
  * @author caguiler
- * @param <X> function arguments type
- * @param <Y> function values type
+ * @see DiscreteFunction
+ * @param <X> the type of the values in x-direction (Independent variable)
+ * @param <Y> the type of the values in y-direction (Dependent variable)
  */
 public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, Serializable {
     private static final long serialVersionUID = 1L;
-    private final Map<X, Y> function;
+    private final ImmutableMap<X, Y> function;
 
-    /**
-     * @param builder
-     */
     MapBackedDiscreteFunction(Builder<X, Y> builder) {
         this.function = builder.mapBuilder.build();
     }
 
     @Override
     public Y apply(X input) {
-        Y y = function.get(input);
-
-        if (y == null) {
+        if (!function.containsKey(input)) {
             throw new IllegalDiscreteFunctionUsageException("No value can be found for given argument: " + input);
         }
 
-        return y;
+        return function.get(input);
     }
 
     public static final <X, Y> DiscreteFunction<X, Y> fromMap(Map<? extends X, ? extends Y> function) {
@@ -103,8 +98,8 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
      * The builder for the function based on a map. This class provides methods to add values to the function.
      * 
      * @author kfuchsbe, caguiler
-     * @param <X> the type of the values in x-direction (Independent variable)
-     * @param <Y> the type of the values in y-direction (Dependent variable)
+     * @param <X> the type of the independent variable (input)
+     * @param <Y> the type of the dependent variable (output)
      */
     public static final class Builder<X, Y> implements DiscreteFunctionBuilder<X, Y> {
 
@@ -114,7 +109,6 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
             /* Should only be instantiated from the static method */
         }
 
-        @Override
         public DiscreteFunctionBuilder<X, Y> put(Entry<? extends X, ? extends Y> entry) {
             mapBuilder.put(entry);
             return this;
@@ -126,7 +120,6 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
             return this;
         }
 
-        @Override
         public DiscreteFunctionBuilder<X, Y> putAll(Map<? extends X, ? extends Y> values) {
             mapBuilder.putAll(values);
             return this;

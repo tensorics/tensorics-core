@@ -3,7 +3,7 @@
  *
  * This file is part of tensorics.
  * 
- * Copyright (c) 2008-2011, CERN. All rights reserved.
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@ import com.google.common.base.Function;
 /**
  * The general function from X to Y
  * 
- * @author kfuchsbe 
- * @param <X>
- * @param <Y>
+ * @author kfuchsbe
+ * @param <X> the type of the values in x-direction (Independent variable)
+ * @param <Y> the type of the values in y-direction (Dependent variable)
  */
 public interface MathFunction<X, Y> extends Function<X, Y> {
-    
+    /* Marker interface */
 }

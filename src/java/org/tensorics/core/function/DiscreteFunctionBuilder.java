@@ -22,9 +22,6 @@
 
 package org.tensorics.core.function;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 /**
  * A builder for discrete functions. It provides methods to easily build {@link DiscreteFunction}s
  * 
@@ -35,10 +32,6 @@ import java.util.Map.Entry;
 public interface DiscreteFunctionBuilder<X, Y> {
 
     DiscreteFunctionBuilder<X, Y> put(X key, Y value);
-
-    DiscreteFunctionBuilder<X, Y> put(Entry<? extends X, ? extends Y> entry);
-
-    DiscreteFunctionBuilder<X, Y> putAll(Map<? extends X, ? extends Y> values);
 
     DiscreteFunction<X, Y> build();
 }

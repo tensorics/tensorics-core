@@ -30,15 +30,24 @@ import org.tensorics.core.function.DiscreteFunction;
 import com.google.common.base.Function;
 
 /**
- * A strategy defines how to calculate output values of a function from the a finite set of discrete values (from a
- * discrete function).
+ * A strategy defines how to calculate y-values of a {@link DiscreteFunction} from a finite set of x-values.
  * 
- * @author agorzaws
+ * @author agorzaws, caguiler
  * @param <X> the type of the independent variable (input) of the discrete function
  * @param <Y> the type of the dependent variable (output) of the discrete function
  */
 public interface InterpolationStrategy<Y> extends Serializable, ManipulationOption {
 
+    /**
+     * Given a value of X, a discrete function from X to Y and a conversion from X to Y, returns the interpolated value
+     * of the function at the given point
+     * 
+     * @param xValue value of x for which you want to know the function output value
+     * @param function {@link DiscreteFunction} to interpolate
+     * @param conversion defines how values of X domain are transformed into values of Y domain. It is needed for
+     *            performing any kind of interpolation.
+     * @return the interpolated value of y for the <code>function</code> at <code>xValue</code>
+     */
     <X extends Comparable<? super X>> Y interpolate(X xValue, DiscreteFunction<X, Y> function,
             Function<X, Y> conversion);
 
@@ -46,5 +55,4 @@ public interface InterpolationStrategy<Y> extends Serializable, ManipulationOpti
     public default Class<? extends ManipulationOption> getMarkerInterface() {
         return InterpolationStrategy.class;
     }
-
 }

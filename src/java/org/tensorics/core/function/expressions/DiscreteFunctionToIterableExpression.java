@@ -19,19 +19,26 @@
  * 
  ******************************************************************************/
 // @formatter:on
+package org.tensorics.core.function.expressions;
 
-package org.tensorics.core.function.operations;
-
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.expressions.ConversionOperationExpression;
 import org.tensorics.core.function.DiscreteFunction;
-import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tree.domain.Expression;
 
 /**
- * A binary operation that takes two {@link DiscreteFunction}s and produces a {@link DiscreteFunction}.
+ * Represents an expression which takes expressions of {@link DiscreteFunction} and converts them into expressions of
+ * iterable.
  * 
- * @author caguiler
+ * @author kfuchsbe, caguiler
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public interface DiscreteFunctionBinaryOperation<X, Y> extends BinaryOperation<DiscreteFunction<X, Y>> {
-    /* Marker interface */
+public class DiscreteFunctionToIterableExpression<X, Y>
+        extends ConversionOperationExpression<DiscreteFunction<X, Y>, Iterable<Y>> {
+
+    public DiscreteFunctionToIterableExpression(Conversion<DiscreteFunction<X, Y>, Iterable<Y>> operation,
+            Expression<DiscreteFunction<X, Y>> source) {
+        super(operation, source);
+    }
 }

@@ -3,7 +3,10 @@ package org.tensorics.core.function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.contains;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -174,6 +177,20 @@ public class MathFunctionsTest {
         assertFalse(tensorFunction.shape().dimensionSet().contains(Character.class));
         assertEquals(numbersTo(LIMIT_OF_FIRST_DIMENSION).collect(Collectors.toSet()),
                 tensorFunction.shape().coordinatesOfType(Integer.class));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testYValuesOfWithWithNullFunctionThrowsNPE() {
+        MathFunctions.yValuesOf(null);
+    }
+
+    @Test
+    public void testYValuesReturnsExpectedValuesOfCodomain() {
+        Collection<Double> fCodomain = MathFunctions.yValuesOf(discreteFunction);
+        List<Double> expectedCodomainValues = evenNumbersTo(LIMIT_OF_FIRST_DIMENSION).map(INTEGER_TO_DOUBLE::apply)
+                .collect(Collectors.toList());
+        assertEquals(expectedCodomainValues.size(), fCodomain.size());
+        assertEquals(expectedCodomainValues, fCodomain);
     }
 
     private Stream<Integer> evenNumbersTo(int to) {

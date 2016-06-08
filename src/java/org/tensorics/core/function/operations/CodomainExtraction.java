@@ -26,13 +26,14 @@ import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.MathFunctions;
 
 /**
- * This conversion transforms the Y values of a discrete function into an iterable.
+ * A conversion that takes a {@link DiscreteFunction} and produces an iterable that contains the values of its codomain.
  * 
  * @author caguiler
  * @param <X> the type of the independent variable (input) of the discrete function
  * @param <Y> the type of the dependent variable (output)of the discrete function
+ * @see https://en.wikipedia.org/wiki/Codomain
  */
-public class ToYValues<X, Y> implements Conversion<DiscreteFunction<X, Y>, Iterable<Y>> {
+public class CodomainExtraction<X, Y> implements Conversion<DiscreteFunction<X, Y>, Iterable<Y>> {
 
     @Override
     public Iterable<Y> perform(DiscreteFunction<X, Y> inputfunction) {

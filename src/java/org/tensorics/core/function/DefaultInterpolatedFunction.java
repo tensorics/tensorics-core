@@ -1,7 +1,24 @@
-/**
- * Copyright (c) 2016 European Organisation for Nuclear Research (CERN), All Rights Reserved.
- */
-
+// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
 package org.tensorics.core.function;
 
 import java.util.Set;
@@ -12,9 +29,15 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 
 /**
+ * Encodes a {@link InterpolatedFunction} as a combination of a {@link DiscreteFunction} plus an
+ * {@link InterpolationStrategy}.
+ * <p>
+ * The obtaining of y-values associated with x-values not defined by the {@link DiscreteFunction} is delegated to the
+ * {@link InterpolationStrategy}.
+ * 
  * @author caguiler
- * @param <X>
- * @param <Y>
+ * @param <X> the type of the independent variable must be comparable. Otherwise is not possible to interpolate.
+ * @see InterpolatedFunction
  */
 public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> implements InterpolatedFunction<X, Y> {
 
@@ -34,7 +57,7 @@ public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> imp
 
     @Override
     public Y apply(X input) {
-        if (backingFunction.definedXValues().contains(input)) {
+        if (definedXValues().contains(input)) {
             return backingFunction.apply(input);
         }
         return strategy.interpolate(input, backingFunction, conversion);
@@ -44,5 +67,4 @@ public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> imp
     public Set<X> definedXValues() {
         return backingFunction.definedXValues();
     }
-
 }
