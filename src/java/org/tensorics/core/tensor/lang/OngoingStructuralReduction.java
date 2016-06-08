@@ -22,8 +22,6 @@
 
 package org.tensorics.core.tensor.lang;
 
-import org.tensorics.core.reduction.InterpolatedSlicing;
-import org.tensorics.core.reduction.InterpolationStrategy;
 import org.tensorics.core.reduction.ReductionStrategy;
 import org.tensorics.core.reduction.Slicing;
 import org.tensorics.core.tensor.Tensor;

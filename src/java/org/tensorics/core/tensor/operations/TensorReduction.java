@@ -26,15 +26,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.tensorics.core.commons.operations.Conversion;
-import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.reduction.ReductionStrategy;
 import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-
-import com.google.common.base.Function;
 
 /**
  * The operation which describes the reduction of a tensor in one direction.

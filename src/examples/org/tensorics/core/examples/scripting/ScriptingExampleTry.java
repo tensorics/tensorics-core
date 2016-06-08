@@ -5,6 +5,10 @@
 package org.tensorics.core.examples.scripting;
 
 
+import java.util.List;
+import java.util.Random;
+import java.util.stream.DoubleStream;
+
 import org.junit.Test;
 import org.tensorics.core.lang.DoubleScript;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
@@ -12,11 +16,8 @@ import org.tensorics.core.resolve.engine.ResolvingEngines;
 import org.tensorics.core.tree.domain.Contexts;
 import org.tensorics.core.tree.domain.EditableResolvingContext;
 import org.tensorics.core.tree.domain.Expression;
-import rx.Observable;
 
-import java.util.List;
-import java.util.Random;
-import java.util.stream.DoubleStream;
+import rx.Observable;
 
 public class ScriptingExampleTry {
 

@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.tensorics.core.util.Classes;
-import org.tensorics.core.util.MoreMultisets;
 
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;

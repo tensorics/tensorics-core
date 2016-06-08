@@ -23,11 +23,9 @@ package org.tensorics.core.tensor;
 
 import static org.tensorics.core.tensor.Positions.assertConsistentDimensions;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.tensorics.core.lang.Tensorics;
 
 import com.google.common.collect.ImmutableSet;
 

@@ -20,13 +20,11 @@
 
 package org.tensorics.core.resolve.resolvers;
 
-import org.tensorics.core.expressions.BinaryPredicateExpression;
+import java.util.stream.StreamSupport;
+
 import org.tensorics.core.iterable.expressions.BinaryPredicateIterableExpression;
 import org.tensorics.core.math.predicates.BinaryPredicate;
 import org.tensorics.core.tree.domain.ResolvingContext;
-
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * A resolver that takes a predicate of Iterable whose two operands are resolved and resolves it into a result.

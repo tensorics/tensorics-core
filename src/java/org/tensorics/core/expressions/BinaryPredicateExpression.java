@@ -19,15 +19,16 @@
 // @formatter:on
 package org.tensorics.core.expressions;
 
-import com.google.common.collect.ImmutableList;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.List;
+
 import org.tensorics.core.math.predicates.BinaryPredicate;
 import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.Node;
 
-import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.collect.ImmutableList;
 
 /**
  * An unresolved expression which can be resolved by applying a binary predicate on the results of the two operands

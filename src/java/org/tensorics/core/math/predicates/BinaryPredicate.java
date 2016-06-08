@@ -21,7 +21,6 @@
 package org.tensorics.core.math.predicates;
 
 import org.tensorics.core.math.operations.BinaryFunction;
-import org.tensorics.core.math.operations.BinaryOperation;
 
 /**
  * Represents a predicate (boolean-valued function) of two arguments of the same type. This is a functional interface

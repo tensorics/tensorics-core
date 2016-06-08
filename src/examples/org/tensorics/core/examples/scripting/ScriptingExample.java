@@ -1,19 +1,11 @@
 package org.tensorics.core.examples.scripting;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
 import org.junit.Test;
 import org.tensorics.core.expressions.CreationOperationExpression;
-import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.lang.DoubleScript;
-import org.tensorics.core.lang.TensoricExpressionSupport;
-import org.tensorics.core.lang.TensoricScript;
 import org.tensorics.core.math.operations.CreationOperation;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
-import org.tensorics.core.resolve.options.ResolvingOptions;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
