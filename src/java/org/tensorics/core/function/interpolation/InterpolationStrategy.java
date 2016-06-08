@@ -3,7 +3,7 @@
  *
  * This file is part of tensorics.
  * 
- * Copyright (c) 2008-2011, CERN. All rights reserved.
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,8 @@ import com.google.common.base.Function;
  * discrete function).
  * 
  * @author agorzaws
- * @param <X> the type of the independent variable (in)
- * @param <Y> the type of the dependent variable (output)
+ * @param <X> the type of the independent variable (input) of the discrete function
+ * @param <Y> the type of the dependent variable (output) of the discrete function
  */
 public interface InterpolationStrategy<Y> extends Serializable, ManipulationOption {
 

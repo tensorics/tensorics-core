@@ -11,8 +11,8 @@ import java.util.Set;
  * value is requested for an unknown X.
  * 
  * @author kfuchsbe
- * @param <X>
- * @param <Y>
+ * @param <X> the type of the independent variable (in)
+ * @param <Y> the type of the dependent variable (output)
  */
 public interface DiscreteFunction<X, Y> extends MathFunction<X, Y> {
 
@@ -24,5 +24,4 @@ public interface DiscreteFunction<X, Y> extends MathFunction<X, Y> {
     
     
     Set<X> definedXValues();
-    
 }

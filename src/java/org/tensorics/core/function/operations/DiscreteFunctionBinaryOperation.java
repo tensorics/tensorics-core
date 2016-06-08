@@ -25,6 +25,7 @@ package org.tensorics.core.function.operations;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.math.operations.BinaryOperation;
 
-public interface DiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y>  extends BinaryOperation<DiscreteFunction<X, Y>> {
-
+public interface DiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y>
+        extends BinaryOperation<DiscreteFunction<X, Y>> {
+    /* Marker interface */
 }

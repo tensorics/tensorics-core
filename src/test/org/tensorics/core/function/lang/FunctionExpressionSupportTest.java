@@ -5,6 +5,7 @@
 package org.tensorics.core.function.lang;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,14 +52,66 @@ public class FunctionExpressionSupportTest {
 
     @Test
     public void testPlus() {
-        Expression<DiscreteFunction<Double, Double>> plus = support.calculateF(two).plus(three);
-        
-        Expression<DiscreteFunction<?, Double>> bah = null;
-        support.averageOfF(two);
-
-        DiscreteFunction<Double, Double> five = engine.resolve(plus);
-
+        Expression<DiscreteFunction<Double, Double>> unResolved5 = support.calculateF(two).plus(three);
+        DiscreteFunction<Double, Double> five = engine.resolve(unResolved5);
         assertEquals(Sets.union(two.get().definedXValues(), three.get().definedXValues()), five.definedXValues());
+        assertTrue(allYValuesEqualTo(five, 5.0));
     }
 
+    @Test
+    public void testMinus() {
+        Expression<DiscreteFunction<Double, Double>> unResolvedMinusOne = support.calculateF(two).minus(three);
+        DiscreteFunction<Double, Double> minusOne = engine.resolve(unResolvedMinusOne);
+
+        assertEquals(Sets.union(two.get().definedXValues(), three.get().definedXValues()), minusOne.definedXValues());
+        assertTrue(allYValuesEqualTo(minusOne, -1.0));
+
+        Expression<DiscreteFunction<Double, Double>> unResolvedOne = support.calculateF(three).minus(two);
+        DiscreteFunction<Double, Double> one = engine.resolve(unResolvedOne);
+
+        assertEquals(Sets.union(two.get().definedXValues(), three.get().definedXValues()), one.definedXValues());
+        assertTrue(allYValuesEqualTo(one, 1.0));
+    }
+
+    @Test
+    public void testTimes() {
+        Expression<DiscreteFunction<Double, Double>> unResolvedSix = support.calculateF(two).times(three);
+        DiscreteFunction<Double, Double> six = engine.resolve(unResolvedSix);
+
+        assertEquals(Sets.union(two.get().definedXValues(), three.get().definedXValues()), six.definedXValues());
+        assertTrue(allYValuesEqualTo(six, 6.0));
+    }
+
+    @Test
+    public void testDividedBy() {
+        Expression<DiscreteFunction<Double, Double>> unResolvedTwoThirds = support.calculateF(two).dividedBy(three);
+        DiscreteFunction<Double, Double> twoThirds = engine.resolve(unResolvedTwoThirds);
+
+        assertEquals(Sets.union(two.get().definedXValues(), three.get().definedXValues()), twoThirds.definedXValues());
+        assertTrue(allYValuesEqualTo(twoThirds, 2 / 3.));
+
+        Expression<DiscreteFunction<Double, Double>> unResolvedThreeHalfs = support.calculateF(three).dividedBy(two);
+        DiscreteFunction<Double, Double> threeHalfs = engine.resolve(unResolvedThreeHalfs);
+
+        assertEquals(Sets.union(two.get().definedXValues(), three.get().definedXValues()), threeHalfs.definedXValues());
+        assertTrue(allYValuesEqualTo(threeHalfs, 3 / 2.));
+    }
+
+    @Test
+    public void testRmsOfF() {
+        Expression<Double> unresolvedTwo = support.rmsOfF(two);
+        Double dos = engine.resolve(unresolvedTwo);
+        assertEquals(2, dos, Double.MIN_VALUE);
+    }
+
+    @Test
+    public void testAvgOfF() {
+        Expression<Double> unresolvedTwo = support.averageOfF(two);
+        Double dos = engine.resolve(unresolvedTwo);
+        assertEquals(2, dos, Double.MIN_VALUE);
+    }
+
+    private <X, Y> boolean allYValuesEqualTo(DiscreteFunction<X, Y> function, Y value) {
+        return function.definedXValues().stream().map(function::apply).allMatch(y -> y.equals(value));
+    }
 }

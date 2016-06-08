@@ -10,15 +10,15 @@ import org.tensorics.core.function.lang.FunctionSupportWithConversion;
 
 import com.google.common.base.Function;
 
-public class DiscreteFunctionAddition<X extends Comparable<? super X>, Y> extends FunctionSupportWithConversion<X, Y>
+public class DiscreteFunctionSubtraction<X extends Comparable<? super X>, Y> extends FunctionSupportWithConversion<X, Y>
         implements DiscreteFunctionBinaryOperation<X, Y> {
 
-    public DiscreteFunctionAddition(Environment<Y> environment, Function<X, Y> conversion) {
+    public DiscreteFunctionSubtraction(Environment<Y> environment, Function<X, Y> conversion) {
         super(environment, conversion);
     }
 
     @Override
     public DiscreteFunction<X, Y> perform(DiscreteFunction<X, Y> left, DiscreteFunction<X, Y> right) {
-        return calculate(left).plus(right);
+        return calculate(left).minus(right);
     }
 }

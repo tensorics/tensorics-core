@@ -3,7 +3,7 @@
  *
  * This file is part of tensorics.
  * 
- * Copyright (c) 2008-2011, CERN. All rights reserved.
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 package org.tensorics.core.function;
 
 /**
- * This exception is thrown, if a discrete function is use in a wrong way.
+ * This exception is thrown, if a discrete function is used in a wrong way.
  * 
  * @author agorzaws
  */
@@ -34,5 +34,4 @@ public class IllegalDiscreteFunctionUsageException extends RuntimeException {
     public IllegalDiscreteFunctionUsageException(String message) {
         super(message);
     }
-
 }
