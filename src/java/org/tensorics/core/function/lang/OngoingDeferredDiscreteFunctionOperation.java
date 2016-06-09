@@ -22,6 +22,7 @@
 
 package org.tensorics.core.function.lang;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.function.DiscreteFunction;
@@ -29,15 +30,13 @@ import org.tensorics.core.function.operations.DiscreteFunctionBinaryOperation;
 import org.tensorics.core.function.operations.DiscreteFunctionOperationRepository;
 import org.tensorics.core.tree.domain.Expression;
 
-import com.google.common.base.Function;
-
 public class OngoingDeferredDiscreteFunctionOperation<X extends Comparable<? super X>, Y> {
 
     private final Expression<DiscreteFunction<X, Y>> left;
     private final DiscreteFunctionOperationRepository<X, Y> repository;
 
     OngoingDeferredDiscreteFunctionOperation(Environment<Y> environment, Expression<DiscreteFunction<X, Y>> left,
-            Function<X, Y> conversion) {
+            Conversion<X, Y> conversion) {
         this.left = left;
         this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion);
     }

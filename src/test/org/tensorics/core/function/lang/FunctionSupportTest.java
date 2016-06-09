@@ -6,14 +6,14 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.commons.operations.Conversions;
 import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.MapBackedDiscreteFunction;
 import org.tensorics.core.lang.EnvironmentImpl;
 import org.tensorics.core.lang.ManipulationOptions;
 
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.google.common.collect.Sets;
 
 /**
@@ -25,7 +25,7 @@ public class FunctionSupportTest {
 
     private DiscreteFunction<Double, Double> two;
     private DiscreteFunction<Double, Double> three;
-    private Function<Double, Double> conversion = Functions.identity();
+    private Conversion<Double, Double> conversion = Conversions.identity();
 
     private FunctionSupportWithConversion<Double, Double> supportWithConversion;
     private FunctionSupport<Double> functionSupport;

@@ -6,18 +6,17 @@ package org.tensorics.core.function.lang;
 
 import static org.tensorics.core.function.MathFunctions.yValuesOf;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.iterable.lang.ScalarIterableSupport;
 
-import com.google.common.base.Function;
-
 public class FunctionSupportWithConversion<X, Y> extends ScalarIterableSupport<Y> {
 
     private Environment<Y> environment;
-    private Function<X, Y> conversion;
+    private Conversion<X, Y> conversion;
 
-    FunctionSupportWithConversion(Environment<Y> environment, Function<X, Y> conversion) {
+    FunctionSupportWithConversion(Environment<Y> environment, Conversion<X, Y> conversion) {
         super(environment.field());
         this.environment = environment;
         this.conversion = conversion;
@@ -27,7 +26,7 @@ public class FunctionSupportWithConversion<X, Y> extends ScalarIterableSupport<Y
     @SuppressWarnings("unchecked")
     public <Z extends Comparable<? super Z>> OngoingDiscreteFunctionOperation<Z, Y> calculate(
             DiscreteFunction<Z, Y> left) {
-        return new OngoingDiscreteFunctionOperation<>(environment, left, (Function<Z, Y>) conversion);
+        return new OngoingDiscreteFunctionOperation<>(environment, left, (Conversion<Z, Y>) conversion);
     }
 
     public final Y averageOf(DiscreteFunction<X, Y> function) {

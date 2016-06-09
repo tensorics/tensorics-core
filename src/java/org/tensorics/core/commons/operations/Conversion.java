@@ -3,7 +3,7 @@
  *
  * This file is part of tensorics.
  * 
- * Copyright (c) 2008-2011, CERN. All rights reserved.
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@
 
 package org.tensorics.core.commons.operations;
 
+import com.google.common.base.Function;
+
 /**
  * An operation that converts one type of object into another.
  * 
@@ -29,7 +31,7 @@ package org.tensorics.core.commons.operations;
  * @param <T> the type of the object which shall be converted
  * @param <R> the return type, i.e. the type into which the object shall be converted
  */
-public interface Conversion<T, R> {
+public interface Conversion<T, R> extends Function<T, R> {
 
     /**
      * Has to implement the conversion logic to convert the given object into an object of type R.
@@ -39,4 +41,8 @@ public interface Conversion<T, R> {
      */
     R perform(T object);
 
+    @Override
+    default R apply(T object) {
+        return perform(object);
+    }
 }

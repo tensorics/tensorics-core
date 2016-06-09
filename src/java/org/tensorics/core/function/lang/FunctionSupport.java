@@ -9,11 +9,10 @@
 
 package org.tensorics.core.function.lang;
 
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.commons.operations.Conversions;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 
 /**
  * Provides starting methods for tensoric language expressions that operate on {@link DiscreteFunction}s.
@@ -24,10 +23,10 @@ import com.google.common.base.Functions;
 public class FunctionSupport<Y> extends FunctionSupportWithConversion<Y, Y> {
 
     FunctionSupport(Environment<Y> environment) {
-        super(environment, Functions.identity());
+        super(environment, Conversions.identity());
     }
 
-    public final <X> FunctionSupportWithConversion<X, Y> withConversion(Function<X, Y> conversion) {
+    public final <X> FunctionSupportWithConversion<X, Y> withConversion(Conversion<X, Y> conversion) {
         return new FunctionSupportWithConversion<>(environment(), conversion);
     }
 }

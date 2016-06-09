@@ -21,10 +21,9 @@
 // @formatter:on
 package org.tensorics.core.function.operations;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
-
-import com.google.common.base.Function;
 
 /**
  * The {@link DiscreteFunctionBinaryOperation} that describes the subtraction of two {@link DiscreteFunction}s
@@ -36,7 +35,7 @@ import com.google.common.base.Function;
 public class DiscreteFunctionSubtraction<X extends Comparable<? super X>, Y>
         extends DiscreteFunctionBinaryOperation<X, Y> {
 
-    DiscreteFunctionSubtraction(Environment<Y> environment, Function<X, Y> conversion) {
+    DiscreteFunctionSubtraction(Environment<Y> environment, Conversion<X, Y> conversion) {
         super(environment, conversion, environment.field().subtraction());
     }
 }

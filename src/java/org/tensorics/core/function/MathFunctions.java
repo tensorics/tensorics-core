@@ -24,12 +24,12 @@ package org.tensorics.core.function;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.function.interpolation.InterpolationStrategy;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.reduction.ToFunctions;
 import org.tensorics.core.tensor.Tensor;
 
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 
 /**
@@ -50,7 +50,7 @@ public class MathFunctions {
     }
 
     public static <X extends Comparable<? super X>, Y> InterpolatedFunction<X, Y> interpolated(
-            DiscreteFunction<X, Y> function, InterpolationStrategy<Y> strategy, Function<X, Y> conversion) {
+            DiscreteFunction<X, Y> function, InterpolationStrategy<Y> strategy, Conversion<X, Y> conversion) {
         return new DefaultInterpolatedFunction<>(function, strategy, conversion);
     }
 

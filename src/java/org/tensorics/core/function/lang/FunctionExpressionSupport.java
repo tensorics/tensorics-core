@@ -4,18 +4,17 @@
 
 package org.tensorics.core.function.lang;
 
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.commons.operations.Conversions;
 import org.tensorics.core.commons.options.Environment;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 
 public class FunctionExpressionSupport<Y> extends FunctionExpressionSupportWithConversion<Y, Y> {
 
     FunctionExpressionSupport(Environment<Y> environment) {
-        super(environment, Functions.identity());
+        super(environment, Conversions.identity());
     }
 
-    public <X> FunctionExpressionSupportWithConversion<X, Y> withConversion(Function<X, Y> conversion) {
+    public <X> FunctionExpressionSupportWithConversion<X, Y> withConversion(Conversion<X, Y> conversion) {
         return new FunctionExpressionSupportWithConversion<>(environment(), conversion);
     }
 }

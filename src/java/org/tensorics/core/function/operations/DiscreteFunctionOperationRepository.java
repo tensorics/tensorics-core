@@ -21,9 +21,8 @@
 // @formatter:on
 package org.tensorics.core.function.operations;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
-
-import com.google.common.base.Function;
 
 /**
  * <p>
@@ -44,7 +43,7 @@ public class DiscreteFunctionOperationRepository<X extends Comparable<? super X>
     private final DiscreteFunctionMultiplication<X, Y> multiplication;
     private final DiscreteFunctionDivision<X, Y> division;
 
-    public DiscreteFunctionOperationRepository(Environment<Y> environment, Function<X, Y> conversion) {
+    public DiscreteFunctionOperationRepository(Environment<Y> environment, Conversion<X, Y> conversion) {
         addition = new DiscreteFunctionAddition<>(environment, conversion);
         subtraction = new DiscreteFunctionSubtraction<>(environment, conversion);
         multiplication = new DiscreteFunctionMultiplication<>(environment, conversion);

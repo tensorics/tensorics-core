@@ -23,9 +23,9 @@ package org.tensorics.core.function;
 
 import java.util.Set;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.function.interpolation.InterpolationStrategy;
 
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 
 /**
@@ -43,10 +43,10 @@ public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> imp
 
     private DiscreteFunction<X, Y> backingFunction;
     private InterpolationStrategy<Y> strategy;
-    private Function<X, Y> conversion;
+    private Conversion<X, Y> conversion;
 
     public DefaultInterpolatedFunction(DiscreteFunction<X, Y> function, InterpolationStrategy<Y> strategy,
-            Function<X, Y> conversion) {
+            Conversion<X, Y> conversion) {
         Preconditions.checkNotNull(function, "function cannot be null");
         Preconditions.checkNotNull(strategy, "strategy cannot be null");
         Preconditions.checkNotNull(conversion, "conversion cannot be null");

@@ -16,9 +16,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.function.interpolation.InterpolationStrategy;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -36,7 +36,7 @@ public class DefaultInterpolatedFunctionTest {
     @Mock
     InterpolationStrategy<Double> interpolationStrategy;
     @Mock
-    Function<Double, Double> conversion;
+    Conversion<Double, Double> conversion;
 
     DefaultInterpolatedFunction<Double, Double> interpolatedFunction;
 

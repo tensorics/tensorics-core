@@ -22,6 +22,7 @@
 
 package org.tensorics.core.function.operations;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.InterpolatedFunction;
@@ -30,7 +31,6 @@ import org.tensorics.core.function.MathFunctions;
 import org.tensorics.core.function.interpolation.InterpolationStrategy;
 import org.tensorics.core.math.operations.BinaryOperation;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 
 /**
@@ -43,11 +43,11 @@ import com.google.common.collect.Sets;
 public abstract class DiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y>
         implements BinaryOperation<DiscreteFunction<X, Y>> {
 
-    private final Function<X, Y> conversion;
+    private final Conversion<X, Y> conversion;
     private final Environment<Y> environment;
     private final BinaryOperation<Y> operation;
 
-    DiscreteFunctionBinaryOperation(Environment<Y> environment, Function<X, Y> conversion,
+    DiscreteFunctionBinaryOperation(Environment<Y> environment, Conversion<X, Y> conversion,
             BinaryOperation<Y> operation) {
         this.environment = environment;
         this.conversion = conversion;

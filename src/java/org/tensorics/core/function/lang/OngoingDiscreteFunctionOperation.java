@@ -22,11 +22,10 @@
 
 package org.tensorics.core.function.lang;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.operations.DiscreteFunctionOperationRepository;
-
-import com.google.common.base.Function;
 
 public class OngoingDiscreteFunctionOperation<X extends Comparable<? super X>, Y> {
 
@@ -34,7 +33,7 @@ public class OngoingDiscreteFunctionOperation<X extends Comparable<? super X>, Y
     private final DiscreteFunctionOperationRepository<X, Y> repository;
 
     OngoingDiscreteFunctionOperation(Environment<Y> environment, DiscreteFunction<X, Y> left,
-            Function<X, Y> conversion) {
+            Conversion<X, Y> conversion) {
         this.left = left;
         this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion);
     }

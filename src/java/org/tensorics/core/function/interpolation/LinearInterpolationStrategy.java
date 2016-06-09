@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.scalar.lang.ScalarSupport;
 
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 
 /**
@@ -27,7 +27,7 @@ public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements 
 
     @Override
     public <X extends Comparable<? super X>> Y interpolate(X x, DiscreteFunction<X, Y> function,
-            Function<X, Y> conversion) {
+            Conversion<X, Y> conversion) {
         Preconditions.checkNotNull(x, "x cannot be null!");
         Preconditions.checkNotNull(function, "function cannot be null!");
         Preconditions.checkNotNull(conversion, "conversion cannot be null!");
@@ -67,9 +67,9 @@ public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements 
             x1 = xValues.get(index - 2);
         }
 
-        Y xInYDomain = conversion.apply(x);
-        Y x1InyDomain = conversion.apply(x1);
-        Y x2InYDomain = conversion.apply(x2);
+        Y xInYDomain = conversion.perform(x);
+        Y x1InyDomain = conversion.perform(x1);
+        Y x2InYDomain = conversion.perform(x2);
 
         Y y1 = function.apply(x1);
         Y y2 = function.apply(x2);

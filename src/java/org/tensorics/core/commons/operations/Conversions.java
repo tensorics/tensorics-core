@@ -19,23 +19,30 @@
  * 
  ******************************************************************************/
 // @formatter:on
-package org.tensorics.core.function.operations;
 
-import org.tensorics.core.commons.operations.Conversion;
-import org.tensorics.core.commons.options.Environment;
-import org.tensorics.core.function.DiscreteFunction;
+package org.tensorics.core.commons.operations;
 
 /**
- * The {@link DiscreteFunctionBinaryOperation} that describes the addition of two {@link DiscreteFunction}s
+ * Static utility methods pertaining to {@link Conversion} instances.
  * 
  * @author caguiler
- * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
- * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public class DiscreteFunctionAddition<X extends Comparable<? super X>, Y>
-        extends DiscreteFunctionBinaryOperation<X, Y> {
+public final class Conversions {
 
-    DiscreteFunctionAddition(Environment<Y> environment, Conversion<X, Y> conversion) {
-        super(environment, conversion, environment.field().addition());
+    /**
+     * Returns the identity conversion.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Conversion<T, T> identity() {
+        return (Conversion<T, T>) IdentityConversion.INSTANCE;
+    }
+
+    private enum IdentityConversion implements Conversion<Object, Object> {
+        INSTANCE;
+
+        @Override
+        public Object perform(Object o) {
+            return o;
+        }
     }
 }
