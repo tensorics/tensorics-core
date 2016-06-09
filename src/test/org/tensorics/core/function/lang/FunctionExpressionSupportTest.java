@@ -21,6 +21,11 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
 
 import com.google.common.collect.Sets;
 
+/**
+ * Tests the behaviour of {@link FunctionExpressionSupport}
+ * 
+ * @author caguiler
+ */
 public class FunctionExpressionSupportTest {
 
     private ResolvingEngine engine = ResolvingEngines.defaultEngine();

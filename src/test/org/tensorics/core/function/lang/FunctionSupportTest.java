@@ -17,7 +17,7 @@ import org.tensorics.core.lang.ManipulationOptions;
 import com.google.common.collect.Sets;
 
 /**
- * Tests {@link FunctionSupport} behaviour
+ * Tests the behaviour of {@link FunctionSupport}
  * 
  * @author caguiler
  */

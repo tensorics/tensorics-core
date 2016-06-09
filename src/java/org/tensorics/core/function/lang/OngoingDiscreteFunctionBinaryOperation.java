@@ -27,12 +27,24 @@ import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.operations.DiscreteFunctionOperationRepository;
 
-public class OngoingDiscreteFunctionOperation<X extends Comparable<? super X>, Y> {
+/**
+ * Provides methods to describe the right hand side of binary operations on {@link DiscreteFunction} from X to Y
+ * 
+ * @param <X> the type of the independent variable (input) of the discrete function
+ * @param <Y> the type of the dependent variable (output) of the discrete function and the type of the scalar values
+ *            (elements of the field) on which to operate
+ * @author caguiler
+ */
+public class OngoingDiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y> {
 
     private final DiscreteFunction<X, Y> left;
     private final DiscreteFunctionOperationRepository<X, Y> repository;
 
-    OngoingDiscreteFunctionOperation(Environment<Y> environment, DiscreteFunction<X, Y> left,
+    /**
+     * @param environment the {@link Environment} for this support
+     * @param conversion defines how to transform a value of X type to Y type
+     */
+    OngoingDiscreteFunctionBinaryOperation(Environment<Y> environment, DiscreteFunction<X, Y> left,
             Conversion<X, Y> conversion) {
         this.left = left;
         this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion);
