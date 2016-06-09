@@ -40,14 +40,14 @@ import com.google.common.collect.Sets;
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public abstract class DiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y>
+public abstract class AbstractDiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y>
         implements BinaryOperation<DiscreteFunction<X, Y>> {
 
     private final Conversion<X, Y> conversion;
     private final Environment<Y> environment;
     private final BinaryOperation<Y> operation;
 
-    DiscreteFunctionBinaryOperation(Environment<Y> environment, Conversion<X, Y> conversion,
+    AbstractDiscreteFunctionBinaryOperation(Environment<Y> environment, Conversion<X, Y> conversion,
             BinaryOperation<Y> operation) {
         this.environment = environment;
         this.conversion = conversion;

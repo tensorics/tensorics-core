@@ -41,8 +41,8 @@ import org.tensorics.core.iterable.lang.ScalarIterableSupport;
  */
 public class FunctionSupportWithConversion<X, Y> extends ScalarIterableSupport<Y> {
 
-    private Environment<Y> environment;
-    private Conversion<X, Y> conversion;
+    private final Environment<Y> environment;
+    private final Conversion<X, Y> conversion;
 
     /**
      * @param environment the {@link Environment} for this support

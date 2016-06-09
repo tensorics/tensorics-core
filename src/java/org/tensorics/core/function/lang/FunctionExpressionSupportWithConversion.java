@@ -42,9 +42,9 @@ import org.tensorics.core.tree.domain.Expression;
  */
 public class FunctionExpressionSupportWithConversion<X, Y> extends ScalarIterableExpressionSupport<Y> {
 
-    private Environment<Y> environment;
-    private CodomainExtraction<X, Y> toYValues;
-    private Conversion<X, Y> conversion;
+    private final Environment<Y> environment;
+    private final CodomainExtraction<X, Y> toYValues;
+    private final Conversion<X, Y> conversion;
 
     FunctionExpressionSupportWithConversion(Environment<Y> environment, Conversion<X, Y> conversion) {
         super(environment.field());

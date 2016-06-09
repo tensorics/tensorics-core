@@ -26,7 +26,7 @@ import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.function.DiscreteFunction;
-import org.tensorics.core.function.operations.DiscreteFunctionBinaryOperation;
+import org.tensorics.core.function.operations.AbstractDiscreteFunctionBinaryOperation;
 import org.tensorics.core.function.operations.DiscreteFunctionOperationRepository;
 import org.tensorics.core.tree.domain.Expression;
 
@@ -58,7 +58,7 @@ public class OngoingDeferredDiscreteFunctionOperation<X extends Comparable<? sup
     }
 
     private static <X extends Comparable<? super X>, Y> Expression<DiscreteFunction<X, Y>> binaryExpressionOf(
-            DiscreteFunctionBinaryOperation<X, Y> operation, Expression<DiscreteFunction<X, Y>> left,
+            AbstractDiscreteFunctionBinaryOperation<X, Y> operation, Expression<DiscreteFunction<X, Y>> left,
             Expression<DiscreteFunction<X, Y>> right) {
         return new BinaryOperationExpression<>(operation, left, right);
     }

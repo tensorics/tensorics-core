@@ -65,10 +65,7 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((function == null) ? 0 : function.hashCode());
-        return result;
+        return 31 + ((function == null) ? 0 : function.hashCode());
     }
 
     @Override

@@ -51,7 +51,7 @@ public interface InterpolationStrategy<Y> extends Serializable, ManipulationOpti
             Conversion<X, Y> conversion);
 
     @Override
-    public default Class<? extends ManipulationOption> getMarkerInterface() {
+    default Class<? extends ManipulationOption> getMarkerInterface() {
         return InterpolationStrategy.class;
     }
 }
