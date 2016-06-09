@@ -22,7 +22,12 @@
 
 package org.tensorics.core.lang;
 
+import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.function.DiscreteFunction;
+import org.tensorics.core.function.lang.FunctionExpressionSupport;
+import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversion;
+import org.tensorics.core.function.lang.OngoingDeferredDiscreteFunctionOperation;
 import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
@@ -56,6 +61,7 @@ public class TensoricExpressionSupport<V> {
     private final TensorbackedExpressionSupport<V> tensorbackedExpressionSupport;
     private final QuantityTensorExpressionSupport<V> quantifiedTensoricFieldUsage;
     private final QuantityTensorbackedExpressionSupport<V> quantityTensorbackedExpressionSupport;
+    private final FunctionExpressionSupport<V> functionExpressionSupport;
 
     private final EnvironmentImpl<V> environment;
 
@@ -64,6 +70,7 @@ public class TensoricExpressionSupport<V> {
         this.tensorbackedExpressionSupport = new TensorbackedExpressionSupport<>(environment);
         this.quantifiedTensoricFieldUsage = new QuantityTensorExpressionSupport<>(environment);
         this.quantityTensorbackedExpressionSupport = new QuantityTensorbackedExpressionSupport<>(environment);
+        this.functionExpressionSupport = new FunctionExpressionSupport<>(environment);
         this.environment = environment;
     }
 
@@ -226,7 +233,7 @@ public class TensoricExpressionSupport<V> {
     }
 
     public final <TB extends Tensorbacked<QuantifiedValue<V>>> OngoingDeferredQuantifiedTensorBackedOperation<V, TB> //
-    calculateQTB(Class<TB> resultClass, Expression<TB> tensor) {
+            calculateQTB(Class<TB> resultClass, Expression<TB> tensor) {
         return quantityTensorbackedExpressionSupport.calculateTB(resultClass, tensor);
     }
 
@@ -236,5 +243,23 @@ public class TensoricExpressionSupport<V> {
 
     public final OngoingDeferredIterableBinaryPredicate<V> testIfIt(Expression<Iterable<V>> iterableExpression) {
         return tensoricFieldUsage.testIfIt(iterableExpression);
+    }
+
+    public Expression<V> rmsOfF(Expression<DiscreteFunction<V, V>> functionExpresssion) {
+        return functionExpressionSupport.rmsOfF(functionExpresssion);
+    }
+
+    public Expression<V> averageOfF(Expression<DiscreteFunction<V, V>> functionExpresssion) {
+        return functionExpressionSupport.averageOfF(functionExpresssion);
+    }
+
+    public <X extends Comparable<? super X>> OngoingDeferredDiscreteFunctionOperation<X, X> calculateF(
+            Expression<DiscreteFunction<X, X>> functionExpresssion) {
+        return ((FunctionExpressionSupport<X>) functionExpressionSupport).calculateF(functionExpresssion);
+    }
+
+    public <X extends Comparable<? super X>> FunctionExpressionSupportWithConversion<X, V> withConversion(
+            Conversion<X, V> conversion) {
+        return functionExpressionSupport.withConversion(conversion);
     }
 }

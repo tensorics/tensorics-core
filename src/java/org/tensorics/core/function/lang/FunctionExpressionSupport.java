@@ -37,7 +37,7 @@ import org.tensorics.core.function.DiscreteFunction;
  */
 public class FunctionExpressionSupport<Y> extends FunctionExpressionSupportWithConversion<Y, Y> {
 
-    FunctionExpressionSupport(Environment<Y> environment) {
+    public FunctionExpressionSupport(Environment<Y> environment) {
         super(environment, Conversions.identity());
     }
 
