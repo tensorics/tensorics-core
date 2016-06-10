@@ -55,7 +55,13 @@ public class JScienceQuantificationStrategy<T> implements QuantificationStrategy
         if (left.unit().equals(right.unit())) {
             return OperandPair.ofLeftRightUnit(left, right, left.unit());
         } else {
-            return OperandPair.ofLeftRightUnit(toStandardUnit(left), toStandardUnit(right), standardUnitOf(left));
+            final Unit standardUnitOfLeft = standardUnitOf(left);
+            final Unit standardUnitOfRight = standardUnitOf(right);
+            if (!standardUnitOfLeft.equals(standardUnitOfRight)) {
+                throw new IllegalArgumentException("Units '" + standardUnitOfLeft + "' and '" + standardUnitOfRight
+                        + "' are not consistent or convertible");
+            }
+            return OperandPair.ofLeftRightUnit(toStandardUnit(left), toStandardUnit(right), standardUnitOfLeft);
         }
     }
 

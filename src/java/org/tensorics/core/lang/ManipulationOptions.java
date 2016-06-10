@@ -27,6 +27,7 @@ import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.function.interpolation.LinearInterpolationStrategy;
 import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.quantity.options.ImmutableConfidenceLevel;
 import org.tensorics.core.quantity.options.JScienceQuantificationStrategy;
 import org.tensorics.core.quantity.options.RequireBothValidStrategy;
 import org.tensorics.core.quantity.options.UncorrelatedErrorPropagationStrategy;
@@ -42,6 +43,8 @@ import com.google.common.collect.ImmutableList;
  * @author agorzaws
  */
 public final class ManipulationOptions {
+
+    private static final double DEFAULT_CONFIDENCE_LEVEL = 0.95;
 
     private ManipulationOptions() {
         /* Only static methods */
@@ -73,6 +76,7 @@ public final class ManipulationOptions {
                 new UncorrelatedErrorPropagationStrategy<>(field), //
                 new JScienceQuantificationStrategy<>(field.cheating()), //
                 new LeftContextPreservedStrategy(), 
+                new ImmutableConfidenceLevel<>(field.cheating().fromDouble(DEFAULT_CONFIDENCE_LEVEL)),
                 new LinearInterpolationStrategy<>(field)));
     }
     // end::classdef[]

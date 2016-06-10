@@ -22,6 +22,9 @@
 
 package org.tensorics.core.iterable.lang;
 
+import java.util.Iterator;
+
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.QuantitySupport;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
@@ -58,8 +61,17 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
         return count;
     }
 
+    private QuantifiedValue<V> zeroInUnitsOfFirstValueIn(Iterable<QuantifiedValue<V>> values) {
+        QuantifiedValue<V> zero = zero();
+        Iterator<QuantifiedValue<V>> iterator = values.iterator();
+        if (iterator.hasNext()) {
+            zero = Tensorics.quantityOf(zero.value(), iterator.next().unit());
+        }
+        return zero;
+    }
+    
     public final QuantifiedValue<V> sumOf(Iterable<QuantifiedValue<V>> values) {
-        QuantifiedValue<V> sum = zero();
+        QuantifiedValue<V> sum = zeroInUnitsOfFirstValueIn(values);
         for (QuantifiedValue<V> value : values) {
             sum = calculate(sum).plus(value);
         }
@@ -67,7 +79,7 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
     }
 
     public final QuantifiedValue<V> sumOfSquaresOf(Iterable<QuantifiedValue<V>> values) {
-        QuantifiedValue<V> sum = zero();
+        QuantifiedValue<V> sum = zeroInUnitsOfFirstValueIn(values);
         for (QuantifiedValue<V> value : values) {
             sum = calculate(sum).plus(squareOf(value));
         }

@@ -24,6 +24,7 @@ package org.tensorics.core.quantity.lang;
 
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.conditions.QuantityPedicateRepository;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
 import org.tensorics.core.units.JScienceUnit;
@@ -38,9 +39,11 @@ import org.tensorics.core.units.Unit;
 public class QuantitySupport<V> {
 
     private final QuantityOperationRepository<V> operationRepository;
+    private final QuantityPedicateRepository<V> predicateRepository;
 
     protected QuantitySupport(QuantityEnvironment<V> environment) {
         this.operationRepository = new QuantityOperationRepository<>(environment);
+        this.predicateRepository = new QuantityPedicateRepository<>(environment);
     }
 
     public QuantifiedValue<V> valueOf(V value, Unit unit) {
@@ -89,5 +92,13 @@ public class QuantitySupport<V> {
 
     protected QuantityOperationRepository<V> operationRepository() {
         return operationRepository;
+    }
+    
+    protected QuantityPedicateRepository<V> predicateRepository() {
+        return predicateRepository;
+    }
+
+    public OngoingQuantifiedScalarBinaryPredicate<V> testIf(QuantifiedValue<V> left) {
+        return new OngoingQuantifiedScalarBinaryPredicate<>(predicateRepository, left);
     }
 }

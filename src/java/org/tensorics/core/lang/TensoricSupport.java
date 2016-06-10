@@ -23,13 +23,17 @@
 package org.tensorics.core.lang;
 
 import org.tensorics.core.commons.lang.OngoingBinaryOperation;
+import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarBinaryPredicate;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarConversion;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
 import org.tensorics.core.quantity.lang.OngoingQuantityValueExtraction;
+import org.tensorics.core.quantity.options.ConfidenceLevel;
+import org.tensorics.core.quantity.options.ImmutableConfidenceLevel;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -60,8 +64,10 @@ public class TensoricSupport<V> {
     private final QuantityTensorSupport<V> quantifiedTensoricFieldUsage;
     private final QuantityTensorbackedSupport<V> quantifiedTensorbackedSupport;
     private final TensorbackedSupport<V> tensorbackedSupport;
+    private final EnvironmentImpl<V> environment;
 
     public TensoricSupport(EnvironmentImpl<V> environment) {
+        this.environment = environment;
         this.tensoricFieldUsage = new TensorSupport<>(environment);
         this.quantifiedTensoricFieldUsage = new QuantityTensorSupport<>(environment);
         this.tensorbackedSupport = new TensorbackedSupport<>(environment);
@@ -197,6 +203,10 @@ public class TensoricSupport<V> {
         return tensoricFieldUsage.testIf(left);
     }
 
+    public OngoingQuantifiedScalarBinaryPredicate<V> testIf(QuantifiedValue<V> left) {
+        return quantifiedTensoricFieldUsage.testIf(left);
+    }
+    
     public V absoluteValueOf(V value) {
         return tensoricFieldUsage.absoluteValueOf(value);
     }
@@ -231,6 +241,14 @@ public class TensoricSupport<V> {
 
     public OngoingQuantifiedScalarConversion<V> convert(QuantifiedValue<V> value) {
         return quantifiedTensoricFieldUsage.convert(value);
+    }
+
+    public TensoricSupport<V> with(ManipulationOption newOption) {
+        return new TensoricSupport<>(environment.with(newOption));
+    }
+
+    public ConfidenceLevel<V> confidenceLevelOf(V confidenceLevel) {
+        return new ImmutableConfidenceLevel<V>(confidenceLevel);
     }
 
 }

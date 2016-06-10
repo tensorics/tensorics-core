@@ -22,12 +22,15 @@
 package org.tensorics.core.lang;
 
 import org.tensorics.core.commons.lang.OngoingBinaryOperation;
+import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarBinaryPredicate;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
 import org.tensorics.core.quantity.lang.OngoingQuantityValueExtraction;
+import org.tensorics.core.quantity.options.ConfidenceLevel;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -187,6 +190,10 @@ public final class DoubleTensorics {
         return SUPPORT.testIf(left);
     }
 
+    public static final OngoingQuantifiedScalarBinaryPredicate<Double> testIf(QuantifiedValue<Double> left) {
+        return SUPPORT.testIf(left);
+    }
+
     public static final Double absoluteValueOf(Double value) {
         return SUPPORT.absoluteValueOf(value);
     }
@@ -213,4 +220,11 @@ public final class DoubleTensorics {
         return SUPPORT.valuesOfI(quantities);
     }
 
+    public static final ConfidenceLevel<Double> confidenceLevelOf(Double confidenceLevel) {
+        return SUPPORT.confidenceLevelOf(confidenceLevel);
+    }
+
+    public static final TensoricSupport<Double> with(ManipulationOption newOption) {
+        return SUPPORT.with(newOption);
+    }
 }

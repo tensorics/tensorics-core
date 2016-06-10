@@ -25,6 +25,7 @@ package org.tensorics.core.lang;
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.quantity.options.ConfidenceLevel;
 import org.tensorics.core.quantity.options.ErrorPropagationStrategy;
 import org.tensorics.core.quantity.options.QuantificationStrategy;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
@@ -70,6 +71,12 @@ public final class EnvironmentImpl<V> implements QuantityEnvironment<V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public V confidenceLevel() {
+        return (V) this.options().get(ConfidenceLevel.class).confidenceLevel();
+    }
+
+    @Override
     public OptionRegistry<ManipulationOption> options() {
         return optionRegistry;
     }
@@ -77,5 +84,6 @@ public final class EnvironmentImpl<V> implements QuantityEnvironment<V> {
     public <T extends ManipulationOption> EnvironmentImpl<V> with(T newOption) {
         return new EnvironmentImpl<>(extendedField, optionRegistry.with(newOption));
     }
+
 
 }
