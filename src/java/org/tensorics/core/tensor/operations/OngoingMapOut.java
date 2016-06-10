@@ -65,9 +65,11 @@ public final class OngoingMapOut<V> {
         set.addAll(tensor.context().getPosition().coordinates());
 
         if (Comparable.class.isAssignableFrom(dimension)) {
+            @SuppressWarnings({ "unchecked", "rawtypes" })
             List<? extends Comparable> dimcoordinates = (List<? extends Comparable>) new ArrayList<>(tensor.shape()
                     .coordinatesOfType(dimension));
             if (!dimcoordinates.isEmpty()) {
+                @SuppressWarnings("unchecked")
                 C1 lastElement = (C1) Collections.max(dimcoordinates);
                 set.add(lastElement);
             }
