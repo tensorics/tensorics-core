@@ -36,7 +36,7 @@ import org.tensorics.core.function.MathFunctions;
 public class CodomainExtraction<X, Y> implements Conversion<DiscreteFunction<X, Y>, Iterable<Y>> {
 
     @Override
-    public Iterable<Y> perform(DiscreteFunction<X, Y> inputfunction) {
+    public Iterable<Y> apply(DiscreteFunction<X, Y> inputfunction) {
         return MathFunctions.yValuesOf(inputfunction);
     }
 }

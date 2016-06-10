@@ -21,7 +21,7 @@
 // @formatter:on
 package org.tensorics.core.function;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
 
 /**
  * The general function from X to Y

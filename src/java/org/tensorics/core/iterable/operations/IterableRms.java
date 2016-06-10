@@ -49,11 +49,11 @@ public class IterableRms<V> extends ScalarSupport<V> implements IterableOperatio
     }
 
     @Override
-    public V perform(Iterable<V> values) {
+    public V apply(Iterable<V> values) {
         if (isEmpty(values)) {
             throw new IllegalArgumentException("r.m.s. of empty value set is not possible.");
         }
-        return squareRootOf(calculate(sumOfSquares.perform(values)).dividedBy(size.perform(values)));
+        return squareRootOf(calculate(sumOfSquares.apply(values)).dividedBy(size.apply(values)));
 
     }
 

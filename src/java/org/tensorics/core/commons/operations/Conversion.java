@@ -27,7 +27,7 @@ import com.google.common.base.Function;
 /**
  * An operation that converts one type of object into another.
  * 
- * @author kfuchsbe
+ * @author kfuchsbe, caguiler
  * @param <T> the type of the object which shall be converted
  * @param <R> the return type, i.e. the type into which the object shall be converted
  */
@@ -39,10 +39,6 @@ public interface Conversion<T, R> extends Function<T, R> {
      * @param object the object to convert
      * @return an object of the correct return type.
      */
-    R perform(T object);
-
     @Override
-    default R apply(T object) {
-        return perform(object);
-    }
+    R apply(T object);
 }

@@ -58,7 +58,7 @@ public final class IterableOperations {
     private static <K, V> Map<K, V> reduce(Map<K, Collection<V>> values, IterableOperation<V> operation) {
         ImmutableMap.Builder<K, V> resultBuilder = ImmutableMap.builder();
         for (Entry<K, Collection<V>> entry : values.entrySet()) {
-            resultBuilder.put(entry.getKey(), operation.perform(entry.getValue()));
+            resultBuilder.put(entry.getKey(), operation.apply(entry.getValue()));
         }
         return resultBuilder.build();
     }

@@ -38,7 +38,7 @@ public class IterableSize<V> extends ScalarSupport<V> implements IterableOperati
     }
 
     @Override
-    public V perform(Iterable<V> iterable) {
+    public V apply(Iterable<V> iterable) {
         V one = one();
         V count = zero();
         for (@SuppressWarnings("unused")

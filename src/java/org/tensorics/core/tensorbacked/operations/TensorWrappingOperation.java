@@ -49,7 +49,7 @@ public class TensorWrappingOperation<V, TB extends Tensorbacked<V>> implements C
     }
 
     @Override
-    public TB perform(Tensor<V> tensor) {
+    public TB apply(Tensor<V> tensor) {
         return TensorbackedInternals.createBackedByTensor(tensorbackedClass, tensor);
     }
 

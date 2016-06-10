@@ -38,7 +38,7 @@ public class IterableSumOfSquares<V> extends ScalarSupport<V> implements Iterabl
     }
 
     @Override
-    public V perform(Iterable<V> iterable) {
+    public V apply(Iterable<V> iterable) {
         V sum = zero();
         for (V value : iterable) {
             sum = calculate(sum).plus(squareOf(value));

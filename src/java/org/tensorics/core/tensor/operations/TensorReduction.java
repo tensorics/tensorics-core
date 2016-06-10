@@ -52,7 +52,7 @@ public class TensorReduction<C, E, R> implements Conversion<Tensor<E>, Tensor<R>
     }
 
     @Override
-    public Tensor<R> perform(Tensor<E> value) {
+    public Tensor<R> apply(Tensor<E> value) {
         Tensor<Map<C, E>> mapped = TensorInternals.mapOut(value).inDirectionOf(direction);
 
         Builder<R> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());

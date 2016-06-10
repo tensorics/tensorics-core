@@ -60,7 +60,7 @@ public class OngoingStructuralReduction<C, E> {
     }
 
     protected <R> Tensor<R> reduceBy(ReductionStrategy<? super C, E, R> strategy) {
-        return new TensorReduction<>(dimension, strategy).perform(tensor);
+        return new TensorReduction<>(dimension, strategy).apply(tensor);
     }
 
 }

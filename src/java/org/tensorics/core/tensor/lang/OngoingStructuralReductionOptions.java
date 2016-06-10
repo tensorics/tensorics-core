@@ -36,7 +36,7 @@ public class OngoingStructuralReductionOptions<E, C extends Comparable<C>> {
      */
     public Tensor<E> interpolatingWith(InterpolationStrategy<C, E> strategy) {
         return new TensorReduction<>(dimension, new InterpolatedSlicing<>(slicePosition, strategy, tensor))
-                .perform(tensor);
+                .apply(tensor);
     }
 
 }

@@ -67,9 +67,9 @@ public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements 
             x1 = xValues.get(index - 2);
         }
 
-        Y xInYDomain = conversion.perform(x);
-        Y x1InyDomain = conversion.perform(x1);
-        Y x2InYDomain = conversion.perform(x2);
+        Y xInYDomain = conversion.apply(x);
+        Y x1InyDomain = conversion.apply(x1);
+        Y x2InYDomain = conversion.apply(x2);
 
         Y y1 = function.apply(x1);
         Y y2 = function.apply(x2);

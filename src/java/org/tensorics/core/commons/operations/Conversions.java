@@ -41,7 +41,7 @@ public final class Conversions {
         INSTANCE;
 
         @Override
-        public Object perform(Object o) {
+        public Object apply(Object o) {
             return o;
         }
     }

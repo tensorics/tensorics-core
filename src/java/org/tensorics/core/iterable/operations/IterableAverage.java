@@ -45,10 +45,10 @@ public class IterableAverage<V> extends ScalarSupport<V> implements IterableOper
     }
 
     @Override
-    public V perform(Iterable<V> iterable) {
+    public V apply(Iterable<V> iterable) {
         if (isEmpty(iterable)) {
             throw new IllegalArgumentException("Averaging of empty value set is not possible.");
         }
-        return calculate(sum.perform(iterable)).dividedBy(size.perform(iterable));
+        return calculate(sum.apply(iterable)).dividedBy(size.apply(iterable));
     }
 }

@@ -42,7 +42,7 @@ public class ConversionOperationResolver<T, R> extends AbstractResolver<R, Conve
     @Override
     public R resolve(ConversionOperationExpression<T, R> expression, ResolvingContext context) {
         T source = context.resolvedValueOf(expression.getSource());
-        return expression.getOperation().perform(source);
+        return expression.getOperation().apply(source);
     }
 
 }

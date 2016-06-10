@@ -36,7 +36,7 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
 public class TensorExtractionOperation<V, TB extends Tensorbacked<V>> implements Conversion<TB, Tensor<V>> {
 
     @Override
-    public Tensor<V> perform(TB tensorbacked) {
+    public Tensor<V> apply(TB tensorbacked) {
         return tensorbacked.tensor();
     }
 

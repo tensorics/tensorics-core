@@ -41,23 +41,23 @@ public class ScalarIterableSupport<V> extends ScalarSupport<V> {
     }
 
     public final V avarageOf(Iterable<V> values) {
-        return repository.average().perform(values);
+        return repository.average().apply(values);
     }
 
     public final V sizeOf(Iterable<V> values) {
-        return repository.size().perform(values);
+        return repository.size().apply(values);
     }
 
     public final V sumOf(Iterable<V> values) {
-        return repository.sum().perform(values);
+        return repository.sum().apply(values);
     }
 
     public V rmsOf(Iterable<V> values) {
-        return repository.rms().perform(values);
+        return repository.rms().apply(values);
     }
 
     public V sumOfSquaresOf(Iterable<V> values) {
-        return repository.sumOfSquares().perform(values);
+        return repository.sumOfSquares().apply(values);
     }
 
 }
