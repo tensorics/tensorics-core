@@ -13,7 +13,6 @@ buildscript {
 		/* Versions needs to be hardcoded to work properly. */
 		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
 		classpath 'org.asciidoctor:asciidoctorj:1.5.0'
-		classpath 'net.sourceforge.cobertura:cobertura:2.0.3'
 	}
 }
 
