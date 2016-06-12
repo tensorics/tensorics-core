@@ -63,7 +63,5 @@ dependencies {
 	testCompile 'org.objenesis:objenesis:+'
 	testCompile 'com.openpojo:openpojo:+'
 	testCompile 'io.reactivex:rxjava:1.1.5'
-	
-	test 'net.sourceforge.cobertura:cobertura:2.0.3'
-	
+		
 }
