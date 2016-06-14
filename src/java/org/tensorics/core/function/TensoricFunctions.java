@@ -22,12 +22,11 @@
 
 package org.tensorics.core.function;
 
+import java.util.function.Function;
+
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.Tensorbacked;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 
 /**
  * Contains utility methods for functions related to tensorics
@@ -53,7 +52,7 @@ public final class TensoricFunctions {
     }
 
     public final static <C, S> Function<C, S> singleCoordinateToValue(Tensor<S> tensor) {
-        return Functions.compose(forTensor(tensor), TensoricFunctions.<C> singleCoordinate());
+        return forTensor(tensor).compose(TensoricFunctions.<C> singleCoordinate());
     }
 
     public final static <C, S> Function<C, S> singleCoordinateToValue(Tensorbacked<S> tensorbacked) {

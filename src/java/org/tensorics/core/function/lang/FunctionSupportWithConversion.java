@@ -54,7 +54,7 @@ public class FunctionSupportWithConversion<X, Y> extends ScalarIterableSupport<Y
         this.conversion = conversion;
     }
 
-    public <Z extends Comparable<? super Z>> OngoingDiscreteFunctionBinaryOperation<Z, Y> calculate(
+    public final <Z extends Comparable<? super Z>> OngoingDiscreteFunctionBinaryOperation<Z, Y> calculate(
             DiscreteFunction<Z, Y> left) {
         try {
             @SuppressWarnings("unchecked")
@@ -77,7 +77,7 @@ public class FunctionSupportWithConversion<X, Y> extends ScalarIterableSupport<Y
     /**
      * @return root mean square of the y-values of a {@link DiscreteFunction}
      */
-    public Y rmsOf(DiscreteFunction<X, Y> function) {
+    public final Y rmsOf(DiscreteFunction<X, Y> function) {
         return rmsOf(yValuesOf(function));
     }
 

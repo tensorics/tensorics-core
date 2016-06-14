@@ -25,6 +25,7 @@ package org.tensorics.core.tensor.lang;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -32,7 +33,6 @@ import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
 /**

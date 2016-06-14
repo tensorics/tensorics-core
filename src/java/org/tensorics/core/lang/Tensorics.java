@@ -26,7 +26,10 @@ import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
@@ -53,9 +56,6 @@ import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Supplier;
 
 /**
  * The main entry point for constructing and structural manipulation of tensorics. If mathematical operations are

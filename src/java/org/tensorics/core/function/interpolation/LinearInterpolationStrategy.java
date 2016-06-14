@@ -61,7 +61,8 @@ public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements 
             int index = 0;
 
             do {
-                x2 = xValues.get(index++);
+                x2 = xValues.get(index);
+                ++index;
             } while (x2.compareTo(x) < 0);
 
             x1 = xValues.get(index - 2);

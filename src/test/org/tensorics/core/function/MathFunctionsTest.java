@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -16,7 +17,6 @@ import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
-import com.google.common.base.Function;
 
 /**
  * Unit tests for {@link MathFunctions}
@@ -32,13 +32,6 @@ public class MathFunctionsTest {
         @Override
         public Double apply(Integer input) {
             return input.doubleValue();
-        }
-    };
-
-    private static final Function<Double, Integer> DOUBLE_TO_INTEGER = new Function<Double, Integer>() {
-        @Override
-        public Integer apply(Double input) {
-            return input.intValue();
         }
     };
 

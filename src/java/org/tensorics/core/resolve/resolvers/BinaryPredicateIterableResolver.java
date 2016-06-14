@@ -44,6 +44,6 @@ public class BinaryPredicateIterableResolver<T> extends AbstractResolver<Boolean
         Iterable<T> left = context.resolvedValueOf(expression.getLeft());
         T right = context.resolvedValueOf(expression.getRight());
         BinaryPredicate<T> predicate = expression.getPredicate();
-        return StreamSupport.stream(left.spliterator(),true).allMatch(e -> predicate.test(e,right));
+        return StreamSupport.stream(left.spliterator(),true).allMatch(leftElement -> predicate.test(leftElement,right));
     }
 }

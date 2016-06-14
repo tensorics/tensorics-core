@@ -27,6 +27,7 @@ import static javax.measure.unit.SI.MICRO;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Before;
@@ -48,7 +49,6 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.OrbitCoordinate;
 import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 import org.tensorics.core.units.JScienceUnit;
 
-import com.google.common.base.Optional;
 
 /**
  * Test that verifies if {@link TensorSupport} is valid for {@link Tensorbacked} objects as well. Analogous tests covers

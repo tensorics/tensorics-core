@@ -27,7 +27,7 @@ import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.lang.FunctionExpressionSupport;
 import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversion;
-import org.tensorics.core.function.lang.OngoingDeferredDiscreteFunctionOperation;
+import org.tensorics.core.function.lang.OngoingDeferredDiscreteFunctionBinaryOperation;
 import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
@@ -253,7 +253,7 @@ public class TensoricExpressionSupport<V> {
         return functionExpressionSupport.averageOfF(functionExpresssion);
     }
 
-    public <X extends Comparable<? super X>> OngoingDeferredDiscreteFunctionOperation<X, X> calculateF(
+    public <X extends Comparable<? super X>> OngoingDeferredDiscreteFunctionBinaryOperation<X, X> calculateF(
             Expression<DiscreteFunction<X, X>> functionExpresssion) {
         return ((FunctionExpressionSupport<X>) functionExpressionSupport).calculateF(functionExpresssion);
     }

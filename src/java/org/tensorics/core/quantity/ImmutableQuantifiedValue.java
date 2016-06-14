@@ -24,9 +24,10 @@ package org.tensorics.core.quantity;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.util.Optional;
+
 import org.tensorics.core.units.Unit;
 
-import com.google.common.base.Optional;
 
 /**
  * Groups a value together with its unit. Additionally an error and a validity flag can be provided. If the latter two
@@ -53,7 +54,7 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
     }
 
     private ImmutableQuantifiedValue(V value, Unit unit) {
-        this(value, unit, true, Optional.<V> absent());
+        this(value, unit, true, Optional.<V> empty());
     }
 
     @SuppressWarnings("PMD.ShortMethodName")

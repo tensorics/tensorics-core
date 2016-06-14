@@ -21,10 +21,11 @@
 // @formatter:on
 package org.tensorics.core.tensor.operations;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import org.tensorics.core.tensor.Position;
 
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
 
 public final class PositionFunctions {
 

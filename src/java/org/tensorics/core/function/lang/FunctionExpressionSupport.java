@@ -45,7 +45,7 @@ public class FunctionExpressionSupport<Y> extends FunctionExpressionSupportWithC
      * @param conversion defines how to transform a value of X type to Y type
      * @return a {@link FunctionExpressionSupportWithConversion} with a given {@link Conversion} set
      */
-    public <X> FunctionExpressionSupportWithConversion<X, Y> withConversion(Conversion<X, Y> conversion) {
+    public final <X> FunctionExpressionSupportWithConversion<X, Y> withConversion(Conversion<X, Y> conversion) {
         return new FunctionExpressionSupportWithConversion<>(environment(), conversion);
     }
 }

@@ -21,6 +21,8 @@
 // @formatter:on
 package org.tensorics.core.tensor.operations;
 
+import java.util.function.Function;
+
 import org.tensorics.core.math.operations.CreationOperation;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
@@ -28,7 +30,6 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
-import com.google.common.base.Function;
 
 /**
  * Uses the given function from a position to the tensor to create the values of the tensor.

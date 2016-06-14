@@ -53,12 +53,12 @@ public class FunctionExpressionSupportWithConversion<X, Y> extends ScalarIterabl
         toYValues = new CodomainExtraction<>();
     }
 
-    public <Z extends Comparable<? super Z>> OngoingDeferredDiscreteFunctionOperation<Z, Y> calculateF(
+    public final <Z extends Comparable<? super Z>> OngoingDeferredDiscreteFunctionBinaryOperation<Z, Y> calculateF(
             Expression<DiscreteFunction<Z, Y>> expression) {
         try {
             @SuppressWarnings("unchecked")
             Conversion<Z, Y> conversionFromComparabletoY = (Conversion<Z, Y>) conversion;
-            return new OngoingDeferredDiscreteFunctionOperation<>(environment, expression, conversionFromComparabletoY);
+            return new OngoingDeferredDiscreteFunctionBinaryOperation<>(environment, expression, conversionFromComparabletoY);
         } catch (ClassCastException castException) {
             throw new IllegalStateException(
                     "In order to use the method \"calculate\" the X type of FunctionExpressionSupportWithConversion<X,Y> MUST implement Comparable interface",

@@ -22,10 +22,11 @@
 
 package org.tensorics.core.function;
 
+import java.util.function.Function;
+
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 
 class PositionToScalarFunction<S> implements Function<Position, S> {

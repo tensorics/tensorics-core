@@ -22,7 +22,8 @@
 
 package org.tensorics.core.quantity;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -49,7 +50,7 @@ public final class ImmutableErronousValue<V> implements ErronousValue<V> {
     }
 
     public static <V> ImmutableErronousValue<V> ofValue(V value) {
-        return new ImmutableErronousValue<V>(value, Optional.<V> absent());
+        return new ImmutableErronousValue<V>(value, Optional.<V> empty());
     }
 
     public static <V> ImmutableErronousValue<V> ofValueAndError(V value, V error) {

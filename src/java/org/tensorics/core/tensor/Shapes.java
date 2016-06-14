@@ -28,6 +28,7 @@ import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Sets.union;
 
 import java.util.Set;
+import java.util.function.Function;
 
 import com.google.common.collect.Sets;
 
@@ -88,7 +89,7 @@ public final class Shapes {
     public static Shape dimensionStripped(Shape shape, Set<? extends Class<?>> dimensionsToStrip) {
         checkNotNull(shape, "shape must not be null");
         checkNotNull(dimensionsToStrip, "dimensions must not be null");
-        return Shape.of(Positions.unique(transform(shape.positionSet(), Positions.stripping(dimensionsToStrip))));
+        return Shape.of(Positions.unique(transform(shape.positionSet(), toGuavaFunction(Positions.stripping(dimensionsToStrip)))));
     }
 
     /**
@@ -127,4 +128,13 @@ public final class Shapes {
         checkNotNull(right, "right shape must not be null");
     }
 
+    private static <T, R> com.google.common.base.Function<T, R> toGuavaFunction(Function<T, R> function) {
+        return new com.google.common.base.Function<T, R>() {
+
+            @Override
+            public R apply(T input) {
+                return function.apply(input);
+            }
+        };
+    }
 }

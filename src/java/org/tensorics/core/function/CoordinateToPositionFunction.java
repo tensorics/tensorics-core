@@ -22,9 +22,9 @@
 
 package org.tensorics.core.function;
 
-import org.tensorics.core.tensor.Position;
+import java.util.function.Function;
 
-import com.google.common.base.Function;
+import org.tensorics.core.tensor.Position;
 
 public class CoordinateToPositionFunction<C> implements Function<C, Position> {
 

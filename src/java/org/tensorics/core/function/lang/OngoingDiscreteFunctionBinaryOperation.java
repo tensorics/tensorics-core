@@ -50,19 +50,19 @@ public class OngoingDiscreteFunctionBinaryOperation<X extends Comparable<? super
         this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion);
     }
 
-    public DiscreteFunction<X, Y> plus(DiscreteFunction<X, Y> right) {
+    public final DiscreteFunction<X, Y> plus(DiscreteFunction<X, Y> right) {
         return repository.addition().perform(left, right);
     }
 
-    public DiscreteFunction<X, Y> minus(DiscreteFunction<X, Y> right) {
+    public final DiscreteFunction<X, Y> minus(DiscreteFunction<X, Y> right) {
         return repository.subtraction().perform(left, right);
     }
 
-    public DiscreteFunction<X, Y> times(DiscreteFunction<X, Y> right) {
+    public final DiscreteFunction<X, Y> times(DiscreteFunction<X, Y> right) {
         return repository.multiplication().perform(left, right);
     }
 
-    public DiscreteFunction<X, Y> dividedBy(DiscreteFunction<X, Y> right) {
+    public final DiscreteFunction<X, Y> dividedBy(DiscreteFunction<X, Y> right) {
         return repository.division().perform(left, right);
     }
 }

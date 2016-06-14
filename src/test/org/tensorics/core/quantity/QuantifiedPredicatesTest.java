@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.tensorics.core.lang.DoubleTensorics;
 import org.tensorics.core.lang.TensoricSupport;
 import org.tensorics.core.lang.Tensorics;
-import org.tensorics.core.quantity.QuantifiedValue;
 
 public class QuantifiedPredicatesTest {
 

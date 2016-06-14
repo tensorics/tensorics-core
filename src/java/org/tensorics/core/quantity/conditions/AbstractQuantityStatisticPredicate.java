@@ -79,9 +79,9 @@ public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSuppor
      */
     protected S zTestValueForDifference(QuantifiedValue<S> left, QuantifiedValue<S> right) {
         final QuantifiedValue<S> leftWithError = ImmutableQuantifiedValue.of(left.value(), left.unit()).withError(
-                left.error().or(zero()));
+                left.error().orElse(zero()));
         final QuantifiedValue<S> rightWithError = ImmutableQuantifiedValue.of(right.value(), right.unit()).withError(
-                right.error().or(zero()));
+                right.error().orElse(zero()));
         final QuantifiedValue<S> difference = subtractQuantities(leftWithError, rightWithError);
 
         return calculate(difference.value()).dividedBy(difference.error().get());

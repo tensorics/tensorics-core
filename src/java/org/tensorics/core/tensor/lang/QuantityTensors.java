@@ -22,6 +22,8 @@
 
 package org.tensorics.core.tensor.lang;
 
+import java.util.Optional;
+
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -30,7 +32,6 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.units.Unit;
 
-import com.google.common.base.Optional;
 
 /**
  * Provides static utility methods for tensors with quantity values.
@@ -65,7 +66,7 @@ public final class QuantityTensors {
     public static <S> Tensor<S> errorsOfOr(Tensor<QuantifiedValue<S>> tensor, S defaultValue) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().error().or(defaultValue));
+            builder.at(entry.getKey()).put(entry.getValue().error().orElse(defaultValue));
         }
         return builder.build();
     }

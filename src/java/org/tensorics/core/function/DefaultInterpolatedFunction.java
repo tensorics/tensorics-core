@@ -41,9 +41,9 @@ import com.google.common.base.Preconditions;
  */
 public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> implements InterpolatedFunction<X, Y> {
 
-    private DiscreteFunction<X, Y> backingFunction;
-    private InterpolationStrategy<Y> strategy;
-    private Conversion<X, Y> conversion;
+    private final DiscreteFunction<X, Y> backingFunction;
+    private final InterpolationStrategy<Y> strategy;
+    private final Conversion<X, Y> conversion;
 
     public DefaultInterpolatedFunction(DiscreteFunction<X, Y> function, InterpolationStrategy<Y> strategy,
             Conversion<X, Y> conversion) {
