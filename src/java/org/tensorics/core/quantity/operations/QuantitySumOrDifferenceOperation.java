@@ -22,14 +22,14 @@
 
 package org.tensorics.core.quantity.operations;
 
-import java.util.Optional;
-
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.OperandPair;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
 import org.tensorics.core.units.Unit;
+
+import com.google.common.base.Optional;
 
 
 /**

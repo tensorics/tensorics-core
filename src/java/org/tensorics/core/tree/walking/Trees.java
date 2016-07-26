@@ -183,7 +183,7 @@ public final class Trees {
      * @param nodeClassToFind the class of the nodes to find
      * @return a set of all found nodes, which implement the given class
      */
-    public static <T extends Node> Set<? extends T> findNodesOfClass(Node rootNode, final Class<T> nodeClassToFind) {
+    public static <T extends Node> Set<T> findNodesOfClass(Node rootNode, final Class<T> nodeClassToFind) {
         final Set<T> foundNodes = new HashSet<>();
         walkParentAfterChildren(rootNode, new EveryNodeCallback() {
             @Override

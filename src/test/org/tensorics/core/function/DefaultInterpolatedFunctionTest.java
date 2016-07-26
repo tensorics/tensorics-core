@@ -11,6 +11,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Comparator;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +33,8 @@ public class DefaultInterpolatedFunctionTest {
 
     private static final double DEFINED_X_VALUE = 1.0;
     private static final double UNDEFINED_X_VALUE = 33.0;
+    private static final Comparator<Double> COMPARATOR = Double::compareTo;
+
     @Mock
     DiscreteFunction<Double, Double> function;
     @Mock
@@ -44,7 +48,8 @@ public class DefaultInterpolatedFunctionTest {
     public void setUp() {
         when(function.definedXValues()).thenReturn(ImmutableSet.of(DEFINED_X_VALUE));
         when(function.apply(DEFINED_X_VALUE)).thenReturn(DEFINED_X_VALUE);
-        interpolatedFunction = new DefaultInterpolatedFunction<>(function, interpolationStrategy, conversion);
+        interpolatedFunction = new DefaultInterpolatedFunction<>(function, interpolationStrategy, conversion,
+                COMPARATOR);
     }
 
     @Test
@@ -56,13 +61,13 @@ public class DefaultInterpolatedFunctionTest {
     public void testItDoesNotRelyOnInterpolationStrategyForDefinedXValues() {
         interpolatedFunction.apply(DEFINED_X_VALUE);
         verify(function, times(1)).apply(DEFINED_X_VALUE);
-        verify(interpolationStrategy, never()).interpolate(any(), any(), any());
+        verify(interpolationStrategy, never()).interpolate(any(), any(), any(), any());
     }
 
     @Test
     public void testItReliesOnInterpolationStrategyForUnDefinedXValues() {
         interpolatedFunction.apply(UNDEFINED_X_VALUE);
-        verify(interpolationStrategy, times(1)).interpolate(UNDEFINED_X_VALUE, function, conversion);
+        verify(interpolationStrategy, times(1)).interpolate(UNDEFINED_X_VALUE, function, conversion, COMPARATOR);
     }
 
 }

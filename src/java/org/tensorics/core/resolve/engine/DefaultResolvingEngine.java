@@ -21,6 +21,7 @@
 package org.tensorics.core.resolve.engine;
 
 import org.tensorics.core.commons.options.OptionRegistry;
+import org.tensorics.core.resolve.domain.DetailedExpressionResult;
 import org.tensorics.core.resolve.domain.ResolvingException;
 import org.tensorics.core.resolve.options.ResolvingOption;
 import org.tensorics.core.resolve.options.ResolvingOptions;
@@ -48,12 +49,31 @@ public class DefaultResolvingEngine implements ResolvingEngine {
     private ResolverRepository resolverRepository;
 
     @Override
-    public <R> R resolve(Expression<R> rootNode, ResolvingOption... options) {
+    public <R, E extends Expression<R>> R resolve(E rootNode, ResolvingOption... options) {
         return resolve(rootNode, Contexts.newResolvingContext(), options);
     }
 
     @Override
-    public <R> R resolve(Expression<R> rootNode, ResolvingContext initialContext, ResolvingOption... options) {
+    public <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode, ResolvingOption... options) {
+        return resolveDetailed(rootNode, Contexts.newResolvingContext(), options);
+    }
+
+    @Override
+    public <R, E extends Expression<R>> R resolve(E rootNode, ResolvingContext initialContext,
+            ResolvingOption... options) {
+        ResolvingContext fullContext = resolveToContext(rootNode, initialContext, options);
+        return fullContext.resolvedValueOf(rootNode);
+    }
+
+    @Override
+    public <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
+            ResolvingContext initialContext, ResolvingOption... options) {
+        ResolvingContext fullContext = resolveToContext(rootNode, initialContext, options);
+        return DetailedExpressionResult.of(rootNode, fullContext.resolvedValueOf(rootNode), fullContext);
+    }
+
+    private <R> ResolvingContext resolveToContext(Expression<R> rootNode, ResolvingContext initialContext,
+            ResolvingOption... options) {
         Preconditions.checkNotNull(resolverRepository, "resolverRepository must not be null.");
         Preconditions.checkNotNull(initialContext, "initialContext must not be null.");
         int count = 0;
@@ -74,7 +94,7 @@ public class DefaultResolvingEngine implements ResolvingEngine {
             }
             count++;
         }
-        return fullContext.resolvedValueOf(rootNode);
+        return fullContext;
     }
 
     private void throwIfNoContexts(ResolvingContext resolvedContext) {

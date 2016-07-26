@@ -22,6 +22,8 @@
 
 package org.tensorics.core.math.impl;
 
+import java.util.Comparator;
+
 import org.tensorics.core.math.BinaryPredicates;
 import org.tensorics.core.math.ExplicitField;
 import org.tensorics.core.math.Operations;
@@ -45,6 +47,7 @@ public class ExplicitFieldImpl<T> implements ExplicitField<T> {
     private final BinaryPredicate<T> greaterOrEqualPredicate;
     private final BinaryPredicate<T> lessPredicate;
     private final BinaryPredicate<T> equalPredicate;
+    private final Comparator<T> comparator;
 
     public ExplicitFieldImpl(OrderedField<T> field) {
         this.field = field;
@@ -56,6 +59,16 @@ public class ExplicitFieldImpl<T> implements ExplicitField<T> {
         greaterOrEqualPredicate = BinaryPredicates.invert(field.lessOrEqualPredicate());
         lessPredicate = BinaryPredicates.not(greaterOrEqualPredicate);
         equalPredicate = BinaryPredicates.and(field.lessOrEqualPredicate(), greaterOrEqualPredicate);
+
+        this.comparator = (elementA, elementB) -> {
+            if (lessOrEqual().test(elementA, elementB)) {
+                if (less().test(elementA, elementB)) {
+                    return -1;
+                }
+                return 0;
+            }
+            return 1;
+        };
     }
 
     @Override
@@ -126,6 +139,11 @@ public class ExplicitFieldImpl<T> implements ExplicitField<T> {
     @Override
     public BinaryPredicate<T> greater() {
         return greaterPredicate;
+    }
+
+    @Override
+    public Comparator<T> comparator() {
+        return comparator;
     }
 
 }

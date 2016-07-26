@@ -22,11 +22,14 @@
 
 package org.tensorics.core.quantity.operations;
 
+import java.util.function.BiFunction;
+
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
+import org.tensorics.core.units.Unit;
 
 /**
  * A repository for operations on quantified values. This way, one instance of each can be re-used all the times.
@@ -86,6 +89,28 @@ public class QuantityOperationRepository<S> {
         return quantityMultiplication;
     }
 
+    public BinaryOperation<QuantifiedValue<S>> power() {
+        return quantifiedBinaryOperationFrom(environment().field().power(), environment().quantification()::power);
+    }
+
+    public BinaryOperation<QuantifiedValue<S>> root() {
+        return quantifiedBinaryOperationFrom(environment().field().root(), environment().quantification()::root);
+    }
+
+    private BinaryOperation<QuantifiedValue<S>> quantifiedBinaryOperationFrom(BinaryOperation<S> operation,
+            BiFunction<Unit, S, Unit> unitOperation) {
+        return new QuantityBinaryOperation<S>(mathsEnvironment, operation) {
+
+            @Override
+            public QuantifiedValue<S> perform(QuantifiedValue<S> left, QuantifiedValue<S> right) {
+                S value = operation().perform(left.value(), right.value());
+                Unit unit = unitOperation.apply(left.unit(), right.value());
+                // FIXME: For the moment I am disregarding error propagation...
+                return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right));
+            }
+        };
+    }
+
     public BinaryOperation<QuantifiedValue<S>> division() {
         return quantityDivision;
     }
@@ -105,4 +130,5 @@ public class QuantityOperationRepository<S> {
     public QuantityEnvironment<S> environment() {
         return mathsEnvironment;
     }
+
 }

@@ -42,7 +42,7 @@ public class QuantityGreaterPredicate<S> extends AbstractQuantityStatisticPredic
 
     @Override
     public boolean test(QuantifiedValue<S> left, QuantifiedValue<S> right) {
-        if (testIf(left.error().orElse(zero())).isEqualTo(zero()) && testIf(right.error().orElse(zero())).isEqualTo(zero())) {
+        if (testIf(left.error().or(zero())).isEqualTo(zero()) && testIf(right.error().or(zero())).isEqualTo(zero())) {
             return testIf(subtractQuantities(left, right).value()).isGreaterThan(zero());
         }
         return testIf(zTestValueForDifference(left, right)).isGreaterThan(confidenceLimit);

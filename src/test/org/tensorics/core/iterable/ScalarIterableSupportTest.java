@@ -39,7 +39,7 @@ public class ScalarIterableSupportTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNoElement() {
-        usage().avarageOf(Collections.<Double> emptyList());
+        usage().averageOf(Collections.<Double> emptyList());
     }
 
     private ScalarIterableSupport<Double> usage() {
@@ -48,16 +48,16 @@ public class ScalarIterableSupportTest {
 
     @Test
     public void testOneElementOne() {
-        assertEquals(1.0, usage().avarageOf(ImmutableList.<Double> of(1.0)), 0.000001);
+        assertEquals(1.0, usage().averageOf(ImmutableList.<Double> of(1.0)), 0.000001);
     }
 
     @Test
     public void testOneElementZero() {
-        assertEquals(0.0, usage().avarageOf(ImmutableList.<Double> of(0.0)), 0.0000001);
+        assertEquals(0.0, usage().averageOf(ImmutableList.<Double> of(0.0)), 0.0000001);
     }
 
     @Test
     public void testTwoElements() throws Exception {
-        assertEquals(0.5, usage().avarageOf(ImmutableList.<Double> of(0.0, 1.0)), 0.00001);
+        assertEquals(0.5, usage().averageOf(ImmutableList.<Double> of(0.0, 1.0)), 0.00001);
     }
 }

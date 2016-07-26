@@ -22,6 +22,8 @@
 
 package org.tensorics.core.resolve.engine;
 
+import org.tensorics.core.resolve.resolvers.Resolver;
+import org.tensorics.core.resolve.resolvers.ResolverRepository;
 import org.tensorics.core.resolve.resolvers.Resolvers;
 
 /**
@@ -31,19 +33,23 @@ import org.tensorics.core.resolve.resolvers.Resolvers;
  */
 public final class ResolvingEngines {
 
-    private static final ResolvingEngine DEFAULT_RESOLVING_ENGINE = createDefaultEngine();
-
     private ResolvingEngines() {
         /* only static methods */
     }
 
     public static ResolvingEngine defaultEngine() {
-        return DEFAULT_RESOLVING_ENGINE;
+        ResolverRepository defaultResolvers = Resolvers.defaultRepository();
+        return resolvingEngineWith(defaultResolvers);
     }
 
-    private static ResolvingEngine createDefaultEngine() {
+    public static ResolvingEngine defaultEngineWithAdditional(Resolver<?, ?>... resolvers) {
+        ResolverRepository defaultResolvers = Resolvers.defaultRepositoryWithAdditional(resolvers);
+        return resolvingEngineWith(defaultResolvers);
+    }
+
+    private static ResolvingEngine resolvingEngineWith(ResolverRepository defaultResolvers) {
         DefaultResolvingEngine engine = new DefaultResolvingEngine();
-        engine.setResolverRepository(Resolvers.defaultRepository());
+        engine.setResolverRepository(defaultResolvers);
         return engine;
     }
 

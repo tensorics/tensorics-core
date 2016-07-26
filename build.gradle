@@ -1,30 +1,35 @@
 /* Build script */
 buildscript {
 	repositories {
-		mavenCentral()
-		jcenter()
+		if (System.getenv('BUILD_SERVER')) {
+			maven {
+			    url 'http://artifactory.cern.ch/repo'
+			    url 'http://artifactory.cern.ch/jcenter'
+		    }
+		} else {
+			mavenCentral()
+			jcenter()
+        }
 	}
 
 	dependencies {
-		classpath 'net.saliman:gradle-cobertura-plugin:2.2.6'
-		classpath 'org.ow2.asm:asm:5.0.3'  
-		
+		classpath 'net.saliman:gradle-cobertura-plugin:2.0.0'
 		classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
-//		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:+'
-//		classpath 'org.asciidoctor:asciidoctorj:+'
-		/* Versions needs to be hardcoded to work properly. */
-		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
-		classpath 'org.asciidoctor:asciidoctorj:1.5.0'
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:+'
+		classpath 'org.asciidoctor:asciidoctorj:+'
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'cobertura'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
 sourceSets {
-	main { java { srcDir 'src/java' } }
+	main { 
+		java { 
+			srcDir 'src/java' 
+		} 
+	}
 	test {
 		java {
 			srcDir 'src/examples'
@@ -33,24 +38,24 @@ sourceSets {
 	}
 }
 
-if (JavaVersion.current().isJava8Compatible()) {
-  allprojects {
-    tasks.withType(Javadoc) {
-      options.addStringOption('Xdoclint:none', '-quiet')
-    }
-  }
-}
-
 javadoc { options.encoding = "UTF-8" }
 
 cobertura.coverageFormats = ['html', 'xml']
 cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
+
 /* End of build script */
 
 /* Project dependencies */
 repositories {
-	mavenCentral()
-	jcenter()
+		if (System.getenv('BUILD_SERVER')) {
+			maven {
+			    url 'http://artifactory.cern.ch/repo'
+			    url 'http://artifactory.cern.ch/jcenter'
+		    }
+		} else {
+			mavenCentral()
+			jcenter()
+        }
 }
 
 dependencies {
@@ -63,6 +68,4 @@ dependencies {
 	testCompile 'org.mockito:mockito-core:1.+'
 	testCompile 'org.objenesis:objenesis:+'
 	testCompile 'com.openpojo:openpojo:+'
-	testCompile 'io.reactivex:rxjava:1.1.5'
-		
 }

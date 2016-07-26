@@ -21,6 +21,8 @@
 // @formatter:on
 package org.tensorics.core.function.operations;
 
+import java.util.Comparator;
+
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
@@ -32,10 +34,10 @@ import org.tensorics.core.function.DiscreteFunction;
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public class DiscreteFunctionMultiplication<X extends Comparable<? super X>, Y>
+public class DiscreteFunctionMultiplication<X, Y>
         extends AbstractDiscreteFunctionBinaryOperation<X, Y> {
 
-    DiscreteFunctionMultiplication(Environment<Y> environment, Conversion<X, Y> conversion) {
-        super(environment, conversion, environment.field().multiplication());
+    DiscreteFunctionMultiplication(Environment<Y> environment, Conversion<X, Y> conversion, Comparator<X> comparator) {
+        super(environment, conversion, environment.field().multiplication(), comparator);
     }
 }

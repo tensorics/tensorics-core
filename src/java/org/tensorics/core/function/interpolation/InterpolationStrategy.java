@@ -23,6 +23,7 @@
 package org.tensorics.core.function.interpolation;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.ManipulationOption;
@@ -47,8 +48,7 @@ public interface InterpolationStrategy<Y> extends Serializable, ManipulationOpti
      *            performing any kind of interpolation.
      * @return the interpolated value of y for the <code>function</code> at <code>xValue</code>
      */
-    <X extends Comparable<? super X>> Y interpolate(X xValue, DiscreteFunction<X, Y> function,
-            Conversion<X, Y> conversion);
+    <X> Y interpolate(X xValue, DiscreteFunction<X, Y> function, Conversion<X, Y> conversion, Comparator<X> comparator);
 
     @Override
     default Class<? extends ManipulationOption> getMarkerInterface() {

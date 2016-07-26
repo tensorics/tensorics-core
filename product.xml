@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
-	<product name="tensorics-core" version="0.0.13" directory="org/tensorics/tensorics-core">
+	<product name="tensorics-core" version="0.0.18" directory="org/tensorics/tensorics-core">
 		<desc>
 			Framework of tensor-like objects for numerical data analysis,
 			statistics and backing of domain objects.
@@ -15,6 +15,10 @@
 			<dep product="mockito-core" local="true" excluded="true" />
 			<dep product="objenesis" local="true" excluded="true" />
 			<dep product="openpojo" local="true" excluded="true" />
+			<dep product="rxjava" local="true" excluded="true" />
+			
+			<!-- required by cobertura in bamboo builds... -->
+			<dep product="slf4j-api" local="true" excluded="true" />
 		</dependencies>
 	</product>
 </products>

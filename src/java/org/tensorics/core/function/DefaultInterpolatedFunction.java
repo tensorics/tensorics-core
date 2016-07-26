@@ -21,6 +21,7 @@
 // @formatter:on
 package org.tensorics.core.function;
 
+import java.util.Comparator;
 import java.util.Set;
 
 import org.tensorics.core.commons.operations.Conversion;
@@ -39,20 +40,19 @@ import com.google.common.base.Preconditions;
  * @param <X> the type of the independent variable must be comparable. Otherwise is not possible to interpolate.
  * @see InterpolatedFunction
  */
-public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> implements InterpolatedFunction<X, Y> {
+public class DefaultInterpolatedFunction<X, Y> implements InterpolatedFunction<X, Y> {
 
     private final DiscreteFunction<X, Y> backingFunction;
     private final InterpolationStrategy<Y> strategy;
     private final Conversion<X, Y> conversion;
+    private Comparator<X> comparator;
 
     public DefaultInterpolatedFunction(DiscreteFunction<X, Y> function, InterpolationStrategy<Y> strategy,
-            Conversion<X, Y> conversion) {
-        Preconditions.checkNotNull(function, "function cannot be null");
-        Preconditions.checkNotNull(strategy, "strategy cannot be null");
-        Preconditions.checkNotNull(conversion, "conversion cannot be null");
-        this.backingFunction = function;
-        this.strategy = strategy;
-        this.conversion = conversion;
+            Conversion<X, Y> conversion, Comparator<X> comparator) {
+        this.backingFunction = Preconditions.checkNotNull(function, "function cannot be null");
+        this.strategy = Preconditions.checkNotNull(strategy, "strategy cannot be null");
+        this.conversion = Preconditions.checkNotNull(conversion, "conversion cannot be null");
+        this.comparator = Preconditions.checkNotNull(comparator, "comparator cannot be null");
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DefaultInterpolatedFunction<X extends Comparable<? super X>, Y> imp
         if (definedXValues().contains(input)) {
             return backingFunction.apply(input);
         }
-        return strategy.interpolate(input, backingFunction, conversion);
+        return strategy.interpolate(input, backingFunction, conversion, comparator);
     }
 
     @Override

@@ -64,10 +64,10 @@ public class TreesTest {
         child22 = mock(Node.class);
         child221 = mock(Node.class);
 
-        when(rootNode.getChildren()).thenReturn(ImmutableList.<Node> of(child1, child2));
-        when(child1.getChildren()).thenReturn(ImmutableList.<Node> of(child11, child12));
-        when(child2.getChildren()).thenReturn(ImmutableList.<Node> of(child21, child22));
-        when(child22.getChildren()).thenReturn(ImmutableList.<Node> of(child221));
+        when(rootNode.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child1, child2));
+        when(child1.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child11, child12));
+        when(child2.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child21, child22));
+        when(child22.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child221));
     }
 
     @Test

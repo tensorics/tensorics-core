@@ -22,11 +22,13 @@
 
 package org.tensorics.core.lang;
 
+import java.util.Comparator;
+
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.lang.FunctionExpressionSupport;
-import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversion;
+import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversionAndComparator;
 import org.tensorics.core.function.lang.OngoingDeferredDiscreteFunctionBinaryOperation;
 import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.quantity.QuantifiedValue;
@@ -245,21 +247,21 @@ public class TensoricExpressionSupport<V> {
         return tensoricFieldUsage.testIfIt(iterableExpression);
     }
 
-    public Expression<V> rmsOfF(Expression<DiscreteFunction<V, V>> functionExpresssion) {
+    public <X> Expression<V> rmsOfF(Expression<DiscreteFunction<X, V>> functionExpresssion) {
         return functionExpressionSupport.rmsOfF(functionExpresssion);
     }
 
-    public Expression<V> averageOfF(Expression<DiscreteFunction<V, V>> functionExpresssion) {
+    public <X> Expression<V> averageOfF(Expression<DiscreteFunction<X, V>> functionExpresssion) {
         return functionExpressionSupport.averageOfF(functionExpresssion);
     }
 
-    public <X extends Comparable<? super X>> OngoingDeferredDiscreteFunctionBinaryOperation<X, X> calculateF(
+    public <X> OngoingDeferredDiscreteFunctionBinaryOperation<X, X> calculateF(
             Expression<DiscreteFunction<X, X>> functionExpresssion) {
         return ((FunctionExpressionSupport<X>) functionExpressionSupport).calculateF(functionExpresssion);
     }
 
-    public <X extends Comparable<? super X>> FunctionExpressionSupportWithConversion<X, V> withConversion(
-            Conversion<X, V> conversion) {
-        return functionExpressionSupport.withConversion(conversion);
+    public <X> FunctionExpressionSupportWithConversionAndComparator<X, V> withConversionAndComparator(Conversion<X, V> conversion,
+            Comparator<X> comparator) {
+        return functionExpressionSupport.withConversionAndComparator(conversion, comparator);
     }
 }

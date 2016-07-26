@@ -22,6 +22,8 @@
 
 package org.tensorics.core.math;
 
+import java.util.Comparator;
+
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.math.predicates.BinaryPredicate;
@@ -72,4 +74,5 @@ public interface ExplicitField<T> {
 
     BinaryPredicate<T> greater();
 
+    Comparator<T> comparator();
 }

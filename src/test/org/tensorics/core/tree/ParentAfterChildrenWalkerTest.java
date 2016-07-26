@@ -175,13 +175,13 @@ public class ParentAfterChildrenWalkerTest {
 
     public void setUpAll() {
         setUpRootNode();
-        when(child1.getChildren()).thenReturn(ImmutableList.<Node> of(child11, child12));
-        when(child2.getChildren()).thenReturn(ImmutableList.<Node> of(child21, child22));
-        when(child22.getChildren()).thenReturn(ImmutableList.<Node> of(child221));
+        when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child11, child12));
+        when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child21, child22));
+        when(child22.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child221));
     }
 
     private void setUpRootNode() {
-        when(rootNode.getChildren()).thenReturn(ImmutableList.<Node> of(child1, child2));
+        when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child1, child2));
     }
 
     private void assertCallbackInOrder(EveryNodeCallback everyNodeCallback, Node... nodes) {

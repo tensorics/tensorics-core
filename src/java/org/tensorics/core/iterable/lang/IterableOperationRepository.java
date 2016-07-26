@@ -25,8 +25,10 @@ package org.tensorics.core.iterable.lang;
 import org.tensorics.core.iterable.operations.IterableAverage;
 import org.tensorics.core.iterable.operations.IterableRms;
 import org.tensorics.core.iterable.operations.IterableSize;
+import org.tensorics.core.iterable.operations.IterableStd;
 import org.tensorics.core.iterable.operations.IterableSum;
 import org.tensorics.core.iterable.operations.IterableSumOfSquares;
+import org.tensorics.core.iterable.operations.IterableVar;
 import org.tensorics.core.math.ExtendedField;
 
 /**
@@ -43,6 +45,8 @@ public class IterableOperationRepository<V> {
     private final IterableSum<V> iterableSum;
     private final IterableRms<V> iterableRms;
     private final IterableSumOfSquares<V> iterableSumOfSquares;
+    private final IterableVar<V> iterableVar;
+    private final IterableStd<V> iterableStd;
 
     public IterableOperationRepository(ExtendedField<V> field) {
         iterableAverage = new IterableAverage<>(field);
@@ -50,6 +54,8 @@ public class IterableOperationRepository<V> {
         iterableSum = new IterableSum<>(field);
         iterableRms = new IterableRms<>(field);
         iterableSumOfSquares = new IterableSumOfSquares<>(field);
+        iterableVar = new IterableVar<>(field);
+        iterableStd = new IterableStd<>(field);
     }
 
     public IterableAverage<V> average() {
@@ -72,4 +78,11 @@ public class IterableOperationRepository<V> {
         return iterableSumOfSquares;
     }
 
+    public IterableVar<V> var() {
+        return iterableVar;
+    }
+
+    public IterableStd<V> std() {
+        return iterableStd;
+    }
 }

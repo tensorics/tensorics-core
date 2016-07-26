@@ -33,7 +33,7 @@ public abstract class AbstractLinearDoubleInterpolationStrategy<C extends Compar
         C theNextComparable = findIndex(orderedList, coordineteToInterpolate, 1);
 
         Double firstPoint = tensorWithTheOnlyOneCoordinateOfC.get(thePreviousComparable);
-        return (tensorWithTheOnlyOneCoordinateOfC.get(theNextComparable) - firstPoint) + firstPoint
+        return firstPoint + (tensorWithTheOnlyOneCoordinateOfC.get(theNextComparable) - firstPoint)
                 * ratio(thePreviousComparable, theNextComparable, coordineteToInterpolate);
     }
 

@@ -26,7 +26,6 @@ import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -55,6 +54,8 @@ import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
+
+import com.google.common.base.Optional;
 
 
 /**

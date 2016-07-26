@@ -133,4 +133,16 @@ public class JScienceQuantificationStrategy<T> implements QuantificationStrategy
         return QuantificationStrategy.class;
     }
 
+    @Override
+    public Unit root(Unit left, T right) {
+        throwIfNotJScience(left);
+        return JScienceUnit.of(extract(left).root((int) cheating.toDouble(right)));
+    }
+
+    @Override
+    public Unit power(Unit left, T rigth) {
+        throwIfNotJScience(left);
+        return JScienceUnit.of(extract(left).pow((int) cheating.toDouble(rigth)));
+    }
+
 }

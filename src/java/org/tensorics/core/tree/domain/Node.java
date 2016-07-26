@@ -36,6 +36,6 @@ public interface Node {
      * 
      * @return a list containing all the children of the node
      */
-    List<Node> getChildren();
+    List<? extends Node> getChildren();
 
 }

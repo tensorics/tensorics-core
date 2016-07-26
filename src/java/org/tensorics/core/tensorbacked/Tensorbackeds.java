@@ -22,7 +22,6 @@
 
 package org.tensorics.core.tensorbacked;
 
-import java.util.Optional;
 import java.util.Set;
 
 import org.tensorics.core.quantity.QuantifiedValue;
@@ -36,6 +35,8 @@ import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.Unit;
+
+import com.google.common.base.Optional;
 
 
 /**

@@ -47,7 +47,39 @@ public class OngoingDeferredBinaryPredicate<S> {
         return new BinaryPredicateExpression<>(field.less(), left, expression);
     }
 
+    public Expression<Boolean> isLessOrEqualThan(Expression<S> expression) {
+        return new BinaryPredicateExpression<>(field.lessOrEqual(), left, expression);
+    }
+
+    public Expression<Boolean> isGreaterThan(Expression<S> expression) {
+        return new BinaryPredicateExpression<>(field.greater(), left, expression);
+    }
+
+    public Expression<Boolean> isGreaterOrEqualThan(Expression<S> expression) {
+        return new BinaryPredicateExpression<>(field.greaterOrEqual(), left, expression);
+    }
+
+    public Expression<Boolean> isEqualTo(Expression<S> expression) {
+        return new BinaryPredicateExpression<>(field.equal(), left, expression);
+    }
+
     public Expression<Boolean> isLessThan(S value) {
         return isLessThan(ResolvedExpression.of(value));
+    }
+
+    public Expression<Boolean> isLessOrEqualThan(S value) {
+        return isLessOrEqualThan(ResolvedExpression.of(value));
+    }
+
+    public Expression<Boolean> isGreaterThan(S value) {
+        return isGreaterThan(ResolvedExpression.of(value));
+    }
+
+    public Expression<Boolean> isGreaterOrEqualThan(S value) {
+        return isGreaterOrEqualThan(ResolvedExpression.of(value));
+    }
+
+    public Expression<Boolean> isEqualTo(S value) {
+        return isEqualTo(ResolvedExpression.of(value));
     }
 }

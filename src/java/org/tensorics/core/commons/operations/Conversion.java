@@ -31,6 +31,7 @@ import java.util.function.Function;
  * @param <T> the type of the object which shall be converted
  * @param <R> the return type, i.e. the type into which the object shall be converted
  */
+@FunctionalInterface
 public interface Conversion<T, R> extends Function<T, R> {
 
     /**

@@ -24,6 +24,12 @@ package org.tensorics.core.quantity;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javax.measure.unit.SI;
 
 import org.junit.Before;
@@ -48,6 +54,14 @@ public class ImmutableQuantifiedScalarTest {
     @Test
     public void testValue() {
         assertEquals(10.5, scalar.value(), 0.000001);
+    }
+    
+    @Test
+    public void serializableAndDeserializedIsEquals() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        (new ObjectOutputStream(buffer)).writeObject(scalar);
+        Object deserialized = (new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()))).readObject();
+        assertEquals(scalar, deserialized);
     }
 
 }

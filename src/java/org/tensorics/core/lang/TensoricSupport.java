@@ -79,7 +79,7 @@ public class TensoricSupport<V> {
     }
 
     public final V avarageOf(Iterable<V> values) {
-        return tensoricFieldUsage.avarageOf(values);
+        return tensoricFieldUsage.averageOf(values);
     }
 
     public final V negativeOf(V element) {
@@ -150,8 +150,20 @@ public class TensoricSupport<V> {
         return tensoricFieldUsage.negativeOf(tensor);
     }
 
-    public final QuantifiedValue<V> avarageOfQ(Iterable<QuantifiedValue<V>> values) {
-        return quantifiedTensoricFieldUsage.avarageOf(values);
+    public final QuantifiedValue<V> averageOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.averageOf(values);
+    }
+
+    public final QuantifiedValue<V> rmsOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.rmsOf(values);
+    }
+
+    public final QuantifiedValue<V> varOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.varOf(values);
+    }
+
+    public final QuantifiedValue<V> stdOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.stdOf(values);
     }
 
     public OngoingQuantifiedTensorOperation<V> calculateQ(Tensor<QuantifiedValue<V>> left) {
@@ -206,7 +218,7 @@ public class TensoricSupport<V> {
     public OngoingQuantifiedScalarBinaryPredicate<V> testIf(QuantifiedValue<V> left) {
         return quantifiedTensoricFieldUsage.testIf(left);
     }
-    
+
     public V absoluteValueOf(V value) {
         return tensoricFieldUsage.absoluteValueOf(value);
     }

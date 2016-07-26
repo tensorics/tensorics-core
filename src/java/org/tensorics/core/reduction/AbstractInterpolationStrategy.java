@@ -65,21 +65,24 @@ public abstract class AbstractInterpolationStrategy<C extends Comparable<C>, V> 
      * @return the comparable coordinate BEFORE or AFTER the reference one.
      */
     protected C findIndex(List<C> orderedList, C referencePosition, int indexMove) {
-        int tempIndexToReturn = -1;
+        if (indexMove != 0 && indexMove != 1) {
+            throw new IllegalArgumentException("Only 0 and +1 are allowed as indexMove parameters");
+        }
+        int indexToReturn = -1;
         for (C one : orderedList) {
             if (one.compareTo(referencePosition) < 0) {
-                tempIndexToReturn++;
+                indexToReturn++;
+            } else {
                 break;
             }
         }
-        int indexToReturn = tempIndexToReturn + indexMove;
 
         if (indexToReturn < 0) {
             indexToReturn = 0;
         } else if (indexToReturn > orderedList.size() - 2) {
             indexToReturn = orderedList.size() - 2;
         }
-        return orderedList.get(indexToReturn);
+        return orderedList.get(indexToReturn + indexMove);
     }
 
 }

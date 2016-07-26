@@ -77,9 +77,9 @@ public class TreesExceptionTest {
         child21 = mock(ExceptionHandlingNode.class);
         childCommon = mock(Node.class);
 
-        when(rootNode.getChildren()).thenReturn(ImmutableList.<Node> of(child1, child2));
-        when(child1.getChildren()).thenReturn(ImmutableList.<Node> of(child11, childCommon));
-        when(child2.getChildren()).thenReturn(ImmutableList.<Node> of(child21, childCommon));
+        when(rootNode.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child1, child2));
+        when(child1.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child11, childCommon));
+        when(child2.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child21, childCommon));
 
         when(rootNode.toString()).thenReturn("rootNode");
         when(child1.toString()).thenReturn("child1");

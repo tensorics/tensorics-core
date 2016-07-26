@@ -72,7 +72,15 @@ public class ScalarIterableExpressionSupport<V> extends ScalarExpressionSupport<
     }
 
     public Expression<V> rmsOf(Expression<Iterable<V>> iterableExpression) {
-        return squareRootOf(calculate(sumOfSquaresOf(iterableExpression)).dividedBy(sizeOf(iterableExpression)));
+        return new IterableOperationExpression<V>(repository.rms(), iterableExpression);
+    }
+
+    public Expression<V> stdOf(Iterable<V> iterable) {
+        return stdOf(ResolvedExpression.of(iterable));
+    }
+
+    public Expression<V> stdOf(Expression<Iterable<V>> iterableExpression) {
+        return new IterableOperationExpression<V>(repository.std(), iterableExpression);
     }
 
     public Expression<V> sumOfSquaresOf(Iterable<V> iterable) {

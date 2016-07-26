@@ -34,11 +34,11 @@ import org.tensorics.core.tree.domain.Expression;
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public class DiscreteFunctionToIterableExpression<X, Y>
-        extends ConversionOperationExpression<DiscreteFunction<X, Y>, Iterable<Y>> {
+public class DiscreteFunctionToIterableExpression<Y>
+        extends ConversionOperationExpression<DiscreteFunction<?, Y>, Iterable<Y>> {
 
-    public DiscreteFunctionToIterableExpression(Conversion<DiscreteFunction<X, Y>, Iterable<Y>> operation,
-            Expression<DiscreteFunction<X, Y>> source) {
+    public DiscreteFunctionToIterableExpression(Conversion<DiscreteFunction<?, Y>, Iterable<Y>> operation,
+            Expression<DiscreteFunction<?, Y>> source) {
         super(operation, source);
     }
 }

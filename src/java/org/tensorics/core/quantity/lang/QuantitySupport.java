@@ -93,7 +93,7 @@ public class QuantitySupport<V> {
     protected QuantityOperationRepository<V> operationRepository() {
         return operationRepository;
     }
-    
+
     protected QuantityPedicateRepository<V> predicateRepository() {
         return predicateRepository;
     }

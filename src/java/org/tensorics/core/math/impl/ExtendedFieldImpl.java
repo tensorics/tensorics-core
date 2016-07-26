@@ -55,6 +55,11 @@ public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T> implements Extend
         return powerOperation;
     }
 
+    @Override
+    public BinaryOperation<T> root() {
+        return (T left, T right) -> math.root(left, right);
+    }
+
     /**
      * Returns the instance which provides methods to convert field elements from and to double values. It is intended
      * that this mechanism can be replaced later by a re implementation of the unit-calculations which are fully based
@@ -69,5 +74,4 @@ public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T> implements Extend
     public Cheating<T> cheating() {
         return cheatingInstance;
     }
-
 }

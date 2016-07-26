@@ -22,11 +22,11 @@
 
 package org.tensorics.core.quantity.options;
 
-import java.util.Optional;
-
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ErronousValue;
 import org.tensorics.core.scalar.lang.ScalarSupport;
+
+import com.google.common.base.Optional;
 
 
 /**
@@ -51,7 +51,7 @@ public class UncorrelatedErrorPropagationStrategy<V> extends ScalarSupport<V> im
             V second = squareOf(right.error().get());
             return Optional.of(squareRootOf(calculate(first).plus(second)));
         }
-        return Optional.<V> empty();
+        return Optional.<V> absent();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class UncorrelatedErrorPropagationStrategy<V> extends ScalarSupport<V> im
             V second = squaredValueErrorProduct(right, left);
             return Optional.of(squareRootOf(calculate(first).plus(second)));
         }
-        return Optional.<V> empty();
+        return Optional.<V> absent();
     }
 
     private V squaredValueErrorProduct(ErronousValue<V> left, ErronousValue<V> right) {

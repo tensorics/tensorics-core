@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Comparator;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.commons.operations.Conversion;
@@ -17,26 +19,29 @@ import org.tensorics.core.lang.ManipulationOptions;
 import com.google.common.collect.Sets;
 
 /**
- * Tests the behaviour of {@link FunctionSupport}
+ * Tests the behavior of {@link FunctionSupport}
  * 
  * @author caguiler
  */
 public class FunctionSupportTest {
 
+    private static final Comparator<Double> COMPARATOR = Double::compareTo;
     private DiscreteFunction<Double, Double> two;
     private DiscreteFunction<Double, Double> three;
+    private DiscreteFunction<Double, Double> complex;
+
     private Conversion<Double, Double> conversion = Conversions.identity();
 
-    private FunctionSupportWithConversion<Double, Double> supportWithConversion;
+    private FunctionSupportWithConversionAndComparator<Double, Double> supportWithConversion;
     private FunctionSupport<Double> functionSupport;
 
     @Before
     public void setUp() {
         MapBackedDiscreteFunction.Builder<Double, Double> builder2 = MapBackedDiscreteFunction.builder();
         MapBackedDiscreteFunction.Builder<Double, Double> builder3 = MapBackedDiscreteFunction.builder();
+        MapBackedDiscreteFunction.Builder<Double, Double> builder4 = MapBackedDiscreteFunction.builder();
 
         for (double i = 1; i < 5; i += 2) {
-
             builder2.put(i, 2D);
             builder3.put(i + 1, 3D);
         }
@@ -44,10 +49,25 @@ public class FunctionSupportTest {
         two = builder2.build();
         three = builder3.build();
 
+        //@formatter:off
+        /*
+         * Info about the function called complex:
+         * - avg = 5
+         * - variance = 4
+         * - std = 2
+         * 
+         */
+        //@formatter:on
+        double yValues[] = { 2, 4, 4, 4, 5, 5, 7, 9 };
+        for (int i = 0; i < 8; ++i) {
+            builder4.put((double) i, yValues[i]);
+        }
+        complex = builder4.build();
+
         functionSupport = new FunctionSupport<Double>(
                 EnvironmentImpl.of(Structures.doubles(), ManipulationOptions.defaultOptions(Structures.doubles())));
 
-        supportWithConversion = functionSupport.withConversion(conversion);
+        supportWithConversion = functionSupport.withConversionAndComparator(conversion, COMPARATOR);
 
     }
 
@@ -100,6 +120,15 @@ public class FunctionSupportTest {
     public void testRms() {
         Double rms = supportWithConversion.rmsOf(three);
         assertEquals(3, rms, Double.MIN_VALUE);
+    }
+
+    @Test
+    public void testStd() {
+        Double dos = supportWithConversion.stdOf(complex);
+        assertEquals(2, dos, Double.MIN_VALUE);
+
+        Double zero = supportWithConversion.stdOf(two);
+        assertEquals(0, zero, Double.MIN_VALUE);
     }
 
 }

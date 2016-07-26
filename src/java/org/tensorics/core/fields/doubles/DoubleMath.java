@@ -38,4 +38,8 @@ public class DoubleMath implements Math<Double> {
         return java.lang.Math.pow(base, exponent);
     }
 
+    @Override
+    public Double root(Double base, Double exponent) {
+        return java.lang.Math.pow(base, 1.0 / exponent);
+    }
 }

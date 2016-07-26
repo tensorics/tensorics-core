@@ -90,4 +90,12 @@ public class OngoingQuantifiedScalarOperation<S> {
         return pseudoField.division().perform(left, right);
     }
 
+    public QuantifiedValue<S> toThePowerOf(QuantifiedValue<S> rightValue) {
+        return pseudoField.power().perform(left, rightValue);
+    }
+
+    public QuantifiedValue<S> root(QuantifiedValue<S> rightValue) {
+        return pseudoField.root().perform(left, rightValue);
+    }
+
 }

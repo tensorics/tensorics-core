@@ -22,6 +22,8 @@
 
 package org.tensorics.core.function.operations;
 
+import java.util.Comparator;
+
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
@@ -40,18 +42,19 @@ import com.google.common.collect.Sets;
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public abstract class AbstractDiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y>
-        implements BinaryOperation<DiscreteFunction<X, Y>> {
+public abstract class AbstractDiscreteFunctionBinaryOperation<X, Y> implements BinaryOperation<DiscreteFunction<X, Y>> {
 
     private final Conversion<X, Y> conversion;
     private final Environment<Y> environment;
     private final BinaryOperation<Y> operation;
+    private final Comparator<X> comparator;
 
     AbstractDiscreteFunctionBinaryOperation(Environment<Y> environment, Conversion<X, Y> conversion,
-            BinaryOperation<Y> operation) {
+            BinaryOperation<Y> operation, Comparator<X> comparator) {
         this.environment = environment;
         this.conversion = conversion;
         this.operation = operation;
+        this.comparator = comparator;
     }
 
     @Override
@@ -59,8 +62,10 @@ public abstract class AbstractDiscreteFunctionBinaryOperation<X extends Comparab
         @SuppressWarnings("unchecked")
         InterpolationStrategy<Y> strategy = environment.options().get(InterpolationStrategy.class);
 
-        InterpolatedFunction<X, Y> rigthInterpolated = MathFunctions.interpolated(right, strategy, conversion);
-        InterpolatedFunction<X, Y> leftInterpolated = MathFunctions.interpolated(left, strategy, conversion);
+        InterpolatedFunction<X, Y> rigthInterpolated = MathFunctions.interpolated(right, strategy, conversion,
+                comparator);
+        InterpolatedFunction<X, Y> leftInterpolated = MathFunctions.interpolated(left, strategy, conversion,
+                comparator);
 
         MapBackedDiscreteFunction.Builder<X, Y> builder = MapBackedDiscreteFunction.builder();
 

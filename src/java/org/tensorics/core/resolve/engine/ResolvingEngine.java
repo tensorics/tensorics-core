@@ -22,6 +22,7 @@
 
 package org.tensorics.core.resolve.engine;
 
+import org.tensorics.core.resolve.domain.DetailedExpressionResult;
 import org.tensorics.core.resolve.options.ResolvingOption;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvingContext;
@@ -34,7 +35,12 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  */
 public interface ResolvingEngine {
 
-    <R> R resolve(Expression<R> deferred, ResolvingOption... options);
+    <R, E extends Expression<R>> R resolve(E deferred, ResolvingOption... options);
 
-    <R> R resolve(Expression<R> deferred, ResolvingContext initialContext, ResolvingOption... options);
+    <R, E extends Expression<R>> R resolve(E deferred, ResolvingContext initialContext, ResolvingOption... options);
+
+    <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode, ResolvingOption... options);
+
+    <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode, ResolvingContext initialContext,
+            ResolvingOption... options);
 }

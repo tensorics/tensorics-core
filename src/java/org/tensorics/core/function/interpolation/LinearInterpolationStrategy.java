@@ -2,6 +2,7 @@ package org.tensorics.core.function.interpolation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.tensorics.core.commons.operations.Conversion;
@@ -26,8 +27,8 @@ public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements 
     }
 
     @Override
-    public <X extends Comparable<? super X>> Y interpolate(X x, DiscreteFunction<X, Y> function,
-            Conversion<X, Y> conversion) {
+    public <X> Y interpolate(X x, DiscreteFunction<X, Y> function, Conversion<X, Y> conversion,
+            Comparator<X> comparator) {
         Preconditions.checkNotNull(x, "x cannot be null!");
         Preconditions.checkNotNull(function, "function cannot be null!");
         Preconditions.checkNotNull(conversion, "conversion cannot be null!");
@@ -40,13 +41,13 @@ public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements 
 
         List<X> xValues = new ArrayList<>(function.definedXValues());
 
-        Collections.sort(xValues);
+        Collections.sort(xValues, comparator);
 
         X firstX = xValues.get(0);
         X lastX = xValues.get(size - 1);
 
-        boolean lessOrEqualThanFirstX = x.compareTo(firstX) <= 0;
-        boolean greaterOrEqualThanLastX = x.compareTo(lastX) >= 0;
+        boolean lessOrEqualThanFirstX = comparator.compare(x, firstX) <= 0;
+        boolean greaterOrEqualThanLastX = comparator.compare(x, lastX) >= 0;
 
         X x1 = null;
         X x2 = null;
@@ -63,7 +64,7 @@ public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements 
             do {
                 x2 = xValues.get(index);
                 ++index;
-            } while (x2.compareTo(x) < 0);
+            } while (comparator.compare(x2, x) < 0);
 
             x1 = xValues.get(index - 2);
         }

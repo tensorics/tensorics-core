@@ -24,9 +24,9 @@ package org.tensorics.core.quantity;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import java.util.Optional;
-
 import org.tensorics.core.units.Unit;
+
+import com.google.common.base.Optional;
 
 
 /**
@@ -54,7 +54,7 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
     }
 
     private ImmutableQuantifiedValue(V value, Unit unit) {
-        this(value, unit, true, Optional.<V> empty());
+        this(value, unit, true, Optional.<V> absent());
     }
 
     @SuppressWarnings("PMD.ShortMethodName")

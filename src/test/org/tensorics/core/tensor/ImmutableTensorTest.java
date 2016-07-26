@@ -36,38 +36,52 @@ import com.google.common.collect.ImmutableSet;
 
 public class ImmutableTensorTest {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
-	@Test
-	public void testDoubleToDoubleTensor() {
-		Builder<Double> tensorBuilder = ImmutableTensor.builder(Collections.singleton(Double.class));
-		Tensor<Double> tensor = tensorBuilder.build();
-		assertEquals(1, tensor.shape().dimensionality());
-	}
+    @Test
+    public void testDoubleToDoubleTensor() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(Collections.singleton(Double.class));
+        Tensor<Double> tensor = tensorBuilder.build();
+        assertEquals(1, tensor.shape().dimensionality());
+    }
 
-	@Test
-	public void testNumber() {
-		Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
-		Tensor<Double> tensor = tensorBuilder.build();
-		assertEquals(2, tensor.shape().dimensionality());
-	}
+    @Test
+    public void testNumber() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
+        Tensor<Double> tensor = tensorBuilder.build();
+        assertEquals(2, tensor.shape().dimensionality());
+    }
 
-	@Test
-	public void testZeroDimensionTensor() {
-		Tensor<Double> asZeroDimension = Tensorics.zeroDimensionalOf(2.4);
-		assertEquals(2.4, asZeroDimension.get(), 0.0);
-		assertEquals(0, asZeroDimension.shape().dimensionality());
-		assertEquals(1, asZeroDimension.shape().size());
-	}
+    @Test
+    public void testExtractionOfEmptyPosition() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
+        Tensor<Double> tensor = tensorBuilder.build();
+        assertEquals(tensor, Tensorics.from(tensor).extract(Position.empty()));
+    }
 
-	@Test
-	public void sameDimensionTwiceThrowsImmediately() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("unique");
-		Tensorics.builder(Integer.class, Integer.class);
-	}
+    @Test
+    public void testExtractionOfCompletePosition() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
+        tensorBuilder.putAt(0.0, Position.of(0.0, 0));
+        tensorBuilder.putAt(42.42, Position.of(23.0, 42));
+        Tensor<Double> tensor = tensorBuilder.build();
+        assertEquals(tensor.get(23.0, 42), Tensorics.from(tensor).extract(Position.of(23.0, 42)).get());
+    }
 
-	
+    @Test
+    public void testZeroDimensionTensor() {
+        Tensor<Double> asZeroDimension = Tensorics.zeroDimensionalOf(2.4);
+        assertEquals(2.4, asZeroDimension.get(), 0.0);
+        assertEquals(0, asZeroDimension.shape().dimensionality());
+        assertEquals(1, asZeroDimension.shape().size());
+    }
+
+    @Test
+    public void sameDimensionTwiceThrowsImmediately() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("unique");
+        Tensorics.builder(Integer.class, Integer.class);
+    }
 
 }

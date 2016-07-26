@@ -31,6 +31,7 @@ public class FunctionExpressionSupportTest {
     private ResolvingEngine engine = ResolvingEngines.defaultEngine();
     private Expression<DiscreteFunction<Double, Double>> two;
     private Expression<DiscreteFunction<Double, Double>> three;
+    private Expression<DiscreteFunction<Double, Double>> complex;
 
     private FunctionExpressionSupport<Double> support;
 
@@ -40,6 +41,7 @@ public class FunctionExpressionSupportTest {
         engine = ResolvingEngines.defaultEngine();
         MapBackedDiscreteFunction.Builder<Double, Double> builder2 = MapBackedDiscreteFunction.builder();
         MapBackedDiscreteFunction.Builder<Double, Double> builder3 = MapBackedDiscreteFunction.builder();
+        MapBackedDiscreteFunction.Builder<Double, Double> builder4 = MapBackedDiscreteFunction.builder();
 
         for (double i = 1; i < 5; i += 2) {
 
@@ -49,6 +51,21 @@ public class FunctionExpressionSupportTest {
 
         two = ResolvedExpression.of(builder2.build());
         three = ResolvedExpression.of(builder3.build());
+
+        //@formatter:off
+        /*
+         * Info about the function called complex:
+         * - avg = 5
+         * - variance = 4
+         * - std = 2
+         * 
+         */
+        //@formatter:on
+        double yValues[] = { 2, 4, 4, 4, 5, 5, 7, 9 };
+        for (int i = 0; i < 8; ++i) {
+            builder4.put((double) i, yValues[i]);
+        }
+        complex = ResolvedExpression.of(builder4.build());
 
         support = new FunctionExpressionSupport<Double>(
                 EnvironmentImpl.of(Structures.doubles(), ManipulationOptions.defaultOptions(Structures.doubles())));
@@ -114,6 +131,17 @@ public class FunctionExpressionSupportTest {
         Expression<Double> unresolvedTwo = support.averageOfF(two);
         Double dos = engine.resolve(unresolvedTwo);
         assertEquals(2, dos, Double.MIN_VALUE);
+    }
+
+    @Test
+    public void testStdOfF() {
+        Expression<Double> unresolvedTwo = support.stdOfF(complex);
+        Double dos = engine.resolve(unresolvedTwo);
+        assertEquals(2, dos, Double.MIN_VALUE);
+
+        Expression<Double> unresolvedZero = support.stdOfF(two);
+        Double cero = engine.resolve(unresolvedZero);
+        assertEquals(0, cero, Double.MIN_VALUE);
     }
 
     private <X, Y> boolean allYValuesEqualTo(DiscreteFunction<X, Y> function, Y value) {

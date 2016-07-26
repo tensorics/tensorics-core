@@ -13,6 +13,7 @@ import org.tensorics.core.tensor.TensorBuilder;
 
 public class InterpolationAtTest {
 
+    private static final double DOUBLE_COMPARISON_TOLERANCE = 1e-6;
     private static final int SIMPLE_TENSOR_PROPER_SLICE_SIZE = 2;
     private static final int BIG_TENSOR_PROPER_SLICE_SIZE = 4;
     private static final int NUMBER_OF_INCOPLETE_IN_THE_MIDDLE = 1;
@@ -20,6 +21,8 @@ public class InterpolationAtTest {
 
     private final ComparableCoordinate NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE = new ComparableCoordinate(2);
     private final ComparableCoordinate NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END = new ComparableCoordinate(5);
+    private final ComparableCoordinate COORDINATE_BEFORE_THE_FIRST = new ComparableCoordinate(-1);
+    private final ComparableCoordinate COORDINATE_AFTER_THE_LAST = new ComparableCoordinate(10);
     private Tensor<Double> testTenosor;
 
     @Test
@@ -62,12 +65,49 @@ public class InterpolationAtTest {
     public void testToObtainInterpolatedInTheMiddle() {
         testTenosor = getTensorThreeCoordinates();
 
-        Tensor<Double> byInterpolatedSlicingAt = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
+        Tensor<Double> interpolated = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
                 .byInterpolatedSlicingAt(NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE)
                 .interpolatingWith(new TestInterpolation());
 
-        assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, byInterpolatedSlicingAt.shape().positionSet().size());
+        assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
 
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), 2.0, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), 2.5, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), 2.0, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), 42.0, DOUBLE_COMPARISON_TOLERANCE);
+
+    }
+
+    @Test
+    public void extrapolateValuesBeforeTheFirstByInterpolation() {
+        testTenosor = getTensorThreeCoordinates();
+
+        Tensor<Double> interpolated = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
+                .byInterpolatedSlicingAt(COORDINATE_BEFORE_THE_FIRST)
+                .interpolatingWith(new TestInterpolation());
+
+        assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
+
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), -1.0, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), -2.0, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), -1.0, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), -81.0, DOUBLE_COMPARISON_TOLERANCE);
+    }
+    
+    @Test
+    public void extrapolateValuesAfterTheLastByInterpolation() {
+        testTenosor = getTensorThreeCoordinates();
+
+        Tensor<Double> interpolated = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
+                .byInterpolatedSlicingAt(COORDINATE_AFTER_THE_LAST)
+                .interpolatingWith(new TestInterpolation());
+
+        assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
+
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), 1.75, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), 23.9, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), 14.0, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), 0.5, DOUBLE_COMPARISON_TOLERANCE);
     }
 
     @Test
@@ -89,7 +129,7 @@ public class InterpolationAtTest {
         builder.putAt(1.0, new ComparableCoordinate(1), new TestNameCoordinate("TEST2"));
         builder.putAt(2.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1"));
         builder.putAt(3.5, new ComparableCoordinate(3), new TestNameCoordinate("TEST1"));
-        builder.putAt(3.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"));
+        builder.putAt(4.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"));
 
         return builder.build();
     }
@@ -104,7 +144,7 @@ public class InterpolationAtTest {
         builder.putAt(2.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1"),
                 TestEnum.ENUM1);
         builder.putAt(3.5, new ComparableCoordinate(3), new TestNameCoordinate("TEST1"), TestEnum.ENUM1);
-        builder.putAt(3.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"), TestEnum.ENUM1);
+        builder.putAt(4.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"), TestEnum.ENUM1);
         builder.putAt(3.25, new ComparableCoordinate(4), new TestNameCoordinate("TEST1"), TestEnum.ENUM1);
         builder.putAt(0.32, new ComparableCoordinate(4), new TestNameCoordinate("TEST2"), TestEnum.ENUM1);
         builder.putAt(4.25, NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END, new TestNameCoordinate("TEST2"),
@@ -115,10 +155,10 @@ public class InterpolationAtTest {
         builder.putAt(1.0, new ComparableCoordinate(1), new TestNameCoordinate("TEST2"), TestEnum.ENUM2);
         builder.putAt(2.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1"),
                 TestEnum.ENUM2);
-        builder.putAt(2.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST2"),
+        builder.putAt(42.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST2"),
                 TestEnum.ENUM2);
         builder.putAt(3.5, new ComparableCoordinate(3), new TestNameCoordinate("TEST1"), TestEnum.ENUM2);
-        builder.putAt(3.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"), TestEnum.ENUM2);
+        builder.putAt(4.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"), TestEnum.ENUM2);
         builder.putAt(3.0, NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END, new TestNameCoordinate("TEST2"),
                 TestEnum.ENUM2);
 

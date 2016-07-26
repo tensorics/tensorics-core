@@ -90,6 +90,13 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
         }
         return true;
     }
+    
+    
+
+    @Override
+    public String toString() {
+        return "MapBackedDiscreteFunction [function=" + function + "]";
+    }
 
     /**
      * The builder for the function based on a map. This class provides methods to add values to the function.

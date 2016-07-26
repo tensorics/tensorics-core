@@ -22,6 +22,7 @@
 package org.tensorics.core.function;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import org.tensorics.core.commons.operations.Conversion;
@@ -49,14 +50,13 @@ public class MathFunctions {
         return functionsFrom(tensor, dimensionClass).get();
     }
 
-    public static <X extends Comparable<? super X>, Y> InterpolatedFunction<X, Y> interpolated(
-            DiscreteFunction<X, Y> function, InterpolationStrategy<Y> strategy, Conversion<X, Y> conversion) {
-        return new DefaultInterpolatedFunction<>(function, strategy, conversion);
+    public static <X, Y> InterpolatedFunction<X, Y> interpolated(DiscreteFunction<X, Y> function,
+            InterpolationStrategy<Y> strategy, Conversion<X, Y> conversion, Comparator<X> comparator) {
+        return new DefaultInterpolatedFunction<>(function, strategy, conversion, comparator);
     }
 
     public static <X, Y> Collection<Y> yValuesOf(DiscreteFunction<X, Y> function) {
         Preconditions.checkNotNull(function, "function cannot be null!");
         return function.definedXValues().stream().map(function::apply).collect(Collectors.toList());
     }
-
 }

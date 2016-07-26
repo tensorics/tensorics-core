@@ -22,30 +22,33 @@
 
 package org.tensorics.core.function.lang;
 
+import java.util.Comparator;
+
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.operations.Conversions;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
 
 /**
- * Specialisation of {@link FunctionExpressionSupportWithConversion} for expressions of {@link DiscreteFunction}s from Y
- * to Y.
+ * Specialisation of {@link FunctionExpressionSupportWithConversionAndComparator} for expressions of
+ * {@link DiscreteFunction}s from Y to Y.
  * 
  * @author caguiler
  * @param <Y> the type of the independent variable (input) and dependent variable (output) of the discrete function and
  *            the type of the scalar values (elements of the field) on which to operate
  */
-public class FunctionExpressionSupport<Y> extends FunctionExpressionSupportWithConversion<Y, Y> {
+public class FunctionExpressionSupport<Y> extends FunctionExpressionSupportWithConversionAndComparator<Y, Y> {
 
     public FunctionExpressionSupport(Environment<Y> environment) {
-        super(environment, Conversions.identity());
+        super(environment, Conversions.identity(), environment.field().comparator());
     }
 
     /***
      * @param conversion defines how to transform a value of X type to Y type
-     * @return a {@link FunctionExpressionSupportWithConversion} with a given {@link Conversion} set
+     * @return a {@link FunctionExpressionSupportWithConversionAndComparator} with a given {@link Conversion} set
      */
-    public final <X> FunctionExpressionSupportWithConversion<X, Y> withConversion(Conversion<X, Y> conversion) {
-        return new FunctionExpressionSupportWithConversion<>(environment(), conversion);
+    public final <X> FunctionExpressionSupportWithConversionAndComparator<X, Y> withConversionAndComparator(
+            Conversion<X, Y> conversion, Comparator<X> comparator) {
+        return new FunctionExpressionSupportWithConversionAndComparator<>(environment(), conversion, comparator);
     }
 }

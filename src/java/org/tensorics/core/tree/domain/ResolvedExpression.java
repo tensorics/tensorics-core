@@ -23,6 +23,9 @@ package org.tensorics.core.tree.domain;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
+import org.tensorics.core.commons.util.Named;
 
 /**
  * An expression that needs no further processing. It contains already its own result, which can be simply retrieved by
@@ -31,7 +34,7 @@ import java.util.List;
  * @author kfuchsbe
  * @param <R> the type of the resulting value of the expression
  */
-public final class ResolvedExpression<R> implements Expression<R> {
+public final class ResolvedExpression<R> implements Expression<R>, Named {
 
     private final R value;
 
@@ -57,6 +60,16 @@ public final class ResolvedExpression<R> implements Expression<R> {
     @Override
     public List<Node> getChildren() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public String toString() {
+        return "ResolvedExpression [value=" + value + "]";
+    }
+
+    @Override
+    public String name() {
+        return Objects.toString(value);
     }
 
 }

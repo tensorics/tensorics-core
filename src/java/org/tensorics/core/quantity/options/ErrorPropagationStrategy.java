@@ -22,10 +22,10 @@
 
 package org.tensorics.core.quantity.options;
 
-import java.util.Optional;
-
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.quantity.ErronousValue;
+
+import com.google.common.base.Optional;
 
 
 /**

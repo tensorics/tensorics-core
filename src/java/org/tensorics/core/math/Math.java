@@ -47,4 +47,6 @@ public interface Math<T> {
      */
     T pow(T base, T exponent);
 
+    T root(T base, T exponent);
+
 }

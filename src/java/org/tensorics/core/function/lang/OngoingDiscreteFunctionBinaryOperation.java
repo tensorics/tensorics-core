@@ -22,6 +22,8 @@
 
 package org.tensorics.core.function.lang;
 
+import java.util.Comparator;
+
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
@@ -35,7 +37,7 @@ import org.tensorics.core.function.operations.DiscreteFunctionOperationRepositor
  *            (elements of the field) on which to operate
  * @author caguiler
  */
-public class OngoingDiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y> {
+public class OngoingDiscreteFunctionBinaryOperation<X, Y> {
 
     private final DiscreteFunction<X, Y> left;
     private final DiscreteFunctionOperationRepository<X, Y> repository;
@@ -45,9 +47,9 @@ public class OngoingDiscreteFunctionBinaryOperation<X extends Comparable<? super
      * @param conversion defines how to transform a value of X type to Y type
      */
     OngoingDiscreteFunctionBinaryOperation(Environment<Y> environment, DiscreteFunction<X, Y> left,
-            Conversion<X, Y> conversion) {
+            Conversion<X, Y> conversion, Comparator<X> comparator) {
         this.left = left;
-        this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion);
+        this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion, comparator);
     }
 
     public final DiscreteFunction<X, Y> plus(DiscreteFunction<X, Y> right) {

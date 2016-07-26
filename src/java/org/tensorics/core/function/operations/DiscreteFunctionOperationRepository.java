@@ -21,6 +21,8 @@
 // @formatter:on
 package org.tensorics.core.function.operations;
 
+import java.util.Comparator;
+
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 
@@ -36,18 +38,19 @@ import org.tensorics.core.commons.options.Environment;
  * @param <Y> the type of the dependent variable (output)of the discrete function and type of the elements of the
  *            environment on which the operations are based.
  */
-public class DiscreteFunctionOperationRepository<X extends Comparable<? super X>, Y> {
+public class DiscreteFunctionOperationRepository<X, Y> {
 
     private final DiscreteFunctionAddition<X, Y> addition;
     private final DiscreteFunctionSubtraction<X, Y> subtraction;
     private final DiscreteFunctionMultiplication<X, Y> multiplication;
     private final DiscreteFunctionDivision<X, Y> division;
 
-    public DiscreteFunctionOperationRepository(Environment<Y> environment, Conversion<X, Y> conversion) {
-        addition = new DiscreteFunctionAddition<>(environment, conversion);
-        subtraction = new DiscreteFunctionSubtraction<>(environment, conversion);
-        multiplication = new DiscreteFunctionMultiplication<>(environment, conversion);
-        division = new DiscreteFunctionDivision<>(environment, conversion);
+    public DiscreteFunctionOperationRepository(Environment<Y> environment, Conversion<X, Y> conversion,
+            Comparator<X> comparator) {
+        addition = new DiscreteFunctionAddition<>(environment, conversion, comparator);
+        subtraction = new DiscreteFunctionSubtraction<>(environment, conversion, comparator);
+        multiplication = new DiscreteFunctionMultiplication<>(environment, conversion, comparator);
+        division = new DiscreteFunctionDivision<>(environment, conversion, comparator);
     }
 
     public DiscreteFunctionAddition<X, Y> addition() {

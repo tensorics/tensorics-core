@@ -23,7 +23,11 @@
 package org.tensorics.core.resolve.resolvers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvingContext;
 
 /**
  * Provides utility methods to construct repositories of resolvers
@@ -32,17 +36,29 @@ import java.util.List;
  */
 public final class Resolvers {
 
-    private static final ResolverRepository DEFAULT_REPOSITORY = createDefaultRepository();
-
     private Resolvers() {
         /* Only static methods */
     }
 
     public static ResolverRepository defaultRepository() {
-        return DEFAULT_REPOSITORY;
+        List<Resolver<?, ?>> resolvers = createDefaultResolvers();
+        return repositoryWithResolvers(resolvers);
     }
 
-    private static ResolverRepository createDefaultRepository() {
+    public static ResolverRepository defaultRepositoryWithAdditional(Resolver<?, ?>... resolvers) {
+        List<Resolver<?, ?>> allResolvers = createDefaultResolvers();
+        allResolvers.addAll(Arrays.asList(resolvers));
+        System.err.println("Resolvers: " + allResolvers);
+        return repositoryWithResolvers(allResolvers);
+    }
+
+    private static ResolverRepository repositoryWithResolvers(List<Resolver<?, ?>> resolvers) {
+        ListBackedResolverRepository repository = new ListBackedResolverRepository();
+        repository.setResolvers(resolvers);
+        return repository;
+    }
+
+    private static List<Resolver<?, ?>> createDefaultResolvers() {
         List<Resolver<?, ?>> resolvers = new ArrayList<>();
         resolvers.add(new UnaryOperationResolver<>());
         resolvers.add(new BinaryOperationResolver<>());
@@ -51,9 +67,13 @@ public final class Resolvers {
         resolvers.add(new ConversionOperationResolver<>());
         resolvers.add(new BinaryPredicateResolver<>());
         resolvers.add(new BinaryPredicateIterableResolver<>());
+        resolvers.add(new FunctionalExpressionResolver<>());
+        resolvers.add(new IterableExpressionToIterableResolver<>());
+        return resolvers;
+    }
 
-        ListBackedResolverRepository repository = new ListBackedResolverRepository();
-        repository.setResolvers(resolvers);
-        return repository;
+    public static final boolean contextResolvesAll(List<? extends Expression<?>> expressions,
+            ResolvingContext context) {
+        return expressions.stream().allMatch(context::resolves);
     }
 }

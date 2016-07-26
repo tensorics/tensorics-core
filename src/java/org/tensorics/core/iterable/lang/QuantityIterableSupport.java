@@ -23,6 +23,8 @@
 package org.tensorics.core.iterable.lang;
 
 import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.QuantifiedValue;
@@ -44,11 +46,41 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
         super(environment);
     }
 
-    public final QuantifiedValue<V> avarageOf(Iterable<QuantifiedValue<V>> values) {
+    public final QuantifiedValue<V> averageOf(Iterable<QuantifiedValue<V>> values) {
         if (Iterables.isEmpty(values)) {
             throw new IllegalArgumentException("Averaging of empty value set is not possible.");
         }
         return calculate(sumOf(values)).dividedBy(sizeOf(values));
+    }
+
+    public final QuantifiedValue<V> rmsOf(Iterable<QuantifiedValue<V>> values) {
+        if (Iterables.isEmpty(values)) {
+            throw new IllegalArgumentException("Rms of empty value set is not possible.");
+        }
+        return squareRootOf(calculate(sumOfSquaresOf(values)).dividedBy(sizeOf(values)));
+    }
+
+    public final QuantifiedValue<V> stdOf(Iterable<QuantifiedValue<V>> values) {
+        if (Iterables.isEmpty(values)) {
+            throw new IllegalArgumentException("Standard deviation of empty value set is not possible.");
+        }
+        return squareRootOf(varOf(values));
+    }
+
+    public final QuantifiedValue<V> varOf(Iterable<QuantifiedValue<V>> values) {
+        if (Iterables.isEmpty(values)) {
+            throw new IllegalArgumentException("Variance of empty value set is not possible.");
+        }
+        final QuantifiedValue<V> average = averageOf(values);
+
+        // @formatter:off
+        Iterable<QuantifiedValue<V>> squaredDifferences = StreamSupport.stream(values.spliterator(), false)
+           .map(v -> calculate(v).minus(average))
+           .map(difference -> calculate(difference).toThePowerOf(two()))
+          .collect(Collectors.toList());
+        // @formatter:on
+
+        return averageOf(squaredDifferences);
     }
 
     public final QuantifiedValue<V> sizeOf(Iterable<QuantifiedValue<V>> values) {
@@ -69,7 +101,7 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
         }
         return zero;
     }
-    
+
     public final QuantifiedValue<V> sumOf(Iterable<QuantifiedValue<V>> values) {
         QuantifiedValue<V> sum = zeroInUnitsOfFirstValueIn(values);
         for (QuantifiedValue<V> value : values) {
@@ -79,7 +111,8 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
     }
 
     public final QuantifiedValue<V> sumOfSquaresOf(Iterable<QuantifiedValue<V>> values) {
-        QuantifiedValue<V> sum = zeroInUnitsOfFirstValueIn(values);
+        // XXX: This method has never been tested
+        QuantifiedValue<V> sum = squareOf(zeroInUnitsOfFirstValueIn(values));
         for (QuantifiedValue<V> value : values) {
             sum = calculate(sum).plus(squareOf(value));
         }
@@ -88,6 +121,10 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
 
     private QuantifiedValue<V> squareOf(QuantifiedValue<V> value) {
         return calculate(value).times(value);
+    }
+
+    private QuantifiedValue<V> squareRootOf(QuantifiedValue<V> value) {
+        return calculate(value).root(two());
     }
 
     public final OngoingQuantityIterableValueExtraction<V> valuesOf(Iterable<QuantifiedValue<V>> quantities) {

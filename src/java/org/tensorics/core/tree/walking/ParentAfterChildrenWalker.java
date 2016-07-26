@@ -47,8 +47,8 @@ public class ParentAfterChildrenWalker implements TreeWalker {
             return;
         }
 
-        Collection<Node> children = checkNotNull(node.getChildren(), "Children of node '" + node
-                + "' must not be null!");
+        Collection<? extends Node> children = checkNotNull(node.getChildren(),
+                "Children of node '" + node + "' must not be null!");
         if (children.isEmpty()) {
             onBottomNode(node, callback);
         } else {

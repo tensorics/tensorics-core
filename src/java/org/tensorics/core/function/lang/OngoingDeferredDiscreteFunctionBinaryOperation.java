@@ -22,6 +22,8 @@
 
 package org.tensorics.core.function.lang;
 
+import java.util.Comparator;
+
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.expressions.BinaryOperationExpression;
@@ -39,15 +41,15 @@ import org.tensorics.core.tree.domain.Expression;
  *            (elements of the field) on which to operate
  * @author caguiler
  */
-public class OngoingDeferredDiscreteFunctionBinaryOperation<X extends Comparable<? super X>, Y> {
+public class OngoingDeferredDiscreteFunctionBinaryOperation<X, Y> {
 
     private final Expression<DiscreteFunction<X, Y>> left;
     private final DiscreteFunctionOperationRepository<X, Y> repository;
 
     OngoingDeferredDiscreteFunctionBinaryOperation(Environment<Y> environment, Expression<DiscreteFunction<X, Y>> left,
-            Conversion<X, Y> conversion) {
+            Conversion<X, Y> conversion, Comparator<X> comparator) {
         this.left = left;
-        this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion);
+        this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion, comparator);
     }
 
     public final Expression<DiscreteFunction<X, Y>> plus(Expression<DiscreteFunction<X, Y>> right) {
@@ -66,7 +68,7 @@ public class OngoingDeferredDiscreteFunctionBinaryOperation<X extends Comparable
         return binaryExpressionOf(repository.division(), left, right);
     }
 
-    private static <X extends Comparable<? super X>, Y> Expression<DiscreteFunction<X, Y>> binaryExpressionOf(
+    private static <X, Y> Expression<DiscreteFunction<X, Y>> binaryExpressionOf(
             AbstractDiscreteFunctionBinaryOperation<X, Y> operation, Expression<DiscreteFunction<X, Y>> left,
             Expression<DiscreteFunction<X, Y>> right) {
         return new BinaryOperationExpression<>(operation, left, right);

@@ -22,11 +22,11 @@
 
 package org.tensorics.core.quantity.operations;
 
-import java.util.Optional;
-
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.BinaryOperationValidityStrategy;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
+
+import com.google.common.base.Optional;
 
 
 /**
