@@ -83,3 +83,76 @@ dependencies {
 	testCompile 'com.openpojo:openpojo:+'
 		
 }
+
+// Deployment
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+group = 'org.tensorics'
+archivesBaseName = 'tensorics-core'
+version = '0.0.19'
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'tensorics-core'
+        packaging 'jar'
+        description 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.'
+        url 'http://www.tensorics.org'
+
+        scm {
+          connection 'scm:git:http://github.com/tensorics/tensorics-core.git'
+          developerConnection 'scm:git:https://github.com/tensorics/tensorics-core.git'
+          url 'https://github.com/tensorics/tensorics-core.git'
+        }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'andreacalia'
+            name 'Andrea Calia'
+            email 'andrea.calia.46@gmail.com'
+          },
+          developer {
+            id 'cesar.aguilera'
+            name 'Cesar Aguilera'
+            email 'cesar.aguilera.p@gmail.com'
+          }
+        }
+        
+      }
+    }
+  }
+}
