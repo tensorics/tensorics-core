@@ -8,7 +8,7 @@ env:
 
 script:
   - gradle asciidoctor javadoc
-  - bash ./deploy-documentation.sh
+  - bash ./deploy-asciidoc.sh
 
 after_success:
   - gradle cobertura coveralls
