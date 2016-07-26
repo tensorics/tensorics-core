@@ -17,14 +17,12 @@ buildscript {
 		classpath 'org.ow2.asm:asm:5.0.3'  
 		
 		classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
-//		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:+'
-//		classpath 'org.asciidoctor:asciidoctorj:+'
-		/* Versions needs to be hardcoded to work properly. */
 		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
 		classpath 'org.asciidoctor:asciidoctorj:1.5.0'
 	}
 }
 
+/* Plugins */
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
@@ -45,20 +43,6 @@ sourceSets {
 		}
 	}
 }
-
-if (JavaVersion.current().isJava8Compatible()) {
-  allprojects {
-    tasks.withType(Javadoc) {
-      options.addStringOption('Xdoclint:none', '-quiet')
-    }
-  }
-}
-
-javadoc { options.encoding = "UTF-8" }
-
-cobertura.coverageFormats = ['html', 'xml']
-cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
-/* End of build script */
 
 /* Project dependencies */
 repositories {
@@ -86,7 +70,20 @@ dependencies {
 		
 }
 
-// Deployment
+if (JavaVersion.current().isJava8Compatible()) {
+  allprojects {
+    tasks.withType(Javadoc) {
+      options.addStringOption('Xdoclint:none', '-quiet')
+    }
+  }
+}
+
+javadoc { options.encoding = "UTF-8" }
+
+cobertura.coverageFormats = ['html', 'xml']
+cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
+
+/* Deployment */
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc
@@ -109,52 +106,54 @@ group = 'org.tensorics'
 archivesBaseName = 'tensorics-core'
 version = '0.0.19'
 
+
 uploadArchives {
-  repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+	repositories {
+		mavenDeployer {
+			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+	
+			if(project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
+				repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+					authentication(userName: ossrhUsername, password: ossrhPassword)
+				}
 
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
+				snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+					authentication(userName: ossrhUsername, password: ossrhPassword)
+				}
+			}
+			pom.project {
+				name 'tensorics-core'
+				packaging 'jar'
+				description 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.'
+				url 'http://www.tensorics.org'
 
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
+				scm {
+					connection 'scm:git:http://github.com/tensorics/tensorics-core.git'
+					developerConnection 'scm:git:https://github.com/tensorics/tensorics-core.git'
+					url 'https://github.com/tensorics/tensorics-core.git'
+				}
 
-      pom.project {
-        name 'tensorics-core'
-        packaging 'jar'
-        description 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.'
-        url 'http://www.tensorics.org'
+				licenses {
+					license {
+						name 'The Apache License, Version 2.0'
+						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
 
-        scm {
-          connection 'scm:git:http://github.com/tensorics/tensorics-core.git'
-          developerConnection 'scm:git:https://github.com/tensorics/tensorics-core.git'
-          url 'https://github.com/tensorics/tensorics-core.git'
-        }
+				developers {
+					developer {
+						id 'andreacalia'
+						name 'Andrea Calia'
+						email 'andrea.calia.46@gmail.com'
+					}
+					developer {
+						id 'cesar.aguilera'
+						name 'Cesar Aguilera'
+						email 'cesar.aguilera.p@gmail.com'
+					}
+				}
 
-        licenses {
-          license {
-            name 'The Apache License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-          }
-        }
-
-        developers {
-          developer {
-            id 'andreacalia'
-            name 'Andrea Calia'
-            email 'andrea.calia.46@gmail.com'
-          }
-          developer {
-            id 'cesar.aguilera'
-            name 'Cesar Aguilera'
-            email 'cesar.aguilera.p@gmail.com'
-          }
-        }
-        
-      }
-    }
-  }
+			}
+		}
+	}
 }
