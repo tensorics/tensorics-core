@@ -144,7 +144,7 @@ uploadArchives {
             id 'andreacalia'
             name 'Andrea Calia'
             email 'andrea.calia.46@gmail.com'
-          },
+          }
           developer {
             id 'cesar.aguilera'
             name 'Cesar Aguilera'
