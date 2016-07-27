@@ -12,6 +12,7 @@ script:
 
 after_success:
   - gradle cobertura coveralls
+  - bash ./deploy-jars.sh
 
 jdk:
   - oraclejdk8
