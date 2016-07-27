@@ -1,18 +1,18 @@
 #!/bin/bash
 set -e # exit with nonzero exit code if anything fails
 
-#OPENSSH.......
-touch SecretFile.pgp
+if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
+    
+	openssl aes-256-cbc -K $encrypted_7fc09654fb2e_key -iv $encrypted_7fc09654fb2e_iv -in codesigning.asc.enc -out codesigning.asc -d
+    gpg --fast-import codesigning.asc
 
-secreteFilePath=$(pwd)/SecretFile.pgp
-
-echo "############ secreteFilePath =" $secreteFilePath
-
-
-echo "signingKeyId : ${signingKeyId}"
-echo "signingPassword : ${signingPassword}"
-echo "ossrhUsername : ${ossrhUsername}"
-echo "ossrhPassword : ${ossrhPassword}"
+	secreteFilePath=$(pwd)/codesigning.asc
+	
+	gradle uploadArchives -Psigning.keyId=${signingKeyId} -Psigning.password=${signingPassword}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword}
+	
+	rm $secreteFilePath
+fi
 
 
-gradle uploadArchives -Psigning.keyId=${signing.keyId} -Psigning.password=${signing.password}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword}
+
+
