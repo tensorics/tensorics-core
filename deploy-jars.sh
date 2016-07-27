@@ -8,9 +8,11 @@ secreteFilePath=$(pwd)/SecretFile.pgp
 
 echo "############ secreteFilePath =" $secreteFilePath
 
-#gradle uploadArchives -Psigning.keyId=${signing.keyId} -Psigning.password=${signing.password}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword}
-echo "${signingKeyId}"
-echo "${signingPassword}"
-echo "${ossrhUsername}"
-echo "${ossrhPassword}"
-#echo "-Psigning.keyId=${signing.keyId} -Psigning.password=${signing.password} -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword}"
+
+echo "signingKeyId : ${signingKeyId}"
+echo "signingPassword : ${signingPassword}"
+echo "ossrhUsername : ${ossrhUsername}"
+echo "ossrhPassword : ${ossrhPassword}"
+
+
+gradle uploadArchives -Psigning.keyId=${signing.keyId} -Psigning.password=${signing.password}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword}
