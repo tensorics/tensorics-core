@@ -6,7 +6,7 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
 	echo "Decrypting codesigning.asc.enc..."
 	openssl aes-256-cbc -K $encrypted_e60aa78a0bb7_key -iv $encrypted_e60aa78a0bb7_iv -in codesigning.asc.enc -out codesigning.asc -d
     echo "... done"
-    gpg --trust-model always --fast-import codesigning.asc
+    gpg --no --fast-import codesigning.asc
     echo "Key added"
 	secreteFilePath=$(pwd)/codesigning.asc
 	echo "Secrete key path found"
