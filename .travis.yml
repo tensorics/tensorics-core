@@ -1,8 +1,4 @@
 language: java
-addons:
-  apt:
-    packages:
-    - gpg2
 env:
   global:
   - GH_REF: github.com/tensorics/tensorics-core.git
