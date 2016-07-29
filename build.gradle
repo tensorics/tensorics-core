@@ -85,6 +85,10 @@ cobertura.coverageFormats = ['html', 'xml']
 cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
 
 /* Deployment */
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14.1'
+}
+
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc
