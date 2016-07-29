@@ -105,7 +105,7 @@ artifacts {
 
 group = 'org.tensorics'
 archivesBaseName = 'tensorics-core'
-version = '0.0.21'
+version = '0.0.21-SNAPSHOT'
 
 if(project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword') && project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
 	signing {

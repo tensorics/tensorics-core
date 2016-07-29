@@ -10,10 +10,10 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
 	echo "Secrete key path found"
 
 	echo "DEBUG"
-	gpg --recv-keys 4170AA62
-	./gradlew -v
-	./gradlew signArchives -Psigning.keyId=${signingKeyId} -Psigning.password=${signingPassword}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword} --stacktrace --info
-	gpg --verify build/libs/tensorics-core-0.0.21.jar.asc
+	#gpg --recv-keys 4170AA62
+	#./gradlew -v
+	#./gradlew signArchives -Psigning.keyId=${signingKeyId} -Psigning.password=${signingPassword}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword} --stacktrace --info
+	#gpg --verify build/libs/tensorics-core-0.0.21.jar.asc
 	echo "END-DEBUG"
 	
 	echo "Executing gradle uploadArchives"
