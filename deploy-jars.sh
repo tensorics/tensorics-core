@@ -8,12 +8,12 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
     echo "... done"
 	secreteFilePath=$(pwd)/deployment.key
 	echo "Secrete key path found"
+	
+	gradle signArchives
+	gpg --verify build/libs/tensorics-core-0.0.21.jar.asc
+
 	echo "Executing gradle uploadArchives"
 	gradle uploadArchives -Psigning.keyId=${signingKeyId} -Psigning.password=${signingPassword}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword} --stacktrace --info
-	gpg --verify build/poms/pom-default.xml.asc
+	
 	rm $secreteFilePath
 fi
-
-
-
-
