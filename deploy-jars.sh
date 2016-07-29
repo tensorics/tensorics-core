@@ -12,7 +12,7 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
 	echo "DEBUG"
 	gpg --recv-keys 5EBAA0AD
 	./gradlew -v
-	./gradlew signArchives
+	./gradlew signArchives  -Psigning.keyId=${signingKeyId} -Psigning.password=${signingPassword}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword} --stacktrace --info
 	gpg --verify build/libs/tensorics-core-0.0.21.jar.asc
 	echo "END-DEBUG"
 	
