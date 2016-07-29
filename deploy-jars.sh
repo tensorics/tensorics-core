@@ -10,7 +10,7 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
 	echo "Secrete key path found"
 	echo "Executing gradle uploadArchives"
 	gradle uploadArchives -Psigning.keyId=${signingKeyId} -Psigning.password=${signingPassword}  -Psigning.secretKeyRingFile=$secreteFilePath -PossrhUsername=${ossrhUsername} -PossrhPassword=${ossrhPassword} --stacktrace --info
-	
+	gpg --verify build/poms/pom-default.xml.asc
 	rm $secreteFilePath
 fi
 
