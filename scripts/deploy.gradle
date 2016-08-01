@@ -14,9 +14,9 @@ def getVersion = {
 }
 
 def assertDeploymentPropertiesAreSet = {
-	boolean propertiesSet = project.getProperties().keySet().containsAll(Arrays.asList('ossrhUsername', 'ossrhPassword', 'signing.keyId', 'signing.password', 'signing.secretKeyRingFile'))
+	boolean propertiesSet = project.getProperties().keySet().containsAll(Arrays.asList('ossrhUsername', 'ossrhPassword', 'signingKeyId', 'signingPassword', 'signingSecretKeyRingFile'))
 	if( ! propertiesSet ) {
-		throw new RuntimeException("Deployment project properties are not correctly set: ossrhUsername, ossrhPassword, signing.keyId, signing.password, signing.secretKeyRingFile")
+		throw new RuntimeException("Deployment project properties are not correctly set: ossrhUsername, ossrhPassword, signingKeyId, signingPassword, signingSecretKeyRingFile")
 	}
 }
 
