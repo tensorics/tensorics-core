@@ -7,7 +7,7 @@ env:
 deploy:
   provider: script
   skip_cleanup: true
-  script: /bin/sh ./deploy-jars.sh
+  script: /bin/sh ./scripts/deploy-jars.sh
   on:
     branch: master
     tags: true
