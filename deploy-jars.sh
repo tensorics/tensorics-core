@@ -11,6 +11,7 @@ set -e # exit with nonzero exit code if anything fails
 	git status
 	git tag
 	ls -l
+	echo "Branch: $TRAVIS_BRANCH"
 	echo "Tag: $TRAVIS_TAG"
 	echo "Commit: $TRAVIS_COMMIT"
 	#gpg --recv-keys 4170AA62
