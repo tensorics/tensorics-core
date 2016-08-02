@@ -29,9 +29,9 @@ task configureSonatypeDeployment << {
 
 	assertDeploymentPropertiesAreSet()
 
-	groupId = 'org.tensorics'
+	project.ext.group = 'org.tensorics'
 	archivesBaseName = 'tensorics-core'
-	version = getVersion()
+	project.ext.version = getVersion()
 
 	signing {
 	    sign configurations.archives
