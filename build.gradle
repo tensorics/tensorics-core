@@ -1,11 +1,17 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
-apply plugin: 'cobertura'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'org.asciidoctor.gradle.asciidoctor'
-apply plugin: 'io.codearte.nexus-staging'
-apply from : './scripts/deploy.gradle'
+
+if(System.getenv('TRAVIS')){
+	apply plugin: 'cobertura'
+	apply plugin: 'io.codearte.nexus-staging'
+	apply from : './scripts/deploy.gradle'
+	
+	cobertura.coverageFormats = ['html', 'xml']
+	cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
+}
 
 buildscript {
 	repositories {
@@ -60,6 +66,7 @@ dependencies {
 	compile 'org.jscience:jscience:4.3.1'
 	compile 'com.google.guava:guava:19.0'
 	compile 'org.hamcrest:hamcrest-all:1.3'
+	compile 'org.slf4j:slf4j-api:1.7.21'
 
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.mockito:mockito-core:1.10.19'
@@ -75,10 +82,9 @@ if (JavaVersion.current().isJava8Compatible()) {
   }
 }
 
-javadoc { options.encoding = "UTF-8" }
-
-cobertura.coverageFormats = ['html', 'xml']
-cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
+javadoc { 
+	options.encoding = "UTF-8"
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.14.1'

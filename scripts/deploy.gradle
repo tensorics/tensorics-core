@@ -38,6 +38,7 @@ task configureSonatypeDeployment(type: DefaultTask) << {
 	    packageGroup = "org.tensorics"
 	    username = ossrhUsername
 	    password = ossrhPassword
+	    // Sonatype Nexus may take some time to properly close the repo, it has to perform some checks
 	    delayBetweenRetriesInMillis = 10000
 	    numberOfRetries = 10
 	}
