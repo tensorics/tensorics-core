@@ -29,7 +29,7 @@ task configureSonatypeDeployment << {
 
 	assertDeploymentPropertiesAreSet()
 
-	group = 'org.tensorics'
+	groupId = 'org.tensorics'
 	archivesBaseName = 'tensorics-core'
 	version = getVersion()
 
