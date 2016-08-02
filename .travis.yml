@@ -9,7 +9,6 @@ deploy:
   skip_cleanup: true
   script: /bin/sh ./scripts/deploy-jars.sh
   on:
-    branch: master
     tags: true
 jdk:
   - oraclejdk8

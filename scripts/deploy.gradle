@@ -1,4 +1,6 @@
-
+/*
+ * Get the proper version for the project. This method will extract the version number from the project variable "deploymentVersion".
+*/
 def getVersion = {
 	if( ! project.hasProperty('deploymentVersion') ) {
 		throw new RuntimeException("deploymentVersion not provided. You must specify a 'deploymentVersion' project variable (gradlew -PdeploymentVersion=..)")
@@ -13,71 +15,79 @@ def getVersion = {
 	return tmpDeploymentVersion;
 }
 
+/*
+ * Assert that the project properties necessary for the deployment to sonatype are correctly set.
+*/
 def assertDeploymentPropertiesAreSet = {
-	boolean propertiesSet = project.getProperties().keySet().containsAll(Arrays.asList('ossrhUsername', 'ossrhPassword', 'signingKeyId', 'signingPassword', 'signingSecretKeyRingFile'))
+	boolean propertiesSet = project.getProperties().keySet().containsAll(Arrays.asList('ossrhUsername', 'ossrhPassword', 'signing.keyId', 'signing.password', 'signing.secretKeyRingFile'))
 	if( ! propertiesSet ) {
-		throw new RuntimeException("Deployment project properties are not correctly set: ossrhUsername, ossrhPassword, signingKeyId, signingPassword, signingSecretKeyRingFile")
+		throw new RuntimeException("Deployment project properties are not correctly set: ossrhUsername, ossrhPassword, signing.keyId, signing.password, signing.secretKeyRingFile")
 	}
 }
 
-assertDeploymentPropertiesAreSet()
+task configureSonatypeDeployment << {
 
-group = 'org.tensorics'
-archivesBaseName = 'tensorics-core'
-version = getVersion()
+	assertDeploymentPropertiesAreSet()
 
-signing {
-    sign configurations.archives
-}
+	group = 'org.tensorics'
+	archivesBaseName = 'tensorics-core'
+	version = getVersion()
 
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-	
-			
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-				authentication(userName: ossrhUsername, password: ossrhPassword)
-			}
+	signing {
+	    sign configurations.archives
+	}
 
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-				authentication(userName: ossrhUsername, password: ossrhPassword)
-			}
+	uploadArchives {
+		repositories {
+			mavenDeployer {
+				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 		
-			pom.project {
-				name 'tensorics-core'
-				packaging 'jar'
-				description 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.'
-				url 'http://www.tensorics.org'
-
-				scm {
-					connection 'scm:git:http://github.com/tensorics/tensorics-core.git'
-					developerConnection 'scm:git:https://github.com/tensorics/tensorics-core.git'
-					url 'https://github.com/tensorics/tensorics-core.git'
+				
+				repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+					authentication(userName: ossrhUsername, password: ossrhPassword)
 				}
 
-				licenses {
-					license {
-						name 'The Apache License, Version 2.0'
-						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-					}
+				snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+					authentication(userName: ossrhUsername, password: ossrhPassword)
 				}
+			
+				pom.project {
+					name 'tensorics-core'
+					packaging 'jar'
+					description 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.'
+					url 'http://www.tensorics.org'
 
-				developers {
-					developer {
-						id 'andreacalia'
-						name 'Andrea Calia'
-						email 'andrea.calia.46@gmail.com'
+					scm {
+						connection 'scm:git:http://github.com/tensorics/tensorics-core.git'
+						developerConnection 'scm:git:https://github.com/tensorics/tensorics-core.git'
+						url 'https://github.com/tensorics/tensorics-core.git'
 					}
-					developer {
-						id 'cesar.aguilera'
-						name 'Cesar Aguilera'
-						email 'cesar.aguilera.p@gmail.com'
+
+					licenses {
+						license {
+							name 'The Apache License, Version 2.0'
+							url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+						}
 					}
+
+					developers {
+						developer {
+							id 'andreacalia'
+							name 'Andrea Calia'
+							email 'andrea.calia.46@gmail.com'
+						}
+						developer {
+							id 'cesar.aguilera'
+							name 'Cesar Aguilera'
+							email 'cesar.aguilera.p@gmail.com'
+						}
+					}
+
 				}
-
 			}
 		}
-	}
+	}	
 }
 
+// Run the configuration befor the upload. This is transparent to the end user
+uploadArchives.dependsOn configureSonatypeDeployment
