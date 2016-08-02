@@ -1,5 +1,6 @@
 == tensorics-core
 
+image:https://img.shields.io/github/release/tensorics/tensorics-core.svg?maxAge=1000
 image:https://travis-ci.org/tensorics/tensorics-core.svg?branch=master["Travis-CI build", link="https://travis-ci.org/tensorics/tensorics-core"]
 image:https://coveralls.io/repos/tensorics/tensorics-core/badge.svg?branch=master&service=github["Code coverage", link="https://coveralls.io/github/tensorics/tensorics-core?branch=master"]
 

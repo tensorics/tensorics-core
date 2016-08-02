@@ -38,6 +38,8 @@ task configureSonatypeDeployment(type: DefaultTask) << {
 	    packageGroup = "org.tensorics"
 	    username = ossrhUsername
 	    password = ossrhPassword
+	    delayBetweenRetriesInMillis = 10000
+	    numberOfRetries = 10
 	}
 
 	uploadArchives {
