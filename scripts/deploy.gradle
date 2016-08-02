@@ -29,10 +29,6 @@ task configureSonatypeDeployment << {
 
 	assertDeploymentPropertiesAreSet()
 
-	project.ext.group = 'org.tensorics'
-	archivesBaseName = 'tensorics-core'
-	project.ext.version = getVersion()
-
 	signing {
 	    sign configurations.archives
 	}
@@ -56,6 +52,10 @@ task configureSonatypeDeployment << {
 					packaging 'jar'
 					description 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.'
 					url 'http://www.tensorics.org'
+					
+					groupId 'org.tensorics'
+					artifactId 'tensorics-core'
+					version getVersion()
 
 					scm {
 						connection 'scm:git:http://github.com/tensorics/tensorics-core.git'
