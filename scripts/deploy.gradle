@@ -25,13 +25,14 @@ def assertDeploymentPropertiesAreSet = {
 	}
 }
 
+signing {
+	required { gradle.getTaskGraph().hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
 task configureSonatypeDeployment << {
 
 	assertDeploymentPropertiesAreSet()
-
-	signing {
-	    sign configurations.archives
-	}
 
 	uploadArchives {
 		repositories {
