@@ -30,15 +30,20 @@ signing {
     sign configurations.archives
 }
 
-task configureSonatypeDeployment << {
+task configureSonatypeDeployment(type: DefaultTask) << {
 
 	assertDeploymentPropertiesAreSet()
+
+	nexusStaging {
+	    packageGroup = "org.tensorics"
+	    username = ossrhUsername
+	    password = ossrhPassword
+	}
 
 	uploadArchives {
 		repositories {
 			mavenDeployer {
 				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-		
 				
 				repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
 					authentication(userName: ossrhUsername, password: ossrhPassword)
@@ -90,5 +95,7 @@ task configureSonatypeDeployment << {
 	}	
 }
 
-// Run the configuration befor the upload. This is transparent to the end user
-uploadArchives.dependsOn configureSonatypeDeployment
+// Define the deploying task and defining the order for the dependencies
+task deployToMavenCentral(dependsOn: ['configureSonatypeDeployment', 'uploadArchives', 'closeAndPromoteRepository'], type: DefaultTask)
+uploadArchives.mustRunAfter configureSonatypeDeployment
+closeAndPromoteRepository.mustRunAfter uploadArchives
