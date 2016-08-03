@@ -1,0 +1,35 @@
+import java.util.stream.*
+
+task createCbngProductXml << {
+	def compileDeps = dependenciesOfConfiguration("compile")
+	def testDeps = dependenciesOfConfiguration("testCompile").minus(compileDeps)
+
+	def compileDepsTxt = compileDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" />" }).collect(Collectors.joining(" "))
+	def testDepsTxt = testDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" local=\"true\" excluded=\"true\" />" }).collect(Collectors.joining(" "))
+	def productVersion = "SNAPSHOT-" + new Date().format( 'yyyyMMdd-hhmm' )
+	def productName = "tensorics-core"
+	def productDirectory = "org/tensorics/tensorics-core"
+	def productDescription = "Framework of tensor-like objects for numerical data analysis, statistics and backing of domain objects."
+	def productXMLTxt = """
+	<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+	<products>
+		<!-- THIS IS A GENERATED FILE USING GRADLE -->
+		<product name=\"${productName}\" version=\"${productVersion}\" directory=\"${productDirectory}\">
+			<desc>${productDescription}</desc>
+			<dependencies>
+				<!-- Runtime -->
+				${compileDepsTxt}
+				<!-- Testing -->
+				${testDepsTxt}
+			</dependencies>
+		</product>
+	</products>
+	"""
+	new File("./product.xml").withWriter({ out -> out.println productXMLTxt })
+}
+
+def dependenciesOfConfiguration(configurationName) {
+	def dependencies = []
+	allprojects.each({ it.configurations.all.findAll({ !it.allDependencies.empty && it.name.equals(configurationName) }).each({ it.allDependencies.each({ dependencies.add(it) }) }) })
+	return dependencies
+}
