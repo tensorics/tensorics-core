@@ -6,25 +6,23 @@ task createCbngProductXml << {
 
 	def compileDepsTxt = compileDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" />" }).collect(Collectors.joining(" "))
 	def testDepsTxt = testDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" local=\"true\" excluded=\"true\" />" }).collect(Collectors.joining(" "))
-	def productVersion = "SNAPSHOT-" + new Date().format( 'yyyyMMdd-hhmm' )
+	def productVersion = "snapshot-" + new Date().format( 'yyyyMMdd-hhmm' )
 	def productName = "tensorics-core"
 	def productDirectory = "org/tensorics/tensorics-core"
 	def productDescription = "Framework of tensor-like objects for numerical data analysis, statistics and backing of domain objects."
-	def productXMLTxt = """
-	<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-	<products>
-		<!-- THIS IS A GENERATED FILE USING GRADLE -->
-		<product name=\"${productName}\" version=\"${productVersion}\" directory=\"${productDirectory}\">
-			<desc>${productDescription}</desc>
-			<dependencies>
-				<!-- Runtime -->
-				${compileDepsTxt}
-				<!-- Testing -->
-				${testDepsTxt}
-			</dependencies>
-		</product>
-	</products>
-	"""
+	def productXMLTxt = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<products>
+	<!-- THIS IS A GENERATED FILE USING GRADLE -->
+	<product name=\"${productName}\" version=\"${productVersion}\" directory=\"${productDirectory}\">
+		<desc>${productDescription}</desc>
+		<dependencies>
+			<!-- Runtime -->
+			${compileDepsTxt}
+			<!-- Testing -->
+			${testDepsTxt}
+		</dependencies>
+	</product>
+</products>"""
 	new File("./product.xml").withWriter({ out -> out.println productXMLTxt })
 }
 
