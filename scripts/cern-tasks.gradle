@@ -39,7 +39,11 @@ def getSnapshotVersion() {
         commandLine 'git', 'describe', '--tags', '--abbrev=10'
         standardOutput = stdout
     }
-    execResult.assertNormalExitValue()
+
+    if( execResult.getExitValue() != 0 ) {
+    	println "git describe --tags non 0 exit value. Standard output: ${stdout}. Exit value: ${execResult.getExitValue()}. Rethrowing any failure executing this process"
+    	execResult.rethrowFailure()
+    }
 
     def versionFromGit = stdout.toString().trim()
     // If it's longer than 50 chars is an error, the version should be small and the sha-1 is limited to 11 digits
