@@ -6,7 +6,7 @@ task createCbngProductXml << {
 
 	def compileDepsTxt = compileDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" />" }).collect(Collectors.joining(" "))
 	def testDepsTxt = testDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" local=\"true\" excluded=\"true\" />" }).collect(Collectors.joining(" "))
-	def productVersion = "snapshot-" + new Date().format( 'yyyyMMdd-hhmm' )
+	def productVersion = getSnapshotVersion()
 	def productName = "tensorics-core"
 	def productDirectory = "org/tensorics/tensorics-core"
 	def productDescription = "Framework of tensor-like objects for numerical data analysis, statistics and backing of domain objects."
@@ -30,4 +30,32 @@ def dependenciesOfConfiguration(configurationName) {
 	def dependencies = []
 	allprojects.each({ it.configurations.all.findAll({ !it.allDependencies.empty && it.name.equals(configurationName) }).each({ it.allDependencies.each({ dependencies.add(it) }) }) })
 	return dependencies
+}
+
+def getSnapshotVersion() { 
+    def stdout = new ByteArrayOutputStream()
+
+    def execResult = exec {
+        commandLine 'git', 'describe', '--tags', '--abbrev=10'
+        standardOutput = stdout
+    }
+    execResult.assertNormalExitValue()
+
+    def versionFromGit = stdout.toString().trim()
+    // If it's longer than 50 chars is an error, the version should be small and the sha-1 is limited to 11 digits
+    if( versionFromGit.length() > 50 ) {
+    	throw new RuntimeException("Something is wrong with git describe --tags. Output should be smaller than 50 chars: ${versionFromGit}")
+    }
+
+    version = versionFromGit.trim()
+    // The tag on git should start with v, v1.x.x
+    version = version.replaceFirst("v", "")
+    // With abbrev 10, the latest 11 digits are an abbreviation of the sha-1 of the commit plus a "-"
+    version = version.take(version.length() - 12)
+    // Append the SNAPSHOT
+    version = version + 'SNAPSHOT'
+    // Append the timestamp
+    version = version + '-' + new Date().format('yyyyMMddhhmm')
+
+    return version
 }
