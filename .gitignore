@@ -2,3 +2,8 @@ product.xml
 deployment.key
 build/
 .gradle/
+/bin/
+.classpath
+.project
+.settings/
+cbng-build.log
