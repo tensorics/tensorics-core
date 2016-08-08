@@ -19,15 +19,12 @@ if(System.getenv('TRAVIS')){
 
 buildscript {
 	repositories {
-		if (System.getenv('BUILD_SERVER')) {
-			maven {
-			    url 'http://artifactory.cern.ch/repo'
-			    url 'http://artifactory.cern.ch/jcenter'
-		    }
-		} else {
-			mavenCentral()
-			jcenter()
-        }
+		maven {
+		    url 'http://artifactory.cern.ch/repo'
+		    url 'http://artifactory.cern.ch/jcenter'
+	    }
+		mavenCentral()
+		jcenter()
 	}
 
 	dependencies {
@@ -41,15 +38,12 @@ buildscript {
 }
 
 repositories {
-		if (System.getenv('BUILD_SERVER')) {
-			maven {
-			    url 'http://artifactory.cern.ch/repo'
-			    url 'http://artifactory.cern.ch/jcenter'
-		    }
-		} else {
-			mavenCentral()
-			jcenter()
-        }
+		maven {
+		    url 'http://artifactory.cern.ch/repo'
+		    url 'http://artifactory.cern.ch/jcenter'
+	    }
+		mavenCentral()
+		jcenter()
 }
 
 sourceSets {
