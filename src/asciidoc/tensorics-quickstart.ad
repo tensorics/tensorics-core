@@ -6,7 +6,7 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :source-highlighter: highlightjs
 :examplesource: src/examples/org/tensorics/core/examples
 :sourcecodedir: src/java/org/tensorics/core
-:javadoc-baseurl: http://tensorics.github.io/tensorics-core/javadoc/org/tensorics
+:javadoc-baseurl: http://tensorics.github.io/javadoc/org/tensorics
 :simple-meteo-example: src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
 
 == Tensors
