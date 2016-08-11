@@ -34,12 +34,13 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
 /**
  * Structural manipulations of tensors (which do not require any knowledge about the mathematical behaviour of the
  * elements).
  * 
- * @author kfuchsbe
+ * @author kfuchsbe, mihostet
  */
 public final class TensorStructurals {
 
@@ -139,6 +140,16 @@ public final class TensorStructurals {
     public static final <S> Tensor<S> stripContext(Tensor<S> tensor) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.putAll(tensor);
+        return builder.build();
+    }
+
+    public static final <S> Tensor<S> mergeContextIntoShape(Tensor<S> tensor) {
+        if (tensor.context().getPosition().coordinates().isEmpty()) {
+            throw new IllegalArgumentException("an empty context can't be merged into the positions");
+        }
+        Builder<S> builder = ImmutableTensor
+                .builder(Sets.union(tensor.shape().dimensionSet(), tensor.context().getPosition().dimensionSet()));
+        builder.putAllAt(tensor, tensor.context().getPosition());
         return builder.build();
     }
 

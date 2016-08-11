@@ -71,7 +71,7 @@ import com.google.common.base.Optional;
  * <li> {@link Tensorbackeds}
  * </ul>
  * 
- * @author kfuchsbe, agorzaws
+ * @author kfuchsbe, agorzaws, mihostet
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public final class Tensorics {
@@ -100,6 +100,13 @@ public final class Tensorics {
      */
     public static <E> Tensor<E> merge(Iterable<Tensor<E>> tensors) {
         return TensorStructurals.merge(tensors);
+    }
+
+    /**
+     * @see TensorStructurals#mergeContextIntoShape(Tensor)
+     */
+    public static <E> Tensor<E> mergeContextIntoShape(Tensor<E> tensor) {
+        return TensorStructurals.mergeContextIntoShape(tensor);
     }
 
     /**

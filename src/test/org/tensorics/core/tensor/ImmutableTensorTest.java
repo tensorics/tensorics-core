@@ -40,6 +40,17 @@ public class ImmutableTensorTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
+    public void testMergingContextBackIntoShape() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
+        tensorBuilder.setTensorContext(Context.of("TestContext"));
+        tensorBuilder.putAt(0.0, Position.of(0.0, 0));
+        tensorBuilder.putAt(42.42, Position.of(23.0, 42));
+        Tensor<Double> tensor = tensorBuilder.build();
+        Tensor<Double> tensorWithMergedContext = Tensorics.mergeContextIntoShape(tensor);
+        assertEquals(tensor, Tensorics.from(tensorWithMergedContext).extract("TestContext"));
+    }
+
+    @Test
     public void testDoubleToDoubleTensor() {
         Builder<Double> tensorBuilder = ImmutableTensor.builder(Collections.singleton(Double.class));
         Tensor<Double> tensor = tensorBuilder.build();
