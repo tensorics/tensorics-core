@@ -1,11 +1,34 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
-apply plugin: 'com.github.kt3k.coveralls'
 //apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
-if (System.getenv('BUILD_SERVER')) {
+if (System.getenv('BUILD_SERVER') || System.getProperty('CERN_TECHNET_VM')) {
+    println "Using CERN artifactory configuration"
 	apply from : './scripts/cern-configuration.gradle'
+} else {
+    println "Using MavenCentral. If you are on a technical network VM at CERN, this will fail. Set the CERN_TECHNET_VM JVM property in this case."
+    apply plugin: 'com.github.kt3k.coveralls'
+    buildscript {
+        repositories {
+            mavenCentral()
+            jcenter()
+        }
+
+        dependencies {
+            classpath 'net.saliman:gradle-cobertura-plugin:2.2.6'
+            classpath 'org.ow2.asm:asm:5.0.3'
+            classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
+            //classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
+            //classpath 'org.asciidoctor:asciidoctorj:1.5.0'
+            classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
 }
 
 if(System.getenv('TRAVIS')){
@@ -17,26 +40,6 @@ if(System.getenv('TRAVIS')){
 	cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
 }
 
-buildscript {
-	repositories {
-		mavenCentral()
-		jcenter()
-	}
-
-	dependencies {
-		classpath 'net.saliman:gradle-cobertura-plugin:2.2.6'
-		classpath 'org.ow2.asm:asm:5.0.3'  
-		classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
-		//classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
-		//classpath 'org.asciidoctor:asciidoctorj:1.5.0'
-		classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
-	}
-}
-
-repositories {
-		mavenCentral()
-		jcenter()
-}
 
 sourceSets {
 	main { 

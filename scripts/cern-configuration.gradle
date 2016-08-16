@@ -1,16 +1,16 @@
 import java.util.stream.*
 
 task createCbngProductXml << {
-	def compileDeps = dependenciesOfConfiguration("compile")
-	def testDeps = dependenciesOfConfiguration("testCompile").minus(compileDeps)
+    def compileDeps = dependenciesOfConfiguration("compile")
+    def testDeps = dependenciesOfConfiguration("testCompile").minus(compileDeps)
 
-	def compileDepsTxt = compileDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" />" }).collect(Collectors.joining(" "))
-	def testDepsTxt = testDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" local=\"true\" excluded=\"true\" />" }).collect(Collectors.joining(" "))
-	def productVersion = getSnapshotVersion()
-	def productName = "tensorics-core"
-	def productDirectory = "org/tensorics/tensorics-core"
-	def productDescription = "Framework of tensor-like objects for numerical data analysis, statistics and backing of domain objects."
-	def productXMLTxt = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+    def compileDepsTxt = compileDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" />" }).collect(Collectors.joining(" "))
+    def testDepsTxt = testDeps.stream().map({ dep -> "<dep product=\"${dep.name}\" version=\"${dep.version}\" local=\"true\" excluded=\"true\" />" }).collect(Collectors.joining(" "))
+    def productVersion = getSnapshotVersion()
+    def productName = "tensorics-core"
+    def productDirectory = "org/tensorics/tensorics-core"
+    def productDescription = "Framework of tensor-like objects for numerical data analysis, statistics and backing of domain objects."
+    def productXMLTxt = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <products>
 	<!-- THIS IS A GENERATED FILE USING GRADLE -->
 	<product name=\"${productName}\" version=\"${productVersion}\" directory=\"${productDirectory}\">
@@ -23,16 +23,16 @@ task createCbngProductXml << {
 		</dependencies>
 	</product>
 </products>"""
-	new File("./product.xml").withWriter({ out -> out.println productXMLTxt })
+    new File("./product.xml").withWriter({ out -> out.println productXMLTxt })
 }
 
 def dependenciesOfConfiguration(configurationName) {
-	def dependencies = []
-	allprojects.each({ it.configurations.all.findAll({ !it.allDependencies.empty && it.name.equals(configurationName) }).each({ it.allDependencies.each({ dependencies.add(it) }) }) })
-	return dependencies
+    def dependencies = []
+    allprojects.each({ it.configurations.all.findAll({ !it.allDependencies.empty && it.name.equals(configurationName) }).each({ it.allDependencies.each({ dependencies.add(it) }) }) })
+    return dependencies
 }
 
-def getSnapshotVersion() { 
+def getSnapshotVersion() {
     def stdout = new ByteArrayOutputStream()
 
     def execResult = exec {
@@ -41,14 +41,14 @@ def getSnapshotVersion() {
     }
 
     if( execResult.getExitValue() != 0 ) {
-    	println "git describe --tags non 0 exit value. Standard output: ${stdout}. Exit value: ${execResult.getExitValue()}. Rethrowing any failure executing this process"
-    	execResult.rethrowFailure()
+        println "git describe --tags non 0 exit value. Standard output: ${stdout}. Exit value: ${execResult.getExitValue()}. Rethrowing any failure executing this process"
+        execResult.rethrowFailure()
     }
 
     def versionFromGit = stdout.toString().trim()
     // If it's longer than 50 chars is an error, the version should be small and the sha-1 is limited to 11 digits
     if( versionFromGit.length() > 50 ) {
-    	throw new RuntimeException("Something is wrong with git describe --tags. Output should be smaller than 50 chars: ${versionFromGit}")
+        throw new RuntimeException("Something is wrong with git describe --tags. Output should be smaller than 50 chars: ${versionFromGit}")
     }
     // With abbrev 10, the latest 11 digits are an abbreviation of the sha-1 of the commit plus a "-"
     def (version, commitNum, hash) = versionFromGit.trim().replaceFirst("v", "").split("-")
@@ -56,4 +56,30 @@ def getSnapshotVersion() {
     //version = version + '-SNAPSHOT-' + new Date().format('yyyyMMddhhmm')
 
     return version
+}
+
+
+buildscript {
+    repositories {
+        maven {
+            url 'http://artifactory.cern.ch/repo'
+            url 'http://artifactory.cern.ch/jcenter'
+        }
+    }
+
+    dependencies {
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.6'
+        classpath 'org.ow2.asm:asm:5.0.3'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
+        //classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.2'
+        //classpath 'org.asciidoctor:asciidoctorj:1.5.0'
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
+    }
+}
+
+repositories {
+    maven {
+        url 'http://artifactory.cern.ch/repo'
+        url 'http://artifactory.cern.ch/jcenter'
+    }
 }
