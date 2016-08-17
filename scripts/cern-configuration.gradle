@@ -36,7 +36,7 @@ def getSnapshotVersion() {
     def stdout = new ByteArrayOutputStream()
 
     def execResult = exec {
-        commandLine 'git', 'describe', '--tags', 'v0.0.25'
+        commandLine 'git', 'describe', '--tags', '--abbr=10'
         standardOutput = stdout
     }
 
