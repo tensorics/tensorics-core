@@ -36,7 +36,7 @@ def getSnapshotVersion() {
     def stdout = new ByteArrayOutputStream()
 
     def execResult = exec {
-        commandLine 'git', 'describe', '--tags', '--abbrev=10'
+        commandLine 'git', 'describe', '--tags', 'v0.0.25'
         standardOutput = stdout
     }
 
@@ -53,11 +53,15 @@ def getSnapshotVersion() {
         throw new RuntimeException("Something is wrong with git describe --tags. Output should be smaller than 50 chars: ${versionFromGit}")
     }
     
-    // With abbrev 10, the latest 11 digits are an abbreviation of the sha-1 of the commit plus a "-"
-    def version = versionFromGit.trim().replaceFirst("v", "")
+    // Skip the v on the version
+    def versionStartIndex = versionFromGit.startsWith("v") ? 1 : 0
+    // If the latest commit is past the latest tag, the describe command includes the number of commits between the latest tag and the current commit as well as the sha-1 of the commit (which we don't want)
+    def versionEndIndex = versionFromGit.contains("-") ? versionFromGit.indexOf("-") : versionFromGit.length()
+        
+    def version = versionFromGit.substring(versionStartIndex, versionEndIndex);
+    
     // Append the SNAPSHOT and timestamp
     //version = version + '-SNAPSHOT-' + new Date().format('yyyyMMddhhmm')
 
     return version
 }
-
