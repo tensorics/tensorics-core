@@ -46,12 +46,15 @@ def getSnapshotVersion() {
     }
 
     def versionFromGit = stdout.toString().trim()
+    println "Result of git describe --tags --abbrev=10: ${versionFromGit}"
+    
     // If it's longer than 50 chars is an error, the version should be small and the sha-1 is limited to 11 digits
     if( versionFromGit.length() > 50 ) {
         throw new RuntimeException("Something is wrong with git describe --tags. Output should be smaller than 50 chars: ${versionFromGit}")
     }
+    
     // With abbrev 10, the latest 11 digits are an abbreviation of the sha-1 of the commit plus a "-"
-    def (version, commitNum, hash) = versionFromGit.trim().replaceFirst("v", "").split("-")
+    def version = versionFromGit.trim().replaceFirst("v", "")
     // Append the SNAPSHOT and timestamp
     //version = version + '-SNAPSHOT-' + new Date().format('yyyyMMddhhmm')
 
