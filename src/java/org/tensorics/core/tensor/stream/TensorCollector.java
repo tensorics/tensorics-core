@@ -7,7 +7,6 @@ package org.tensorics.core.tensor.stream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -19,7 +18,16 @@ import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
-public class TensorCollector<T> implements Collector<Map.Entry<Position, T>, Map<Position, T>, Tensor<T>> {
+public class TensorCollector<V, T> implements Collector<V, Map<Position, T>, Tensor<T>> {
+
+    private final Function<V, Position> positionMapper;
+    private final Function<V, T> valueMapper;
+    
+    
+    public TensorCollector(Function<V, Position> positionMapper, Function<V, T> valueMapper) {
+        this.positionMapper = positionMapper;
+        this.valueMapper = valueMapper;
+    }
 
     @Override
     public Supplier<Map<Position, T>> supplier() {
@@ -27,8 +35,8 @@ public class TensorCollector<T> implements Collector<Map.Entry<Position, T>, Map
     }
 
     @Override
-    public BiConsumer<Map<Position, T>, Entry<Position, T>> accumulator() {
-        return (map, entry) -> map.put(entry.getKey(), entry.getValue());
+    public BiConsumer<Map<Position, T>, V> accumulator() {
+        return (map, entry) -> map.put(positionMapper.apply(entry), valueMapper.apply(entry));
     }
 
     @Override

@@ -5,6 +5,7 @@
 package org.tensorics.core.tensor.stream;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.tensorics.core.tensor.Position;
@@ -26,8 +27,13 @@ public final class TensorStreams {
 
     }
 
-    public static <T> TensorCollector<T> toTensor() {
-        return new TensorCollector<>();
+    public static <T> TensorCollector<Map.Entry<Position, T>, T> toTensor() {
+        return new TensorCollector<>(Map.Entry::getKey, Map.Entry::getValue);
+    }
+
+    public static <V, T> TensorCollector<V, T> toTensor(Function<V, Position> positionMapper,
+            Function<V, T> valueMapper) {
+        return new TensorCollector<>(positionMapper, valueMapper);
     }
 
 }
