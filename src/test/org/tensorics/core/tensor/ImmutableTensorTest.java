@@ -25,6 +25,7 @@ package org.tensorics.core.tensor;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
+import java.util.Map;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,6 +33,7 @@ import org.junit.rules.ExpectedException;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 public class ImmutableTensorTest {
@@ -93,6 +95,26 @@ public class ImmutableTensorTest {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("unique");
         Tensorics.builder(Integer.class, Integer.class);
+    }
+    
+    @Test
+    public void fromMapWithOneEntry() {
+        Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0);
+        assertEquals(Tensorics.fromMap(map).asMap(), map);
+    }
+
+    @Test
+    public void fromEmptyMap() {
+        Map<Position, Integer> map = ImmutableMap.of();
+        assertEquals(Tensorics.fromMap(map).asMap(), map);
+    }
+
+    @Test
+    public void fromMapThrowsOnInconsistentDimensions() {
+        Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0, Position.of("fail"), 1);
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("same dimensions");
+        Tensorics.fromMap(map);
     }
 
 }

@@ -55,10 +55,11 @@ public interface Tensor<E> {
     Iterable<Entry<E>> entrySet();
 
     /**
-     * @return all the entries as a map of Position to value.
+     * @return all the entries as a map of Position to value. There is no guarantee about the thread safety or
+     *         mutability of the returned {@link Map}.
      */
     Map<Position, E> asMap();
-    
+
     /**
      * @return the shape of the tensor. The RAW coordinates structure, no tensor values are returend here.
      */
