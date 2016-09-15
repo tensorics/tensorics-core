@@ -4,7 +4,9 @@
 
 package org.tensorics.core.tensor.stream;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -14,7 +16,28 @@ public final class TensorStreamMappers {
     private TensorStreamMappers() {
         /* static only */
     }
-    
+
+    public static <T, CI, CO> Function<Map.Entry<Position, T>, Map.Entry<Position, T>> coordinatesOfType(
+            Class<CI> dimension, Function<CI, CO> coordinateMapper) {
+        return entry -> {
+            Position position = entry.getKey();
+            CI oldCoordinate = position.coordinateFor(dimension);
+            if (oldCoordinate == null) {
+                throw new IllegalArgumentException(
+                        "No coordinate of type " + dimension.getCanonicalName() + " in Position " + position);
+            }
+            CO newCoordinate = coordinateMapper.apply(oldCoordinate);
+            if (position.coordinateFor(newCoordinate.getClass()) != null) {
+                throw new IllegalArgumentException("Can't map to coordinate of dimension " + newCoordinate.getClass()
+                        + ", already present in Position " + position);
+            }
+            Set<Object> coordinates = new HashSet<>(position.getCoordinates().values());
+            coordinates.remove(oldCoordinate);
+            coordinates.add(newCoordinate);
+            return new ImmutableTensorEntry<>(Position.of(coordinates), entry.getValue());
+        };
+    }
+
     public static <T> Function<Map.Entry<Position, T>, Map.Entry<Position, T>> positions(
             Function<Position, Position> positionMapper) {
         return entry -> new ImmutableTensorEntry<>(positionMapper.apply(entry.getKey()), entry.getValue());
@@ -35,7 +58,6 @@ public final class TensorStreamMappers {
         return entry -> new ImmutableTensorEntry<>(entry.getKey(), valueMapper.apply(entry.getKey(), entry.getValue()));
     }
 
-    
     private static class ImmutableTensorEntry<T> implements Map.Entry<Position, T> {
 
         private final Position position;

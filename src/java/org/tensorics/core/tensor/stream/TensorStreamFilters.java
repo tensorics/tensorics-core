@@ -15,6 +15,11 @@ public final class TensorStreamFilters {
         /* static only */
     }
 
+    public static <T, C> Predicate<Map.Entry<Position, T>> byCoordinateOfType(Class<C> dimension,
+            Predicate<C> positionPredicate) {
+        return entry -> positionPredicate.test(entry.getKey().coordinateFor(dimension));
+    }
+
     public static <T> Predicate<Map.Entry<Position, T>> byPosition(Predicate<Position> positionPredicate) {
         return entry -> positionPredicate.test(entry.getKey());
     }
