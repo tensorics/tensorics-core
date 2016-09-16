@@ -1,24 +1,29 @@
 #!/bin/bash
 set -e # exit with nonzero exit code if anything fails
 
-gradle javadoc asciidoctor
+gradle javadoc
 
-echo "Gathering files"
-cd build/asciidoc
-# copy the documentation
-cp ../docs/javadoc . -r
+echo "Removing old website working directory"
+rm -rf build/website
 
-echo "Init new git repo"
-git init
-git config user.name "tensorics-dev"
-git config user.email "tensorics-dev@cern.ch"
-git add . &> /dev/null
-git commit -m "Automatic deployment to GitHub Pages" &> /dev/null
+echo "Cloning tensorics.github.io repo"
+mkdir build/website
+cd build/website
+git clone -b dev https://github.com/tensorics/tensorics.github.io.git
+cd tensorics.github.io
 
-echo "Pushing to gh-pages"
-# Force push from the current repo's master branch to the remote
-# repo's gh-pages branch. (All previous history on the gh-pages branch
-# will be lost, since we are overwriting it.) We redirect any output to
-# /dev/null to hide any sensitive credential data that might otherwise be exposed.
-#git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1
-git push --force "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
+echo "Copying javadoc"
+rm -rf ./javadoc
+mkdir javadoc
+cp -r ../../docs/javadoc .
+
+echo "Copying ascidoc files"
+rm -rf ./doc/*
+cp ../../../src/asciidoc/*.ad ./doc/
+
+echo "Committing changes"
+git add .
+git commit -m "Automatic deployment from Travis"
+
+echo "Push"
+git push --force --quiet "https://${GH_PAGES_TOKEN}@github.com/tensorics/tensorics.github.io"

@@ -1,4 +1,9 @@
-= Tensorics Manual
+---
+layout: default
+title: Tensorics Todo
+root: ../
+---
+= Tensorics Todo
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
 2014-07-12
 :icons: font

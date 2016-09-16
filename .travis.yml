@@ -10,5 +10,7 @@ deploy:
   script: /bin/sh ./scripts/deploy-jars.sh
   on:
     tags: true
+after_deploy:
+  script: /bin/sh ./scripts/deploy-gh-pages.sh
 jdk:
   - oraclejdk8

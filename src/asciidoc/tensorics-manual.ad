@@ -1,3 +1,8 @@
+---
+layout: default
+title: Tensorics Manual
+root: ../
+---
 = Tensorics Manual
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
 :icons: font
