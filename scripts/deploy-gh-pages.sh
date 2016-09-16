@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e # exit with nonzero exit code if anything fails
 
-gradle javadoc
+./gradlew javadoc
 
 echo "Removing old website working directory"
 rm -rf build/website
