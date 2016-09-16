@@ -26,4 +26,6 @@ git add .
 git commit -m "Automatic deployment from Travis"
 
 echo "Push"
+git config --global user.email "tensorics-dev@cern.ch"
+git config --global user.name "tensorics-dev"
 git push --force --quiet "https://${GH_PAGES_TOKEN}@github.com/tensorics/tensorics.github.io"
