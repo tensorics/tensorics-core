@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
@@ -47,6 +48,7 @@ import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensor.operations.FunctionTensorCreationOperation;
 import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
+import org.tensorics.core.tensor.stream.TensorStreams;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
@@ -57,7 +59,6 @@ import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
 
-
 /**
  * The main entry point for constructing and structural manipulation of tensorics. If mathematical operations are
  * required, then you should either inherit from {@link TensoricSupport} (or one of its convenience implementations) or
@@ -65,10 +66,10 @@ import com.google.common.base.Optional;
  * <p>
  * Additional utilities for supporting classes can be found in the corresponding utility classes. E.g.
  * <ul>
- * <li> {@link org.tensorics.core.tensor.Positions}
- * <li> {@link org.tensorics.core.tensor.Shapes}
- * <li> {@link QuantityTensors}
- * <li> {@link Tensorbackeds}
+ * <li>{@link org.tensorics.core.tensor.Positions}
+ * <li>{@link org.tensorics.core.tensor.Shapes}
+ * <li>{@link QuantityTensors}
+ * <li>{@link Tensorbackeds}
  * </ul>
  * 
  * @author kfuchsbe, agorzaws, mihostet
@@ -136,6 +137,13 @@ public final class Tensorics {
      */
     public static <T> Tensor<T> fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map) {
         return ImmutableTensor.fromMap(dimensions, map);
+    }
+
+    /**
+     * @see ImmutableTensor#fromMap(Set, Map)
+     */
+    public static <T> Tensor<T> fromMap(Map<Position, T> map) {
+        return ImmutableTensor.fromMap(map);
     }
 
     /**
@@ -333,7 +341,8 @@ public final class Tensorics {
         return TensorStructurals.transformScalars(tensor, function);
     }
 
-    public static final Tensor<QuantifiedValue<Double>> zeroDimensionalOf(double value, javax.measure.unit.Unit<?> unit) {
+    public static final Tensor<QuantifiedValue<Double>> zeroDimensionalOf(double value,
+            javax.measure.unit.Unit<?> unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
         return zeroDimensionalOf(quantity);
     }
@@ -400,4 +409,17 @@ public final class Tensorics {
         return Tensorbackeds.setContext(tensorbacked, context);
     }
 
+    /**
+     * @see TensorStreams#tensorEntryStream(Tensor)
+     */
+    public static <S> Stream<Map.Entry<Position, S>> stream(Tensor<S> tensor) {
+        return TensorStreams.tensorEntryStream(tensor);
+    }
+
+    /**
+     * @see TensorStreams#tensorEntryStream(Tensor)
+     */
+    public static <S> Stream<Map.Entry<Position, S>> stream(Tensorbacked<S> tensorBacked) {
+        return TensorStreams.tensorEntryStream(tensorBacked.tensor());
+    }
 }
