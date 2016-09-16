@@ -11,6 +11,7 @@ deploy:
   on:
     tags: true
 after_success:
+  provider: script
   script: /bin/sh ./scripts/deploy-gh-pages.sh
 jdk:
   - oraclejdk8
