@@ -6,14 +6,14 @@ set -e # exit with nonzero exit code if anything fails
 echo "Removing old website working directory"
 rm -rf build/website
 
-git config user.email "tensorics-dev@cern.ch"
-git config user.name "tensorics-dev"
-
 echo "Cloning tensorics.github.io repo"
 mkdir build/website
 cd build/website
 git clone -b dev https://github.com/tensorics/tensorics.github.io.git
 cd tensorics.github.io
+
+git config --local user.email "tensorics-dev@cern.ch"
+git config --local user.name "tensorics-dev"
 
 echo "Copying javadoc"
 rm -rf ./javadoc
