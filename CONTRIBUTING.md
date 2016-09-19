@@ -1,6 +1,4 @@
 *Description*
-Tensorics source code is hosted both on github.com and gitlab.cern.ch.
+Tensorics source code is hosted both on github.com.
 
-The development contributions must be performed on gitlab.cern.ch. 
-
-The github project is merely a *public facade*.
+In order to contribute, please clone the repository and create a pull request with your changes.
