@@ -4,11 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.exception.IllegalCoordinatesException;
 import org.tensorics.core.lang.Tensorics;
 
 /**
  * The aim of this test is to enable possibility of usage of the interfaces in
- * coordinates. A crosscheck of interrelation of the various interfences is given.
+ * coordinates. A cross check of interrelation of the various interfences is
+ * given.
  * 
  * @author arek
  *
@@ -30,33 +32,47 @@ public class CoordinatesOnInterfacesTest {
 	public void testBuilderCreatedTwoInterfacesLinkedByATopOne() {
 		Tensorics.builder(TestA.class, TestC.class, TestD.class);
 	}
-	
-	
-	@Test(expected = IllegalArgumentException.class)
+
+	/*
+	 * should throw at the creation time, that dimension interfaces are linked
+	 * (via one interface that extends one other
+	 */
+	@Test(expected = IllegalCoordinatesException.class)
 	public void testBuilderCreatedFailDueToWrongInheritanceInClasses() {
 		Tensorics.builder(TestA.class, TestC.class, WrongD.class);
 	}
 
 	@Test
-	public void testBuilderPutCorrectInstances() {
+	public void testBuilderPutValidInstances() {
 		TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestC.class);
 		builder.putAt(SAMPLE_VALUE, Position.of(new TestClassA(), new TestClassB(), new TestClassC()));
 	}
 
-	@Test
-	public void testBuilderPutIncorrectInstances() {
+	/*
+	 * Should not put if position consist of a class that inherits from two
+	 * dimension classes.
+	 */
+	@Test(expected = IllegalCoordinatesException.class)
+	public void testBuilderPutInvalidInstances() {
 		TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestC.class);
 		builder.putAt(SAMPLE_VALUE, Position.of(new TestClassA(), new TestClassB(), new TestClassWrongD()));
 	}
-	
+
+	/*
+	 * Allow get for two classes that each inherits from a separate interface.
+	 */
 	@Test
 	public void testTensorGetIndependentInterfaces() {
 		TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
 		Tensor<Double> tensor = builder.build();
 		tensor.get(Position.of(new TestClassA(), new TestClassB()));
 	}
-	
-	@Test
+
+	/*
+	 * Throw on get when position consist of a class that inherits from two
+	 * dimension interfaces/classes.
+	 */
+	@Test(expected = IllegalCoordinatesException.class)
 	public void testTensorGetDependentInterfaces() {
 		TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestD.class);
 		Tensor<Double> tensor = builder.build();
@@ -111,6 +127,7 @@ interface TestD extends TopInterface {
 
 /**
  * An interface that extends two others
+ * 
  * @author arek
  *
  */

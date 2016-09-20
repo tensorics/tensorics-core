@@ -59,6 +59,7 @@ public final class Coordinates {
 	 *         coordinate
 	 * @throws IllegalArgumentException
 	 *             if more than one coordinate per dimension are provided
+	 * @deprecated 
 	 */
 	public static <C> ClassToInstanceMap<C> mapOf(Iterable<? extends C> coordinates) {
 		ImmutableClassToInstanceMap.Builder<C> coordinateBuilder = ImmutableClassToInstanceMap.builder();
@@ -70,6 +71,10 @@ public final class Coordinates {
 		return coordinateBuilder.build();
 	}
 
+	public static <C> ClassToInstanceMap<C> new_mapOf(Iterable<? extends C> coordinates) {
+		return null;
+	}
+	
 	/**
 	 * Provides the way to reduce long classpath names of the coordinates
 	 * classes to only short Class names. It produces a combination of the
