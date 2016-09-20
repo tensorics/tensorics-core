@@ -62,4 +62,47 @@ public class ConversionOperationExpression<T, R> extends AbstractDeferredExpress
         return operation;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((operation == null) ? 0 : operation.hashCode());
+        result = prime * result + ((sourceObject == null) ? 0 : sourceObject.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        ConversionOperationExpression<?, ?> other = (ConversionOperationExpression<?, ?>) obj;
+        if (operation == null) {
+            if (other.operation != null) {
+                return false;
+            }
+        } else if (!operation.equals(other.operation)) {
+            return false;
+        }
+        if (sourceObject == null) {
+            if (other.sourceObject != null) {
+                return false;
+            }
+        } else if (!sourceObject.equals(other.sourceObject)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " [sourceObject=" + sourceObject + ", operation=" + operation + "]";
+    }
+
 }
