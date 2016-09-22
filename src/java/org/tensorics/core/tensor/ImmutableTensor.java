@@ -217,6 +217,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     }
 
     private T findValueOrThrow(Position position) {
+        Positions.areDimensionsConsistentWithCoordinates(shape.dimensionSet(), position);
         T entry = findEntryOrNull(position);
         if (entry == null) {
             String message = "Entry for position '" + position + "' is not contained in this tensor.";

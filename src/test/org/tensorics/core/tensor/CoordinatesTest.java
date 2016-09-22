@@ -23,6 +23,9 @@ package org.tensorics.core.tensor;
 
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 
 public class CoordinatesTest {
@@ -32,4 +35,47 @@ public class CoordinatesTest {
         assertUtilityClass(Coordinates.class);
     }
 
+    @Test
+    public void checkRelationsAllowed() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IB.class);
+
+        Coordinates.checkClassRelations(A.class, coordinates);
+    }
+
+    @Test
+    public void checkRelationsAllowed2() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IC.class);
+        Coordinates.checkClassRelations(C.class, coordinates);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void checkRelationsNotAllowed() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IC.class);
+        Coordinates.checkClassRelations(B.class, coordinates);
+    }
+    
+}
+
+interface IA {
+}
+
+interface IB {
+}
+
+interface IC extends IB {
+}
+
+class A implements IA {
+}
+
+class B implements IB {
+}
+
+class C implements IC {
 }

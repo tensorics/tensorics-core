@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
@@ -145,6 +146,27 @@ public final class Positions {
                     "The given coordinates are not consistent with the dimensions of the tensor! position='" + position
                             + "'; required dimensions='" + dimensions + "'.");
         }
+    }
+
+    /**
+     * Searches if given position coordinates match acceptable dimensions.
+     * 
+     * @param dimensions
+     * @param position
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <C extends Class<?>> boolean areDimensionsConsistentWithCoordinates(Set<C> dimensions,
+            Position position) {
+        Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
+        Set<?> positionCoordinatesToCheck = position.dimensionSet();
+        if (dimensions.equals(positionCoordinatesToCheck)) {
+            return true;
+        }
+        for (Object one : positionCoordinatesToCheck) {
+            Coordinates.checkClassRelations((C) one.getClass(), dimensions);
+        }
+        return true;
     }
 
     /**

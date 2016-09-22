@@ -44,6 +44,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
     public AbstractTensorBuilder(Set<? extends Class<?>> dimensions, VerificationCallback<E> callback) {
         Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
         Preconditions.checkArgument(callback != null, "Argument '" + "callback" + "' must not be null!");
+        Coordinates.checkClassesRelations(dimensions);
         this.dimensions = ImmutableSet.copyOf(dimensions);
         this.callback = callback;
     }
