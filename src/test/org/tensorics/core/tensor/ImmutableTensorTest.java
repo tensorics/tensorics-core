@@ -113,7 +113,8 @@ public class ImmutableTensorTest {
     public void fromMapThrowsOnInconsistentDimensions() {
         Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0, Position.of("fail"), 1);
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("same dimensions");
+        //thrown.expectMessage("same dimensions");
+        thrown.expectMessage("assignable");
         Tensorics.fromMap(map);
     }
 

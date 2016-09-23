@@ -106,8 +106,8 @@ public class TensorStreamsTest {
     @Test
     public void inconsistentPositionThrows() {
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("same dimensions");
-
+        //thrown.expectMessage("same dimensions");
+        thrown.expectMessage("assignable");
         Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };        
         ImmutableList.of(0, 1, 2).stream().collect(toTensor(i -> positions[i], v -> v));
     }
