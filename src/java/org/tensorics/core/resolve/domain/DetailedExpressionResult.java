@@ -85,4 +85,10 @@ public class DetailedExpressionResult<R, E extends Expression<R>> {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "DetailedExpressionResult [rootExpression=" + rootExpression + ", value=" + value + ", context="
+                + context + "]";
+    }
+
 }
