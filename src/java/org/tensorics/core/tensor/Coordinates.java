@@ -66,6 +66,7 @@ public final class Coordinates {
 	 *             if more than one coordinate per dimension are provided
 	 * @deprecated
 	 */
+	@Deprecated
 	public static <C> ClassToInstanceMap<C> mapOf(Iterable<? extends C> coordinates) {
 		ImmutableClassToInstanceMap.Builder<C> coordinateBuilder = ImmutableClassToInstanceMap.builder();
 		for (C coordinate : coordinates) {
@@ -88,10 +89,6 @@ public final class Coordinates {
 	public static <C extends Class<?>> void checkClassesRelations(Iterable<C> coordinates) {
 		for (C one : coordinates) {
 			initialCheckForClassRelations(one, coordinates);
-
-			// for (Class oneInterface : one.getClass().getInterfaces()) {
-			// System.out.println(oneInterface);
-			// }
 		}
 	}
 

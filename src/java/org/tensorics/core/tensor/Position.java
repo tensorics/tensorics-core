@@ -87,7 +87,7 @@ public final class Position implements Serializable {
     }
 
     public <CS> CS coordinateFor(Class<CS> dimension) {
-        return Positions.extractCoodinateForClass(coordinates, dimension);
+        return Positions.firstCoordinateOfTyp(coordinates, dimension);
     }
 
     public Set<?> coordinates() {

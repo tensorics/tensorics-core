@@ -30,95 +30,90 @@ import org.junit.Test;
 
 public class CoordinatesTest {
 
-	@Test
-	public void verifyUtiliyClass() {
-		assertUtilityClass(Coordinates.class);
-	}
+    @Test
+    public void verifyUtiliyClass() {
+        assertUtilityClass(Coordinates.class);
+    }
 
-	@Test
-	public void checkRelationsAllowed() {
-		Set<Class<?>> coordinates = new HashSet<>();
-		coordinates.add(IA.class);
-		coordinates.add(IB.class);
-		Coordinates.checkClassRelations(A.class, coordinates);
-	}
+    @Test
+    public void checkRelationsAllowed() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IB.class);
+        Coordinates.checkClassRelations(A.class, coordinates);
+    }
 
-	@Test
-	public void checkRelationsAllowed2() {
-		Set<Class<?>> coordinates = new HashSet<>();
-		coordinates.add(IA.class);
-		coordinates.add(IC.class);
-		Coordinates.checkClassRelations(C.class, coordinates);
-	}
+    @Test
+    public void checkRelationsAllowed2() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IC.class);
+        Coordinates.checkClassRelations(C.class, coordinates);
+    }
 
-	@Test
-	public void checkRelationsAllowed3() {
-		Set<Class<?>> coordinates = new HashSet<>();
-		coordinates.add(IA.class);
-		coordinates.add(IB.class);
-		Coordinates.checkClassRelations(C.class, coordinates);
-	}
+    @Test
+    public void checkRelationsAllowed3() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IB.class);
+        Coordinates.checkClassRelations(C.class, coordinates);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void checkRelationsNotAllowed() {
-		Set<Class<?>> coordinates = new HashSet<>();
-		coordinates.add(IA.class);
-		coordinates.add(IC.class);
-		Coordinates.checkClassRelations(B.class, coordinates);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void checkRelationsNotAllowed() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IC.class);
+        Coordinates.checkClassRelations(B.class, coordinates);
+    }
 
-	@Test
-	public void testCoordinatesBunch1() {
-		Set<Class<?>> coordinates = new HashSet<>();
-		coordinates.add(IA.class);
-		coordinates.add(IC.class);
-		Coordinates.checkClassesRelations(coordinates);
-	}
+    @Test
+    public void testCoordinatesBunch1() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IC.class);
+        Coordinates.checkClassesRelations(coordinates);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testCoordinatesBunch2() {
-		Set<Class<?>> coordinates = new HashSet<>();
-		coordinates.add(IA.class);
-		coordinates.add(IB.class);
-		coordinates.add(IC.class);
-		Coordinates.checkClassesRelations(coordinates);
-	}
-	
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testCoordinatesBunchNotAllowed() {
-		Set<Class<?>> coordinates = new HashSet<>();
-		coordinates.add(IA.class);
-		coordinates.add(IB.class);
-		coordinates.add(IE.class);
-		Coordinates.checkClassesRelations(coordinates);
-	}
-	
+    @Test(expected = IllegalArgumentException.class)
+    public void testCoordinatesBunch2() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IB.class);
+        coordinates.add(IC.class);
+        Coordinates.checkClassesRelations(coordinates);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCoordinatesBunchNotAllowed() {
+        Set<Class<?>> coordinates = new HashSet<>();
+        coordinates.add(IA.class);
+        coordinates.add(IB.class);
+        coordinates.add(IE.class);
+        Coordinates.checkClassesRelations(coordinates);
+    }
+
+    interface IA {
+    }
+
+    interface IB {
+    }
+
+    interface IC extends IB {
+    }
+
+    interface ID {
+    }
+
+    interface IE extends IA, ID {
+    }
+
+    class A implements IA {
+    }
+
+    class B implements IB {
+    }
+
+    class C implements IC {
+    }
 }
-
-interface IA {
-}
-
-interface IB {
-}
-
-interface IC extends IB {
-}
-
-interface ID {
-
-}
-
-interface IE extends IA, ID{
-	
-}
-
-class A implements IA {
-}
-
-class B implements IB {
-}
-
-class C implements IC {
-}
-

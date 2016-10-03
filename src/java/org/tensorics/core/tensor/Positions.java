@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultimap;
@@ -172,23 +173,23 @@ public final class Positions {
     }
 
     /**
-     * Extracts the class instance that is assignable from given class
+     * Extracts from a set of coordinates, the coordinate which corresponds to the given dimension. Hereby
+     * 'corresponding' means that the cooridnate is an instance of the given dimension (class).
      * 
-     * @param coordinates to extract from
-     * @param clazz to extract
-     * @return found ASSIGNABLE instance of given class
-     * @throws IllegalArgumentException when non of the instacnes are assignable from given class.
+     * @param coordinates the set of coordinates from which to extract the coordinate
+     * @param dimension the dimension for which to find the coordinate.
+     * @return the (first) coordinate which is an instance of the given dimension or {@code null} if none is contained
+     *         in the set.
      */
+    /* TODO: Probably we should check, that there are not two mathing coordinates in the set and throw in case? */
     @SuppressWarnings("unchecked")
-    public static <C> C extractCoodinateForClass(Set<?> coordinates, Class<C> clazz) {
+    public static <C> C firstCoordinateOfTyp(Set<?> coordinates, Class<C> dimension) {
         for (Object positionCoordinate : coordinates) {
-            System.out.println(positionCoordinate + " vs, " + clazz);
-            if (clazz.isAssignableFrom(positionCoordinate.getClass())) {
+            if (dimension.isAssignableFrom(positionCoordinate.getClass())) {
                 return (C) positionCoordinate;
             }
         }
-        throw new IllegalArgumentException("Given class '" + clazz
-                + "'cannot be assigned from any of the coordinates in the position '" + coordinates + "'!");
+        return null;
     }
 
     /**
@@ -243,7 +244,7 @@ public final class Positions {
             Object leftCoordinate = left.coordinateFor(dimension);
             Object rightCoordinate = right.coordinateFor(dimension);
             if (Objects.equal(leftCoordinate, rightCoordinate) || oneIsNull(leftCoordinate, rightCoordinate)) {
-                builder.add(Objects.firstNonNull(leftCoordinate, rightCoordinate));
+                builder.add(MoreObjects.firstNonNull(leftCoordinate, rightCoordinate));
             } else {
                 throw new IllegalArgumentException(
                         "Coordinates for dimension '" + dimension + "' are neither the same in both positions (" + left

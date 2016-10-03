@@ -55,7 +55,7 @@ public final class TensorStreamMappers {
                 throw new IllegalArgumentException("Can't map to coordinate of dimension "
                         + newCoordinate.getClass().getCanonicalName() + ", already present in Position " + position);
             }
-            Set<Object> coordinates = new HashSet<>(position.getCoordinates().values());
+            Set<Object> coordinates = new HashSet<>(position.getCoordinates());
             coordinates.remove(oldCoordinate);
             coordinates.add(newCoordinate);
             return new ImmutableTensorEntry<>(Position.of(coordinates), entry.getValue());

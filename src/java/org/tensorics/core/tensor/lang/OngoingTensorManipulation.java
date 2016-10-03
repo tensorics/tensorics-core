@@ -77,7 +77,7 @@ public class OngoingTensorManipulation<V> {
     public <C1> Set<C1> extractCoordinatesOfType(Class<C1> coordinateType) {
         Set<C1> toReturn = new HashSet<>();
         for (Position position : tensor.shape().positionSet()) {
-            toReturn.add(Positions.extractCoodinateForClass(position.coordinates(), coordinateType));
+            toReturn.add(Positions.firstCoordinateOfTyp(position.coordinates(), coordinateType));
         }
         return toReturn;
     }
