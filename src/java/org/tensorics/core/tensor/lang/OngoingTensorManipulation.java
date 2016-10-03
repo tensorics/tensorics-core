@@ -29,10 +29,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.tensorics.core.tensor.Coordinates;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
-import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Tensor;
 
 /**
@@ -77,7 +77,7 @@ public class OngoingTensorManipulation<V> {
     public <C1> Set<C1> extractCoordinatesOfType(Class<C1> coordinateType) {
         Set<C1> toReturn = new HashSet<>();
         for (Position position : tensor.shape().positionSet()) {
-            toReturn.add(Positions.firstCoordinateOfTyp(position.coordinates(), coordinateType));
+            toReturn.add(Coordinates.firstCoordinateOfTyp(position.coordinates(), coordinateType));
         }
         return toReturn;
     }

@@ -156,7 +156,8 @@ public final class Positions {
      * @param position
      * @return
      */
-    public static <C extends Class<?>> boolean areDimensionsConsistentWithCoordinates(Set<C> dimensions,
+    @SuppressWarnings("unchecked")
+	public static <C extends Class<?>> boolean areDimensionsConsistentWithCoordinates(Set<C> dimensions,
             Position position) {
         if (position.coordinates().size() != dimensions.size()) {
             return false;
@@ -170,40 +171,6 @@ public final class Positions {
             Coordinates.checkClassRelations((C) one, dimensions);
         }
         return true;
-    }
-
-    /**
-     * Extracts from a set of coordinates, the coordinate which corresponds to the given dimension. Hereby
-     * 'corresponding' means that the cooridnate is an instance of the given dimension (class).
-     * 
-     * @param coordinates the set of coordinates from which to extract the coordinate
-     * @param dimension the dimension for which to find the coordinate.
-     * @return the (first) coordinate which is an instance of the given dimension or {@code null} if none is contained
-     *         in the set.
-     */
-    /* TODO: Probably we should check, that there are not two mathing coordinates in the set and throw in case? */
-    @SuppressWarnings("unchecked")
-    public static <C> C firstCoordinateOfTyp(Set<?> coordinates, Class<C> dimension) {
-        for (Object positionCoordinate : coordinates) {
-            if (dimension.isAssignableFrom(positionCoordinate.getClass())) {
-                return (C) positionCoordinate;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Utility method that extract the final classes of the given coordinates instances.
-     * 
-     * @param coordinates to scan
-     * @return classes of the coordinates
-     */
-    public static Set<Class<?>> getDimensionsFrom(Set<?> coordinates) {
-        Set<Class<?>> classes = new HashSet<>();
-        for (Object one : coordinates) {
-            classes.add(one.getClass());
-        }
-        return classes;
     }
 
     /**
