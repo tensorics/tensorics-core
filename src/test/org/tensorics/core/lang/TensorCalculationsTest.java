@@ -250,7 +250,7 @@ public class TensorCalculationsTest {
         }
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testReductionOnNonExistingCoordinate() {
         TensorStructurals.from(tensor1).extract(ZCoordinate.of(1));
     }

@@ -28,7 +28,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
@@ -148,6 +150,30 @@ public final class Positions {
     }
 
     /**
+     * Searches if given position coordinates match acceptable dimensions.
+     * 
+     * @param dimensions
+     * @param position
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public static <C extends Class<?>> boolean areDimensionsConsistentWithCoordinates(Set<C> dimensions,
+            Position position) {
+        if (position.coordinates().size() != dimensions.size()) {
+            return false;
+        }
+        Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
+        Set<?> positionCoordinatesToCheck = position.dimensionSet();
+        if (dimensions.equals(positionCoordinatesToCheck)) {
+            return true;
+        }
+        for (Object one : positionCoordinatesToCheck) {
+            Coordinates.checkClassRelations((C) one, dimensions);
+        }
+        return true;
+    }
+
+    /**
      * Combines the both positions of the pair in such a way, that for each coordinate of the types given in the given
      * set of dimensions have to be
      * <ul>
@@ -185,7 +211,7 @@ public final class Positions {
             Object leftCoordinate = left.coordinateFor(dimension);
             Object rightCoordinate = right.coordinateFor(dimension);
             if (Objects.equal(leftCoordinate, rightCoordinate) || oneIsNull(leftCoordinate, rightCoordinate)) {
-                builder.add(Objects.firstNonNull(leftCoordinate, rightCoordinate));
+                builder.add(MoreObjects.firstNonNull(leftCoordinate, rightCoordinate));
             } else {
                 throw new IllegalArgumentException(
                         "Coordinates for dimension '" + dimension + "' are neither the same in both positions (" + left

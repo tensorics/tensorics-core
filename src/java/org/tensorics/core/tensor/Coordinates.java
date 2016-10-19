@@ -22,10 +22,13 @@
 
 package org.tensorics.core.tensor;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.tensorics.core.util.MoreMultisets.containsNonUniqueElements;
 import static org.tensorics.core.util.MoreMultisets.nonUniqueElementsOf;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,7 +37,9 @@ import org.tensorics.core.util.Classes;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
 
 /**
  * Utility methods to handle coordinates
@@ -59,7 +64,9 @@ public final class Coordinates {
 	 *         coordinate
 	 * @throws IllegalArgumentException
 	 *             if more than one coordinate per dimension are provided
+	 * @deprecated
 	 */
+	@Deprecated
 	public static <C> ClassToInstanceMap<C> mapOf(Iterable<? extends C> coordinates) {
 		ImmutableClassToInstanceMap.Builder<C> coordinateBuilder = ImmutableClassToInstanceMap.builder();
 		for (C coordinate : coordinates) {
@@ -68,6 +75,72 @@ public final class Coordinates {
 			coordinateBuilder.put(coordinateClass, coordinate);
 		}
 		return coordinateBuilder.build();
+	}
+
+	/**
+	 * Validates dependence between given classes (interfaces) such that two
+	 * interfaces in the same inheritance line are not given.
+	 * 
+	 * @param coordinates
+	 * @throws IllegalCoordinatesException
+	 *             when any of the given classes are linked by the inheritance
+	 *             line.
+	 */
+	public static <C extends Class<?>> void checkClassesRelations(Iterable<C> coordinates) {
+		for (C one : coordinates) {
+			initialCheckForClassRelations(one, coordinates);
+		}
+	}
+
+	/**
+	 * Validates dependence between given class (interface) such that NONE of
+	 * the classes can be assignable from it.
+	 * 
+	 * @param classToCheck
+	 *            a class to verify
+	 * @param coordinates
+	 *            available coordinates classes
+	 * @throws IllegalArgumentException
+	 *             when any of the given classes are linked by the inheritance
+	 *             line.
+	 */
+	public static <C extends Class<?>> void initialCheckForClassRelations(C classToCheck, Iterable<C> coordinates) {
+		for (C oneToCompare : coordinates) {
+			if (classToCheck.equals(oneToCompare)) {
+				continue;
+			}
+
+			if (oneToCompare.isAssignableFrom(classToCheck)) {
+				throw new IllegalArgumentException("Cannot use given coordinates class!'"
+						+ classToCheck.getCanonicalName() + "' is assignable from '" + oneToCompare.getName() + "'");
+			}
+		}
+	}
+
+	/**
+	 * Validates dependence between given class (interface) such that ANY o the
+	 * given coordinates is assignable from it.
+	 * 
+	 * @param classToCheck
+	 *            a class to verify
+	 * @param coordinates
+	 *            available coordinates classes
+	 * @throws IllegalArgumentException
+	 *             when any of the given classes are linked by the inheritance
+	 *             line.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <C extends Class<?>> void checkClassRelations(C classToCheck, Iterable<C> coordinates) {
+		for (Object oneToCompare : coordinates) {
+			if (classToCheck.equals(oneToCompare)) {
+				return;
+			}
+			if (((C) oneToCompare).isAssignableFrom(classToCheck)) {
+				return;
+			}
+		}
+		throw new IllegalArgumentException("Cannot use given coordinates class! '" + classToCheck.getCanonicalName()
+				+ "' is not assignable from any of the avaliable dimensions '" + coordinates + "'");
 	}
 
 	/**
@@ -127,6 +200,40 @@ public final class Coordinates {
 							+ nonUniqueElementsOf(dimensions));
 		}
 		return ImmutableSet.copyOf(dimensions.elementSet());
+	}
+
+	/**
+	 * Extracts from a set of coordinates, the coordinate which corresponds to the given dimension. Hereby
+	 * 'corresponding' means that the cooridnate is an instance of the given dimension (class).
+	 * 
+	 * @param coordinates the set of coordinates from which to extract the coordinate
+	 * @param dimension the dimension for which to find the coordinate.
+	 * @return the (first) coordinate which is an instance of the given dimension or {@code null} if none is contained
+	 *         in the set.
+	 */
+	/* TODO: Probably we should check, that there are not two mathing coordinates in the set and throw in case? */
+	@SuppressWarnings("unchecked")
+	public static <C> C firstCoordinateOfTyp(Set<?> coordinates, Class<C> dimension) {
+	    for (Object positionCoordinate : coordinates) {
+	        if (dimension.isAssignableFrom(positionCoordinate.getClass())) {
+	            return (C) positionCoordinate;
+	        }
+	    }
+	    return null;
+	}
+
+	/**
+	 * Utility method that extract the final classes of the given coordinates instances.
+	 * 
+	 * @param coordinates to scan
+	 * @return classes of the coordinates
+	 */
+	public static Set<Class<?>> getDimensionsFrom(Set<?> coordinates) {
+	    Set<Class<?>> classes = new HashSet<>();
+	    for (Object one : coordinates) {
+	        classes.add(one.getClass());
+	    }
+	    return classes;
 	}
 
 }

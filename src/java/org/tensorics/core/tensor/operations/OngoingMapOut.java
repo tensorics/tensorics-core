@@ -93,7 +93,7 @@ public final class OngoingMapOut<V> {
         for (Entry<Position, T> entry : entries) {
             C1 coordinateFor = entry.getKey().coordinateFor(dimension);
             if (coordinateFor == null) {
-                throw new IllegalStateException(
+                throw new IllegalArgumentException(
                         "Cannot operate with [" + dimension + "] while having only " + entry.getKey());
             }
             valuesBuilder.put(coordinateFor, entry.getValue());

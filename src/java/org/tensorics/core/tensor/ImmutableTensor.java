@@ -116,7 +116,9 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      * 
      * @param map the map from which to construct a tensor
      * @return a new immutable tensor
+     * @deprecated use fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map)
      */
+    @Deprecated
     public static final <T> Tensor<T> fromMap(Map<Position, T> map) {
         if (map.isEmpty()) {
             return zeroDimensionalEmptyTensor();
@@ -217,6 +219,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     }
 
     private T findValueOrThrow(Position position) {
+        Positions.areDimensionsConsistentWithCoordinates(shape.dimensionSet(), position);
         T entry = findEntryOrNull(position);
         if (entry == null) {
             String message = "Entry for position '" + position + "' is not contained in this tensor.";
