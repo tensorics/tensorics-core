@@ -9,6 +9,7 @@ import static org.tensorics.core.iterable.expressions.PickExpression.Mode.FROM_S
 
 import java.util.List;
 
+import org.tensorics.core.resolve.resolvers.PickResolver;
 import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.Node;
@@ -16,6 +17,15 @@ import org.tensorics.core.tree.domain.Node;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
+/**
+ * Deferred expression that can pick an element of an, {@link Expression} of, {@link Iterable}. The {@link Mode} and the
+ * offset define the resulting element.
+ * 
+ * @see PickResolver
+ * @see PickResolverTest
+ * @author kfuchsbe, acalia
+ * @param <T> the type of the data to pick
+ */
 public class PickExpression<T> extends AbstractDeferredExpression<T> {
 
     private final Expression<Iterable<T>> iterable;
@@ -30,11 +40,11 @@ public class PickExpression<T> extends AbstractDeferredExpression<T> {
     }
 
     public static <T> PickExpression<T> fromFirst(Expression<Iterable<T>> iterable, int offset) {
-        return new PickExpression<T>(iterable, offset, FROM_START);
+        return new PickExpression<>(iterable, offset, FROM_START);
     }
 
     public static <T> PickExpression<T> fromLast(Expression<Iterable<T>> iterable, int offset) {
-        return new PickExpression<T>(iterable, offset, FROM_END);
+        return new PickExpression<>(iterable, offset, FROM_END);
     }
 
     @Override
@@ -42,7 +52,7 @@ public class PickExpression<T> extends AbstractDeferredExpression<T> {
         return ImmutableList.of(iterable);
     }
 
-    public Expression<Iterable<T>> iterable() {
+    public Expression<Iterable<T>> iterableExpression() {
         return iterable;
     }
 
@@ -71,6 +81,44 @@ public class PickExpression<T> extends AbstractDeferredExpression<T> {
         };
 
         public abstract <T> T pick(Iterable<T> iterable, int offset);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((iterable == null) ? 0 : iterable.hashCode());
+        result = prime * result + ((mode == null) ? 0 : mode.hashCode());
+        result = prime * result + offset;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        PickExpression<?> other = (PickExpression<?>) obj;
+        if (iterable == null) {
+            if (other.iterable != null) {
+                return false;
+            }
+        } else if (!iterable.equals(other.iterable)) {
+            return false;
+        }
+        if (mode != other.mode) {
+            return false;
+        }
+        if (offset != other.offset) {
+            return false;
+        }
+        return true;
     }
 
 }
