@@ -45,6 +45,10 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class IntersectionShapingStrategy implements ShapingStrategy {
 
+    public static IntersectionShapingStrategy getInstance() {
+        return new IntersectionShapingStrategy();
+    }
+
     @Override
     public <C> Shape shapeLeftRight(Tensor<?> left, Tensor<?> right) {
         return intersection(left.shape(), right.shape());

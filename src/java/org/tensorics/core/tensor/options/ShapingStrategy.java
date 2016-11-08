@@ -34,7 +34,7 @@ import org.tensorics.core.tensor.Tensor;
 public interface ShapingStrategy extends ManipulationOption {
 
     /**
-     * Resulting tensor shape of given two in following formula: FIRST_TENSOR_SHAPE x SECOND_TENSOR_SHAPE
+     * Resulting tensor shape of given two in following formula: FIRST_TENSOR_SHAPE on SECOND_TENSOR_SHAPE
      * 
      * @param first tensor
      * @param second tensor

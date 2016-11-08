@@ -34,6 +34,10 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class ExactShapesOrOneZeroStrategy implements ShapingStrategy {
 
+    public static ExactShapesOrOneZeroStrategy getInstance() {
+        return new ExactShapesOrOneZeroStrategy();
+    }
+
     @Override
     public <C> Shape shapeLeftRight(Tensor<?> first, Tensor<?> second) {
         Shape shapeOfFirst = first.shape();
