@@ -4,7 +4,7 @@
 
 package org.tensorics.core.booleans.lang;
 
-import org.tensorics.core.booleans.operations.LogicalOperation;
+import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.tensor.Tensor;
 
 public class OngoingBooleanAlgebra {
@@ -15,9 +15,8 @@ public class OngoingBooleanAlgebra {
         this.tensor = tensor;
     }
 
-    public OngoingBooleanAlgebraForTensor apply(LogicalOperation logicOperation) {
-        return new OngoingBooleanAlgebraForTensor(this.tensor, logicOperation);
+    public OngoingBooleanAlgebraForTensor apply(BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> operation) {
+        return new OngoingBooleanAlgebraForTensor(this.tensor, operation);
     }
-    
 
 }

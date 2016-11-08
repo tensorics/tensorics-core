@@ -4,7 +4,7 @@
 
 package org.tensorics.core.booleans.lang;
 
-import org.tensorics.core.booleans.operations.LogicalOperation;
+import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.options.ExactShapesOrOneZeroStrategy;
 import org.tensorics.core.tensor.options.ShapingStrategy;
@@ -14,14 +14,15 @@ import org.tensorics.core.tensor.options.ShapingStrategy;
  */
 public class OngoingBooleanAlgebraForTensor {
 
-    private LogicalOperation logicOperation;
+    private BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> logicOperation;
     private Tensor<Boolean> tensor;
 
     /**
      * @param tensor
      * @param logicOperation
      */
-    public OngoingBooleanAlgebraForTensor(Tensor<Boolean> tensor, LogicalOperation logicOperation) {
+    public OngoingBooleanAlgebraForTensor(Tensor<Boolean> tensor,
+            BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> logicOperation) {
         this.logicOperation = logicOperation;
         this.tensor = tensor;
     }
@@ -43,6 +44,7 @@ public class OngoingBooleanAlgebraForTensor {
      * @return
      */
     public OngoingBooleanAlgebraWithShapingStrategy withShaping(ShapingStrategy shapingStrategy) {
-        return new OngoingBooleanAlgebraWithShapingStrategy(tensor, logicOperation, shapingStrategy);
+        throw new UnsupportedOperationException("not implemented yet");
+        // return new OngoingBooleanAlgebraWithShapingStrategy(tensor, logicOperation, shapingStrategy);
     }
 }

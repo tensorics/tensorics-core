@@ -4,14 +4,14 @@
 
 package org.tensorics.core.booleans;
 
-import static org.tensorics.core.booleans.operations.LogicalOperationsFactory.and;
-import static org.tensorics.core.booleans.operations.LogicalOperationsFactory.nand;
-import static org.tensorics.core.booleans.operations.LogicalOperationsFactory.or;
-import static org.tensorics.core.booleans.operations.LogicalOperationsFactory.xor;
+import static org.tensorics.core.booleans.operations.LogicalTensorOperationsFactory.and;
+import static org.tensorics.core.booleans.operations.LogicalTensorOperationsFactory.nand;
+import static org.tensorics.core.booleans.operations.LogicalTensorOperationsFactory.or;
+import static org.tensorics.core.booleans.operations.LogicalTensorOperationsFactory.xor;
 
 import org.tensorics.core.booleans.lang.OngoingBooleanAlgebra;
 import org.tensorics.core.booleans.lang.OngoingDetection;
-import org.tensorics.core.booleans.operations.LogicalOperation;
+import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.tensor.Tensor;
 
 /**
@@ -21,10 +21,10 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class BooleanTensorSupoport {
 
-    public static final LogicalOperation AND = and();
-    public static final LogicalOperation NAND = nand();
-    public static final LogicalOperation OR = or();
-    public static final LogicalOperation XOR = xor();
+    public static final BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> AND = and();
+    public static final BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> OR = or();
+    public static final BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> XOR = xor();
+    public static final BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> NAND = nand();
 
     public OngoingBooleanAlgebra on(Tensor<Boolean> tensor) {
         return new OngoingBooleanAlgebra(tensor);

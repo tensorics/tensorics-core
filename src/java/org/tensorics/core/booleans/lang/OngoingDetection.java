@@ -18,6 +18,7 @@ public class OngoingDetection {
      * 
      * @param clazz of the direction to search
      * @return
+     * @param <T extends Comparable<T>
      */
     public <T extends Comparable<T>> OngoingBooleanDetection<T> inDirectionOf(Class<T> clazz) {
         return new OngoingBooleanDetection<T>(clazz);

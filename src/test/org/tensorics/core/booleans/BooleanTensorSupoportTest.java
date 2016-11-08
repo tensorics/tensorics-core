@@ -22,7 +22,6 @@ public class BooleanTensorSupoportTest extends BooleanTensorSupoport {
         Tensor<Boolean> tensorFalse = createSimpleOneComparableDimensionTensorOf(false, 6, 1);
         Tensor<Boolean> tensorFalseOther = createSimpleOneComparableDimensionTensorOf(false, 6, 2);
 
-        /* default shaping strategy to apply */
         Tensor<Boolean> resultAND = on(tensorTrue).apply(AND).with(tensorFalse);
         Tensor<Boolean> resultOR = on(tensorTrue).apply(OR).with(tensorFalse);
         Tensor<Boolean> resultXOR = on(tensorFalseOther).apply(XOR).with(tensorFalse);
@@ -30,8 +29,13 @@ public class BooleanTensorSupoportTest extends BooleanTensorSupoport {
         System.out.println(resultAND);
         System.out.println(resultOR);
         System.out.println(resultXOR);
+    }
 
-        /* explicit shaping strategy to apply */
+    @Test(expected = UnsupportedOperationException.class)
+    public void testSetDifferentStrategy() {
+        Tensor<Boolean> tensorFalse = createSimpleOneComparableDimensionTensorOf(false, 6, 1);
+        Tensor<Boolean> tensorFalseOther = createSimpleOneComparableDimensionTensorOf(false, 6, 2);
+        /* explicit shaping strategy to apply but */
         on(tensorFalseOther).apply(AND).withShaping(ExactShapesOrOneZeroStrategy.getInstance()).with(tensorFalse);
     }
 
@@ -59,9 +63,10 @@ public class BooleanTensorSupoportTest extends BooleanTensorSupoport {
 
     @Test(expected = IllegalArgumentException.class)
     public void testWrongDirection() {
-        Tensor<Boolean> tensorTrue = createSimpleOneComparableDimensionTensorOf(true, 2, 1);
+        Tensor<Boolean> tensor = createSimpleOneComparableDimensionTensorOf(true, 2, 1);
         @SuppressWarnings("unused")
-        Iterable<Double> changes2 = detect().inDirectionOf(Double.class).where(tensorTrue).changes();
+        Iterable<Double> changes2 = detect().inDirectionOf(Double.class).where(tensor).changes();
+        // Iterable<String> changes = detectWhere(tensor).changes().inDirectionOf(String.class);
     }
 
     @Test(expected = IllegalArgumentException.class)

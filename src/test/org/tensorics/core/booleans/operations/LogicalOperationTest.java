@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.tensorics.core.math.operations.BinaryFunction;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -18,24 +19,24 @@ public class LogicalOperationTest {
     @Test
     @Parameters(method = "getParametersAnd")
     public void testAND(boolean input1, boolean input2, boolean result) {
-        LogicalANDOperation andOperation = LogicalOperationsFactory.and();
-        Boolean resultOp = andOperation.getResult(input1, input2);
+         BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsFactory.and();
+        Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
 
     @Test
     @Parameters(method = "getParametersXor")
     public void testXOR(boolean input1, boolean input2, boolean result) {
-        LogicalXOROperation andOperation = LogicalOperationsFactory.xor();
-        Boolean resultOp = andOperation.getResult(input1, input2);
+         BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsFactory.xor();
+        Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
 
     @Test
     @Parameters(method = "getParametersOr")
     public void testOR(boolean input1, boolean input2, boolean result) {
-        LogicalOROperation andOperation = LogicalOperationsFactory.or();
-        Boolean resultOp = andOperation.getResult(input1, input2);
+        BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsFactory.or();
+        Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
 

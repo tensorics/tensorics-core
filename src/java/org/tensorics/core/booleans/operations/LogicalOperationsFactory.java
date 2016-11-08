@@ -4,6 +4,8 @@
 
 package org.tensorics.core.booleans.operations;
 
+import org.tensorics.core.math.operations.BinaryOperation;
+
 /**
  * Factory methods for {@link LogicalOperation}s
  * 
@@ -15,19 +17,20 @@ public final class LogicalOperationsFactory {
         /* only static methods */
     }
 
-    public static LogicalANDOperation and() {
-        return new LogicalANDOperation();
+    public static BinaryOperation<Boolean> and() {
+        return (left, right) -> left && right;
     }
 
-    public static LogicalNANDOperation nand() {
-        return new LogicalNANDOperation();
+    public static BinaryOperation<Boolean> nand() {
+        return (left, right) -> !(left && right);
     }
 
-    public static LogicalOROperation or() {
-        return new LogicalOROperation();
+    public static BinaryOperation<Boolean> or() {
+        return (left, right) -> left || right;
     }
 
-    public static LogicalXOROperation xor() {
-        return new LogicalXOROperation();
+    public static BinaryOperation<Boolean> xor() {
+        return (left, right) -> left ^ right;
     }
+
 }
