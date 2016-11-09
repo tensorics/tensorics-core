@@ -28,22 +28,22 @@ import com.google.common.collect.Iterables;
  */
 public class PickExpression<T> extends AbstractDeferredExpression<T> {
 
-    private final Expression<Iterable<T>> iterable;
+    private final Expression<? extends Iterable<T>> iterable;
     private final int offset;
     private final Mode mode;
 
-    private PickExpression(Expression<Iterable<T>> iterable, int offset, Mode mode) {
+    private PickExpression(Expression<? extends Iterable<T>> iterable, int offset, Mode mode) {
         super();
         this.iterable = iterable;
         this.offset = offset;
         this.mode = mode;
     }
 
-    public static <T> PickExpression<T> fromFirst(Expression<Iterable<T>> iterable, int offset) {
+    public static <T> PickExpression<T> fromFirst(Expression<? extends Iterable<T>> iterable, int offset) {
         return new PickExpression<>(iterable, offset, FROM_START);
     }
 
-    public static <T> PickExpression<T> fromLast(Expression<Iterable<T>> iterable, int offset) {
+    public static <T> PickExpression<T> fromLast(Expression<? extends Iterable<T>> iterable, int offset) {
         return new PickExpression<>(iterable, offset, FROM_END);
     }
 
@@ -52,7 +52,7 @@ public class PickExpression<T> extends AbstractDeferredExpression<T> {
         return ImmutableList.of(iterable);
     }
 
-    public Expression<Iterable<T>> iterableExpression() {
+    public Expression<? extends Iterable<T>> iterableExpression() {
         return iterable;
     }
 
