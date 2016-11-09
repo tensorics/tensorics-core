@@ -30,5 +30,9 @@ public class OngoingDetection {
 	public <T> OngoingBooleanDetection inDirectionOf(Class<T> clazz, Comparator<T> comparator) {
 		throw new UnsupportedOperationException("Not implemented yet for ");
 	}
+	
+	public OngoingIterableBooleanDetection where(Iterable<Boolean> iterable) {
+	    return new OngoingIterableBooleanDetection(iterable);
+	}
 
 }
