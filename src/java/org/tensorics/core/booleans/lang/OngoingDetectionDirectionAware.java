@@ -36,6 +36,8 @@ public class OngoingDetectionDirectionAware<T extends Comparable<T>> {
                     + " doesn't have requested detection direction class [" + clazz + "]");
         }
     }
+    
+
 
     public Iterable<T> changes() {
         /* TODO what with this logic. Should that be a separate class? I guess so... */

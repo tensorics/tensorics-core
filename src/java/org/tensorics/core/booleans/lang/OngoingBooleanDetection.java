@@ -16,6 +16,5 @@ public class OngoingBooleanDetection<T extends Comparable<T>> {
 
     public OngoingDetectionDirectionAware<T> where(Tensor<Boolean> tensor) {
         return new OngoingDetectionDirectionAware<T>(clazzToReturn, tensor);
-    }
-
+    }    
 }

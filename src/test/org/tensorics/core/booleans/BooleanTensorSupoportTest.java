@@ -12,7 +12,7 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.options.ExactShapesOrOneZeroStrategy;
 
-public class BooleanTensorSupoportTest extends BooleanTensorSupoport {
+public class BooleanTensorSupoportTest extends TensorBooleanSupport {
 
     private static final int CHANGE_OF_THE_SIGNAL = 51;
 

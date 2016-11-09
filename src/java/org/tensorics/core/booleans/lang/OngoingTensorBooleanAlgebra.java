@@ -7,16 +7,16 @@ package org.tensorics.core.booleans.lang;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.tensor.Tensor;
 
-public class OngoingBooleanAlgebra {
+public class OngoingTensorBooleanAlgebra {
 
     private Tensor<Boolean> tensor;
 
-    public OngoingBooleanAlgebra(Tensor<Boolean> tensor) {
+    public OngoingTensorBooleanAlgebra(Tensor<Boolean> tensor) {
         this.tensor = tensor;
     }
 
-    public OngoingBooleanAlgebraForTensor apply(BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> operation) {
-        return new OngoingBooleanAlgebraForTensor(this.tensor, operation);
+    public OngoingTensorAwareBooleanAlgebra apply(BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> operation) {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor, operation);
     }
 
 }

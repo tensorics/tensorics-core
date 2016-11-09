@@ -12,7 +12,7 @@ import org.tensorics.core.tensor.options.ShapingStrategy;
 /**
  * @author agorzaws
  */
-public class OngoingBooleanAlgebraForTensor {
+public class OngoingTensorAwareBooleanAlgebra {
 
     private BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> logicOperation;
     private Tensor<Boolean> tensor;
@@ -21,7 +21,7 @@ public class OngoingBooleanAlgebraForTensor {
      * @param tensor
      * @param logicOperation
      */
-    public OngoingBooleanAlgebraForTensor(Tensor<Boolean> tensor,
+    public OngoingTensorAwareBooleanAlgebra(Tensor<Boolean> tensor,
             BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> logicOperation) {
         this.logicOperation = logicOperation;
         this.tensor = tensor;

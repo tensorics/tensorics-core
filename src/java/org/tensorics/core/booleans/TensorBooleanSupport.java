@@ -9,7 +9,7 @@ import static org.tensorics.core.booleans.operations.LogicalTensorOperationsFact
 import static org.tensorics.core.booleans.operations.LogicalTensorOperationsFactory.or;
 import static org.tensorics.core.booleans.operations.LogicalTensorOperationsFactory.xor;
 
-import org.tensorics.core.booleans.lang.OngoingBooleanAlgebra;
+import org.tensorics.core.booleans.lang.OngoingTensorBooleanAlgebra;
 import org.tensorics.core.booleans.lang.OngoingDetection;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.tensor.Tensor;
@@ -19,15 +19,15 @@ import org.tensorics.core.tensor.Tensor;
  * 
  * @author agorzaws
  */
-public class BooleanTensorSupoport {
+public class TensorBooleanSupport {
 
     public static final BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> AND = and();
     public static final BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> OR = or();
     public static final BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> XOR = xor();
     public static final BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> NAND = nand();
 
-    public OngoingBooleanAlgebra on(Tensor<Boolean> tensor) {
-        return new OngoingBooleanAlgebra(tensor);
+    public OngoingTensorBooleanAlgebra on(Tensor<Boolean> tensor) {
+        return new OngoingTensorBooleanAlgebra(tensor);
     }
 
     public OngoingDetection detect() {
