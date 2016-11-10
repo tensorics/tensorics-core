@@ -45,5 +45,4 @@ public interface Expression<R> extends Node {
      * @throws ExpressionIsUnresolvedException if the value is not determined.
      */
     R get();
-
 }

@@ -6,43 +6,82 @@ package org.tensorics.core.booleans;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.Test;
+import org.tensorics.core.booleans.operations.LogicalTensorOperationsRepository;
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
-import org.tensorics.core.tensor.options.ExactShapesOrOneZeroStrategy;
+import org.tensorics.core.tensor.options.IntersectionShapingStrategy;
 
-public class BooleanTensorSupoportTest extends TensorBooleanSupport {
+public class BooleanSupoportTest extends BooleanSupport {
+
+    private static final OptionRegistry<ManipulationOption> NOT_DEFAULT_REGISTRY = LogicalTensorOperationsRepository
+            .defaultRegistry(Collections.singletonList(IntersectionShapingStrategy.getInstance()));
+
+    private static final OptionRegistry<ManipulationOption> DEFAULT_REGISTRY = LogicalTensorOperationsRepository
+            .defaultRegistry();
 
     private static final int CHANGE_OF_THE_SIGNAL = 51;
 
     @Test
-    public void testBooleanAlgebraJustOutput() {
+    public void testBooleanScalarAlgebra() {
+
+        /* both dsl flows are actually possible */
+
+        Boolean with = calcLogical(true).and().with(false);
+
+        Boolean with2 = calcLogical(true).and(false);
+    }
+
+    /**
+     * TODO implement the operation for iterables
+     */
+    @Test(expected = UnsupportedOperationException.class)
+    public void testBooleanIterableAlgebra() {
+        Boolean[] test1 = new Boolean[] { true, true, false };
+        Boolean[] test2 = new Boolean[] { true, true, false };
+        calcLogical(Arrays.asList(test1)).and().with(Arrays.asList(test2));
+    }
+
+    @Test
+    public void testBooleanTensorAlgebraJustCalc() {
         Tensor<Boolean> tensorTrue = createSimpleOneComparableDimensionTensorOf(true, 6, 1);
         Tensor<Boolean> tensorFalse = createSimpleOneComparableDimensionTensorOf(false, 6, 1);
         Tensor<Boolean> tensorFalseOther = createSimpleOneComparableDimensionTensorOf(false, 6, 2);
 
-        Tensor<Boolean> resultAND = on(tensorTrue).apply(AND).with(tensorFalse);
-        Tensor<Boolean> resultOR = on(tensorTrue).apply(OR).with(tensorFalse);
-        Tensor<Boolean> resultXOR = on(tensorFalseOther).apply(XOR).with(tensorFalse);
+        /* few dsl flows are actually possible (and not contradicting!) */
 
-        System.out.println(resultAND);
-        System.out.println(resultOR);
-        System.out.println(resultXOR);
+        /* one way */
+        Tensor<Boolean> resultAND2 = calcLogical(tensorTrue).and().with(tensorTrue);
+        Tensor<Boolean> resultANDWith = calcLogical(tensorTrue).and(NOT_DEFAULT_REGISTRY).with(tensorTrue);
+
+        /* other way */
+        Tensor<Boolean> resultANDOther = calcLogical(tensorTrue).and(tensorTrue);
+        Tensor<Boolean> resultANDOther2 = calcLogical(tensorTrue).and(tensorTrue, NOT_DEFAULT_REGISTRY);
+
+        /* etc */
+
+        Tensor<Boolean> resultOR = calcLogical(tensorTrue).or().with(tensorFalse);
+        Tensor<Boolean> resultXOR = calcLogical(tensorFalseOther).xor().with(tensorFalse);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testSetDifferentStrategy() {
         Tensor<Boolean> tensorFalse = createSimpleOneComparableDimensionTensorOf(false, 6, 1);
         Tensor<Boolean> tensorFalseOther = createSimpleOneComparableDimensionTensorOf(false, 6, 2);
         /* explicit shaping strategy to apply but */
-        on(tensorFalseOther).apply(AND).withShaping(ExactShapesOrOneZeroStrategy.getInstance()).with(tensorFalse);
+        calcLogical(tensorFalseOther).and(tensorFalse, NOT_DEFAULT_REGISTRY);
     }
 
     @Test
     public void testChangesDetectionInDirection() {
         Tensor<Boolean> tensorTrue = createSimpleOneComparableDimensionTensorOf(true, 100, 1);
-        Tensor<Boolean> result = on(tensorTrue).apply(AND).with(tensorTrue);
+        Tensor<Boolean> result = calcLogical(tensorTrue).and(tensorTrue);
         System.out.println(result);
         Iterable<Integer> changes = detect().inDirectionOf(Integer.class).where(tensorTrue).changes();
         System.out.println(changes);
@@ -53,7 +92,8 @@ public class BooleanTensorSupoportTest extends TensorBooleanSupport {
     @Test
     public void testMoreChangesDetectionInDirection() {
         Tensor<Boolean> tensorTrue = createSimpleOneComparableDimensionTensorOf(true, 100, 10);
-        Tensor<Boolean> result = on(tensorTrue).apply(AND).with(tensorTrue);
+        Tensor<Boolean> result = calcLogical(tensorTrue).and(tensorTrue);
+
         System.out.println(result);
         Iterable<Integer> changes = detect().inDirectionOf(Integer.class).where(tensorTrue).changes();
         System.out.println(changes);

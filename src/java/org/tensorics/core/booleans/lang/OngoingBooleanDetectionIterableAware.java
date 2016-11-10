@@ -4,11 +4,11 @@
 
 package org.tensorics.core.booleans.lang;
 
-public class OngoingIterableBooleanDetection {
+public class OngoingBooleanDetectionIterableAware {
 
     private Iterable<Boolean> iterable;
 
-    public OngoingIterableBooleanDetection(Iterable<Boolean> iterable) {
+    public OngoingBooleanDetectionIterableAware(Iterable<Boolean> iterable) {
         this.iterable = iterable;
     }
 

@@ -7,13 +7,13 @@ package org.tensorics.core.booleans.operations;
 import org.tensorics.core.math.operations.BinaryOperation;
 
 /**
- * Factory methods for {@link LogicalOperation}s
+ * Repository for logical operations <lu><li>AND</li><li>NAND</li><li>OR</li><li>XOR</li></lu>
  * 
  * @author agorzaws
  */
-public final class LogicalOperationsFactory {
+public final class LogicalOperationsRepository {
 
-    private LogicalOperationsFactory() {
+    private LogicalOperationsRepository() {
         /* only static methods */
     }
 

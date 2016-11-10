@@ -12,8 +12,8 @@ public class OngoingIterableAwareBooleanAlgebra {
 		this.function = function;
 	}
 
-	public Iterable<Boolean> on(Iterable<Boolean> iterableRight){
-		throw new UnsupportedOperationException("not implemented yet");
+	public Iterable<Boolean> with(Iterable<Boolean> iterableRight){
+        throw new UnsupportedOperationException("not implemented yet");
 	}
 	
 }

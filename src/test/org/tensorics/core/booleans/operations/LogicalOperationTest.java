@@ -19,7 +19,7 @@ public class LogicalOperationTest {
     @Test
     @Parameters(method = "getParametersAnd")
     public void testAND(boolean input1, boolean input2, boolean result) {
-         BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsFactory.and();
+         BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsRepository.and();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
@@ -27,7 +27,7 @@ public class LogicalOperationTest {
     @Test
     @Parameters(method = "getParametersXor")
     public void testXOR(boolean input1, boolean input2, boolean result) {
-         BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsFactory.xor();
+         BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsRepository.xor();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
@@ -35,7 +35,7 @@ public class LogicalOperationTest {
     @Test
     @Parameters(method = "getParametersOr")
     public void testOR(boolean input1, boolean input2, boolean result) {
-        BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsFactory.or();
+        BinaryFunction<Boolean, Boolean> andOperation = LogicalOperationsRepository.or();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }

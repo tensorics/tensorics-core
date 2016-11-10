@@ -5,7 +5,7 @@ import org.tensorics.core.booleans.lang.OngoingScalarBooleanAlgebra;
 public class ScalarBooleanSupport {
 
 	
-	public OngoingScalarBooleanAlgebra on(Boolean bool){
+	public OngoingScalarBooleanAlgebra calcLogical(Boolean bool){
 		return new OngoingScalarBooleanAlgebra(bool);
 	}
 	

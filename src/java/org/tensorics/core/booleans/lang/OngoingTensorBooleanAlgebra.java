@@ -4,7 +4,11 @@
 
 package org.tensorics.core.booleans.lang;
 
-import org.tensorics.core.math.operations.BinaryFunction;
+import static org.tensorics.core.booleans.operations.LogicalTensorOperationsRepository.defaultRegistry;
+
+import org.tensorics.core.booleans.operations.LogicalTensorOperationsRepository;
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.tensor.Tensor;
 
 public class OngoingTensorBooleanAlgebra {
@@ -15,8 +19,32 @@ public class OngoingTensorBooleanAlgebra {
         this.tensor = tensor;
     }
 
-    public OngoingTensorAwareBooleanAlgebra apply(BinaryFunction<Tensor<Boolean>, Tensor<Boolean>> operation) {
-        return new OngoingTensorAwareBooleanAlgebra(this.tensor, operation);
+    public OngoingTensorAwareBooleanAlgebra and() {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(defaultRegistry()));
+    }
+
+    public OngoingTensorAwareBooleanAlgebra and(OptionRegistry<ManipulationOption> registry) {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(registry));
+    }
+
+    public OngoingTensorAwareBooleanAlgebra or() {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(defaultRegistry()));
+    }
+
+    public OngoingTensorAwareBooleanAlgebra xor() {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(defaultRegistry()));
+    }
+
+    public OngoingTensorAwareBooleanAlgebra nand() {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(defaultRegistry()));
+    }
+
+    public Tensor<Boolean> and(Tensor<Boolean> tensorRight) {
+        return LogicalTensorOperationsRepository.and(defaultRegistry()).perform(tensor, tensorRight);
+    }
+
+    public Tensor<Boolean> and(Tensor<Boolean> tensorRight, OptionRegistry<ManipulationOption> optionRegistry) {
+        return LogicalTensorOperationsRepository.and(optionRegistry).perform(tensor, tensorRight);
     }
 
 }

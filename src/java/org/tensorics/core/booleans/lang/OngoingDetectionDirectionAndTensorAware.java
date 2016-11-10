@@ -11,7 +11,7 @@ import java.util.List;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
-public class OngoingDetectionDirectionAware<T extends Comparable<T>> {
+public class OngoingDetectionDirectionAndTensorAware<T extends Comparable<T>> {
 
     private Class<T> clazz;
     private Tensor<Boolean> tensor;
@@ -20,7 +20,7 @@ public class OngoingDetectionDirectionAware<T extends Comparable<T>> {
      * @param clazzToReturn
      * @param tensor
      */
-    public OngoingDetectionDirectionAware(Class<T> clazzToReturn, Tensor<Boolean> tensor) {
+    public OngoingDetectionDirectionAndTensorAware(Class<T> clazzToReturn, Tensor<Boolean> tensor) {
         this.tensor = tensor;
         this.clazz = clazzToReturn;
         Shape shape = tensor.shape();
@@ -36,8 +36,6 @@ public class OngoingDetectionDirectionAware<T extends Comparable<T>> {
                     + " doesn't have requested detection direction class [" + clazz + "]");
         }
     }
-    
-
 
     public Iterable<T> changes() {
         /* TODO what with this logic. Should that be a separate class? I guess so... */

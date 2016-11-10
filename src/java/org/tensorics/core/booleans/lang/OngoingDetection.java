@@ -23,16 +23,16 @@ public class OngoingDetection {
 	 * @param <T
 	 *            extends Comparable<T>
 	 */
-	public <T extends Comparable<T>> OngoingBooleanDetection<T> inDirectionOf(Class<T> clazz) {
-		return new OngoingBooleanDetection<T>(clazz);
+	public <T extends Comparable<T>> OngoingBooleanDetectionDirectionAware<T> inDirectionOf(Class<T> clazz) {
+		return new OngoingBooleanDetectionDirectionAware<T>(clazz);
 	}
 
-	public <T> OngoingBooleanDetection inDirectionOf(Class<T> clazz, Comparator<T> comparator) {
+	public <T> OngoingBooleanDetectionDirectionAware inDirectionOf(Class<T> clazz, Comparator<T> comparator) {
 		throw new UnsupportedOperationException("Not implemented yet for ");
 	}
 	
-	public OngoingIterableBooleanDetection where(Iterable<Boolean> iterable) {
-	    return new OngoingIterableBooleanDetection(iterable);
+	public OngoingBooleanDetectionIterableAware where(Iterable<Boolean> iterable) {
+	    return new OngoingBooleanDetectionIterableAware(iterable);
 	}
 
 }
