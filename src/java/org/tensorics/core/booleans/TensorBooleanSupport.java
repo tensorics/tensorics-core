@@ -15,7 +15,7 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class TensorBooleanSupport {
 
-    public OngoingTensorBooleanAlgebra calcBoolean(Tensor<Boolean> tensor) {
+    public OngoingTensorBooleanAlgebra calcLogical(Tensor<Boolean> tensor) {
         return new OngoingTensorBooleanAlgebra(tensor);
     }
 

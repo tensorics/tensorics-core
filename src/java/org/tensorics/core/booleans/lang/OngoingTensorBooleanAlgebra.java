@@ -20,23 +20,12 @@ public class OngoingTensorBooleanAlgebra {
     }
 
     public OngoingTensorAwareBooleanAlgebra and() {
-        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(defaultRegistry()));
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor,
+                LogicalTensorOperationsRepository.and(defaultRegistry()));
     }
 
     public OngoingTensorAwareBooleanAlgebra and(OptionRegistry<ManipulationOption> registry) {
         return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(registry));
-    }
-
-    public OngoingTensorAwareBooleanAlgebra or() {
-        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(defaultRegistry()));
-    }
-
-    public OngoingTensorAwareBooleanAlgebra xor() {
-        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(defaultRegistry()));
-    }
-
-    public OngoingTensorAwareBooleanAlgebra nand() {
-        return new OngoingTensorAwareBooleanAlgebra(this.tensor, LogicalTensorOperationsRepository.and(defaultRegistry()));
     }
 
     public Tensor<Boolean> and(Tensor<Boolean> tensorRight) {
@@ -45,6 +34,23 @@ public class OngoingTensorBooleanAlgebra {
 
     public Tensor<Boolean> and(Tensor<Boolean> tensorRight, OptionRegistry<ManipulationOption> optionRegistry) {
         return LogicalTensorOperationsRepository.and(optionRegistry).perform(tensor, tensorRight);
+    }
+
+    // TODO AG: update the rest to the common syntax
+
+    public OngoingTensorAwareBooleanAlgebra or() {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor,
+                LogicalTensorOperationsRepository.and(defaultRegistry()));
+    }
+
+    public OngoingTensorAwareBooleanAlgebra xor() {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor,
+                LogicalTensorOperationsRepository.and(defaultRegistry()));
+    }
+
+    public OngoingTensorAwareBooleanAlgebra nand() {
+        return new OngoingTensorAwareBooleanAlgebra(this.tensor,
+                LogicalTensorOperationsRepository.and(defaultRegistry()));
     }
 
 }

@@ -16,12 +16,12 @@ public class BooleanSupport {
         return scalarBooleanSupport.calcLogical(bool);
     }
 
-    public OngoingTensorBooleanAlgebra calcLogical(Tensor<Boolean> tensor) {
-        return tensorBooleanSupport.calcBoolean(tensor);
-    }
-
     public OngoingIterableBooleanAlgebra calcLogical(Iterable<Boolean> iterable) {
         return iterableBooleanSupport.calcLogical(iterable);
+    }
+
+    public OngoingTensorBooleanAlgebra calcLogical(Tensor<Boolean> tensor) {
+        return tensorBooleanSupport.calcLogical(tensor);
     }
 
     public OngoingDetection detect() {
