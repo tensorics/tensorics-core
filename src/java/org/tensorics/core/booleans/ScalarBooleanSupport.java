@@ -1,12 +1,11 @@
 package org.tensorics.core.booleans;
 
-import org.tensorics.core.booleans.lang.OngoingScalarBooleanAlgebra;
+import org.tensorics.core.booleans.lang.OngoingBooleanScalarOperation;
 
 public class ScalarBooleanSupport {
 
-	
-	public OngoingScalarBooleanAlgebra calcLogical(Boolean bool){
-		return new OngoingScalarBooleanAlgebra(bool);
+	public OngoingBooleanScalarOperation calcLogical(Boolean left){
+		return new OngoingBooleanScalarOperation(left);
 	}
 	
 }

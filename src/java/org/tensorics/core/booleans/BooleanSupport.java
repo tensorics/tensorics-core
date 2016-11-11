@@ -1,31 +1,49 @@
 package org.tensorics.core.booleans;
 
+import static java.util.Objects.requireNonNull;
+
+import org.tensorics.core.booleans.lang.OngoingBooleanIterableOperation;
+import org.tensorics.core.booleans.lang.OngoingBooleanScalarOperation;
+import org.tensorics.core.booleans.lang.OngoingBooleanTensorOperation;
 import org.tensorics.core.booleans.lang.OngoingDetection;
-import org.tensorics.core.booleans.lang.OngoingIterableBooleanAlgebra;
-import org.tensorics.core.booleans.lang.OngoingScalarBooleanAlgebra;
-import org.tensorics.core.booleans.lang.OngoingTensorBooleanAlgebra;
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.tensor.Tensor;
 
 public class BooleanSupport {
 
-    private final ScalarBooleanSupport scalarBooleanSupport = new ScalarBooleanSupport();
-    private final IterableBooleanSupport iterableBooleanSupport = new IterableBooleanSupport();
-    private final TensorBooleanSupport tensorBooleanSupport = new TensorBooleanSupport();
+    private final OptionRegistry<ManipulationOption> optionRegistry;
+    private final ScalarBooleanSupport scalarBooleanSupport;
+    private final IterableBooleanSupport iterableBooleanSupport;
+    private final TensorBooleanSupport tensorBooleanSupport;
 
-    public OngoingScalarBooleanAlgebra calcLogical(Boolean bool) {
-        return scalarBooleanSupport.calcLogical(bool);
+    public BooleanSupport(OptionRegistry<ManipulationOption> optionRegistry) {
+        this.optionRegistry = requireNonNull(optionRegistry, "optionRegistry must not be null");
+
+        scalarBooleanSupport = new ScalarBooleanSupport();
+        iterableBooleanSupport = new IterableBooleanSupport();
+        tensorBooleanSupport = new TensorBooleanSupport(optionRegistry);
     }
 
-    public OngoingIterableBooleanAlgebra calcLogical(Iterable<Boolean> iterable) {
-        return iterableBooleanSupport.calcLogical(iterable);
+    public OngoingBooleanScalarOperation calcLogical(Boolean left) {
+        return scalarBooleanSupport.calcLogical(left);
     }
 
-    public OngoingTensorBooleanAlgebra calcLogical(Tensor<Boolean> tensor) {
-        return tensorBooleanSupport.calcLogical(tensor);
+    public OngoingBooleanIterableOperation calcLogical(Iterable<Boolean> leftIterable) {
+        return iterableBooleanSupport.calcLogical(leftIterable);
     }
 
-    public OngoingDetection detect() {
-        return tensorBooleanSupport.detect();
+    public OngoingBooleanTensorOperation calcLogical(Tensor<Boolean> leftTensor) {
+        return tensorBooleanSupport.calcLogical(leftTensor);
+    }
+
+    public OngoingDetection detectWhere(Tensor<Boolean> tensor) {
+        return tensorBooleanSupport.detectWhere(tensor);
+    }
+
+    public BooleanSupport with(ManipulationOption option) {
+        requireNonNull(option, "option must not be null");
+        return new BooleanSupport(optionRegistry.with(option));
     }
 
 }

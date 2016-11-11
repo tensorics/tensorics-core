@@ -4,38 +4,37 @@
 
 package org.tensorics.core.booleans;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.junit.Test;
-import org.tensorics.core.booleans.operations.LogicalTensorOperationsRepository;
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.commons.options.OptionRegistry;
+import org.tensorics.core.lang.ManipulationOptions;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.options.IntersectionShapingStrategy;
 
-public class BooleanSupoportTest extends BooleanSupport {
+public class BooleanSupportTest extends BooleanSupport {
 
-    private static final OptionRegistry<ManipulationOption> NOT_DEFAULT_REGISTRY = LogicalTensorOperationsRepository
-            .defaultRegistry(Collections.singletonList(IntersectionShapingStrategy.getInstance()));
+    private static final IntersectionShapingStrategy NON_DEFAULT_SHAPING = IntersectionShapingStrategy.get();
 
-    private static final OptionRegistry<ManipulationOption> DEFAULT_REGISTRY = LogicalTensorOperationsRepository
-            .defaultRegistry();
+    private static final OptionRegistry<ManipulationOption> DEFAULT_REGISTRY = ManipulationOptions
+            .defaultStructuralOnly();
+
+    public BooleanSupportTest() {
+        super(DEFAULT_REGISTRY);
+    }
 
     private static final int CHANGE_OF_THE_SIGNAL = 51;
 
     @Test
     public void testBooleanScalarAlgebra() {
-
-        /* both dsl flows are actually possible */
-
-        Boolean with = calcLogical(true).and().with(false);
-
-        Boolean with2 = calcLogical(true).and(false);
+        Boolean with = calcLogical(true).and(false);
+        assertFalse(with);
     }
 
     /**
@@ -45,7 +44,7 @@ public class BooleanSupoportTest extends BooleanSupport {
     public void testBooleanIterableAlgebra() {
         Boolean[] test1 = new Boolean[] { true, true, false };
         Boolean[] test2 = new Boolean[] { true, true, false };
-        calcLogical(Arrays.asList(test1)).and().with(Arrays.asList(test2));
+        calcLogical(Arrays.asList(test1)).and(Arrays.asList(test2));
     }
 
     @Test
@@ -57,17 +56,17 @@ public class BooleanSupoportTest extends BooleanSupport {
         /* few dsl flows are actually possible (and not contradicting!) */
 
         /* one way */
-        Tensor<Boolean> resultAND2 = calcLogical(tensorTrue).and().with(tensorTrue);
-        Tensor<Boolean> resultANDWith = calcLogical(tensorTrue).and(NOT_DEFAULT_REGISTRY).with(tensorTrue);
+        Tensor<Boolean> resultAND2 = calcLogical(tensorTrue).and(tensorTrue);
+        Tensor<Boolean> resultANDWith = with(NON_DEFAULT_SHAPING).calcLogical(tensorTrue).and(tensorTrue);
 
         /* other way */
         Tensor<Boolean> resultANDOther = calcLogical(tensorTrue).and(tensorTrue);
-        Tensor<Boolean> resultANDOther2 = calcLogical(tensorTrue).and(tensorTrue, NOT_DEFAULT_REGISTRY);
+        Tensor<Boolean> resultANDOther2 = with(NON_DEFAULT_SHAPING).calcLogical(tensorTrue).and(tensorTrue);
 
         /* etc */
 
-        Tensor<Boolean> resultOR = calcLogical(tensorTrue).or().with(tensorFalse);
-        Tensor<Boolean> resultXOR = calcLogical(tensorFalseOther).xor().with(tensorFalse);
+        Tensor<Boolean> resultOR = calcLogical(tensorTrue).or(tensorFalse);
+        Tensor<Boolean> resultXOR = calcLogical(tensorFalseOther).xor(tensorFalse);
     }
 
     @Test
@@ -75,7 +74,7 @@ public class BooleanSupoportTest extends BooleanSupport {
         Tensor<Boolean> tensorFalse = createSimpleOneComparableDimensionTensorOf(false, 6, 1);
         Tensor<Boolean> tensorFalseOther = createSimpleOneComparableDimensionTensorOf(false, 6, 2);
         /* explicit shaping strategy to apply but */
-        calcLogical(tensorFalseOther).and(tensorFalse, NOT_DEFAULT_REGISTRY);
+        with(NON_DEFAULT_SHAPING).calcLogical(tensorFalseOther).and(tensorFalse);
     }
 
     @Test
@@ -83,7 +82,7 @@ public class BooleanSupoportTest extends BooleanSupport {
         Tensor<Boolean> tensorTrue = createSimpleOneComparableDimensionTensorOf(true, 100, 1);
         Tensor<Boolean> result = calcLogical(tensorTrue).and(tensorTrue);
         System.out.println(result);
-        Iterable<Integer> changes = detect().inDirectionOf(Integer.class).where(tensorTrue).changes();
+        Iterable<Integer> changes = detectWhere(tensorTrue).changesAlong(Integer.class);
         System.out.println(changes);
         assertTrue(changes.iterator().hasNext());
         assertTrue(changes.iterator().next().equals(CHANGE_OF_THE_SIGNAL));
@@ -95,7 +94,7 @@ public class BooleanSupoportTest extends BooleanSupport {
         Tensor<Boolean> result = calcLogical(tensorTrue).and(tensorTrue);
 
         System.out.println(result);
-        Iterable<Integer> changes = detect().inDirectionOf(Integer.class).where(tensorTrue).changes();
+        Iterable<Integer> changes = detectWhere(tensorTrue).changesAlong(Integer.class);
         System.out.println(changes);
         assertTrue(changes.iterator().hasNext());
         assertTrue(changes.iterator().next().equals(11));
@@ -105,7 +104,7 @@ public class BooleanSupoportTest extends BooleanSupport {
     public void testWrongDirection() {
         Tensor<Boolean> tensor = createSimpleOneComparableDimensionTensorOf(true, 2, 1);
         @SuppressWarnings("unused")
-        Iterable<Double> changes2 = detect().inDirectionOf(Double.class).where(tensor).changes();
+        Iterable<Double> changes2 = detectWhere(tensor).changesAlong(Double.class);
         // Iterable<String> changes = detectWhere(tensor).changes().inDirectionOf(String.class);
     }
 
@@ -113,7 +112,7 @@ public class BooleanSupoportTest extends BooleanSupport {
     public void testTooLargeTensor() {
         Tensor<Boolean> tensorTrue = createTensorOf(true);
         @SuppressWarnings("unused")
-        Iterable<Integer> changes2 = detect().inDirectionOf(Integer.class).where(tensorTrue).changes();
+        Iterable<Integer> changes2 = detectWhere(tensorTrue).changesAlong(Integer.class);
     }
 
     private static Tensor<Boolean> createTensorOf(boolean b) {

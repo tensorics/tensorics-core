@@ -4,8 +4,12 @@
 
 package org.tensorics.core.booleans;
 
+import static java.util.Objects.requireNonNull;
+
+import org.tensorics.core.booleans.lang.OngoingBooleanTensorOperation;
 import org.tensorics.core.booleans.lang.OngoingDetection;
-import org.tensorics.core.booleans.lang.OngoingTensorBooleanAlgebra;
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.tensor.Tensor;
 
 /**
@@ -15,12 +19,18 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class TensorBooleanSupport {
 
-    public OngoingTensorBooleanAlgebra calcLogical(Tensor<Boolean> tensor) {
-        return new OngoingTensorBooleanAlgebra(tensor);
+    private final OptionRegistry<ManipulationOption> optionRegistry;
+
+    public TensorBooleanSupport(OptionRegistry<ManipulationOption> optionRegistry) {
+        this.optionRegistry = requireNonNull(optionRegistry);
     }
 
-    public OngoingDetection detect() {
-        return new OngoingDetection();
+    public OngoingBooleanTensorOperation calcLogical(Tensor<Boolean> leftTensor) {
+        return new OngoingBooleanTensorOperation(optionRegistry, leftTensor);
+    }
+
+    public OngoingDetection detectWhere(Tensor<Boolean> tensor) {
+        return new OngoingDetection(tensor);
     }
 
 }

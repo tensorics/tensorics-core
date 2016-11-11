@@ -45,8 +45,17 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class IntersectionShapingStrategy implements ShapingStrategy {
 
-    public static IntersectionShapingStrategy getInstance() {
-        return new IntersectionShapingStrategy();
+    private static final IntersectionShapingStrategy INSTANCE = new IntersectionShapingStrategy();
+
+    /**
+     * Avoids more then one instance. Use method {@link #get()} the get the instance.
+     */
+    private IntersectionShapingStrategy() {
+        /* private constructor to avoid instantiation */
+    }
+
+    public static IntersectionShapingStrategy get() {
+        return INSTANCE;
     }
 
     @Override

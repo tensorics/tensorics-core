@@ -70,14 +70,28 @@ public final class ManipulationOptions {
     @SuppressWarnings("deprecation")
     public static <T> OptionRegistry<ManipulationOption> defaultOptions(ExtendedField<T> field) {
         return ImmutableOptionRegistry.of(ImmutableList.of(//
-                new IntersectionShapingStrategy(), //
+                IntersectionShapingStrategy.get(), //
                 new BroadcastMissingDimensionsStrategy(), //
                 new RequireBothValidStrategy(), //
                 new UncorrelatedErrorPropagationStrategy<>(field), //
                 new JScienceQuantificationStrategy<>(field.cheating()), //
-                new LeftContextPreservedStrategy(), 
+                new LeftContextPreservedStrategy(),
                 new ImmutableConfidenceLevel<>(field.cheating().fromDouble(DEFAULT_CONFIDENCE_LEVEL)),
                 new LinearInterpolationStrategy<>(field)));
     }
     // end::classdef[]
+
+    /**
+     * Creates a new registry of manipulation options, which will contain only options which concern structural
+     * operations. This is only useful for support classes which only require structural operations. For anything else
+     * such a registry will throw in case and option is asked which is not present.
+     * 
+     * @return a new instance of the option registry
+     */
+    public static OptionRegistry<ManipulationOption> defaultStructuralOnly() {
+        return ImmutableOptionRegistry.of(ImmutableList.of(//
+                IntersectionShapingStrategy.get(), //
+                new BroadcastMissingDimensionsStrategy(), //
+                new LeftContextPreservedStrategy()));
+    }
 }
