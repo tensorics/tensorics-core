@@ -39,8 +39,8 @@ public class TensorChangeDetectionOperation<C> implements Conversion<Tensor<Bool
 
         if (shape.dimensionality() > 1) {
             throw new IllegalArgumentException(
-                    "Detecting changes is currently only supported for 1-dimensional tensors. However, the provided tensor has more than "
-                            + shape.dimensionality() + " dimension.");
+                    "Detecting changes is currently only supported for 1-dimensional tensors. However, the provided tensor has "
+                            + shape.dimensionality() + " dimensions.");
         }
         if (!shape.dimensionSet().contains(direction)) {
             throw new IllegalArgumentException("Provided tensor " + tensor.shape().dimensionSet()
