@@ -26,6 +26,18 @@ import org.tensorics.core.tensor.Context;
 
 public class LeftContextPreservedStrategy implements ContextPropagationStrategy {
 
+    /**
+     * @deprecated use factory method
+     */
+    @Deprecated
+    public LeftContextPreservedStrategy() {
+        /* nothing, to be changed to private */
+    }
+
+    public static LeftContextPreservedStrategy get() {
+        return new LeftContextPreservedStrategy();
+    }
+
     @Override
     public Context contextForLeftRight(Context leftContext, Context rightContext) {
         return leftContext;

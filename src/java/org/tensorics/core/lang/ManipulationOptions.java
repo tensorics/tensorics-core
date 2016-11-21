@@ -32,6 +32,7 @@ import org.tensorics.core.quantity.options.JScienceQuantificationStrategy;
 import org.tensorics.core.quantity.options.RequireBothValidStrategy;
 import org.tensorics.core.quantity.options.UncorrelatedErrorPropagationStrategy;
 import org.tensorics.core.tensor.options.BroadcastMissingDimensionsStrategy;
+import org.tensorics.core.tensor.options.ExactShapesOrOneZeroStrategy;
 import org.tensorics.core.tensor.options.IntersectionShapingStrategy;
 import org.tensorics.core.tensor.options.LeftContextPreservedStrategy;
 
@@ -71,11 +72,11 @@ public final class ManipulationOptions {
     public static <T> OptionRegistry<ManipulationOption> defaultOptions(ExtendedField<T> field) {
         return ImmutableOptionRegistry.of(ImmutableList.of(//
                 IntersectionShapingStrategy.get(), //
-                new BroadcastMissingDimensionsStrategy(), //
+                BroadcastMissingDimensionsStrategy.get(), //
                 new RequireBothValidStrategy(), //
                 new UncorrelatedErrorPropagationStrategy<>(field), //
                 new JScienceQuantificationStrategy<>(field.cheating()), //
-                new LeftContextPreservedStrategy(),
+                LeftContextPreservedStrategy.get(),
                 new ImmutableConfidenceLevel<>(field.cheating().fromDouble(DEFAULT_CONFIDENCE_LEVEL)),
                 new LinearInterpolationStrategy<>(field)));
     }
@@ -84,14 +85,17 @@ public final class ManipulationOptions {
     /**
      * Creates a new registry of manipulation options, which will contain only options which concern structural
      * operations. This is only useful for support classes which only require structural operations. For anything else
-     * such a registry will throw in case and option is asked which is not present.
+     * such a registry will throw in case and option is asked which is not present. <lu>
+     * <li>{@link ExactShapesOrOneZeroStrategy}</li>
+     * <li>{@link BroadcastMissingDimensionsStrategy}</li>
+     * <li>{@link LeftContextPreservedStrategy}</li></lu>
      * 
      * @return a new instance of the option registry
      */
     public static OptionRegistry<ManipulationOption> defaultStructuralOnly() {
         return ImmutableOptionRegistry.of(ImmutableList.of(//
-                IntersectionShapingStrategy.get(), //
-                new BroadcastMissingDimensionsStrategy(), //
-                new LeftContextPreservedStrategy()));
+                ExactShapesOrOneZeroStrategy.get(), //
+                BroadcastMissingDimensionsStrategy.get(), //
+                LeftContextPreservedStrategy.get()));
     }
 }

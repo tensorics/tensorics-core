@@ -34,7 +34,15 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class ExactShapesOrOneZeroStrategy implements ShapingStrategy {
 
-    public static ExactShapesOrOneZeroStrategy getInstance() {
+    /**
+     * @deprecated use the factory methods {@link #get()}
+     */
+    @Deprecated
+    public ExactShapesOrOneZeroStrategy() {
+        /* nothing, to be changed to private */
+    }
+
+    public static ExactShapesOrOneZeroStrategy get() {
         return new ExactShapesOrOneZeroStrategy();
     }
 
@@ -62,4 +70,5 @@ public class ExactShapesOrOneZeroStrategy implements ShapingStrategy {
     public Class<ShapingStrategy> getMarkerInterface() {
         return ShapingStrategy.class;
     }
+
 }
