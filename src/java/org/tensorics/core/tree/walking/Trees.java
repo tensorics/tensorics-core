@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.Node;
 import org.tensorics.core.tree.domain.Path;
 import org.tensorics.core.tree.domain.RebuildableNode;
@@ -134,6 +135,27 @@ public final class Trees {
             throw new PathDoesNotExistException(childNode, ancestorNode);
         }
         return paths;
+    }
+
+    /**
+     * Searches and returns all the {@link Node}s that are the instance of a given classToFind starting from rootNode,
+     * that represents the top tree node.
+     * 
+     * @param rootNode a node to start search from
+     * @param classToFind an class to find within the nodes
+     * @return a collection of nodes that are instance of classToFind
+     */
+    public static <C, T extends Node> Collection<C> getNodesOfClass(T rootNode, Class<C> classToFind) {
+        List<C> nodesToReturn = new ArrayList<>();
+        Trees.walkParentAfterChildren(rootNode, new EveryNodeCallback() {
+            @Override
+            public void onEvery(Node node) {
+                if (classToFind.isAssignableFrom(node.getClass())) {
+                    nodesToReturn.add(classToFind.cast(node));
+                }
+            }
+        });
+        return nodesToReturn;
     }
 
     /**
