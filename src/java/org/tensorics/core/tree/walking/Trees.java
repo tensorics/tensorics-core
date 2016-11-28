@@ -29,7 +29,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.Node;
 import org.tensorics.core.tree.domain.Path;
 import org.tensorics.core.tree.domain.RebuildableNode;
@@ -43,7 +42,6 @@ import com.google.common.reflect.TypeToken;
  * 
  * @author kfuchsbe, agorzaws
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class Trees {
 
     private static final TreeWalker PARENT_AFTER_CHILDREN_WALKER = new ParentAfterChildrenWalker();
@@ -138,27 +136,6 @@ public final class Trees {
     }
 
     /**
-     * Searches and returns all the {@link Node}s that are the instance of a given classToFind starting from rootNode,
-     * that represents the top tree node.
-     * 
-     * @param rootNode a node to start search from
-     * @param classToFind an class to find within the nodes
-     * @return a collection of nodes that are instance of classToFind
-     */
-    public static <C, T extends Node> Collection<C> getNodesOfClass(T rootNode, Class<C> classToFind) {
-        List<C> nodesToReturn = new ArrayList<>();
-        Trees.walkParentAfterChildren(rootNode, new EveryNodeCallback() {
-            @Override
-            public void onEvery(Node node) {
-                if (classToFind.isAssignableFrom(node.getClass())) {
-                    nodesToReturn.add(classToFind.cast(node));
-                }
-            }
-        });
-        return nodesToReturn;
-    }
-
-    /**
      * Searches for all bottom nodes of the tree. Bottom nodes are those, which are furthest away from the startingNode
      * on a given branch. (In other words, those with no more children)
      * 
@@ -197,7 +174,7 @@ public final class Trees {
         return newRebuildingContext.getUpdatedOrSame(rootNode);
     }
 
-    /**
+	/**
      * walks through the tree, starting from the given rootNode and collects all the nodes which implement the given
      * class.
      * 
@@ -205,8 +182,8 @@ public final class Trees {
      * @param nodeClassToFind the class of the nodes to find
      * @return a set of all found nodes, which implement the given class
      */
-    public static <T extends Node> Set<T> findNodesOfClass(Node rootNode, final Class<T> nodeClassToFind) {
-        final Set<T> foundNodes = new HashSet<>();
+    public static <T extends Node, C> Set<C> findNodesOfClass(T rootNode, final Class<C> nodeClassToFind) {
+        final Set<C> foundNodes = new HashSet<>();
         walkParentAfterChildren(rootNode, new EveryNodeCallback() {
             @Override
             public void onEvery(Node node) {
@@ -275,7 +252,7 @@ public final class Trees {
     @SuppressWarnings("unchecked")
     private static <T> T findFirstNodeOfType(List<Node> currentPath, TypeToken<T> nodeToken) {
         for (Node actualCheckedNode : currentPath) {
-            if (nodeToken.isAssignableFrom(actualCheckedNode.getClass())) {
+            if (nodeToken.isSupertypeOf(actualCheckedNode.getClass())) {
                 return (T) actualCheckedNode;
             }
         }
