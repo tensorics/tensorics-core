@@ -42,7 +42,6 @@ import com.google.common.reflect.TypeToken;
  * 
  * @author kfuchsbe, agorzaws
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class Trees {
 
     private static final TreeWalker PARENT_AFTER_CHILDREN_WALKER = new ParentAfterChildrenWalker();
@@ -175,7 +174,7 @@ public final class Trees {
         return newRebuildingContext.getUpdatedOrSame(rootNode);
     }
 
-    /**
+	/**
      * walks through the tree, starting from the given rootNode and collects all the nodes which implement the given
      * class.
      * 
@@ -183,8 +182,8 @@ public final class Trees {
      * @param nodeClassToFind the class of the nodes to find
      * @return a set of all found nodes, which implement the given class
      */
-    public static <T extends Node> Set<T> findNodesOfClass(Node rootNode, final Class<T> nodeClassToFind) {
-        final Set<T> foundNodes = new HashSet<>();
+    public static <T extends Node, C> Set<C> findNodesOfClass(T rootNode, final Class<C> nodeClassToFind) {
+        final Set<C> foundNodes = new HashSet<>();
         walkParentAfterChildren(rootNode, new EveryNodeCallback() {
             @Override
             public void onEvery(Node node) {
@@ -253,7 +252,7 @@ public final class Trees {
     @SuppressWarnings("unchecked")
     private static <T> T findFirstNodeOfType(List<Node> currentPath, TypeToken<T> nodeToken) {
         for (Node actualCheckedNode : currentPath) {
-            if (nodeToken.isAssignableFrom(actualCheckedNode.getClass())) {
+            if (nodeToken.isSupertypeOf(actualCheckedNode.getClass())) {
                 return (T) actualCheckedNode;
             }
         }
