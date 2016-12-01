@@ -174,16 +174,17 @@ public final class Trees {
         return newRebuildingContext.getUpdatedOrSame(rootNode);
     }
 
-	/**
+    /**
      * walks through the tree, starting from the given rootNode and collects all the nodes which implement the given
-     * class.
+     * class. The given class is not restricted to s subclass of a node, because it could potentially be a marker
+     * interface. However, the returned set will implement both, Node and the queried type.
      * 
      * @param rootNode the node from which to start the search
      * @param nodeClassToFind the class of the nodes to find
      * @return a set of all found nodes, which implement the given class
      */
-    public static <T extends Node, C> Set<C> findNodesOfClass(T rootNode, final Class<C> nodeClassToFind) {
-        final Set<C> foundNodes = new HashSet<>();
+    public static <T> Set<T> findNodesOfClass(Node rootNode, final Class<T> nodeClassToFind) {
+        final Set<T> foundNodes = new HashSet<>();
         walkParentAfterChildren(rootNode, new EveryNodeCallback() {
             @Override
             public void onEvery(Node node) {
