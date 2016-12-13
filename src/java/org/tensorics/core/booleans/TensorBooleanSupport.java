@@ -13,7 +13,8 @@ import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.tensor.Tensor;
 
 /**
- * A class (to be extended or instantiated) that provides an access to the basic Boolean operations.
+ * A class (to be extended or instantiated) that provides an access to the basic Boolean operations. <br>
+ * <b>Note:</b> Use through the delegation class {@link BooleanSupport}
  * 
  * @author agorzaws
  */

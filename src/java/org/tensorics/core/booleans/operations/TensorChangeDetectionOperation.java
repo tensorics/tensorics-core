@@ -14,6 +14,13 @@ import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
+/**
+ * The detection class for changes in Tensors. <br>
+ * So far it only supports one dimension tensors.
+ * 
+ * @author agorzaws
+ * @param <C> type values in the tensor.
+ */
 public class TensorChangeDetectionOperation<C> implements Conversion<Tensor<Boolean>, Iterable<C>> {
 
     private final Class<C> direction;
