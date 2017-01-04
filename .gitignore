@@ -7,4 +7,4 @@ build/
 .project
 .settings/
 cbng-build.log
-.idea
+.idea/

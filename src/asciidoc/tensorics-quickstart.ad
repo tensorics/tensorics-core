@@ -11,8 +11,8 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :source-highlighter: highlightjs
 :examplesource: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples
 :sourcecodedir: {{ site.tensorics-core-dir }}/src/java/org/tensorics/core
-:javadoc-baseurl: http://tensorics.github.io/javadoc/org/tensorics
-:simple-meteo-example: src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
+:javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics
+:simple-meteo-example: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
 
 == Tensors
 The central object of tensorics is a ++Tensor++. The simplest way to imagine a tensor might be to see it as 
