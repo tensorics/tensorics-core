@@ -1,16 +1,16 @@
 ---
 layout: default
 title: Tensorics Quickstart Guide
-root: ../
 ---
 = Tensorics Quickstart Guide
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
 :icons: font
 :sectanchors:
+:page-liquid:
 :experimental:
 :source-highlighter: highlightjs
-:examplesource: src/examples/org/tensorics/core/examples
-:sourcecodedir: src/java/org/tensorics/core
+:examplesource: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples
+:sourcecodedir: {{ site.tensorics-core-dir }}/src/java/org/tensorics/core
 :javadoc-baseurl: http://tensorics.github.io/javadoc/org/tensorics
 :simple-meteo-example: src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
 
