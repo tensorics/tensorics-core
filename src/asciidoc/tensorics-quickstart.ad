@@ -2,6 +2,7 @@
 layout: default
 title: Tensorics Quickstart Guide
 permalink: /tensorics-core/quickstart/
+project: "Tensorics Core"
 ---
 = Tensorics Quickstart Guide
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>

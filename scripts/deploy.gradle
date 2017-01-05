@@ -47,7 +47,7 @@ task configureSonatypeDeployment(type: DefaultTask) << {
 		repositories {
 			mavenDeployer {
 				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-				
+
 				repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
 					authentication(userName: ossrhUsername, password: ossrhPassword)
 				}
@@ -55,13 +55,13 @@ task configureSonatypeDeployment(type: DefaultTask) << {
 				snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
 					authentication(userName: ossrhUsername, password: ossrhPassword)
 				}
-			
+
 				pom.project {
 					name 'tensorics-core'
 					packaging 'jar'
 					description 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.'
 					url 'http://www.tensorics.org'
-					
+
 					groupId 'org.tensorics'
 					artifactId 'tensorics-core'
 					version getVersion()
@@ -85,17 +85,26 @@ task configureSonatypeDeployment(type: DefaultTask) << {
 							name 'Andrea Calia'
 							email 'andrea.calia.46@gmail.com'
 						}
-						developer {
-							id 'cesar.aguilera'
-							name 'Cesar Aguilera'
-							email 'cesar.aguilera.p@gmail.com'
+            developer {
+              id 'kaifox'
+              name 'Kajetan Fuchsberger'
+              email 'kajetan.fuchsberger@gmail.com'
+						}
+            developer {
+							id 'agorzawski'
+							name 'Arek Gorzawski'
+							email 'agorzawski@gmail.com'
+						}
+            developer {
+							id 'michi42'
+							name 'Michi Hostettler'
+							email 'michi.hostettler@cern.ch'
 						}
 					}
-
 				}
 			}
 		}
-	}	
+	}
 }
 
 // Define the deploying task and defining the order for the dependencies

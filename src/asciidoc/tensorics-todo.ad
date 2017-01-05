@@ -2,6 +2,7 @@
 layout: default
 title: Tensorics Todo
 permalink: /tensorics-core/todo/
+project: "Tensorics Core"
 ---
 = Tensorics Todo
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
