@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Tensorics Todo
+permalink: /tensorics-core/todo/
 ---
 = Tensorics Todo
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
@@ -14,9 +15,9 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics/core/tensor
 
 ---
- 
-IMPORTANT: This is a list of things to be included, at near future. 
- 
+
+IMPORTANT: This is a list of things to be included, at near future.
+
 == TODOs
 
 === Tensors
@@ -25,5 +26,3 @@ IMPORTANT: This is a list of things to be included, at near future.
 
 
 === Tensorbackeds
-
-
