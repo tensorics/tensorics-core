@@ -143,10 +143,10 @@ which provide access to the data of the tensor. The most important ones of them 
 |===
 |clause|description
 
-|link:{javadoc-baseurl}/core/tensor/lang/OngoingTensorManipulation.html#get-java.lang.Object...-[from(tensor).get(Object... coordinates);]
+|link:{javadoc-baseurl}/core/tensor/lang/OngoingTensorManipulation.html#get-java.lang.Object.%2e.-[from(tensor).get(Object... coordinates);]
 |Retrieves the value at the given coordinates.
 
-|link:{javadoc-baseurl}/core/tensor/lang/OngoingTensorManipulation.html#extract-java.lang.Object...-[from(tensor).extract(Object... coordinates);]
+|link:{javadoc-baseurl}/core/tensor/lang/OngoingTensorManipulation.html#extract-java.lang.Object.%2e.-[from(tensor).extract(Object... coordinates);]
 |Extracts the sub tensor at the given coordinates.
 |===
 
