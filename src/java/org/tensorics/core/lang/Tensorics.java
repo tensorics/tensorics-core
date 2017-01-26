@@ -111,14 +111,6 @@ public final class Tensorics {
     }
 
     /**
-     * @see Tensorbackeds#mergeTo(Set, Class)
-     */
-    public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Set<TB> toBeMerged,
-            Class<TBOUT> classToReturn) {
-        return Tensorbackeds.mergeTo(toBeMerged, classToReturn);
-    }
-
-    /**
      * @see ImmutableTensor#builder(Set)
      */
     public static <T> TensorBuilder<T> builder(Set<Class<?>> dimensions) {

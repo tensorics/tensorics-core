@@ -24,6 +24,7 @@ package org.tensorics.core.lang;
 
 import static org.junit.Assert.assertEquals;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
+import static org.tensorics.core.tensorbacked.Tensorbackeds.construct;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -37,7 +38,6 @@ import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
-import org.tensorics.core.tensorbacked.Tensorbackeds;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -123,7 +123,7 @@ public class TensorsTest {
         Set<TensorBackedTwoCoordinates> toMerge = new HashSet<>();
         toMerge.add(new TensorBackedTwoCoordinates(tensor1));
         toMerge.add(new TensorBackedTwoCoordinates(tensor2));
-        TensorBackedThreeCoordinates merged = Tensorbackeds.mergeTo(toMerge, TensorBackedThreeCoordinates.class);
+        TensorBackedThreeCoordinates merged = construct(TensorBackedThreeCoordinates.class).byMergingTb(toMerge);
         Shape shapeOfMerged = merged.tensor().shape();
         assertEquals(3, shapeOfMerged.dimensionality());
     }
