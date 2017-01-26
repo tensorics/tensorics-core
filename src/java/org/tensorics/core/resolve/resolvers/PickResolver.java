@@ -12,7 +12,6 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  * Resolver for {@link PickExpression} expression.
  * 
  * @see PickExpression
- * @see PickResolverTest
  * @author acalia 
  * @param <T> the type of the data to pick
  */
