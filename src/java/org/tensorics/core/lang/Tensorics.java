@@ -140,13 +140,6 @@ public final class Tensorics {
     }
 
     /**
-     * @see ImmutableTensor#fromMap(Set, Map)
-     */
-    public static <T> Tensor<T> fromMap(Map<Position, T> map) {
-        return ImmutableTensor.fromMap(map);
-    }
-
-    /**
      * @see ImmutableTensor#copyOf(Tensor)
      */
     public static <T> Tensor<T> copyOf(Tensor<T> tensor) {

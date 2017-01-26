@@ -22,18 +22,18 @@
 
 package org.tensorics.core.tensor.stream;
 
+import static org.tensorics.core.tensorbacked.Tensorbackeds.construct;
+
 import java.util.Map;
 import java.util.function.Function;
 
-import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensorbacked.Tensorbacked;
-import org.tensorics.core.tensorbacked.TensorbackedInternals;
 
 /**
  * An {@link AbstractTensoricCollector} implementation to collect to an arbitrary {@link Tensorbacked} class.
  * 
- * @author mihostet 
+ * @author mihostet
  * @param <V> steam elements
  * @param <T> elements of the tensor in the tensorbacked
  * @param <TB> tensorbacked class to produce, must extend Tensorbacked<T>
@@ -50,8 +50,7 @@ public class TensorbackedCollector<V, T, TB extends Tensorbacked<T>> extends Abs
 
     @Override
     public Function<Map<Position, T>, TB> finisher() {
-        return map -> TensorbackedInternals.createBackedByTensor(tensorBackedClass, Tensorics.fromMap(map));
-
+        return construct(tensorBackedClass)::fromMap;
     }
 
 }

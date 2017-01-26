@@ -22,12 +22,15 @@
 
 package org.tensorics.core.tensor.stream;
 
+import static java.util.Collections.emptySet;
 import static org.junit.Assert.assertEquals;
 import static org.tensorics.core.tensor.stream.TensorStreamFilters.byValue;
 import static org.tensorics.core.tensor.stream.TensorStreamMappers.coordinatesOfType;
 import static org.tensorics.core.tensor.stream.TensorStreamMappers.values;
 import static org.tensorics.core.tensor.stream.TensorStreams.toTensor;
 import static org.tensorics.core.tensor.stream.TensorStreams.toTensorbacked;
+
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -78,7 +81,7 @@ public class TensorStreamsTest {
     @Test
     public void test() {
         Tensor<Double> mapped = Tensorics.stream(tensor).map(values(e -> e + 1)).filter(byValue(e -> e > 5))
-                .collect(toTensor());
+                .collect(toTensor(ImmutableSet.of(Double.class, Integer.class)));
 
         assertEquals(1, mapped.shape().size());
         assertEquals(43.42, mapped.get(23.0, 1), 1e-6);
@@ -100,16 +103,16 @@ public class TensorStreamsTest {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("duplicate entry");
 
-        ImmutableList.of(1, 2, 3).stream().collect(toTensor(any -> Position.empty(), v -> v));
+        ImmutableList.of(1, 2, 3).stream().collect(toTensor(any -> Position.empty(), v -> v, emptySet()));
     }
 
     @Test
     public void inconsistentPositionThrows() {
         thrown.expect(IllegalArgumentException.class);
-        //thrown.expectMessage("same dimensions");
-        thrown.expectMessage("assignable");
-        Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };        
-        ImmutableList.of(0, 1, 2).stream().collect(toTensor(i -> positions[i], v -> v));
+        thrown.expectMessage("not assignable");
+        Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };
+        Tensor<Integer> t1 = ImmutableList.of(0, 1, 2).stream()
+                .collect(toTensor(i -> positions[i], v -> v, Collections.singleton(Integer.class)));
     }
 
 }

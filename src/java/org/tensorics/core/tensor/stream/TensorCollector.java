@@ -23,6 +23,7 @@
 package org.tensorics.core.tensor.stream;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.tensorics.core.lang.Tensorics;
@@ -32,19 +33,22 @@ import org.tensorics.core.tensor.Tensor;
 /**
  * An {@link AbstractTensoricCollector} implementation to produce a generic tensor
  * 
- * @author mihostet 
+ * @author mihostet
  * @param <V> stream elements
  * @param <T> elements of the tensor (will build a Tensor<T>)
  */
 public class TensorCollector<V, T> extends AbstractTensoricCollector<V, T, Tensor<T>> {
 
-    public TensorCollector(Function<V, Position> positionMapper, Function<V, T> valueMapper) {
+    private final Set<Class<?>> dimensions;
+
+    public TensorCollector(Set<Class<?>> dimensions, Function<V, Position> positionMapper, Function<V, T> valueMapper) {
         super(positionMapper, valueMapper);
+        this.dimensions = dimensions;
     }
 
     @Override
     public Function<Map<Position, T>, Tensor<T>> finisher() {
-        return Tensorics::fromMap;
+        return m -> Tensorics.fromMap(dimensions, m);
     }
 
 }

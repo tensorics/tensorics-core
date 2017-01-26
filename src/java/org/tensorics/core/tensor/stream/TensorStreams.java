@@ -23,6 +23,7 @@
 package org.tensorics.core.tensor.stream;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -52,25 +53,28 @@ public final class TensorStreams {
     }
 
     /**
-     * Build a collector to collect a stream of Entry<Position,T> to a generic Tensor<T>
+     * Build a collector to collect a stream of Entry<Position,T> to a generic Tensor<T> of the dimensions defined in
+     * the set of classes.
      * 
+     * @param dimensions the dimensions of the tensor to construct
      * @return
      */
-    public static <T> TensorCollector<Map.Entry<Position, T>, T> toTensor() {
-        return new TensorCollector<>(Map.Entry::getKey, Map.Entry::getValue);
+    public static <T> TensorCollector<Map.Entry<Position, T>, T> toTensor(Set<Class<?>> dimensions) {
+        return new TensorCollector<>(dimensions, Map.Entry::getKey, Map.Entry::getValue);
     }
 
     /**
-     * Build a collector to collect an arbitrary stream to a generic Tensor<T>. Functions mapping the values to
-     * {@link Position} and T must be provided.
+     * Build a collector to collect an arbitrary stream to a generic Tensor<T> of the given dimensions. Functions
+     * mapping the values to {@link Position} and T must be provided.
      * 
      * @param positionMapper function mapping stream values to Position
      * @param valueMapper function mapping stream values to tensor values
+     * @param dimensions the dimensions of the tensor to construct
      * @return
      */
     public static <V, T> TensorCollector<V, T> toTensor(Function<V, Position> positionMapper,
-            Function<V, T> valueMapper) {
-        return new TensorCollector<>(positionMapper, valueMapper);
+            Function<V, T> valueMapper, Set<Class<?>> dimensions) {
+        return new TensorCollector<>(dimensions, positionMapper, valueMapper);
     }
 
     /**

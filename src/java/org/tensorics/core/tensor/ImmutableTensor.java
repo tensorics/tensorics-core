@@ -280,7 +280,9 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
         @Override
         public void putAllMap(Map<Position, S> newEntries) {
-            this.entries.putAll(newEntries);
+            for (java.util.Map.Entry<Position, S> entry : newEntries.entrySet()) {
+                this.put(entry);
+            }
         }
 
         @Override

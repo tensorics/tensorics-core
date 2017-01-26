@@ -96,26 +96,25 @@ public class ImmutableTensorTest {
         thrown.expectMessage("unique");
         Tensorics.builder(Integer.class, Integer.class);
     }
-    
+
     @Test
     public void fromMapWithOneEntry() {
         Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0);
-        assertEquals(Tensorics.fromMap(map).asMap(), map);
+        assertEquals(Tensorics.fromMap(ImmutableSet.of(Integer.class), map).asMap(), map);
     }
 
     @Test
     public void fromEmptyMap() {
         Map<Position, Integer> map = ImmutableMap.of();
-        assertEquals(Tensorics.fromMap(map).asMap(), map);
+        assertEquals(Tensorics.fromMap(ImmutableSet.of(), map).asMap(), map);
     }
 
     @Test
     public void fromMapThrowsOnInconsistentDimensions() {
         Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0, Position.of("fail"), 1);
         thrown.expect(IllegalArgumentException.class);
-        //thrown.expectMessage("same dimensions");
-        thrown.expectMessage("assignable");
-        Tensorics.fromMap(map);
+        thrown.expectMessage("not assignable");
+        Tensorics.fromMap(ImmutableSet.of(Integer.class), map);
     }
 
 }
