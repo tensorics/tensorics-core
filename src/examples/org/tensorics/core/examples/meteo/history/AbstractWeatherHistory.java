@@ -3,8 +3,6 @@ package org.tensorics.core.examples.meteo.history;
 import java.util.List;
 
 import org.tensorics.core.examples.meteo.domain.City;
-import org.tensorics.core.examples.meteo.domain.Sampling;
-import org.tensorics.core.examples.meteo.domain.TimeRange;
 import org.tensorics.core.examples.meteo.externaldata.FakeMeteoDataImporter;
 import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.lang.EnvironmentImpl;
@@ -26,8 +24,7 @@ public abstract class AbstractWeatherHistory extends TensoricSupport<Double> {
 
 	// tag::import[]
 	public Tensor<QuantifiedValue<Double>> importDataForCities() {
-		return FakeMeteoDataImporter.importFromPast(getCities(),
-				TimeRange.TWO_DECADES, Sampling.ONE_DAY);
+		return FakeMeteoDataImporter.importFromPast();
 	}
 	// end::import[]
 

@@ -27,6 +27,8 @@ import org.tensorics.core.tensorbacked.orbit.AbstractOrbit;
 
 public class NoAnnotationPresentOrbit extends AbstractOrbit {
 
+    private static final long serialVersionUID = 1L;
+
     public NoAnnotationPresentOrbit(Tensor<Double> tensor) {
         super(tensor);
     }

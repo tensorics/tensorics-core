@@ -30,45 +30,51 @@ import com.google.common.collect.ImmutableMultiset.Builder;
 import com.google.common.collect.Multiset;
 
 /**
- * Provides utility methods for reflection based tasks, for example to detect
- * types of generic parameters.
+ * Provides utility methods for reflection based tasks, for example to detect types of generic parameters.
  * 
  * @author kfuchsbe
  */
 public final class Classes {
 
-	/**
-	 * Private constructor to avoid instantiation
-	 */
-	private Classes() {
-		/* only static methods */
-	}
+    /**
+     * Private constructor to avoid instantiation
+     */
+    private Classes() {
+        /* only static methods */
+    }
 
-	public static ParameterizedType findGenericSuperclassOfType(Class<?> clazz, Class<?> classToSearch) {
-		Class<?> superClass = clazz.getSuperclass();
-		if (superClass == null) {
-			throw new IllegalArgumentException(
-					"The class '" + classToSearch + "' is not a super class of the given class.");
-		}
+    public static ParameterizedType findGenericSuperclassOfType(Class<?> clazz, Class<?> classToSearch) {
+        Class<?> superClass = clazz.getSuperclass();
+        if (superClass == null) {
+            throw new IllegalArgumentException(
+                    "The class '" + classToSearch + "' is not a super class of the given class.");
+        }
 
-		Type type = clazz.getGenericSuperclass();
-		if ((type instanceof ParameterizedType)) {
-			if (!superClass.equals(classToSearch)) {
-				throw new IllegalArgumentException("The covariant coordinate class does not specify directly the "
-						+ "type of coordinate, but seems to use another generic class in the inheritance hierarchy. "
-						+ "This is currently not supported.");
-			}
-			return (ParameterizedType) type;
-		}
-		return findGenericSuperclassOfType(superClass, classToSearch);
-	}
+        Type type = clazz.getGenericSuperclass();
+        if ((type instanceof ParameterizedType)) {
+            if (!superClass.equals(classToSearch)) {
+                throw new IllegalArgumentException("The covariant coordinate class does not specify directly the "
+                        + "type of coordinate, but seems to use another generic class in the inheritance hierarchy. "
+                        + "This is currently not supported.");
+            }
+            return (ParameterizedType) type;
+        }
+        return findGenericSuperclassOfType(superClass, classToSearch);
+    }
 
-	public static Multiset<Class<?>> classesOf(Iterable<?> coordinates) {
-		Builder<Class<?>> builder = ImmutableMultiset.builder();
-		for (Object coordinate : coordinates) {
-			builder.add(coordinate.getClass());
-		}
-		return builder.build();
-	}
+    public static Multiset<Class<?>> classesOf(Iterable<?> coordinates) {
+        Builder<Class<?>> builder = ImmutableMultiset.builder();
+        for (Object coordinate : coordinates) {
+            builder.add(coordinate.getClass());
+        }
+        return builder.build();
+    }
+
+    public static <T> Class<T> classOf(T object) {
+        @SuppressWarnings("unchecked")
+        /* This cast is always safe, right? */
+        Class<T> toReturn = (Class<T>) object.getClass();
+        return toReturn;
+    }
 
 }

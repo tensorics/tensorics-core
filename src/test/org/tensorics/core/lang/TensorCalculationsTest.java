@@ -97,8 +97,8 @@ public class TensorCalculationsTest {
         Tensor<Double> averageOverYCoordinte = TensorStructurals.from(tensor1).reduce(XCoordinate.class)
                 .byAveragingIn(doubles());
         assertEquals(tensor1.shape().dimensionSet().size() - 1, averageOverYCoordinte.shape().dimensionSet().size());
-        Set<YCoordinate> coordinateValues = TensorStructurals.from(averageOverYCoordinte).extractCoordinatesOfType(
-                YCoordinate.class);
+        Set<YCoordinate> coordinateValues = TensorStructurals.from(averageOverYCoordinte)
+                .extractCoordinatesOfType(YCoordinate.class);
         assertEquals(10, coordinateValues.size());
     }
 
@@ -222,8 +222,7 @@ public class TensorCalculationsTest {
     public void testAdditionFrom2elementsTo100WithWrongShapes() {
         XCoordinate x = XCoordinate.of(6);
         XCoordinate x2 = XCoordinate.of(3);
-        Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.<Class<? extends TestCoordinate>> of(x
-                .getClass()));
+        Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(x.getClass()));
         double x1Add = 13.2;
         double x2Add = -1.2;
         builder.at(Position.of(x)).put(x1Add);
@@ -502,8 +501,8 @@ public class TensorCalculationsTest {
     @Test
     public void testSimpleTensoricsTask() {
 
-        Tensor<Double> result = new TensoricTask<Double, Tensor<Double>>(EnvironmentImpl.of(doubles(),
-                ManipulationOptions.defaultOptions(doubles()))) {
+        Tensor<Double> result = new TensoricTask<Double, Tensor<Double>>(
+                EnvironmentImpl.of(doubles(), ManipulationOptions.defaultOptions(doubles()))) {
 
             @Override
             public Tensor<Double> run() {
@@ -533,8 +532,8 @@ public class TensorCalculationsTest {
         ZCoordinate z = ZCoordinate.of(0);
         Date date2 = new Date();
         if (printLog) {
-            System.out.println("done after (" + (date2.getTime() - date.getTime())
-                    + "ms); \n Multiplying (base*(-1))\t" + sdf.format(date2));
+            System.out.println("done after (" + (date2.getTime() - date.getTime()) + "ms); \n Multiplying (base*(-1))\t"
+                    + sdf.format(date2));
         }
         Tensor<Double> inversedTensor = tensoricFieldUsage.negativeOf(tensor3Big);
         Date date3 = new Date();
@@ -595,8 +594,7 @@ public class TensorCalculationsTest {
 
     @SuppressWarnings("boxing")
     private Tensor<Double> prepareValues(double factor) {
-        ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
-                .of(XCoordinate.class, YCoordinate.class);
+        ImmutableSet<Class<?>> dimensions = ImmutableSet.of(XCoordinate.class, YCoordinate.class);
         Builder<Double> builder = ImmutableTensor.builder(dimensions);
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -607,8 +605,7 @@ public class TensorCalculationsTest {
     }
 
     private Tensor<Boolean> prepareOnlyEvenValuesTrueFlag() {
-        ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
-                .of(XCoordinate.class, YCoordinate.class);
+        ImmutableSet<Class<?>> dimensions = ImmutableSet.of(XCoordinate.class, YCoordinate.class);
         Builder<Boolean> builder = ImmutableTensor.builder(dimensions);
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -654,8 +651,7 @@ public class TensorCalculationsTest {
     }
 
     private <V> Tensor<V> createTensor(CoordinateRange range, ValueFactory<V> factory) {
-        ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet.of(XCoordinate.class,
-                YCoordinate.class, ZCoordinate.class);
+        ImmutableSet<Class<?>> dimensions = ImmutableSet.of(XCoordinate.class, YCoordinate.class, ZCoordinate.class);
         Builder<V> builder = ImmutableTensor.builder(dimensions);
         for (XCoordinate x : range.getxCoordinates()) {
             for (YCoordinate y : range.getyCoordinates()) {

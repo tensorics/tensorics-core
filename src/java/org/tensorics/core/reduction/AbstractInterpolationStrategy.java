@@ -49,6 +49,7 @@ public abstract class AbstractInterpolationStrategy<C extends Comparable<C>, V> 
         int dimensionality = tensor.shape().dimensionality();
         int entries = tensor.shape().size();
         if (dimensionality != 1 && entries > 0 && contains) {
+            @SuppressWarnings("unused")
             Set<?> coordinates = tensor.shape().positionSet().iterator().next().coordinates();
             // TODO how to check if the only coordinate in the position is the class of C ?
             throw new IllegalStateException("Cannot perform interpolation in the tensor of more that 1 dimension "

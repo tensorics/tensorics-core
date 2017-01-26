@@ -79,7 +79,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      * @return a builder for {@link ImmutableTensor}
      * @param <T> type of values in Tensor.
      */
-    public static final <T> Builder<T> builder(Set<? extends Class<?>> dimensions) {
+    public static final <T> Builder<T> builder(Set<Class<?>> dimensions) {
         return new Builder<T>(dimensions);
     }
 
@@ -103,7 +103,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      * @param map the map from which to construct a tensor
      * @return a new immutable tensor
      */
-    public static final <T> Tensor<T> fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map) {
+    public static final <T> Tensor<T> fromMap(Set<Class<?>> dimensions, Map<Position, T> map) {
         Builder<T> builder = builder(dimensions);
         builder.putAllMap(map);
         return builder.build();
@@ -250,7 +250,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
         private final Map<Position, S> entries = new HashMap<>();
 
-        Builder(Set<? extends Class<?>> dimensions) {
+        Builder(Set<Class<?>> dimensions) {
             super(dimensions);
         }
 

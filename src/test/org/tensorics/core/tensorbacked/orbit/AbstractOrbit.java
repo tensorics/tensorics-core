@@ -27,6 +27,8 @@ import org.tensorics.core.tensorbacked.AbstractTensorbacked;
 
 public abstract class AbstractOrbit extends AbstractTensorbacked<Double> {
 
+    private static final long serialVersionUID = 1L;
+
     public AbstractOrbit(Tensor<Double> tensor) {
         super(tensor);
     }

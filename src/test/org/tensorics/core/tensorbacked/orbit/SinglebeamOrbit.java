@@ -30,6 +30,8 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 @Dimensions({ Plane.class, Bpm.class })
 public class SinglebeamOrbit extends AbstractOrbit {
 
+    private static final long serialVersionUID = 1L;
+
     public SinglebeamOrbit(Tensor<Double> tensor) {
         super(tensor);
     }

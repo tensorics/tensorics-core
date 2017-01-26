@@ -6,9 +6,6 @@ import org.tensorics.core.lang.DoubleScript;
 import org.tensorics.core.math.operations.CreationOperation;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
-import org.tensorics.core.tensor.ImmutableTensor;
-import org.tensorics.core.tensor.ImmutableTensor.Builder;
-import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tree.domain.Expression;
 
 import com.google.common.collect.ImmutableList;
@@ -17,7 +14,6 @@ public class ScriptingExample {
 
 	private double someFactorForFakingChangingEnvironment = 1.0;
 	private final Expression<Iterable<Double>> someFakeIterable = fakeSignalByCreationCallback();
-	private final Expression<Tensor<Double>> someFakeTensorToResolve = fakeTensorByCreationCallback();
 
 	private final DoubleScript<Double> script = new DoubleScript<Double>() {
 
@@ -70,18 +66,4 @@ public class ScriptingExample {
 			}
 		});
 	}
-
-	private static final Expression<Tensor<Double>> fakeTensorByCreationCallback() {
-		return new CreationOperationExpression<>(new CreationOperation<Tensor<Double>>() {
-			@Override
-			public Tensor<Double> perform() {
-				Builder<Double> builder = ImmutableTensor.builder(String.class, Integer.class);
-				builder.putAt(1.0, "A", 1);
-				builder.putAt(2.0, "A", 2);
-				builder.putAt(3.0, "B", 2);
-				return builder.build();
-			}
-		});
-	}
-
 }

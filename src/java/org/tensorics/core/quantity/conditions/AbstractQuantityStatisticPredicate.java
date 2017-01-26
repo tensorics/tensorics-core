@@ -35,11 +35,11 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
  * Base class for quantity conditions based on statistical tests. This class provides utility methods to implementations
  * for doing calculations and statistics based on the values (mean) and the errors of quantities.
  * 
- * @author mihostet 
+ * @author mihostet
  * @param <S> the value type
  */
-public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSupport<S> implements
-        BinaryPredicate<QuantifiedValue<S>> {
+public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSupport<S>
+        implements BinaryPredicate<QuantifiedValue<S>> {
 
     protected final QuantityEnvironment<S> mathsEnvironment;
 
@@ -49,19 +49,22 @@ public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSuppor
     }
 
     /**
-     * Evaluate the inverse Gaussian CDF and return the result as an element of the backing field. This method uses
-     * {@link Cheating} for the time being.
+     * Evaluate the inverse Gaussian Cumulative Distribution Function and return the result as an element of the backing
+     * field. This method uses {@link Cheating} for the time being.
      * 
      * @param value
      * @return
      */
     protected S inverseGaussianCumulativeDistributionFunction(S value) {
+        @SuppressWarnings("deprecation")
         final Cheating<S> cheating = mathsEnvironment.field().cheating();
-        return cheating.fromDouble(DoubleStatistics.inverseGaussianCumulativeDistributionFunction(cheating.toDouble(value)));
+        return cheating
+                .fromDouble(DoubleStatistics.inverseGaussianCumulativeDistributionFunction(cheating.toDouble(value)));
     }
 
     /**
      * Calculates the difference of two quantities (including error propagation)
+     * 
      * @param left left operand
      * @param right right operand
      * @return the difference as a quantity
@@ -73,19 +76,19 @@ public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSuppor
     /**
      * Calculate the z-test z value for the difference of the two values (number of sigmas the difference of the mean
      * values is away from zero)
+     * 
      * @param left the left operand
      * @param right the right operand
      * @return the z value
      */
     protected S zTestValueForDifference(QuantifiedValue<S> left, QuantifiedValue<S> right) {
-        final QuantifiedValue<S> leftWithError = ImmutableQuantifiedValue.of(left.value(), left.unit()).withError(
-                left.error().or(zero()));
-        final QuantifiedValue<S> rightWithError = ImmutableQuantifiedValue.of(right.value(), right.unit()).withError(
-                right.error().or(zero()));
+        final QuantifiedValue<S> leftWithError = ImmutableQuantifiedValue.of(left.value(), left.unit())
+                .withError(left.error().or(zero()));
+        final QuantifiedValue<S> rightWithError = ImmutableQuantifiedValue.of(right.value(), right.unit())
+                .withError(right.error().or(zero()));
         final QuantifiedValue<S> difference = subtractQuantities(leftWithError, rightWithError);
 
         return calculate(difference.value()).dividedBy(difference.error().get());
     }
-
 
 }

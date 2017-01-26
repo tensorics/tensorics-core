@@ -22,8 +22,8 @@
 
 package org.tensorics.core.tensor.operations;
 
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;

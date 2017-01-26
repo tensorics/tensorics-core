@@ -141,7 +141,7 @@ public final class Positions {
      * @throws IllegalArgumentException if the position is not conform
      * @see Position#isConsistentWith(Set)
      */
-    public static void assertConsistentDimensions(Position position, Set<? extends Class<?>> dimensions) {
+    public static void assertConsistentDimensions(Position position, Set<Class<?>> dimensions) {
         if (!position.isConsistentWith(dimensions)) {
             throw new IllegalArgumentException(
                     "The given coordinates are not consistent with the dimensions of the tensor! position='" + position
@@ -156,19 +156,17 @@ public final class Positions {
      * @param position
      * @return
      */
-    @SuppressWarnings("unchecked")
-	public static <C extends Class<?>> boolean areDimensionsConsistentWithCoordinates(Set<C> dimensions,
-            Position position) {
+    public static boolean areDimensionsConsistentWithCoordinates(Set<Class<?>> dimensions, Position position) {
         if (position.coordinates().size() != dimensions.size()) {
             return false;
         }
         Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
-        Set<?> positionCoordinatesToCheck = position.dimensionSet();
+        Set<Class<?>> positionCoordinatesToCheck = position.dimensionSet();
         if (dimensions.equals(positionCoordinatesToCheck)) {
             return true;
         }
-        for (Object one : positionCoordinatesToCheck) {
-            Coordinates.checkClassRelations((C) one, dimensions);
+        for (Class<?> one : positionCoordinatesToCheck) {
+            Coordinates.checkClassRelations(one, dimensions);
         }
         return true;
     }

@@ -25,7 +25,8 @@ public class WeatherHistoryInEurope extends AbstractWeatherHistory {
 	// tag::import[]
 
 	/* calculate an average monthly temperature at the ROME Latitude like cities */
-	public void calculate() {
+	@SuppressWarnings("unused")
+    public void calculate() {
 
 		Tensor<QuantifiedValue<Double>> importedData = importDataForCities();
 		Latitude romeLatitude = EuropeanCapital.ROMA.getLatitude();

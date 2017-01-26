@@ -15,7 +15,6 @@ public class SimpleMeteoExample {
 
     private Tensor<Double> temperatures;
 
-    @SuppressWarnings("unused")
     public void example() {
         temperatures = createTemperatures();
         getValue();
@@ -26,12 +25,14 @@ public class SimpleMeteoExample {
 
     }
 
+    @SuppressWarnings("unused")
     private void getByStaticMethods() {
         // tag::getByStaticMethods[]
         double temperature = Tensorics.from(temperatures).get(City.NEW_YORK, Day.APRIL_1_2014);
         // end::getByStaticMethods[]
     }
 
+    @SuppressWarnings("unused")
     private void getByStaticMethodsWithStaticImports() {
         // tag::getByStaticMethodsWithStaticImports[]
         double temperature = from(temperatures).get(NEW_YORK, APRIL_1_2014);
@@ -48,12 +49,14 @@ public class SimpleMeteoExample {
         // end::loopThroughEntries[]
     }
 
+    @SuppressWarnings("unused")
     private void getValue() {
         // tag::getValue[]
-        double temperature = temperatures.get(City.NEW_YORK, Day.APRIL_1_2014);
+        double temps = temperatures.get(City.NEW_YORK, Day.APRIL_1_2014);
         // end::getValue[]
     }
 
+    @SuppressWarnings("unused")
     private Tensor<Double> createTemperatures() {
         // tag::createTensor[]
         TensorBuilder<Double> builder = Tensorics.builder(City.class, Day.class); // <1>
@@ -63,7 +66,7 @@ public class SimpleMeteoExample {
         builder.putAt(19.8, City.GENEVA, Day.APRIL_1_2014);
         builder.putAt(24.7, City.GENEVA, Day.JUNE_1_2014);
 
-        Tensor<Double> temperatures = builder.build(); // <3>
+        Tensor<Double> temps = builder.build(); // <3>
         // end::createTensor[]
         return temperatures;
     }

@@ -237,7 +237,7 @@ public final class Shape implements Serializable {
      */
     public static final class Builder {
 
-        private Set<? extends Class<?>> dimensions = Collections.emptySet();
+        private Set<Class<?>> dimensions = Collections.emptySet();
         private boolean dimensionsDefined = false;
         private final ImmutableSet.Builder<Position> setBuilder = ImmutableSet.builder();
 

@@ -22,6 +22,8 @@
 
 package org.tensorics.core.tensorbacked;
 
+import static org.tensorics.core.util.Classes.classOf;
+
 import java.util.Set;
 
 import org.tensorics.core.quantity.QuantifiedValue;
@@ -37,7 +39,6 @@ import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
-
 
 /**
  * Contains (public) utility methods for tensor backed objects.
@@ -225,11 +226,12 @@ public final class Tensorbackeds {
     }
 
     public static final <V, TB extends Tensorbacked<V>> TB stripContext(TB tensorbacked) {
-        return (TB) builderFor(tensorbacked.getClass()).putAll(tensorbacked.tensor()).build();
+        TB toReturn = builderFor(classOf(tensorbacked)).putAll(tensorbacked.tensor()).build();
+        return toReturn;
     }
 
     public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Context context) {
-        return (TB) builderFor(tensorbacked.getClass()).withContext(context).putAll(tensorbacked.tensor()).build();
+        return builderFor(classOf(tensorbacked)).withContext(context).putAll(tensorbacked.tensor()).build();
     }
 
     public static final <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {

@@ -37,11 +37,11 @@ import com.google.common.collect.ImmutableSet;
 @SuppressWarnings("PMD.TooManyMethods")
 public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 
-    private final Set<? extends Class<?>> dimensions;
+    private final Set<Class<?>> dimensions;
     private final VerificationCallback<E> callback;
     private Context context = Context.empty();
 
-    public AbstractTensorBuilder(Set<? extends Class<?>> dimensions, VerificationCallback<E> callback) {
+    public AbstractTensorBuilder(Set<Class<?>> dimensions, VerificationCallback<E> callback) {
         Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
         Preconditions.checkArgument(callback != null, "Argument '" + "callback" + "' must not be null!");
         Coordinates.checkClassesRelations(dimensions);
@@ -49,7 +49,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
         this.callback = callback;
     }
 
-    public AbstractTensorBuilder(Set<? extends Class<?>> dimensions) {
+    public AbstractTensorBuilder(Set<Class<?>> dimensions) {
         this(dimensions, new VerificationCallback<E>() {
 
             @Override
@@ -155,7 +155,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
         }
     }
 
-    public Set<? extends Class<?>> getDimensions() {
+    public Set<Class<?>> getDimensions() {
         return dimensions;
     }
 

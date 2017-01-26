@@ -115,8 +115,8 @@ public final class Position implements Serializable {
      * @param dimensions the dimensions for which conformity has to be checked.
      * @return {@code true} if the position is conform, {@code false} if not.
      */
-    public boolean isConsistentWith(Set<? extends Class<?>> dimensions) {
-        Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
+    public boolean isConsistentWith(Set<Class<?>> dimensions) {
+        Preconditions.checkArgument(dimensions != null, "Argument 'dimensions' must not be null!");
         return Positions.areDimensionsConsistentWithCoordinates(dimensions, this);
     }
 

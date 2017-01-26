@@ -121,7 +121,7 @@ public final class Tensorics {
     /**
      * @see ImmutableTensor#builder(Set)
      */
-    public static <T> TensorBuilder<T> builder(Set<? extends Class<?>> dimensions) {
+    public static <T> TensorBuilder<T> builder(Set<Class<?>> dimensions) {
         return ImmutableTensor.builder(dimensions);
     }
 
@@ -135,7 +135,7 @@ public final class Tensorics {
     /**
      * @see ImmutableTensor#fromMap(Set, Map)
      */
-    public static <T> Tensor<T> fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map) {
+    public static <T> Tensor<T> fromMap(Set<Class<?>> dimensions, Map<Position, T> map) {
         return ImmutableTensor.fromMap(dimensions, map);
     }
 
