@@ -33,8 +33,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.tensorics.core.tensor.Position;
-import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensorbacked.Tensorbacked;
 
 /**
  * Abstract base class for a stream {@link Collector} which is backed by a map of {@link Position} to an arbitrary

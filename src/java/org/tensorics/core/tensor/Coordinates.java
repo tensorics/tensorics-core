@@ -22,12 +22,10 @@
 
 package org.tensorics.core.tensor;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.tensorics.core.util.MoreMultisets.containsNonUniqueElements;
 import static org.tensorics.core.util.MoreMultisets.nonUniqueElementsOf;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,9 +35,7 @@ import org.tensorics.core.util.Classes;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
 
 /**
  * Utility methods to handle coordinates

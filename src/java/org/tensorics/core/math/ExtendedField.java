@@ -22,8 +22,6 @@
 
 package org.tensorics.core.math;
 
-import java.util.Comparator;
-
 import org.tensorics.core.math.operations.BinaryOperation;
 
 /**

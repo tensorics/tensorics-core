@@ -94,26 +94,34 @@ public class CoordinatesTest {
     }
 
     interface IA {
+        /* nothing to do */
     }
 
     interface IB {
+        /* nothing to do */
     }
 
     interface IC extends IB {
+        /* nothing to do */
     }
 
     interface ID {
+        /* nothing to do */
     }
 
     interface IE extends IA, ID {
+        /* nothing to do */
     }
 
     class A implements IA {
+        /* nothing to do */
     }
 
     class B implements IB {
+        /* nothing to do */
     }
 
     class C implements IC {
+        /* nothing to do */
     }
 }

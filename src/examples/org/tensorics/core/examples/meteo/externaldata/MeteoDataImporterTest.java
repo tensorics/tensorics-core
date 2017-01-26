@@ -18,10 +18,6 @@ import com.google.common.collect.ImmutableSet;
 
 public class MeteoDataImporterTest extends TensoricDoubleSupport {
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
 	@Test
 	public void testTensorCreation() {
 		Tensor<QuantifiedValue<Double>> importFromPast = FakeMeteoDataImporter.importFromPast(null, null, null);

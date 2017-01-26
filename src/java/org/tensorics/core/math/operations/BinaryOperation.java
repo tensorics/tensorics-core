@@ -29,5 +29,5 @@ package org.tensorics.core.math.operations;
  * @param <T> the type of the elements of the algebraic structures.
  */
 public interface BinaryOperation<T> extends BinaryFunction<T, T> {
-
+    /* nothing special */
 }

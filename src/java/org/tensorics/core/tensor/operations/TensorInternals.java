@@ -22,6 +22,10 @@
 
 package org.tensorics.core.tensor.operations;
 
+import java.util.Set;
+import java.util.Map.Entry;
+
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
 /**
@@ -37,6 +41,10 @@ public final class TensorInternals {
 
     public static <T> OngoingMapOut<T> mapOut(Tensor<T> tensor) {
         return new OngoingMapOut<>(tensor);
+    }
+
+    public static <T> Set<Entry<Position, T>> entrySetOf(Tensor<T> tensor) {
+        return tensor.asMap().entrySet();
     }
 
 }

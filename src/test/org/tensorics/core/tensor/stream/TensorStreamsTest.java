@@ -22,12 +22,12 @@
 
 package org.tensorics.core.tensor.stream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.tensorics.core.tensor.stream.TensorStreamFilters.byValue;
-import static org.tensorics.core.tensor.stream.TensorStreams.toTensor;
-import static org.tensorics.core.tensor.stream.TensorStreams.toTensorbacked;
 import static org.tensorics.core.tensor.stream.TensorStreamMappers.coordinatesOfType;
 import static org.tensorics.core.tensor.stream.TensorStreamMappers.values;
+import static org.tensorics.core.tensor.stream.TensorStreams.toTensor;
+import static org.tensorics.core.tensor.stream.TensorStreams.toTensorbacked;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,11 +35,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.AbstractTensorbacked;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
-import org.tensorics.core.tensor.ImmutableTensor.Builder;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
