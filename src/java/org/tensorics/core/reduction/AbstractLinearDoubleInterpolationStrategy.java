@@ -4,6 +4,7 @@
 
 package org.tensorics.core.reduction;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.tensorics.core.tensor.Tensor;
@@ -21,8 +22,12 @@ import org.tensorics.core.tensor.Tensor;
  * @author agorzaws
  * @param <C> type of the coordinate, must be the {@link Comparable}
  */
-public abstract class AbstractLinearDoubleInterpolationStrategy<C extends Comparable<C>> extends
+public abstract class AbstractLinearDoubleInterpolationStrategy<C> extends
         AbstractInterpolationStrategy<C, Double> {
+
+    public AbstractLinearDoubleInterpolationStrategy(Comparator<C> comparator) {
+        super(comparator);
+    }
 
     @Override
     public Double getInterpolatedValue(Tensor<Double> tensorWithTheOnlyOneCoordinateOfC, C coordineteToInterpolate) {

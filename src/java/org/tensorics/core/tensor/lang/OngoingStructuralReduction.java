@@ -55,8 +55,8 @@ public class OngoingStructuralReduction<C, E> {
         return reduceBy(new Slicing<C, E>(slicePosition));
     }
 
-    public <C extends Comparable<C>> OngoingStructuralReductionOptions<E, C> byInterpolatedSlicingAt(C slicePosition) {
-        return new OngoingStructuralReductionOptions(slicePosition, tensor, dimension);
+    public OngoingStructuralReductionOptions<E, C> byInterpolatedSlicingAt(C slicePosition) {
+        return new OngoingStructuralReductionOptions<>(slicePosition, tensor, dimension);
     }
 
     protected <R> Tensor<R> reduceBy(ReductionStrategy<? super C, E, R> strategy) {

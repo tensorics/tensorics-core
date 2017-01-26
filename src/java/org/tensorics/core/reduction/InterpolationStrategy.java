@@ -13,7 +13,7 @@ import org.tensorics.core.tensor.Tensor;
  * @param <C> type of the coordinate, must extends {@link Comparable}
  * @param <V> type of the values in the {@link Tensor}
  */
-public interface InterpolationStrategy<C extends Comparable<C>, V> {
+public interface InterpolationStrategy<C, V> {
 
     /**
      * Returns interpolated value for coordinate C.

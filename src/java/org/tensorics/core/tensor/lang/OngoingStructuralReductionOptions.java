@@ -15,7 +15,7 @@ import org.tensorics.core.tensor.operations.TensorReduction;
  * @param <E>
  * @param <C>
  */
-public class OngoingStructuralReductionOptions<E, C extends Comparable<C>> {
+public class OngoingStructuralReductionOptions<E, C> {
 
     private final Tensor<E> tensor;
     private final C slicePosition;

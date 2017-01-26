@@ -6,6 +6,8 @@ package org.tensorics.core.reduction;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Comparator;
+
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
@@ -166,6 +168,10 @@ public class InterpolationAtTest {
     }
 
     private class TestInterpolation extends AbstractLinearDoubleInterpolationStrategy<ComparableCoordinate> {
+
+        public TestInterpolation() {
+            super(Comparator.naturalOrder());
+        }
 
         @Override
         public double ratio(ComparableCoordinate previousComparable, ComparableCoordinate nextComparable,
