@@ -10,7 +10,6 @@ import static org.tensorics.core.iterable.expressions.PickExpression.Mode.FROM_S
 import java.util.List;
 
 import org.tensorics.core.resolve.resolvers.PickResolver;
-import org.tensorics.core.resolve.resolvers.PickResolverTest;
 import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.Node;
@@ -23,7 +22,6 @@ import com.google.common.collect.Iterables;
  * offset define the resulting element.
  * 
  * @see PickResolver
- * @see PickResolverTest
  * @author kfuchsbe, acalia
  * @param <T> the type of the data to pick
  */
