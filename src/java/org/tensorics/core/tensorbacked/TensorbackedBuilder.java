@@ -33,7 +33,6 @@ import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.OngoingPut;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensor.Entry;
 
 /**
  * A builder for tensor backed objects, which takes care that only positions which are compatible with the dimensions of
@@ -76,11 +75,6 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
         return tensorBuilder.at(coordinates);
     }
 
-    @Deprecated
-    public final void put(Entry<V> entry) {
-        tensorBuilder.put(entry);
-    }
-
     public final TensorbackedBuilder<V, TB> put(java.util.Map.Entry<Position, V> entry) {
         tensorBuilder.put(entry);
         return this;
@@ -94,11 +88,6 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
     public final TensorbackedBuilder<V, TB> putAt(V value, Object... coordinates) {
         tensorBuilder.putAt(value, coordinates);
         return this;
-    }
-
-    @Deprecated
-    public final void putAll(Iterable<Entry<V>> entries) {
-        tensorBuilder.putAll(entries);
     }
 
     public final TensorbackedBuilder<V, TB> putAll(Set<java.util.Map.Entry<Position, V>> entries) {

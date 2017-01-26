@@ -111,7 +111,7 @@ public class TensorStreamsTest {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("not assignable");
         Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };
-        Tensor<Integer> t1 = ImmutableList.of(0, 1, 2).stream()
+        ImmutableList.of(0, 1, 2).stream()
                 .collect(toTensor(i -> positions[i], v -> v, Collections.singleton(Integer.class)));
     }
 

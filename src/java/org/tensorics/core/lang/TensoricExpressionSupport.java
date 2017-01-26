@@ -29,7 +29,6 @@ import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.lang.FunctionExpressionSupport;
 import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversionAndComparator;
-import org.tensorics.core.function.lang.OngoingDeferredDiscreteFunctionBinaryOperation;
 import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
@@ -235,7 +234,7 @@ public class TensoricExpressionSupport<V> {
     }
 
     public final <TB extends Tensorbacked<QuantifiedValue<V>>> OngoingDeferredQuantifiedTensorBackedOperation<V, TB> //
-            calculateQTB(Class<TB> resultClass, Expression<TB> tensor) {
+    calculateQTB(Class<TB> resultClass, Expression<TB> tensor) {
         return quantityTensorbackedExpressionSupport.calculateTB(resultClass, tensor);
     }
 
@@ -255,13 +254,8 @@ public class TensoricExpressionSupport<V> {
         return functionExpressionSupport.averageOfF(functionExpresssion);
     }
 
-    public <X> OngoingDeferredDiscreteFunctionBinaryOperation<X, X> calculateF(
-            Expression<DiscreteFunction<X, X>> functionExpresssion) {
-        return ((FunctionExpressionSupport<X>) functionExpressionSupport).calculateF(functionExpresssion);
-    }
-
-    public <X> FunctionExpressionSupportWithConversionAndComparator<X, V> withConversionAndComparator(Conversion<X, V> conversion,
-            Comparator<X> comparator) {
+    public <X> FunctionExpressionSupportWithConversionAndComparator<X, V> withConversionAndComparator(
+            Conversion<X, V> conversion, Comparator<X> comparator) {
         return functionExpressionSupport.withConversionAndComparator(conversion, comparator);
     }
 }

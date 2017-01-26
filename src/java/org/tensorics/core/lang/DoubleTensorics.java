@@ -28,7 +28,6 @@ import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversionAndComparator;
-import org.tensorics.core.function.lang.OngoingDeferredDiscreteFunctionBinaryOperation;
 import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
 import org.tensorics.core.math.operations.BinaryFunction;
@@ -368,11 +367,6 @@ public final class DoubleTensorics {
     public static final Expression<Double> averageOfF(
             Expression<DiscreteFunction<Double, Double>> functionExpresssion) {
         return EXPRESSION_SUPPORT.averageOfF(functionExpresssion);
-    }
-
-    public static final <X> OngoingDeferredDiscreteFunctionBinaryOperation<X, X> calculateF(
-            Expression<DiscreteFunction<X, X>> functionExpresssion) {
-        return EXPRESSION_SUPPORT.calculateF(functionExpresssion);
     }
 
     public static final <X> FunctionExpressionSupportWithConversionAndComparator<X, Double> withConversionAndComparator(

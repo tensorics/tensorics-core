@@ -25,7 +25,6 @@ package org.tensorics.core.tensor;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -189,16 +188,6 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     @Override
     public Context context() {
         return context;
-    }
-
-    @Override
-    @Deprecated
-    public Set<Tensor.Entry<T>> entrySet() {
-        Set<Tensor.Entry<T>> toReturn = new HashSet<>();
-        for (java.util.Map.Entry<Position, T> one : entries.entrySet()) {
-            toReturn.add(new ImmutableEntry<>(one.getKey(), one.getValue()));
-        }
-        return toReturn;
     }
 
     @Override

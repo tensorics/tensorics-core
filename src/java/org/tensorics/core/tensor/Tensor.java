@@ -49,12 +49,6 @@ public interface Tensor<E> {
     E get(Object... coordinates);
 
     /**
-     * @return entry set of the tensor.
-     */
-    @Deprecated
-    Iterable<Entry<E>> entrySet();
-
-    /**
      * @return all the entries as a map of Position to value. There is no guarantee about the thread safety or
      *         mutability of the returned {@link Map}.
      */

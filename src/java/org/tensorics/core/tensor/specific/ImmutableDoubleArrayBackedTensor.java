@@ -23,17 +23,14 @@ package org.tensorics.core.tensor.specific;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
 
 import org.tensorics.core.tensor.AbstractTensorBuilder;
 import org.tensorics.core.tensor.Context;
-import org.tensorics.core.tensor.ImmutableEntry;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * A specific implementation of a tensor, that contains double values. It is backed by a simple double array to minimize
@@ -61,16 +58,6 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
     @Override
     public Double get(Object... coordinates) {
         return get(Position.of(coordinates));
-    }
-
-    @Override
-    @Deprecated
-    public Set<Tensor.Entry<Double>> entrySet() {
-        ImmutableSet.Builder<Tensor.Entry<Double>> builder = ImmutableSet.builder();
-        for (Position position : indexer.allPositions()) {
-            builder.add(new ImmutableEntry<Double>(position, get(position)));
-        }
-        return builder.build();
     }
 
     @Override
