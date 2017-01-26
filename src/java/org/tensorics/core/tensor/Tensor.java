@@ -64,25 +64,4 @@ public interface Tensor<E> {
      */
     Context context();
 
-    /**
-     * An interface for tensor entries.
-     * 
-     * @author agorzaws
-     * @param <E> type of the values in the tensor.
-     */
-    @Deprecated
-    interface Entry<E> {
-
-        /**
-         * @return a value of the entry, type <E>
-         */
-        E getValue();
-
-        /**
-         * @return position of the entry.
-         */
-        Position getPosition();
-
-    }
-
 }

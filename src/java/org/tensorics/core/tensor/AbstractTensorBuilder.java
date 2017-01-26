@@ -139,22 +139,6 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
         putAllAt(tensor, Position.of(coordinates));
     }
 
-    @Deprecated
-    @Override
-    public final void put(Tensor.Entry<E> entry) {
-        checkNotNull(entry, "Entry to put must not be null!");
-        putAt(entry.getValue(), entry.getPosition());
-    }
-
-    @Deprecated
-    @Override
-    public final void putAll(Iterable<Tensor.Entry<E>> newEntries) {
-        checkNotNull(newEntries, "Iterable of entries to put must not be null!");
-        for (Tensor.Entry<E> entry : newEntries) {
-            put(entry);
-        }
-    }
-
     public Set<Class<?>> getDimensions() {
         return dimensions;
     }
