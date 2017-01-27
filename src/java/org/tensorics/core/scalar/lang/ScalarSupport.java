@@ -95,7 +95,7 @@ public class ScalarSupport<V> implements BasicOperationSupport<V> {
 
     @Override
     public V absoluteValueOf(V value) {
-        return squareRootOf(squareOf(value));
+        return field.absoluteValue().perform(value);
     }
 
 }
