@@ -45,6 +45,7 @@ public class QuantityOperationRepository<S> {
     private final QuantityMultiplication<S> quantityMultiplication;
     private final QuantityDivision<S> quantityDivision;
     private final QuantityAdditiveInversion<S> quantityAdditiveInversion;
+    private final QuantityAbsoluteValue<S> quantityAbsoluteValue;
     private final QuantityMultiplicativeInversion<S> quantityMultiplicativeInversion;
 
     private final QuantifiedValue<S> zeroOfUnitOne;
@@ -57,6 +58,7 @@ public class QuantityOperationRepository<S> {
         this.quantityAddition = new QuantityAddition<>(environment);
         this.quantitySubtraction = new QuantitySubtraction<>(environment);
         this.quantityAdditiveInversion = new QuantityAdditiveInversion<>(environment);
+        this.quantityAbsoluteValue = new QuantityAbsoluteValue<>(environment);
         this.quantityMultiplication = new QuantityMultiplication<>(environment);
         this.quantityDivision = new QuantityDivision<>(environment);
         this.quantityMultiplicativeInversion = new QuantityMultiplicativeInversion<>(environment);
@@ -75,6 +77,10 @@ public class QuantityOperationRepository<S> {
 
     public UnaryOperation<QuantifiedValue<S>> additiveInversion() {
         return this.quantityAdditiveInversion;
+    }
+
+    public UnaryOperation<QuantifiedValue<S>> absoluteValue() {
+        return this.quantityAbsoluteValue;
     }
 
     public BinaryOperation<QuantifiedValue<S>> subtraction() {

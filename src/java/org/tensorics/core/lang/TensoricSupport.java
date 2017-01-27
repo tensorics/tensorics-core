@@ -223,6 +223,10 @@ public class TensoricSupport<V> {
         return tensoricFieldUsage.absoluteValueOf(value);
     }
 
+    public QuantifiedValue<V> absoluteValueOf(QuantifiedValue<V> value) {
+        return quantifiedTensoricFieldUsage.absoluteValueOf(value);
+    }
+
     public <S, R> Tensor<R> elementwise(BinaryFunction<S, R> operation, Tensor<S> left, Tensor<S> right) {
         return tensoricFieldUsage.elementwise(operation, left, right);
     }

@@ -49,6 +49,8 @@ public interface ExplicitField<T> {
 
     T zero();
 
+    UnaryOperation<T> absoluteValue();
+
     /**
      * Has to return the '*' operation.
      * 

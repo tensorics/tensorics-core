@@ -227,6 +227,10 @@ public final class DoubleTensorics {
         return SUPPORT.absoluteValueOf(value);
     }
 
+    public static final QuantifiedValue<Double> absoluteValueOf(QuantifiedValue<Double> value) {
+        return SUPPORT.absoluteValueOf(value);
+    }
+
     public static final <S, R> Tensor<R> elementwise(BinaryFunction<S, R> operation, Tensor<S> left, Tensor<S> right) {
         return SUPPORT.elementwise(operation, left, right);
     }

@@ -87,6 +87,17 @@ public class ExplicitFieldImpl<T> implements ExplicitField<T> {
     }
 
     @Override
+    public UnaryOperation<T> absoluteValue() {
+        return value -> {
+            if (lessOrEqual().test(zero(), value)) {
+                return value;
+            } else {
+                return additiveInversion().perform(value);
+            }
+        };
+    }
+    
+    @Override
     public final BinaryOperation<T> subtraction() {
         return subtractionOperation;
     }
@@ -145,5 +156,6 @@ public class ExplicitFieldImpl<T> implements ExplicitField<T> {
     public Comparator<T> comparator() {
         return comparator;
     }
+
 
 }

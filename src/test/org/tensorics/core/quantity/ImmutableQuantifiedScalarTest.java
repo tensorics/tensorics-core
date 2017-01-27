@@ -34,16 +34,22 @@ import javax.measure.unit.SI;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.lang.DoubleTensorics;
+import org.tensorics.core.lang.QuantityDoubleSupport;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.units.JScienceUnit;
 
 public class ImmutableQuantifiedScalarTest {
 
     private ImmutableQuantifiedValue<Double> scalar;
+    private ImmutableQuantifiedValue<Double> zero;
+    private ImmutableQuantifiedValue<Double> negativeScalar;
 
     @Before
     public void setUp() {
+        zero = Tensorics.quantityOf(0.0, JScienceUnit.of(SI.AMPERE));
         scalar = Tensorics.quantityOf(10.5, JScienceUnit.of(SI.AMPERE));
+        negativeScalar = Tensorics.quantityOf(-42.5, JScienceUnit.of(SI.AMPERE));
     }
 
     @Test
@@ -54,6 +60,14 @@ public class ImmutableQuantifiedScalarTest {
     @Test
     public void testValue() {
         assertEquals(10.5, scalar.value(), 0.000001);
+    }
+
+    @Test
+    public void testAbsolute() {
+        assertEquals(zero, DoubleTensorics.absoluteValueOf(zero));
+        assertEquals(0.0, DoubleTensorics.absoluteValueOf(zero).value(), 0.000001);
+        assertEquals(10.5, DoubleTensorics.absoluteValueOf(scalar).value(), 0.000001);
+        assertEquals(42.5, DoubleTensorics.absoluteValueOf(negativeScalar).value(), 0.000001);
     }
     
     @Test
