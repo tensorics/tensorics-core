@@ -25,7 +25,7 @@ the respective tensor. The ++dimensions++ of a tensor are uniquely defined by th
 *_This might have sound complicated - however, an example should make it obvious. Give it a chance and keep on reading ;-)_*
 
 === The weather example
-Lets take a (very simplistic ;-) example: Assume that we are are analyzing weather data.
+Lets take a (very simplistic ;-) example: Assume that we are analyzing weather data.
 We have recorded temperature values for several cities and several days, for example:
 
 .Example Temperatures (random data!)
