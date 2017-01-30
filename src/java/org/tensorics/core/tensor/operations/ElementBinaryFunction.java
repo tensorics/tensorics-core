@@ -26,7 +26,6 @@ import java.util.Collections;
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.math.operations.BinaryFunction;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -52,21 +51,21 @@ public class ElementBinaryFunction<V, R> implements BinaryFunction<Tensor<V>, Te
     public Tensor<R> perform(Tensor<V> left, Tensor<V> right) {
         TensorPair<V> broadcastedPair = broadcast(left, right);
         Shape resultingShape = shape(broadcastedPair);
-        Context resultingContext = contextLeftRight(left, right);
+        Position resultingContext = contextLeftRight(left, right);
         return performOperation(broadcastedPair.left(), broadcastedPair.right(), resultingShape, resultingContext);
     }
 
-    private Context contextLeftRight(Tensor<V> left, Tensor<V> right) {
+    private Position contextLeftRight(Tensor<V> left, Tensor<V> right) {
         ContextPropagationStrategy strategy = optionRegistry.get(ContextPropagationStrategy.class);
         return strategy.contextForLeftRight(left.context(), right.context());
     }
 
-    private Tensor<R> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape, Context resultingContext) {
+    private Tensor<R> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape, Position resultingContext) {
         Builder<R> tensorBuilder = ImmutableTensor.builder(resultingShape.dimensionSet());
         for (Position position : resultingShape.positionSet()) {
             tensorBuilder.at(position).put(operation.perform(left.get(position), right.get(position)));
         }
-        tensorBuilder.setTensorContext(resultingContext);
+        tensorBuilder.context(resultingContext);
         return tensorBuilder.build();
     }
 

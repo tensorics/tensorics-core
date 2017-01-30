@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.lang.TensoricDoubleSupport;
 import org.tensorics.core.lang.Tensorics;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
@@ -90,12 +89,12 @@ public class SprintExample extends TensoricDoubleSupport {
 
 	@Test
 	public void testContext() {
-		Context team1Context = team1Velocity.context();
-		assertEquals(1, team1Context.getPosition().coordinates().size());
+		Position team1Context = team1Velocity.context();
+		assertEquals(1, team1Context.coordinates().size());
 
 		Tensor<Double> sliceAtOneDay = from(team1Velocity).extract(new NumberOfDay(1));
-		Context oneDayContext = sliceAtOneDay.context();
-		assertEquals(2, oneDayContext.getPosition().coordinates().size());
+		Position oneDayContext = sliceAtOneDay.context();
+		assertEquals(2, oneDayContext.coordinates().size());
 	}
 
 }

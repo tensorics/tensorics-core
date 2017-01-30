@@ -27,7 +27,6 @@ import static org.tensorics.core.util.Classes.classOf;
 import java.util.Set;
 
 import org.tensorics.core.quantity.QuantifiedValue;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -230,8 +229,8 @@ public final class Tensorbackeds {
         return toReturn;
     }
 
-    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Context context) {
-        return builderFor(classOf(tensorbacked)).withContext(context).putAll(tensorbacked.tensor()).build();
+    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Position context) {
+        return builderFor(classOf(tensorbacked)).context(context).putAll(tensorbacked.tensor()).build();
     }
 
     public static final <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {

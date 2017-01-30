@@ -41,7 +41,15 @@ public interface TensorBuilder<E> {
 
     void removeAt(Position position);
 
-    void setTensorContext(Context context);
+    /**
+     * @deprecated use {@link #context(Position)} 
+     */
+	@Deprecated
+	default void setTensorContext(Position context) {
+		context(context);
+	}
+    
+    void context(Position context);
 
     /**
      * Puts all the values of the given tensor into the new tensor, at the given position. The positions in the new

@@ -57,7 +57,7 @@ public final class OngoingMapOut<V> {
         Builder<Map<C1, V>> tensorBuilder = ImmutableTensor
                 .builder(OngoingMapOut.dimensionsExcept(tensor.shape().dimensionSet(), dimension));
 
-        tensorBuilder.setTensorContext(tensor.context());
+        tensorBuilder.context(tensor.context());
 
         Multimap<Set<?>, Entry<Position, V>> fullEntries = groupBy(tensor.asMap().entrySet(), dimension);
         for (Set<?> key : fullEntries.keySet()) {

@@ -383,14 +383,14 @@ public final class Tensorics {
     /**
      * @see TensorStructurals#setContext(Tensor, Context)
      */
-    public static <S> Tensor<S> setContext(Tensor<S> tensor, Context context) {
+    public static <S> Tensor<S> setContext(Tensor<S> tensor, Position context) {
         return TensorStructurals.setContext(tensor, context);
     }
 
     /**
      * @see Tensorbackeds#setContext(Tensorbacked, Context)
      */
-    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Context context) {
+    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Position context) {
         return Tensorbackeds.setContext(tensorbacked, context);
     }
 

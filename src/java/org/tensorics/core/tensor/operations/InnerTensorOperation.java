@@ -37,7 +37,6 @@ import org.tensorics.core.iterable.operations.IterableOperations;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.Operations;
 import org.tensorics.core.math.operations.BinaryOperation;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.PositionPair;
 import org.tensorics.core.tensor.Positions;
@@ -167,11 +166,11 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
         Map<Position, V> result = IterableOperations.reduce(targetPositionToValueSet, reductionOperation);
 
         ContextPropagationStrategy cps = optionRegistry.get(ContextPropagationStrategy.class);
-        Context resultingContext = cps.contextForLeftRight(left.context(), right.context());
+        Position resultingContext = cps.contextForLeftRight(left.context(), right.context());
 
         TensorBuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
         finalBuilder.putAllMap(result);
-        finalBuilder.setTensorContext(resultingContext);
+        finalBuilder.context(resultingContext);
         return finalBuilder.build();
     }
 
