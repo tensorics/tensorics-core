@@ -35,7 +35,6 @@ import javax.measure.unit.SI;
 import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.lang.DoubleTensorics;
-import org.tensorics.core.lang.QuantityDoubleSupport;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.units.JScienceUnit;
 

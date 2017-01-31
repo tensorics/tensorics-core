@@ -39,7 +39,8 @@ import com.google.common.collect.Interners;
  * 
  * @author agorzaws
  */
-public final class Position implements Serializable {
+// TODO temporary non-final! - for the ongoing refactoring of Context
+public class Position implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,7 +53,7 @@ public final class Position implements Serializable {
 
     private ImmutableSet<?> coordinates;
 
-    private Position(Set<?> coordinates) {
+    protected Position(Set<?> coordinates) {
         this.coordinates = ImmutableSet.copyOf(coordinates);
         for (Object oneCoordinate : coordinates) {
             if (oneCoordinate instanceof Position) {
@@ -100,7 +101,7 @@ public final class Position implements Serializable {
     /**
      * Retrieves the dimensions of this position (i.e. the type of the containing coordinates).
      * <p>
-     * <b>NOTE!</b> This dimensions may differ from the ones kept in the parent tensor!.
+     * <b>NOTE!</b> These dimensions may differ from the ones kept in the parent tensor!.
      * 
      * @return the types of the coordinates
      */
@@ -136,7 +137,7 @@ public final class Position implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (! (obj instanceof Position)) { // TODO: this should be changed again to standard of getClass() after context refactoring
             return false;
         }
         Position other = (Position) obj;

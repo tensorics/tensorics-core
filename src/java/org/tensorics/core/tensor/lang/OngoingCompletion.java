@@ -48,7 +48,7 @@ public class OngoingCompletion<S> {
         checkArgument(second.shape().dimensionSet().equals(dimensions()),
                 "Tensors do not have the same dimensions! Completion not supported!");
         Builder<S> builder = ImmutableTensor.builder(dimensions());
-        builder.setTensorContext(tensor.context());
+        builder.context(tensor.context());
         for (Entry<Position, S> entry: second.asMap().entrySet()) {
             Position position = entry.getKey();
             if (tensor.shape().contains(position)) {

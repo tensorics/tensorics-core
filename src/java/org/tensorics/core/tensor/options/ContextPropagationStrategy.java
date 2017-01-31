@@ -22,7 +22,7 @@
 package org.tensorics.core.tensor.options;
 
 import org.tensorics.core.commons.options.ManipulationOption;
-import org.tensorics.core.tensor.Context;
+import org.tensorics.core.tensor.Position;
 
 /**
  * Defines how the context is propagated during a binary tensor operation.
@@ -31,6 +31,6 @@ import org.tensorics.core.tensor.Context;
  */
 public interface ContextPropagationStrategy extends ManipulationOption {
 
-    Context contextForLeftRight(Context leftContext, Context rightContext);
+    Position contextForLeftRight(Position leftContext, Position rightContext);
 
 }
