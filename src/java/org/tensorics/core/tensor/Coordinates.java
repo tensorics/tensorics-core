@@ -131,7 +131,7 @@ public final class Coordinates {
      */
     public static String dimensionsWithoutClassPath(Tensor<?> tensor) {
         String dimensions = dimensionsWithoutClassPath(tensor.shape().dimensionSet());
-        String dimensionsContext = dimensionsWithoutClassPath(tensor.context().getPosition());
+        String dimensionsContext = dimensionsWithoutClassPath(tensor.context());
         return "Tensor:" + dimensions + ", Context:" + dimensionsContext;
     }
 

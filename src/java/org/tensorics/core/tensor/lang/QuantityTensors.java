@@ -48,7 +48,7 @@ public final class QuantityTensors {
 
     public static <S> Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.setTensorContext(tensor.context());
+        builder.context(tensor.context());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
             builder.at(entry.getKey()).put(entry.getValue().value());
         }
@@ -57,7 +57,7 @@ public final class QuantityTensors {
 
     public static <S> Tensor<Optional<S>> errorsOf(Tensor<QuantifiedValue<S>> tensor) {
         Builder<Optional<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.setTensorContext(tensor.context());
+        builder.context(tensor.context());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
             builder.at(entry.getKey()).put(entry.getValue().error());
         }
@@ -66,7 +66,7 @@ public final class QuantityTensors {
 
     public static <S> Tensor<S> errorsOfOr(Tensor<QuantifiedValue<S>> tensor, S defaultValue) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.setTensorContext(tensor.context());
+        builder.context(tensor.context());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
             builder.at(entry.getKey()).put(entry.getValue().error().or(defaultValue));
         }
@@ -75,7 +75,7 @@ public final class QuantityTensors {
 
     public static <S> Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
         Builder<Boolean> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.setTensorContext(tensor.context());
+        builder.context(tensor.context());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : tensor.asMap().entrySet()) {
             builder.at(entry.getKey()).put(entry.getValue().validity());
         }
@@ -94,7 +94,7 @@ public final class QuantityTensors {
 
     public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
         Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.setTensorContext(tensor.context());
+        builder.context(tensor.context());
         for (java.util.Map.Entry<Position, S> entry : tensor.asMap().entrySet()) {
             builder.at(entry.getKey()).put(ImmutableQuantifiedValue.of(entry.getValue(), unit));
         }
