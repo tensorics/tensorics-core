@@ -31,6 +31,7 @@ import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.TensorbackedInternals;
 
 /**
  * Collects all fluent API elements for the {@link Tensorbacked} objects.
@@ -121,14 +122,9 @@ public class OngoingTensorBackedOperation<TB extends Tensorbacked<V>, V> impleme
     }
 
     private TB evaluate(Tensor<V> right, BinaryOperation<V> operation) {
-        Tensor<V> result = new ElementBinaryOperation<V>(operation, environment.options())
-                .perform(left.tensor(), right);
-        return createBackedByTensor(classOf(left), result);
-    }
-
-    @SuppressWarnings("unchecked")
-    private Class<TB> classOf(TB tensorBacked) {
-        return (Class<TB>) tensorBacked.getClass();
+        Tensor<V> result = new ElementBinaryOperation<V>(operation, environment.options()).perform(left.tensor(),
+                right);
+        return createBackedByTensor(TensorbackedInternals.classOf(left), result);
     }
 
 }

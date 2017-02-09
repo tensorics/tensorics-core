@@ -22,6 +22,9 @@
 
 package org.tensorics.core.tensor.lang;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -30,6 +33,8 @@ import java.util.function.Function;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Shapes;
 import org.tensorics.core.tensor.Tensor;
 
 import com.google.common.collect.Iterables;
@@ -161,6 +166,24 @@ public final class TensorStructurals {
 
     public static final <S> OngoingTensorFiltering<S> filter(Tensor<S> tensor) {
         return new OngoingTensorFiltering<>(tensor);
+    }
+
+    public static final <S> Tensor<S> completeWith(Tensor<S> tensor, Tensor<S> second) {
+        checkNotNull(second, "second tensor must not be null");
+        checkArgument(second.shape().dimensionSet().equals(tensor.shape().dimensionSet()),
+                "Tensors do not have the same dimensions! Completion not supported!");
+        Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        builder.context(tensor.context());
+    
+        Shape shape = Shapes.union(tensor.shape(), second.shape());
+        for (Position position : shape.positionSet()) {
+            if (tensor.shape().contains(position)) {
+                builder.putAt(tensor.get(position), position);
+            } else {
+                builder.putAt(second.get(position), position);
+            }
+        }
+        return builder.build();
     }
 
 }

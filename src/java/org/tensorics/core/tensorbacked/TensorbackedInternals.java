@@ -22,6 +22,7 @@
 
 package org.tensorics.core.tensorbacked;
 
+import static java.util.stream.Collectors.toList;
 import static org.tensorics.core.util.InstantiatorType.CONSTRUCTOR;
 import static org.tensorics.core.util.Instantiators.instantiatorFor;
 
@@ -29,10 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Streams;
 
 /**
  * This class gives an access to the methods for {@link Tensorbacked} object support.
@@ -56,9 +59,9 @@ public final class TensorbackedInternals {
     public static Set<Class<?>> dimensionsOf(Class<? extends Tensorbacked<?>> tensorBackedClass) {
         Dimensions dimensionAnnotation = tensorBackedClass.getAnnotation(Dimensions.class);
         if (dimensionAnnotation == null) {
-            throw new IllegalArgumentException("No annotation of type '" + Dimensions.class
-                    + "' is present on the class '" + tensorBackedClass
-                    + "'. Therefore, the dimensions of this tensorbacked type cannot be determined.");
+            throw new IllegalArgumentException(
+                    "No annotation of type '" + Dimensions.class + "' is present on the class '" + tensorBackedClass
+                            + "'. Therefore, the dimensions of this tensorbacked type cannot be determined.");
         }
         return ImmutableSet.copyOf(dimensionAnnotation.value());
     }
@@ -90,6 +93,15 @@ public final class TensorbackedInternals {
             tensors.add(tensorbacked.tensor());
         }
         return tensors;
+    }
+
+    public static final <TB extends Tensorbacked<?>> Iterable<Shape> shapesOf(Iterable<TB> tensorbackeds) {
+        return Streams.stream(tensorbackeds).map(tb -> tb.tensor().shape()).collect(toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    public static final <TB extends Tensorbacked<?>> Class<TB> classOf(TB tensorBacked) {
+        return (Class<TB>) tensorBacked.getClass();
     }
 
 }

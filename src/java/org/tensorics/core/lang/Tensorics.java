@@ -22,8 +22,6 @@
 
 package org.tensorics.core.lang;
 
-import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier;
-
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -46,9 +44,9 @@ import org.tensorics.core.tensor.lang.OngoingTensorFiltering;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
-import org.tensorics.core.tensor.operations.FunctionTensorCreationOperation;
-import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
+import org.tensorics.core.tensor.operations.TensorInternals;
 import org.tensorics.core.tensor.stream.TensorStreams;
+import org.tensorics.core.tensorbacked.OngoingTensorbackedCompletion;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
@@ -303,15 +301,15 @@ public final class Tensorics {
     }
 
     public static <S> Tensor<S> sameValues(Shape shape, S value) {
-        return new SingleValueTensorCreationOperation<S>(shape, value).perform();
+        return TensorInternals.sameValues(shape, value);
     }
 
     public static <S> Tensor<S> createFrom(Shape shape, Supplier<S> supplier) {
-        return new FunctionTensorCreationOperation<>(shape, forSupplier(supplier)).perform();
+        return TensorInternals.createFrom(shape, supplier);
     }
 
     public static <S> Tensor<S> createFrom(Shape shape, Function<Position, S> function) {
-        return new FunctionTensorCreationOperation<>(shape, function).perform();
+        return TensorInternals.createFrom(shape, function);
     }
 
     public static <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
@@ -407,4 +405,19 @@ public final class Tensorics {
     public static <S> Stream<Map.Entry<Position, S>> stream(Tensorbacked<S> tensorBacked) {
         return TensorStreams.tensorEntryStream(tensorBacked.tensor());
     }
+
+    /**
+     * @see Tensorbackeds#shapesOf(Tensorbacked)
+     */
+    public static <TB extends Tensorbacked<?>> Iterable<Shape> shapesOf(Iterable<TB> tensorbackeds) {
+        return Tensorbackeds.shapesOf(tensorbackeds);
+    }
+
+    /**
+     * @see Tensorbackeds#complete(Tensorbacked)
+     */
+    public static <S, TB extends Tensorbacked<S>> OngoingTensorbackedCompletion<TB, S> complete(TB tensorbacked) {
+        return Tensorbackeds.complete(tensorbacked);
+    }
+
 }

@@ -25,11 +25,14 @@ package org.tensorics.core.tensor;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Collections2.transform;
-import static com.google.common.collect.Sets.union;
+import static java.util.Objects.requireNonNull;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
 /**
@@ -48,20 +51,59 @@ public final class Shapes {
 
     /**
      * Creates a shape, containing all the positions that are contained in both given shapes. This only makes sense, if
-     * the dimensions of the two sets are the same. If they are not, then an {@link IllegalArgumentException} is thrown.
+     * the dimensions of the two shapes are the same. If they are not, then an {@link IllegalArgumentException} is
+     * thrown.
      * 
      * @param left the first shape from which to take positions
      * @param right the second shape from which to take positions
      * @return a shape containing all positions, which are contained in both given shapes
      */
     public static Shape intersection(Shape left, Shape right) {
-        checkLeftRightNotNull(left, right);
-        if (!left.hasSameDimensionsAs(right)) {
-            throw new IllegalArgumentException("The two shapes do not have the same dimension, "
-                    + "therefore the intersection of coordinates cannot be determined. Left dimensions: "
-                    + left.dimensionSet() + "; Right dimensions: " + right.dimensionSet());
-        }
-        return Shape.of(Sets.intersection(left.positionSet(), right.positionSet()));
+        return combineLeftRightBy(left, right, Sets::intersection);
+    }
+
+    /**
+     * Creates a shape, containing all the positions that are either contained in the left or the right shape.This only
+     * makes sense, if the dimensions of the two shapes are the same. If they are not, then an
+     * {@link IllegalArgumentException} is thrown.
+     * 
+     * @param left the first shape from which to take positions
+     * @param right the second shape from which to take positions
+     * @return a shape containing all positions, which are contained in at least one of the two shapes
+     */
+    public static Shape union(Shape left, Shape right) {
+        return combineLeftRightBy(left, right, Sets::union);
+    }
+
+    /**
+     * Creates a shape, containing all the positions that are contained at least in one of the given shapes. This only
+     * makes sense, if the dimensions of the shapes are the same. If they are not, then an
+     * {@link IllegalArgumentException} is thrown. Further, it is required that at least one element is contained in the
+     * iterable.
+     * 
+     * @param shapes the shapes for which the union shall be found
+     * @return a shape which represents the union of all the shapes
+     * @throws IllegalArgumentException if the shapes are not of the same dimension
+     * @throws NoSuchElementException in case the iterable is empty
+     * @throws NullPointerException if the given iterable is {@code null}
+     */
+    public static final Shape union(Iterable<Shape> shapes) {
+        return combineBy(shapes, Shapes::union);
+    }
+
+    /**
+     * Creates a shape, containing the positions which are contained in each of the given shapes. This only makes sense,
+     * if the dimensions of the shapes are the same. If they are not, then an {@link IllegalArgumentException} is
+     * thrown. Further, it is required that at least one element is contained in the iterable.
+     * 
+     * @param shapes the shapes for which the intersection shall be found
+     * @return a shape which represents the intersection of all the shapes
+     * @throws IllegalArgumentException if the shapes are not of the same dimension
+     * @throws NoSuchElementException in case the iterable is empty
+     * @throws NullPointerException if the given iterable is {@code null}
+     */
+    public static final Shape intersection(Iterable<Shape> shapes) {
+        return combineBy(shapes, Shapes::intersection);
     }
 
     /**
@@ -89,7 +131,8 @@ public final class Shapes {
     public static Shape dimensionStripped(Shape shape, Set<? extends Class<?>> dimensionsToStrip) {
         checkNotNull(shape, "shape must not be null");
         checkNotNull(dimensionsToStrip, "dimensions must not be null");
-        return Shape.of(Positions.unique(transform(shape.positionSet(), toGuavaFunction(Positions.stripping(dimensionsToStrip)))));
+        return Shape.of(Positions
+                .unique(transform(shape.positionSet(), toGuavaFunction(Positions.stripping(dimensionsToStrip)))));
     }
 
     /**
@@ -107,7 +150,7 @@ public final class Shapes {
     public static Shape outerProduct(Shape left, Shape right) {
         checkArgument(dimensionalIntersection(left, right).isEmpty(), "The two shapes have "
                 + "overlapping dimensions. The outer product is not foreseen to be used in this situation.");
-        Shape.Builder builder = Shape.builder(union(left.dimensionSet(), right.dimensionSet()));
+        Shape.Builder builder = Shape.builder(Sets.union(left.dimensionSet(), right.dimensionSet()));
         for (Position leftPosition : left.positionSet()) {
             for (Position rightPosition : right.positionSet()) {
                 builder.add(Positions.union(leftPosition, rightPosition));
@@ -137,4 +180,36 @@ public final class Shapes {
             }
         };
     }
+
+    private static void checkLeftRightSameDimensions(Shape left, Shape right) {
+        if (!left.hasSameDimensionsAs(right)) {
+            throw new IllegalArgumentException("The two shapes do not have the same dimension, "
+                    + "therefore combining of positions does not make sense. Left dimensions: " + left.dimensionSet()
+                    + "; Right dimensions: " + right.dimensionSet());
+        }
+    }
+
+    private static Shape combineLeftRightBy(Shape left, Shape right,
+            BiFunction<Set<Position>, Set<Position>, Set<Position>> combiner) {
+        checkLeftRightNotNull(left, right);
+        checkLeftRightSameDimensions(left, right);
+        return Shape.of(combiner.apply(left.positionSet(), right.positionSet()));
+    }
+
+    private static Shape combineBy(Iterable<Shape> shapes, BiFunction<Shape, Shape, Shape> combiner) {
+        requireNonNull(shapes, "shapes must not be null");
+        if (Iterables.isEmpty(shapes)) {
+            throw new NoSuchElementException("At least one shape is required.");
+        }
+        Shape resultingShape = null;
+        for (Shape shape : shapes) {
+            if (shape == null) {
+                resultingShape = shape;
+            } else {
+                resultingShape = combiner.apply(resultingShape, shape);
+            }
+        }
+        return resultingShape;
+    }
+
 }
