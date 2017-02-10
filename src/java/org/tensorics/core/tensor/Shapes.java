@@ -203,7 +203,7 @@ public final class Shapes {
         }
         Shape resultingShape = null;
         for (Shape shape : shapes) {
-            if (shape == null) {
+            if (resultingShape == null) {
                 resultingShape = shape;
             } else {
                 resultingShape = combiner.apply(resultingShape, shape);
