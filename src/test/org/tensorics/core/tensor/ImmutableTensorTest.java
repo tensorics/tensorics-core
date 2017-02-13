@@ -26,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -117,4 +118,24 @@ public class ImmutableTensorTest {
         Tensorics.fromMap(ImmutableSet.of(Integer.class), map);
     }
 
+    @Test
+    public void getNonExistingElementUsingInheritanceThrowsANoSuchElementException() {
+        final Object value = new Object();
+
+        Builder<Object> builder = ImmutableTensor.builder(AnyInterface.class);
+        builder.putAt(value, AnyClass.INSTANCE1);
+        ImmutableTensor<Object> tensor = builder.build();
+
+        thrown.expect(NoSuchElementException.class);
+        assertEquals(tensor.get(AnyClass.INSTANCE2), value);
+    }
+
+    interface AnyInterface {
+        /* just an interface */
+    }
+
+    enum AnyClass implements AnyInterface {
+        INSTANCE1,
+        INSTANCE2;
+    }
 }
