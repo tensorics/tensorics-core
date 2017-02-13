@@ -1,4 +1,11 @@
 language: java
+jdk:
+  - oraclejdk8
+sudo: false
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 env:
   global:
   - GH_REF: github.com/tensorics/tensorics-core.git
@@ -10,5 +17,3 @@ deploy:
   script: /bin/sh ./scripts/deploy-jars.sh
   on:
     tags: true
-jdk:
-  - oraclejdk8
