@@ -106,20 +106,25 @@ public final class Coordinates {
      * Validates dependence between given class (interface) such that ANY o the given coordinates is assignable from it.
      * 
      * @param classToCheck a class to verify
-     * @param coordinates available coordinates classes
+     * @param dimensions available coordinates classes
      * @throws IllegalArgumentException when any of the given classes are linked by the inheritance line.
      */
-    public static void checkClassRelations(Class<?> classToCheck, Iterable<Class<?>> coordinates) {
-        for (Class<?> oneToCompare : coordinates) {
-            if (classToCheck.equals(oneToCompare)) {
-                return;
+    public static void checkClassRelations(Class<?> classToCheck, Iterable<Class<?>> dimensions) {
+        // XXX find better names
+        mapToAnEntry(classToCheck, dimensions);
+    }
+
+    public static <C> Class<? super C> mapToAnEntry(Class<C> classToCheck, Iterable<Class<?>> dimensions) {
+        for (Class<?> dimension : dimensions) {
+            if (classToCheck.equals(dimension)) {
+                return (Class<? super C>) dimension;
             }
-            if (oneToCompare.isAssignableFrom(classToCheck)) {
-                return;
+            if (dimension.isAssignableFrom(classToCheck)) {
+                return (Class<? super C>) dimension;
             }
         }
         throw new IllegalArgumentException("Cannot use given coordinates class! '" + classToCheck.getCanonicalName()
-                + "' is not assignable from any of the avaliable dimensions '" + coordinates + "'");
+                + "' is not assignable from any of the avaliable dimensions '" + dimensions + "'");
     }
 
     /**

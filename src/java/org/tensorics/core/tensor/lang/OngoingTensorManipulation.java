@@ -118,9 +118,15 @@ public class OngoingTensorManipulation<V> {
         checkArgument(coordinate != null, "Argument '" + "coordinate" + "' must not be null!");
         checkArgument(!(coordinate instanceof Position), "It is not allowed that a coordinate is of type position! "
                 + "Most probably this is a programming mistake ;-)");
+
+        /*
+         * TODO: write a nice test for this and probably have a method in shape to map dimensions
+         */
         @SuppressWarnings("unchecked")
         Class<C> dimension = (Class<C>) coordinate.getClass();
-        return TensorStructurals.from(tensor).reduce(dimension).bySlicingAt(coordinate);
+        Class<? super C> correctDimension = Coordinates.mapToAnEntry(dimension, tensor.shape().dimensionSet());
+        
+        return TensorStructurals.from(tensor).reduce(correctDimension).bySlicingAt(coordinate);
     }
 
     public <C> OngoingDimensionReduction<C, V> reduce(Class<C> dimension) {
