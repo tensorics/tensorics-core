@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
@@ -81,7 +82,8 @@ public final class TensorbackedInternals {
     private static <T extends Tensorbacked<V>, V> void verifyDimensions(Class<T> tensorBackedClass, Tensor<?> tensor) {
         Set<Class<?>> targetDimensions = dimensionsOf(tensorBackedClass);
         Set<Class<?>> tensorDimensions = tensor.shape().dimensionSet();
-        if (!targetDimensions.equals(tensorDimensions)) {
+        
+        if (!Positions.areDimensionsConsistent(targetDimensions, tensorDimensions)) {
             throw new IllegalArgumentException("Dimensions of target class (" + targetDimensions
                     + ") do not match dimensions of given tensor (" + tensorDimensions + "). Cannot create object.");
         }

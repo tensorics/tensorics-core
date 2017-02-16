@@ -317,7 +317,7 @@ public final class Shape implements Serializable {
 
     @Override
     public String toString() {
-        return "Shape [#dimensions=" + dimensions.size() + ", #positions=" + positions.size() + "]";
+        return "Shape [dimensions=" + dimensions+ ", #positions=" + positions.size() + "]";
     }
 
 }
