@@ -71,11 +71,10 @@ public final class TensorbackedInternals {
      * @return a new instance of the given class, backed by the given tensor
      */
     public static <V, T extends Tensorbacked<V>> T createBackedByTensor(Class<T> tensorBackedClass, Tensor<V> tensor) {
-        verifyDimensions(tensorBackedClass, tensor);
         return instantiatorFor(tensorBackedClass).ofType(CONSTRUCTOR).withArgumentType(Tensor.class).create(tensor);
     }
 
-    private static <T extends Tensorbacked<V>, V> void verifyDimensions(Class<T> tensorBackedClass, Tensor<?> tensor) {
+    static <T extends Tensorbacked<V>, V> void verifyDimensions(Class<T> tensorBackedClass, Tensor<V> tensor) {
         Set<Class<?>> targetDimensions = dimensionsOf(tensorBackedClass);
         Set<Class<?>> tensorDimensions = tensor.shape().dimensionSet();
         if (!targetDimensions.equals(tensorDimensions)) {
