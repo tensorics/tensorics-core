@@ -57,7 +57,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     private static final int POSITION_TO_DISPLAY = 10;
     private final Map<Position, T> entries;
     private final Shape shape; // NOSONAR
-    private final Context context; // NOSONAR
+    private final Position context; // NOSONAR
 
     /**
      * Package-private constructor to be called from builder
@@ -66,8 +66,8 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      */
     ImmutableTensor(Builder<T> builder) {
         this.entries = builder.createEntriesMap();
-        this.shape = Shape.viewOf(builder.getDimensions(), this.entries.keySet());
-        this.context = builder.getContext();
+        this.shape = Shape.viewOf(builder.dimensions(), this.entries.keySet());
+        this.context = builder.context();
     }
 
     /**
@@ -163,7 +163,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     public static final <T> Tensor<T> copyOf(Tensor<T> tensor) {
         Builder<T> builder = builder(tensor.shape().dimensionSet());
         builder.putAllMap(tensor.asMap());
-        builder.setTensorContext(tensor.context());
+        builder.context(tensor.context());
         return builder.build();
     }
 
@@ -187,12 +187,14 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
     @Override
     public Context context() {
-        return context;
+        return Context.of(context);
     }
 
     @Override
     public Map<Position, T> asMap() {
-        /* the internal map is already immutable and does not need to be copied */
+        /*
+         * the internal map is already immutable and does not need to be copied
+         */
         return entries;
     }
 
@@ -213,12 +215,11 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
         if (entry == null) {
             String message = "Entry for position '" + position + "' is not contained in this tensor.";
             Set<Class<?>> tensorDimensions = this.shape.dimensionSet();
-            Set<Class<?>> positionDimensions = position.dimensionSet();
-            if (tensorDimensions.equals(positionDimensions)) {
+            if (Positions.areDimensionsConsistentWithCoordinates(tensorDimensions, position)) {
                 throw new NoSuchElementException(message);
             } else {
                 message += "\nThe dimensions of the tensor (" + tensorDimensions
-                        + ") do not match the dimensions of the requested position (" + positionDimensions + ").";
+                        + ") do not match the dimensions of the requested position (" + position + ").";
                 throw new IllegalArgumentException(message);
             }
         }

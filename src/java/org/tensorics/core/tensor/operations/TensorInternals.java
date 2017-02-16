@@ -22,10 +22,15 @@
 
 package org.tensorics.core.tensor.operations;
 
+import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier;
+
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
 /**
@@ -45,6 +50,18 @@ public final class TensorInternals {
 
     public static <T> Set<Entry<Position, T>> entrySetOf(Tensor<T> tensor) {
         return tensor.asMap().entrySet();
+    }
+
+    public static <S> Tensor<S> sameValues(Shape shape, S value) {
+        return new SingleValueTensorCreationOperation<S>(shape, value).perform();
+    }
+
+    public static <S> Tensor<S> createFrom(Shape shape, Supplier<S> supplier) {
+        return new FunctionTensorCreationOperation<>(shape, forSupplier(supplier)).perform();
+    }
+
+    public static <S> Tensor<S> createFrom(Shape shape, Function<Position, S> function) {
+        return new FunctionTensorCreationOperation<>(shape, function).perform();
     }
 
 }

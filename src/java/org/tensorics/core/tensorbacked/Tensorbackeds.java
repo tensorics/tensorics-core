@@ -27,7 +27,6 @@ import static org.tensorics.core.util.Classes.classOf;
 import java.util.Set;
 
 import org.tensorics.core.quantity.QuantifiedValue;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -186,6 +185,18 @@ public final class Tensorbackeds {
     }
 
     /**
+     * Retrieves all the shapes of the given tensorbacked objects. The order of the shapes is conserved from the
+     * iteration order of the input iterable and the returned iterable will have the same number of elements than the
+     * input collection.
+     * 
+     * @param tensorbackeds the tensorbacked objects from which to get the shapes
+     * @return an iterable contining the shapes of the tensor backed objects
+     */
+    public static final <TB extends Tensorbacked<?>> Iterable<Shape> shapesOf(Iterable<TB> tensorbackeds) {
+        return TensorbackedInternals.shapesOf(tensorbackeds);
+    }
+
+    /**
      * Starting for a fluent clause, that allows to flatten one or multiple dimensions of the internal tensor of the
      * tensor backed object into maps or tensors of lists.
      * 
@@ -206,6 +217,16 @@ public final class Tensorbackeds {
      */
     public static final <S> Iterable<Tensor<S>> tensorsOf(Iterable<? extends Tensorbacked<S>> tensorbackeds) {
         return TensorbackedInternals.tensorsOf(tensorbackeds);
+    }
+
+    /**
+     * Starting point for a fluent clause to complete a tensorbacked object with other values.
+     * 
+     * @param tensorbacked the tensor backed object to complete
+     * @return an intermediate object that will allow to specify details on how the object shall be completed
+     */
+    public static final <S, TB extends Tensorbacked<S>> OngoingTensorbackedCompletion<TB, S> complete(TB tensorbacked) {
+        return new OngoingTensorbackedCompletion<>(tensorbacked);
     }
 
     /**
@@ -230,8 +251,8 @@ public final class Tensorbackeds {
         return toReturn;
     }
 
-    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Context context) {
-        return builderFor(classOf(tensorbacked)).withContext(context).putAll(tensorbacked.tensor()).build();
+    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Position context) {
+        return builderFor(classOf(tensorbacked)).context(context).putAll(tensorbacked.tensor()).build();
     }
 
     public static final <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {

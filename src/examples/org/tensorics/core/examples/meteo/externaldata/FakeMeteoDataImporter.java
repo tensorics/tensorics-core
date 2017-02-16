@@ -11,7 +11,6 @@ import org.tensorics.core.examples.meteo.domain.coordinates.MeteoCoordinate;
 import org.tensorics.core.examples.meteo.domain.coordinates.Time;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -34,7 +33,7 @@ public final class FakeMeteoDataImporter {
     public static Tensor<QuantifiedValue<Double>> importFromNow() {
         Set<Class<?>> dimensions = ImmutableSet.of(Longitude.class, Latitude.class);
         Builder<QuantifiedValue<Double>> tensorBuilder = ImmutableTensor.<QuantifiedValue<Double>> builder(dimensions);
-        tensorBuilder.setTensorContext(Context.of(ImmutableSet.<MeteoCoordinate> of(new Time())));
+        tensorBuilder.context(Position.of(ImmutableSet.<MeteoCoordinate> of(new Time())));
         Random rand = new Random();
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 10; y++) {

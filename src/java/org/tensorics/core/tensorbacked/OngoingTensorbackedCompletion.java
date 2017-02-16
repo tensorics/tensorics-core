@@ -20,27 +20,34 @@
  ******************************************************************************/
 // @formatter:on
 
-package org.tensorics.core.tensor.lang;
+package org.tensorics.core.tensorbacked;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.tensorics.core.tensor.lang.TensorStructurals.completeWith;
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.createBackedByTensor;
 
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.TensorInternals;
 
-import com.google.common.base.Preconditions;
+public class OngoingTensorbackedCompletion<TB extends Tensorbacked<S>, S> {
 
-public class OngoingCompletion<S> {
+    private final TB tensorbacked;
 
-    private final Tensor<S> tensor;
-
-    OngoingCompletion(Tensor<S> tensor) {
-        this.tensor = Preconditions.checkNotNull(tensor, "tensor must not be null");
+    OngoingTensorbackedCompletion(TB tensorbacked) {
+        this.tensorbacked = checkNotNull(tensorbacked, "tensorbacked must not be null");
     }
 
-    public Tensor<S> with(Tensor<S> second) {
-        return TensorStructurals.completeWith(tensor, second);
+    public TB with(Tensor<S> second) {
+        Tensor<S> tensor = completeWith(tensorbacked.tensor(), second);
+        return createBackedByTensor(TensorbackedInternals.classOf(tensorbacked), tensor);
     }
 
-    public Tensor<S> with(Shape shape, S value) {
+    public TB with(TB second) {
+        return with(second.tensor());
+    }
+
+    public TB with(Shape shape, S value) {
         return with(TensorInternals.sameValues(shape, value));
     }
 

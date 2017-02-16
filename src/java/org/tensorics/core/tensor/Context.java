@@ -22,96 +22,78 @@
 
 package org.tensorics.core.tensor;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.io.Serializable;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+
 /**
- * A class that contains a limited (or zero - empty) additional informations about tensor shape/dimensions. <br>
+ * A class that contains a limited (or zero - empty) additional informations
+ * about tensor shape/dimensions. <br>
  * <br>
- * List of the coordinates will return instances of This object should remain immutable as it is an unchangeable
- * property of the data held in {@link Tensor}.
+ * List of the coordinates will return instances of This object should remain
+ * immutable as it is an unchangeable property of the data held in
+ * {@link Tensor}.
  * 
  * @author agorzaws
+ * @deprecated context of a tensor will be directly a position
  */
-public final class Context implements Serializable {
+@Deprecated
+public final class Context extends Position implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static final Context EMPTY_CONTEXT = Context.of(Position.empty());
+	private static final Context EMPTY_CONTEXT = Context.of(Position.empty());
 
-    private final Position position;
+	private Context(Set<?> coordinates) {
+		super(coordinates);
+	}
 
-    private Context(Position position) {
-        this.position = checkNotNull(position, "position must not be null");
-    }
+	/**
+	 * @return the context content
+	 * @deprecated Context class will be removed, instead position should be
+	 *             used everyhwere
+	 */
+	@Deprecated
+	public Position getPosition() {
+		return this;
+	}
 
-    /**
-     * @return the context content
-     */
-    public Position getPosition() {
-        return position;
-    }
+	/**
+	 * @param coordinates
+	 *            to be saved in context/position
+	 * @return a Context
+	 * @deprecated use position directly
+	 */
+	@SuppressWarnings("PMD.ShortMethodName")
+	@Deprecated
+	public static Context of(Set<?> coordinates) {
+		return new Context(coordinates);
+	}
 
-    /**
-     * @param coordinates to be saved in context/position
-     * @return a Context
-     */
-    @SuppressWarnings("PMD.ShortMethodName")
-    public static Context of(Set<?> coordinates) {
-        return of(Position.of(coordinates));
-    }
+	/**
+	 * @deprecated use position directly
+	 */
+	@SuppressWarnings("PMD.ShortMethodName")
+	@Deprecated
+	public static Context of(Object... coordinates) {
+		return of(ImmutableSet.copyOf(coordinates));
+	}
 
-    @SuppressWarnings("PMD.ShortMethodName")
-    public static Context of(Object... coordinates) {
-        return of(Position.of(coordinates));
-    }
+	/**
+	 * @deprecated use position directly
+	 */
+	@SuppressWarnings("PMD.ShortMethodName")
+	@Deprecated
+	public static Context of(Position position) {
+		return of(position.coordinates());
+	}
 
-    @SuppressWarnings("PMD.ShortMethodName")
-    public static Context of(Position position) {
-        return new Context(position);
-    }
+	/**
+	 * @return creates a default empty context.
+	 */
+	public static Context empty() {
+		return EMPTY_CONTEXT;
+	}
 
-    /**
-     * @return creates a default empty context.
-     */
-    public static Context empty() {
-        return EMPTY_CONTEXT;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Context other = (Context) obj;
-        if (position == null) {
-            if (other.position != null) {
-                return false;
-            }
-        } else if (!position.equals(other.position)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((position == null) ? 0 : position.hashCode());
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Context [position=" + position + "]";
-    }
 }

@@ -32,9 +32,9 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
@@ -132,7 +132,7 @@ public class TensorsTest {
         Builder<Double> tensorBuilder = ImmutableTensor.<Double> builder(ImmutableSet.of(XCoordinate.class,
                 YCoordinate.class));
         if (coordinateForContext.size() > 0) {
-            tensorBuilder.setTensorContext(Context.of(coordinateForContext));
+            tensorBuilder.context(Position.of(coordinateForContext));
         }
         for (int i = 1; i < 6; i++) {
             for (int j = 1; j < 6; j++) {

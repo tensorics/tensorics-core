@@ -124,7 +124,7 @@ public final class Positions {
         public Position apply(Position position) {
             Builder<Object> builder = ImmutableSet.builder();
             for (Object coordinate : position.coordinates()) {
-                if (!dimensionsToStrip.contains(coordinate.getClass())) {
+                if (!dimensionsToStrip.stream().anyMatch(dts -> dts.isInstance(coordinate))) {
                     builder.add(coordinate);
                 }
             }
@@ -162,6 +162,10 @@ public final class Positions {
         }
         Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
         Set<Class<?>> positionCoordinatesToCheck = position.dimensionSet();
+        return areDimensionsConsistent(dimensions, positionCoordinatesToCheck);
+    }
+
+    public static boolean areDimensionsConsistent(Set<Class<?>> dimensions, Set<Class<?>> positionCoordinatesToCheck) {
         if (dimensions.equals(positionCoordinatesToCheck)) {
             return true;
         }
