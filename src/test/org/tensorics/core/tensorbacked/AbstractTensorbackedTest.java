@@ -4,8 +4,14 @@
 
 package org.tensorics.core.tensorbacked;
 
+import static java.lang.Double.valueOf;
 import static org.junit.Assert.assertEquals;
+import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.FirstCoordinate.FIRST_1;
+import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.FirstCoordinate.FIRST_2;
+import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.SecondCoordinate.SECOND_1;
+import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.SecondCoordinate.SECOND_2;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.tensorics.core.lang.DoubleTensorics;
 import org.tensorics.core.lang.Tensorics;
@@ -63,18 +69,21 @@ public class AbstractTensorbackedTest {
     public void canConstructLeafClassTensorbackedFromLeafClassTensor() {
         LeafClassTensorbacked tb = new LeafClassTensorbacked(leafClassTensor);
         assertEquals(tb.tensor().asMap(), leafClassTensor.asMap());
+        assertEquals(TensorbackedInternals.dimensionsOf(LeafClassTensorbacked.class),
+                tb.tensor().shape().dimensionSet());
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void canNotConstructLeafClassTensorbackedFromInterfaceClassTensor() {
         LeafClassTensorbacked tb = new LeafClassTensorbacked(interfaceTensor);
         assertEquals(tb.tensor().asMap(), interfaceTensor.asMap());
     }
 
-    @Test(expected=IllegalArgumentException.class)
     public void canConstructInterfaceTensorbackedFromLeafClassTensor() {
         InterfaceTensorbacked tb = new InterfaceTensorbacked(leafClassTensor);
         assertEquals(tb.tensor().asMap(), leafClassTensor.asMap());
+        assertEquals(TensorbackedInternals.dimensionsOf(InterfaceTensorbacked.class),
+                tb.tensor().shape().dimensionSet());
     }
 
     @Test
@@ -82,17 +91,28 @@ public class AbstractTensorbackedTest {
         InterfaceTensorbacked tb = new InterfaceTensorbacked(interfaceTensor);
         assertEquals(tb.tensor().asMap(), interfaceTensor.asMap());
     }
-    
+
     @Test
     public void interfaceTensorbackedCalculationTest() {
         InterfaceTensorbacked tb = new InterfaceTensorbacked(interfaceTensor);
         InterfaceTensorbacked result = DoubleTensorics.calculate(tb).plus(tb);
+        
+        assertResultOfCalculation(result);
     }
 
     @Test
     public void leafClassTensorbackedCalculationTest() {
         LeafClassTensorbacked tb = new LeafClassTensorbacked(leafClassTensor);
         LeafClassTensorbacked result = DoubleTensorics.calculate(tb).plus(tb);
+        
+        assertResultOfCalculation(result);
+
+    }
+    
+    private void assertResultOfCalculation(AbstractTensorbacked<?> result) {
+        Assertions.assertThat(result.tensor().get(FIRST_1, SECOND_1)).isEqualTo(valueOf(22));
+        Assertions.assertThat(result.tensor().get(FIRST_1, SECOND_2)).isEqualTo(valueOf(24));
+        Assertions.assertThat(result.tensor().get(FIRST_2, SECOND_1)).isEqualTo(valueOf(42));
     }
 
 }

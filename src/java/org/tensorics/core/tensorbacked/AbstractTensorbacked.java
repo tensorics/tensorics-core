@@ -23,8 +23,11 @@
 package org.tensorics.core.tensorbacked;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorBuilder;
 
 /**
  * An abstract class for classes that are backed by a tensor. The purpose of such classes is that they can be used for
@@ -43,7 +46,19 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serial
     @SuppressWarnings("unchecked")
     public AbstractTensorbacked(Tensor<E> tensor) {
         TensorbackedInternals.verifyDimensions(this.getClass(), tensor);
-        this.backingTensor = tensor;
+        Set<Class<?>> annotatedDimensions = TensorbackedInternals.dimensionsOf(this.getClass());
+        if (annotatedDimensions.equals(tensor.shape().dimensionSet())) {
+            this.backingTensor = tensor;
+        } else {
+            this.backingTensor = copyWithDimensions(tensor, annotatedDimensions);            
+        }
+    }
+
+    private static <E> Tensor<E> copyWithDimensions(Tensor<E> tensor, Set<Class<?>> annotatedDimensions) {
+        TensorBuilder<E> builder = Tensorics.builder(annotatedDimensions);
+        builder.putAll(tensor);
+        builder.context(tensor.context());
+        return builder.build();
     }
 
     @Override
