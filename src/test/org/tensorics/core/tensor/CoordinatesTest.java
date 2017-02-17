@@ -21,12 +21,17 @@
 // @formatter:on
 package org.tensorics.core.tensor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableSet;
 
 public class CoordinatesTest {
 
@@ -91,6 +96,29 @@ public class CoordinatesTest {
         coordinates.add(IB.class);
         coordinates.add(IE.class);
         Coordinates.checkClassesRelations(coordinates);
+    }
+
+    @Test
+    public void parentClassIntersection() {
+        ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, IB.class);
+        ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(IA.class, B.class);
+        Set<Class<?>> result = Coordinates.parentClassIntersection(leftCoordinates, rightCoordinates);
+        assertThat(result).containsExactlyInAnyOrder(IA.class, IB.class);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void parentClassObjectIntersection() {
+        ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, B.class);
+        ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(Object.class);
+        Coordinates.parentClassIntersection(leftCoordinates, rightCoordinates);
+    }
+
+    @Test
+    public void parentClassIntersectionDifferentSets() {
+        ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, B.class);
+        ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(C.class);
+        Set<Class<?>> result = Coordinates.parentClassIntersection(leftCoordinates, rightCoordinates);
+        assertThat(result).isEmpty();
     }
 
     interface IA {

@@ -51,7 +51,7 @@ public final class Shapes {
 
     /**
      * Creates a shape, containing all the positions that are contained in both given shapes. This only makes sense, if
-     * the dimensions of the two shapes are the same. If they are not, then an {@link IllegalArgumentException} is
+     * the dimensions of the two shapes are compatible. If they are not, then an {@link IllegalArgumentException} is
      * thrown.
      * 
      * @param left the first shape from which to take positions
@@ -77,7 +77,7 @@ public final class Shapes {
 
     /**
      * Creates a shape, containing all the positions that are contained at least in one of the given shapes. This only
-     * makes sense, if the dimensions of the shapes are the same. If they are not, then an
+     * makes sense, if the dimensions of the shapes are compatible. If they are not, then an
      * {@link IllegalArgumentException} is thrown. Further, it is required that at least one element is contained in the
      * iterable.
      * 
@@ -118,6 +118,11 @@ public final class Shapes {
         return Sets.intersection(left.dimensionSet(), right.dimensionSet());
     }
 
+    public static Set<Class<?>> parentDimensionalIntersection(Shape left, Shape right) {
+        checkLeftRightNotNull(left, right);
+        return Coordinates.parentClassIntersection(left.dimensionSet(), right.dimensionSet());
+    }
+
     /**
      * Constructs a shape that contains positions, which are derived from the positions of the given shape by stripping
      * (removing) the given dimensions. The returned shape contains then only unique resulting position-parts and thus
@@ -131,10 +136,12 @@ public final class Shapes {
     public static Shape dimensionStripped(Shape shape, Set<? extends Class<?>> dimensionsToStrip) {
         checkNotNull(shape, "shape must not be null");
         checkNotNull(dimensionsToStrip, "dimensions must not be null");
-        return Shape.of(Positions
+        Set<Class<?>> newDimensions = Coordinates.parentClassDifference(shape.dimensionSet(), dimensionsToStrip);
+        return Shape.of(newDimensions, Positions
                 .unique(transform(shape.positionSet(), toGuavaFunction(Positions.stripping(dimensionsToStrip)))));
     }
 
+    
     /**
      * Constructs a shape that contains all positions resulting from the outer product of the positions of the left
      * shape with those of the right shape. It is required that the two shapes have no overlap of dimensions (i.e. none
@@ -181,19 +188,17 @@ public final class Shapes {
         };
     }
 
-    private static void checkLeftRightSameDimensions(Shape left, Shape right) {
-        if (!left.hasSameDimensionsAs(right)) {
-            throw new IllegalArgumentException("The two shapes do not have the same dimension, "
-                    + "therefore combining of positions does not make sense. Left dimensions: " + left.dimensionSet()
-                    + "; Right dimensions: " + right.dimensionSet());
-        }
-    }
-
     private static Shape combineLeftRightBy(Shape left, Shape right,
             BiFunction<Set<Position>, Set<Position>, Set<Position>> combiner) {
         checkLeftRightNotNull(left, right);
-        checkLeftRightSameDimensions(left, right);
-        return Shape.of(combiner.apply(left.positionSet(), right.positionSet()));
+        if (left.dimensionality() != right.dimensionality()) {
+            throw new IllegalArgumentException("Left and right shape do not have the same dimensionality!");
+        }
+        Set<Class<?>> dimensionalIntersection = Coordinates.parentClassIntersection(left.dimensionSet(), right.dimensionSet());
+        if (dimensionalIntersection.size() != left.dimensionality()) {
+            throw new IllegalArgumentException("The shapes are not compatible!");
+        }
+        return Shape.of(dimensionalIntersection, combiner.apply(left.positionSet(), right.positionSet()));
     }
 
     private static Shape combineBy(Iterable<Shape> shapes, BiFunction<Shape, Shape, Shape> combiner) {

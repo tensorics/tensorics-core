@@ -22,6 +22,7 @@
 
 package org.tensorics.core.tensor;
 
+import static java.lang.String.format;
 import static org.tensorics.core.util.MoreMultisets.containsNonUniqueElements;
 import static org.tensorics.core.util.MoreMultisets.nonUniqueElementsOf;
 
@@ -32,10 +33,12 @@ import java.util.Set;
 
 import org.tensorics.core.util.Classes;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
 
 /**
  * Utility methods to handle coordinates
@@ -128,6 +131,47 @@ public final class Coordinates {
     }
 
     /**
+     * Finds the intersection of the two dimension sets, taking correctly into account the class hierarchy of the set
+     * dimensions.
+     * <p>
+     * example: If class A inherits from class B and one set contains A and the other B, then B will be returned.
+     * 
+     * @param left one set of dimensions
+     * @param right the other set of dimensions
+     * @return the intersection of the two sets, considering the class hierarchy
+     * @throws IllegalArgumentException if a combination of elements of the two sets would result in duplicated entries
+     *             (e.g. the sets are not disjunct in hierarchy)
+     */
+    public static Set<Class<?>> parentClassIntersection(Set<Class<?>> left, Set<Class<?>> right) {
+        Set<Class<?>> toReturn = new HashSet<>();
+        for (Class<?> leftDim : left) {
+            for (Class<?> rightDim : right) {
+                Optional<Class<?>> higher = higherOf(leftDim, rightDim);
+                if (higher.isPresent()) {
+                    boolean wasAdded = toReturn.add(higher.get());
+                    if (!wasAdded) {
+                        throw new IllegalArgumentException(format(
+                                "A combination of dimensions from %s and %s resulted twice in dimension %s."
+                                        + "Probably the set of dimensions are not disjunct?",
+                                left, right, higher.get()));
+                    }
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    private static Optional<Class<?>> higherOf(Class<?> leftDim, Class<?> rightDim) {
+        if (leftDim.isAssignableFrom(rightDim)) {
+            return Optional.of(leftDim);
+        }
+        if (rightDim.isAssignableFrom(leftDim)) {
+            return Optional.of(rightDim);
+        }
+        return Optional.absent();
+    }
+
+    /**
      * Provides the way to reduce long classpath names of the coordinates classes to only short Class names. It produces
      * a combination of the tensor and it's context result.
      * 
@@ -210,6 +254,28 @@ public final class Coordinates {
             classes.add(one.getClass());
         }
         return classes;
+    }
+
+    /**
+     * Returns the difference of two sets of coordinates, by removing the dimensionToStrip set from the
+     * originalDimensions. This method correctly considers the class hierarchy: subclasses of the classes specified in
+     * dimensionsToStrip are also removed from originalDimensions.
+     * 
+     * @param originalDimensions the original set of dimensions
+     * @param dimensionsToStrip the dimensions to remove
+     * @return the original dimension set minus the dimensions to strip
+     */
+    public static Set<Class<?>> parentClassDifference(Set<Class<?>> originalDimensions,
+            Set<? extends Class<?>> dimensionsToStrip) {
+        Set<Class<?>> toReturn = new HashSet<>(originalDimensions);
+        for (Class<?> original : originalDimensions) {
+            for (Class<?> toStrip : dimensionsToStrip) {
+                if (toStrip.isAssignableFrom(original)) {
+                    toReturn.remove(original);
+                }
+            }
+        }
+        return toReturn;
     }
 
 }

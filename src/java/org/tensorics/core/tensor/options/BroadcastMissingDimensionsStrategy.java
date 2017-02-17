@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.tensorics.core.tensor.BroadcastedTensorView;
 import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Shapes;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorPair;
 
@@ -47,8 +48,8 @@ import com.google.common.collect.Sets;
  * <li>broadcasted left: {[x1,y1]=1.0, [x1,y2]=1.0, [x2,y1]=2.0, [x2,y2]=2.0},
  * <li>broadcasted left: {[x1,y1]=0.1, [x1,y2]=0.2, [x2,y1]=0.1, [x2,y2]=0.2}.
  * </ul>
- * This strategy is rather close to the behaviour of <a
- * href="http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html">numpy</a>, but has one very important
+ * This strategy is rather close to the behaviour of
+ * <a href="http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html">numpy</a>, but has one very important
  * difference: It does NOT broadcast dimensions with one entry. So, if e.g. in the following example, the second tensor
  * would have had a different shape, like {[x1, y1]=1.0, [x2, y1]=2.0}, then it would have remained the same after
  * broadcasting and the shapes of the two resulting tensors would be different. This still can be useful in
@@ -69,15 +70,15 @@ public class BroadcastMissingDimensionsStrategy implements BroadcastingStrategy 
         checkNotNull(left, "left tensor must not be null");
         checkNotNull(right, "right tensor must not be null");
 
-        Set<Class<?>> dimensionalIntersection = dimensionalIntersection(left.shape(), right.shape());
+        Set<Class<?>> dimensionalIntersection = Shapes.parentDimensionalIntersection(left.shape(), right.shape());
         Set<Class<?>> notBroadcastedDimensions = Sets.union(dimensionalIntersection, excludedDimensions)
                 .immutableCopy();
 
         Shape missingLeft = dimensionStripped(right.shape(), notBroadcastedDimensions);
         Shape missingRight = dimensionStripped(left.shape(), notBroadcastedDimensions);
 
-        return TensorPair.fromLeftRight(new BroadcastedTensorView<V>(left, missingLeft), new BroadcastedTensorView<V>(
-                right, missingRight));
+        return TensorPair.fromLeftRight(new BroadcastedTensorView<V>(left, missingLeft),
+                new BroadcastedTensorView<V>(right, missingRight));
     }
 
     @Override
