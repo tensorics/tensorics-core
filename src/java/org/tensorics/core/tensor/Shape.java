@@ -176,8 +176,10 @@ public final class Shape implements Serializable {
      * @param positions the positions which shall be used for the new shape
      * @return a new shape, containing the given positions
      * @throws IllegalArgumentException if the dimensions of the individual positions are not consistent.
+     * @deprecated Using this method to construct a shape guesses the dimensionality from the passed positions.
      */
     @SuppressWarnings("PMD.ShortMethodName")
+    @Deprecated
     public static Shape of(Iterable<Position> positions) {
         return builder().addAll(positions).build();
     }
@@ -189,11 +191,42 @@ public final class Shape implements Serializable {
      * @return a new shape containing the given positions
      * @see #of(Iterable)
      * @throws IllegalArgumentException if the dimensions of the positions are inconsistent
+     * @deprecated Using this method to construct a shape guesses the dimensionality from the passed positions.
      */
     @SafeVarargs
     @SuppressWarnings("PMD.ShortMethodName")
+    @Deprecated
     public static Shape of(Position... positions) {
         return of(Arrays.asList(positions));
+    }
+
+    /**
+     * Creates a shape from the given set of positions and dimensions (types of coordinates). If the given positions do
+     * not correspond to the same dimensions, then an {@link IllegalArgumentException} will be thrown.
+     * 
+     * @param dimensions the dimensions for the new shape
+     * @param positions the positions which shall be used for the new shape
+     * @return a new shape, containing the given positions
+     * @throws IllegalArgumentException if the dimensions of the individual positions are not consistent.
+     */
+    @SuppressWarnings("PMD.ShortMethodName")
+    public static Shape of(Set<Class<?>> dimensions, Iterable<Position> positions) {
+        return builder(dimensions).addAll(positions).build();
+    }
+
+    /**
+     * This is a convenience method to be used instead of {@link #of(Set,Iterable)}.
+     * 
+     * @param dimensions the dimensions for the new shape
+     * @param positions the positions for the new shape
+     * @return a new shape containing the given positions
+     * @see #of(Iterable)
+     * @throws IllegalArgumentException if the dimensions of the positions are inconsistent
+     */
+    @SafeVarargs
+    @SuppressWarnings("PMD.ShortMethodName")
+    public static Shape of(Set<Class<?>> dimensions, Position... positions) {
+        return of(dimensions, Arrays.asList(positions));
     }
 
     /**
@@ -317,7 +350,7 @@ public final class Shape implements Serializable {
 
     @Override
     public String toString() {
-        return "Shape [dimensions=" + dimensions+ ", #positions=" + positions.size() + "]";
+        return "Shape [dimensions=" + dimensions + ", #positions=" + positions.size() + "]";
     }
 
 }

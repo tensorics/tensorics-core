@@ -23,6 +23,7 @@
 package org.tensorics.core.tensor;
 
 import static java.util.Collections.emptySet;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,6 +36,7 @@ import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 import java.util.Collections;
 import java.util.Set;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -101,12 +103,16 @@ public class ShapesTest {
 
     @Test
     public void emptyShapeIterable() {
-        assertEmptyShape(Shape.of(Collections.<Position> emptySet()));
+        Shape shape = Shape.of(Collections.<Position> emptySet());
+        assertEmptyShape(shape);
+        assertZeroDimensionality(shape);
     }
 
     @Test
     public void constructEmptyShapeUsingVarargs() {
-        assertEmptyShape(Shape.empty());
+        Shape shape = Shape.empty();
+        assertEmptyShape(shape);
+        assertZeroDimensionality(shape);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -116,7 +122,9 @@ public class ShapesTest {
 
     @Test
     public void intersectionOfCompatibleShapesWithEmptyResult() {
-        assertEmptyShape(intersection(shapeA, shapeB));
+        Shape intersection = intersection(shapeA, shapeB);
+        assertEmptyShape(intersection);
+        assertThat(intersection.dimensionSet()).containsExactly(String.class);
     }
 
     @Test
@@ -245,8 +253,11 @@ public class ShapesTest {
 
     private static void assertEmptyShape(Shape shape) {
         assertEquals(0, shape.size());
-        assertEquals(0, shape.dimensionality());
         assertEquals(emptySet(), shape.positionSet());
+    }
+    
+    private static void assertZeroDimensionality(Shape shape) {
+        assertEquals(0, shape.dimensionality());
         assertEquals(emptySet(), shape.dimensionSet());
     }
 
