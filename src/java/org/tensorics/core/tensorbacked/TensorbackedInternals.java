@@ -57,7 +57,7 @@ public final class TensorbackedInternals {
      * @return the set of dimentions (classses of coordinates) which are required to create an instance of the given
      *         class.
      */
-    public static <T extends Tensorbacked<V>, V> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
+    public static Set<Class<?>> dimensionsOf(Class<? extends Tensorbacked<?>> tensorBackedClass) {
         Dimensions dimensionAnnotation = tensorBackedClass.getAnnotation(Dimensions.class);
         if (dimensionAnnotation == null) {
             throw new IllegalArgumentException(
@@ -81,7 +81,7 @@ public final class TensorbackedInternals {
     static <T extends Tensorbacked<V>, V> void verifyDimensions(Class<T> tensorBackedClass, Tensor<V> tensor) {
         Set<Class<?>> targetDimensions = dimensionsOf(tensorBackedClass);
         Set<Class<?>> tensorDimensions = tensor.shape().dimensionSet();
-        
+
         if (!Positions.areDimensionsConsistent(targetDimensions, tensorDimensions)) {
             throw new IllegalArgumentException("Dimensions of target class (" + targetDimensions
                     + ") do not match dimensions of given tensor (" + tensorDimensions + "). Cannot create object.");
