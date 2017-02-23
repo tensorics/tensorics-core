@@ -23,14 +23,18 @@ package org.tensorics.core.tensor;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.toSet;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
@@ -270,6 +274,79 @@ public final class Positions {
             }
         }
         return toReturn;
+    }
+
+    /**
+     * Returns all positions which can be built from all combinations of the values of the given enum classes.
+     * 
+     * @param enumClasses the enum classes from which to get the values from
+     * @return positions containing all possible combinations of enum values
+     */
+    @SafeVarargs
+    public static final Iterable<Position> cartesianProduct(Class<? extends Enum<?>>... enumClasses) {
+        return cartesianProduct(checkedToSet(enumClasses));
+    }
+
+    /**
+     * Returns all positions which can be built from the values of the passed in classes that are assumed to be enum
+     * classes. This is basically the runtime-checked version of {@link #cartesianProduct(Class...)}
+     * 
+     * @param enumClasses the enum classes from which to get their values
+     * @return an iterable containing the positions which are constructed from the values of the enums
+     * @throws IllegalArgumentException in case not all clases are enums
+     */
+    public static final Iterable<Position> cartesianEnumProduct(Class<?>... enumClasses) {
+        return cartesianEnumProduct(checkedToSet(enumClasses));
+    }
+
+    /**
+     * Returns all positions which can be built from all combinations of the values of the given enum classes.
+     * 
+     * @param enumClasses the enums whose values will be used to create the positions
+     * @return an iterable with positions containing all possible combinations of the enum values
+     */
+    public static Iterable<Position> cartesianProduct(Set<Class<? extends Enum<?>>> enumClasses) {
+        List<Set<?>> valueSets = enumClasses.stream().map(c -> ImmutableSet.copyOf(c.getEnumConstants()))
+                .collect(Collectors.toList());
+        return cartesianProduct(valueSets);
+    }
+
+    /**
+     * Returns all positions which can be built from the values of the passed in classes that are assumed to be enum
+     * classes. This is basically the runtime-checked version of {@link #cartesianProduct(Set)}
+     * 
+     * @param enumClasses the enum classes from which to get their values
+     * @return an iterable containing the positions which are constructed from the values of the enums
+     * @throws IllegalArgumentException in case not all clases are enums
+     */
+    public static Iterable<Position> cartesianEnumProduct(Set<Class<?>> classes) {
+        return cartesianProduct(checkedToEnumClassSet(classes));
+    }
+
+    private static Set<Class<? extends Enum<?>>> checkedToEnumClassSet(Set<Class<?>> classes) {
+        Set<Class<? extends Enum<?>>> enumClasses = new HashSet<>();
+        for (Class<?> aClass : classes) {
+            if (!aClass.isEnum()) {
+                throw new IllegalArgumentException("All provided classes have to be enum classes. However (at least) "
+                        + aClass.getCanonicalName() + "is not!");
+            }
+            enumClasses.add((Class<? extends Enum<?>>) aClass);
+        }
+        return enumClasses;
+    }
+
+    private static <T> Set<T> checkedToSet(T[] enumClasses) {
+        Set<T> classesSet = ImmutableSet.copyOf(enumClasses);
+        if (classesSet.size() != enumClasses.length) {
+            throw new IllegalArgumentException("The number of passed in classes is " + enumClasses.length
+                    + ", but there seem to be only " + classesSet.size() + "different ones.");
+        }
+        return classesSet;
+    }
+
+    private static Iterable<Position> cartesianProduct(List<Set<?>> coordinateSets) {
+        Set<List<Object>> cartesianProduct = Sets.cartesianProduct(ImmutableList.copyOf(coordinateSets));
+        return cartesianProduct.stream().map(l -> Position.of(new HashSet<>(l))).collect(toSet());
     }
 
 }

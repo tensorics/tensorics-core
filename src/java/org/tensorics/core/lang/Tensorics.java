@@ -261,11 +261,19 @@ public final class Tensorics {
         return Tensorbackeds.shapeOf(tensorbacked);
     }
 
+    public static Set<Class<?>> dimensionsOf(Tensorbacked<?> tensorbacked) {
+        return Tensorbackeds.shapeOf(tensorbacked).dimensionSet();
+    }
+
     /**
      * @see TensorStructurals#from(Tensor)
      */
     public static <V> OngoingTensorManipulation<V> from(Tensor<V> tensor) {
         return TensorStructurals.from(tensor);
+    }
+
+    public static <V> OngoingTensorManipulation<V> from(Tensorbacked<V> tensorbacked) {
+        return TensorStructurals.from(tensorbacked.tensor());
     }
 
     public static Set<Class<?>> dimensionsOf(Tensor<?> tensor) {

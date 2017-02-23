@@ -107,7 +107,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
         builder.putAllMap(map);
         return builder.build();
     }
-
+    
     /**
      * Creates a tensor from the given map, where the map has to contain the positions as keys and the values as values.
      * The dimensions of the tensors are automatically derived from the positions in the map. If they are inconsistent,

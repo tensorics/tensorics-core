@@ -33,6 +33,7 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensorbacked.annotation.Dimensions;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.Unit;
@@ -63,6 +64,18 @@ public final class Tensorbackeds {
      */
     public static <V, TB extends Tensorbacked<V>> TensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
         return new TensorbackedBuilder<>(tensorbackedClass);
+    }
+
+    /**
+     * Retrieves the dimensions from the given class inheriting from tensor backed. This is done by inspecting the
+     * {@link Dimensions} annotation.
+     * 
+     * @param tensorBackedClass the class for which to determine the dimensions
+     * @return the set of dimensions (classes of coordinates) which are required to create an instance of the given
+     *         class.
+     */
+    public static Set<Class<?>> dimensionsOf(Class<? extends Tensorbacked<?>> tensorBackedClass) {
+        return TensorbackedInternals.dimensionsOf(tensorBackedClass);
     }
 
     /**
