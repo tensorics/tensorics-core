@@ -74,7 +74,7 @@ public final class Tensorbackeds {
      * @return the set of dimensions (classes of coordinates) which are required to create an instance of the given
      *         class.
      */
-    public static Set<Class<?>> dimensionsOf(Class<? extends Tensorbacked<?>> tensorBackedClass) {
+    public static <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
         return TensorbackedInternals.dimensionsOf(tensorBackedClass);
     }
 
