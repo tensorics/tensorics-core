@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
-apply plugin: 'com.github.kt3k.coveralls'
+
 //apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
 if (System.getenv('BUILD_SERVER')) {
@@ -45,6 +45,8 @@ repositories {
 
 if(System.getenv('TRAVIS')){
     apply plugin: 'cobertura'
+    apply plugin: 'com.github.kt3k.coveralls' 
+    
     apply plugin: 'io.codearte.nexus-staging'
     apply from : './scripts/deploy.gradle'
 
