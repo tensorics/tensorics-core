@@ -2,8 +2,6 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-//apply plugin: 'org.asciidoctor.gradle.asciidoctor'
-
 if (System.getenv('BUILD_SERVER')) {
     apply from : './scripts/cern-configuration.gradle'
 }
