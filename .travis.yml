@@ -19,4 +19,5 @@ deploy:
     tags: true
 
 after_success:
-- ./gradlew cobertura coveralls
+  - ./gradlew cobertura coveralls
+  - bash <(curl -s https://codecov.io/bash)
