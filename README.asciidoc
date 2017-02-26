@@ -2,7 +2,6 @@
 
 image:https://img.shields.io/github/release/tensorics/tensorics-core.svg?maxAge=1000["Latest release", link="https://github.com/tensorics/tensorics-core/releases"]
 image:https://travis-ci.org/tensorics/tensorics-core.svg?branch=master["Travis-CI build", link="https://travis-ci.org/tensorics/tensorics-core"]
-
 image:https://codecov.io/gh/tensorics/tensorics-core/branch/master/graph/badge.svg["codecov", link="https://codecov.io/gh/tensorics/tensorics-core"]
 
 Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors. 
