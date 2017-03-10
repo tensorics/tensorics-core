@@ -170,10 +170,7 @@ public final class TensorStructurals {
 
     public static final <S> Tensor<S> completeWith(Tensor<S> tensor, Tensor<S> second) {
         checkNotNull(second, "second tensor must not be null");
-        checkArgument(second.shape().dimensionSet().equals(tensor.shape().dimensionSet()),
-                "Tensors do not have the same dimensions! Completion not supported! Dimensions of tensor to complete: "
-                        + tensor.shape().dimensionSet() + "; Dimensions of tensor for completion: "
-                        + second.shape().dimensionSet());
+
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());
 

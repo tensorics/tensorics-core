@@ -91,8 +91,13 @@ public class CoordinateClassHierarchyTest {
     }
 
     @Test
-    public void canCompleteTensorsWithCompatibleDimensionsAndIncompatibleLeafCoordinates() {
+    public void canCompleteTensorsWithEqualDimensionsAndIncompatibleLeafCoordinates() {
         Tensorics.complete(compatibleInterfaceTensor).with(incompatibleInterfaceTensor);
+    }
+
+    @Test
+    public void canCompleteTensorsWithCompatibleDimensionsAndIncompatibleLeafCoordinates() {
+        Tensorics.complete(compatibleInterfaceTensor).with(incompatibleLeafTensor);
     }
 
     @Test
