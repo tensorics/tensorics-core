@@ -11,6 +11,8 @@ buildscript {
         if (System.getenv('BUILD_SERVER') || System.getProperty('CERN_TECHNET_VM')) {
             maven {
                 url 'http://artifactory.cern.ch/repo'
+            }
+            maven {
                 url 'http://artifactory.cern.ch/jcenter'
             }
         } else {
@@ -30,6 +32,8 @@ repositories {
     if (System.getenv('BUILD_SERVER') || System.getProperty('CERN_TECHNET_VM')) {
         maven {
             url 'http://artifactory.cern.ch/repo'
+        }
+        maven {
             url 'http://artifactory.cern.ch/jcenter'
         }
     } else {
