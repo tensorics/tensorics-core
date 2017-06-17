@@ -119,10 +119,14 @@ public final class Coordinates {
     public static <C> Class<? super C> mapToAnEntry(Class<C> classToCheck, Iterable<Class<?>> dimensions) {
         for (Class<?> dimension : dimensions) {
             if (classToCheck.equals(dimension)) {
-                return (Class<? super C>) dimension;
+                @SuppressWarnings("unchecked")
+                Class<? super C> toReturn = (Class<? super C>) dimension;
+                return toReturn;
             }
             if (dimension.isAssignableFrom(classToCheck)) {
-                return (Class<? super C>) dimension;
+                @SuppressWarnings("unchecked")
+                Class<? super C> toReturn = (Class<? super C>) dimension;
+                return toReturn;
             }
         }
         throw new IllegalArgumentException("Cannot use given coordinates class! '" + classToCheck.getCanonicalName()

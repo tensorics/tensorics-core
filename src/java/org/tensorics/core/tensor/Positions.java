@@ -330,7 +330,9 @@ public final class Positions {
                 throw new IllegalArgumentException("All provided classes have to be enum classes. However (at least) "
                         + aClass.getCanonicalName() + "is not!");
             }
-            enumClasses.add((Class<? extends Enum<?>>) aClass);
+            @SuppressWarnings("unchecked")
+            Class<? extends Enum<?>> enumClass = (Class<? extends Enum<?>>) aClass;
+            enumClasses.add(enumClass);
         }
         return enumClasses;
     }

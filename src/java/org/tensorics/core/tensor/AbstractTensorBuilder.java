@@ -99,10 +99,10 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 	}
 
 	@Override
-	public void context(Position context) {
-		Preconditions.checkNotNull(context, "context must not be null");
-		checkIfContextValid(context);
-		this.context = context;
+	public void context(Position newContext) {
+		Preconditions.checkNotNull(newContext, "context must not be null");
+		checkIfContextValid(newContext);
+		this.context = newContext;
 	}
 
 	private void checkIfContextValid(Position context2) {
