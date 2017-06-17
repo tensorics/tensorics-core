@@ -22,13 +22,11 @@
 package org.tensorics.core.tensor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;

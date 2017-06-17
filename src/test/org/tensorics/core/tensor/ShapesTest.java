@@ -36,7 +36,6 @@ import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 import java.util.Collections;
 import java.util.Set;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 

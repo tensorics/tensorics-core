@@ -38,7 +38,6 @@ import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
 
 /**
  * Utility methods to handle coordinates

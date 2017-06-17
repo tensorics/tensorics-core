@@ -24,7 +24,6 @@ package org.tensorics.core.tensor.options;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.tensorics.core.tensor.Shapes.dimensionStripped;
-import static org.tensorics.core.tensor.Shapes.dimensionalIntersection;
 
 import java.util.Set;
 
