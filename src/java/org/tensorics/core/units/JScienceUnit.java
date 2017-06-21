@@ -38,7 +38,6 @@ public final class JScienceUnit implements Unit {
         this.unit = unit;
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static JScienceUnit of(javax.measure.unit.Unit<?> unit) {
         return new JScienceUnit(unit);
     }

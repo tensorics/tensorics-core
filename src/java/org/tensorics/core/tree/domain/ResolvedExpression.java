@@ -42,7 +42,6 @@ public final class ResolvedExpression<R> implements Expression<R>, Named {
         this.value = value;
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <T> ResolvedExpression<T> of(T value) {
         return new ResolvedExpression<T>(value);
     }

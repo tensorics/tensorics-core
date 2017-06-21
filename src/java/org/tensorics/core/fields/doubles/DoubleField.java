@@ -37,7 +37,6 @@ import org.tensorics.core.math.structures.ringlike.OrderedField;
  * @author kfuchsbe
  * @see Structures
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class DoubleField implements OrderedField<Double> {
 
     private static final double ZERO = 0.0;

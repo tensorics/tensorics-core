@@ -36,7 +36,6 @@ import org.tensorics.core.math.structures.ringlike.OrderedField;
  * @author kfuchsbe
  * @param <T> the type of the field elements
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class ExplicitFieldImpl<T> implements ExplicitField<T> {
 
     private final OrderedField<T> field;

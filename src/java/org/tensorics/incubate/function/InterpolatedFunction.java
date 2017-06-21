@@ -50,7 +50,6 @@ public final class InterpolatedFunction<X extends Comparable<X>, Y> implements C
         return interpolationStrategy.interpolate(xValue, discreteFunction);
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <X extends Comparable<X>, Y> InterpolatedFunction<X, Y> of(DiscreteFunction<X, Y> function,
             InterpolationStrategy<X, Y> strategy) {
         return new InterpolatedFunction<>(function, strategy);

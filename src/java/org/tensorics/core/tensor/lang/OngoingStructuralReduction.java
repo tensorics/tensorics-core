@@ -46,7 +46,6 @@ public class OngoingStructuralReduction<C, E> {
         this.dimension = dimension;
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public <R> Tensor<R> by(ReductionStrategy<? super C, E, R> strategy) {
         return reduceBy(strategy);
     }

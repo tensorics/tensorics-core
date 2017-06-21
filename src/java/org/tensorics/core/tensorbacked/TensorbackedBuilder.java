@@ -49,7 +49,6 @@ import org.tensorics.core.tensor.Tensor;
  * @param <TB>
  *            the type of the tensor backed object
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 
 	private final Class<TB> tensorbackedClass;
@@ -65,17 +64,14 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 		this.tensorBuilder = ImmutableTensor.builder(dimensionsOf(tensorbackedClass));
 	}
 
-	@SuppressWarnings("PMD.ShortMethodName")
 	public final OngoingPut<V> at(Position entryPosition) {
 		return tensorBuilder.at(entryPosition);
 	}
 
-	@SuppressWarnings("PMD.ShortMethodName")
 	public final OngoingPut<V> at(Set<?> coordinates) {
 		return tensorBuilder.at(coordinates);
 	}
 
-	@SuppressWarnings("PMD.ShortMethodName")
 	public final OngoingPut<V> at(Object... coordinates) {
 		return tensorBuilder.at(coordinates);
 	}

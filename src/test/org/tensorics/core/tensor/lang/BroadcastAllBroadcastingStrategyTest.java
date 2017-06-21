@@ -21,6 +21,7 @@
 // @formatter:on
 package org.tensorics.core.tensor.lang;
 
+import static com.google.common.collect.ImmutableSet.of;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
@@ -51,7 +52,7 @@ public class BroadcastAllBroadcastingStrategyTest {
     private static final Position POS_B1 = Position.of("B", 1);
     private static final Position POS_B2 = Position.of("B", 2);
 
-    private static final Shape FULL_SHAPE = Shape.of(POS_A1, POS_A2, POS_B1, POS_B2);
+    private static final Shape FULL_SHAPE = Shape.of(of(String.class, Integer.class), POS_A1, POS_A2, POS_B1, POS_B2);
 
     private BroadcastingStrategy strategy;
 
@@ -93,7 +94,7 @@ public class BroadcastAllBroadcastingStrategyTest {
         assertEquals(tensor, Tensorics.copyOf(result.right()));
 
         Tensor<Double> left = result.left();
-        assertEquals(Shape.of(POS_A, POS_B), left.shape());
+        assertEquals(Shape.of(of(String.class), POS_A, POS_B), left.shape());
         assertEquals(0.0, left.get(POS_A), 0.000001);
         assertEquals(0.0, left.get(POS_B), 0.000001);
     }

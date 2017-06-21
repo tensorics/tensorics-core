@@ -37,7 +37,6 @@ import org.tensorics.core.units.Unit;
  * @author kfuchsbe
  * @param <S> the type of the scalar values (elements of the field)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class QuantityOperationRepository<S> {
 
     private final QuantityAddition<S> quantityAddition;

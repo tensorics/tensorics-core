@@ -37,7 +37,6 @@ import com.google.common.collect.ImmutableSet;
  * 
  * @author kfuchsbe
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.TooManyMethods" })
 public final class Shape implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -178,7 +177,6 @@ public final class Shape implements Serializable {
      * @throws IllegalArgumentException if the dimensions of the individual positions are not consistent.
      * @deprecated Using this method to construct a shape guesses the dimensionality from the passed positions.
      */
-    @SuppressWarnings("PMD.ShortMethodName")
     @Deprecated
     public static Shape of(Iterable<Position> positions) {
         return builder().addAll(positions).build();
@@ -194,7 +192,6 @@ public final class Shape implements Serializable {
      * @deprecated Using this method to construct a shape guesses the dimensionality from the passed positions.
      */
     @SafeVarargs
-    @SuppressWarnings("PMD.ShortMethodName")
     @Deprecated
     public static Shape of(Position... positions) {
         return of(Arrays.asList(positions));
@@ -209,7 +206,6 @@ public final class Shape implements Serializable {
      * @return a new shape, containing the given positions
      * @throws IllegalArgumentException if the dimensions of the individual positions are not consistent.
      */
-    @SuppressWarnings("PMD.ShortMethodName")
     public static Shape of(Set<Class<?>> dimensions, Iterable<Position> positions) {
         return builder(dimensions).addAll(positions).build();
     }
@@ -224,7 +220,6 @@ public final class Shape implements Serializable {
      * @throws IllegalArgumentException if the dimensions of the positions are inconsistent
      */
     @SafeVarargs
-    @SuppressWarnings("PMD.ShortMethodName")
     public static Shape of(Set<Class<?>> dimensions, Position... positions) {
         return of(dimensions, Arrays.asList(positions));
     }
@@ -310,7 +305,6 @@ public final class Shape implements Serializable {
     }
 
     @Override
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

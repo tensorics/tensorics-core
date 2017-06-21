@@ -63,7 +63,6 @@ public class Position implements Serializable {
         }
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static Position of(Set<?> coordinates) {
         return createFrom(requireValidCoordinates(coordinates));
     }
@@ -77,7 +76,6 @@ public class Position implements Serializable {
     }
 
     @SafeVarargs
-    @SuppressWarnings("PMD.ShortMethodName")
     public static Position of(Object... coordinates) {
         return createFrom(requireValidCoordinates(ImmutableMultiset.copyOf(coordinates)));
     }

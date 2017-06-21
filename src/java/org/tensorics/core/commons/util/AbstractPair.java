@@ -35,7 +35,6 @@ package org.tensorics.core.commons.util;
  * @param <T> the type of the elements of the pair
  * @author kfuchsbe
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
 public class AbstractPair<T> {
 
     private final T leftElement;
@@ -68,7 +67,6 @@ public class AbstractPair<T> {
     }
 
     @Override
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public final boolean equals(Object obj) {
         if (this == obj) {
             return true;

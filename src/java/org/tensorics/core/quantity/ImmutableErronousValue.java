@@ -31,14 +31,11 @@ import com.google.common.base.Preconditions;
  * @author kfuchsbe
  * @param <V> the type of the value and the error
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
 public final class ImmutableErronousValue<V> implements ErronousValue<V> {
     private static final long serialVersionUID = 1L;
 
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
     private final V value;
 
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
     private final Optional<V> error;
 
     private ImmutableErronousValue(V value, Optional<V> error) {
@@ -71,7 +68,6 @@ public final class ImmutableErronousValue<V> implements ErronousValue<V> {
     }
 
     @Override
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

@@ -37,7 +37,6 @@ import com.google.common.base.Optional;
  * @author kfuchsbe
  * @param <V> the type of the (numerical) scalar values.
  */
-@SuppressWarnings({ "PMD.TooManyMethods", "PMD.CyclomaticComplexity" })
 public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
     private static final long serialVersionUID = 1L;
 
@@ -57,7 +56,6 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
         this(value, unit, true, Optional.<V> absent());
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <V> ImmutableQuantifiedValue<V> of(V value, Unit unit) {
         checkArgument(value != null, "Argument 'value' must not be null!");
         checkArgument(unit != null, "Argument 'unit' must not be null!");
@@ -118,7 +116,6 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
     }
 
     @Override
-    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.NPathComplexity" })
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -158,7 +155,6 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
     }
 
     @Override
-    @SuppressWarnings("PMD.NPathComplexity")
     public int hashCode() {
         final int prime = 31;
         int result = 1;

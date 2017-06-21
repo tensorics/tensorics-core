@@ -62,9 +62,8 @@ public final class ConstantFunction<QX extends Quantity, QY extends Quantity> im
         return constant;
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <QX extends Quantity, QY extends Quantity> ConstantFunction<QX, QY> of(Amount<QY> amount) {
-        return new ConstantFunction<QX, QY>(amount);
+        return new ConstantFunction<>(amount);
     }
 
 }

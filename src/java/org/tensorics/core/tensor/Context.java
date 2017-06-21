@@ -65,7 +65,6 @@ public final class Context extends Position implements Serializable {
 	 * @return a Context
 	 * @deprecated use position directly
 	 */
-	@SuppressWarnings("PMD.ShortMethodName")
 	@Deprecated
 	public static Context of(Set<?> coordinates) {
 		return new Context(coordinates);
@@ -74,7 +73,6 @@ public final class Context extends Position implements Serializable {
 	/**
 	 * @deprecated use position directly
 	 */
-	@SuppressWarnings("PMD.ShortMethodName")
 	@Deprecated
 	public static Context of(Object... coordinates) {
 		return of(ImmutableSet.copyOf(coordinates));
@@ -83,7 +81,6 @@ public final class Context extends Position implements Serializable {
 	/**
 	 * @deprecated use position directly
 	 */
-	@SuppressWarnings("PMD.ShortMethodName")
 	@Deprecated
 	public static Context of(Position position) {
 		return of(position.coordinates());

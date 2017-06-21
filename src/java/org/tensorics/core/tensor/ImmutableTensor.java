@@ -48,7 +48,6 @@ import com.google.common.collect.ImmutableMultiset;
  * @author agorzaws, kfuchsbe
  * @param <T> type of values in Tensor.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.TooManyMethods" })
 public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
     private static final long serialVersionUID = 1L;

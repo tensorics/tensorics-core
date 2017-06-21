@@ -40,7 +40,6 @@ import com.google.common.collect.Sets;
  * 
  * @author kaifox
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class PositionIndexer {
 
     private final Map<Class<?>, Map<?, Integer>> mapping;

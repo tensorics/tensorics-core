@@ -48,7 +48,6 @@ public final class EnvironmentImpl<V> implements QuantityEnvironment<V> {
         this.optionRegistry = strategyRegistry;
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <V> EnvironmentImpl<V> of(ExtendedField<V> field, OptionRegistry<ManipulationOption> optionRegistry) {
         return new EnvironmentImpl<>(field, optionRegistry);
     }

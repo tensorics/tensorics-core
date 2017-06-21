@@ -55,7 +55,6 @@ import org.tensorics.core.units.Unit;
  * @author kfuchsbe
  * @param <V> The type of the values of the tensors
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class TensoricExpressionSupport<V> {
 
     private final TensorExpressionSupport<V> tensoricFieldUsage;

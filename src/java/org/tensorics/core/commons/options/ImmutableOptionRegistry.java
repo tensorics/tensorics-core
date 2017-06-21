@@ -50,7 +50,6 @@ public final class ImmutableOptionRegistry<T extends Option<T>> implements Optio
      * @param processingOptions the options that will be contained in the registry
      * @return a new instance of a registry, containing the options
      */
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <T extends Option<T>> ImmutableOptionRegistry<T> of(Collection<T> processingOptions) {
         return new ImmutableOptionRegistry<T>(processingOptions);
     }

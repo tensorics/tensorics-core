@@ -39,7 +39,6 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
  * @author kfuchsbe
  * @param <S> the type of the scalar values (elements of the fields)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class OngoingDeferredQuantifiedTensorOperation<S> implements
         OngoingOperation<Expression<Tensor<QuantifiedValue<S>>>, QuantifiedValue<S>> {
 

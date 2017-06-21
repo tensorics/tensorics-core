@@ -35,7 +35,6 @@ import com.google.common.collect.ImmutableSet;
  * @param <E>
  *            the type of the elements of the tensor to build
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 
 	private final Set<Class<?>> dimensions;
@@ -67,7 +66,6 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 	 *            on which future value will be placed.
 	 * @return builder object to be able to put Value in.
 	 */
-	@SuppressWarnings("PMD.ShortMethodName")
 	public final OngoingPut<E> at(Position entryPosition) {
 		return new OngoingPut<E>(entryPosition, this);
 	}
@@ -114,13 +112,11 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 		}
 	}
 
-	@SuppressWarnings("PMD.ShortMethodName")
 	public final OngoingPut<E> at(Set<?> coordinates) {
 		return this.at(Position.of(coordinates));
 	}
 
 	@SafeVarargs
-	@SuppressWarnings("PMD.ShortMethodName")
 	public final OngoingPut<E> at(Object... coordinates) {
 		return this.at(Position.of(coordinates));
 	}

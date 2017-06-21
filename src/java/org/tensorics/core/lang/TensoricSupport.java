@@ -57,7 +57,6 @@ import org.tensorics.core.units.Unit;
  * @author kfuchsbe, agorzaws
  * @param <V> The type of the values of the scalars (elements of the field on which all the operations are based on)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class TensoricSupport<V> {
 
     private final TensorSupport<V> tensoricFieldUsage;

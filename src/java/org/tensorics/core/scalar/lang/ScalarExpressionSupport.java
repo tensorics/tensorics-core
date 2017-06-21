@@ -31,7 +31,6 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
  * @param <V> the type of the scalar values (elements of the field on which all the operations are based on)
  * @author kfuchsbe
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class ScalarExpressionSupport<V> {
 
     private final ExtendedField<V> extendedField;

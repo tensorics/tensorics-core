@@ -36,7 +36,6 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
  * @param <S> the type of the scalar values (elements of the field)
  * @author kfuchsbe
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class OngoingDeferredBinaryOperation<S> {
 
     private final ExtendedField<S> field;
