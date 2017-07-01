@@ -31,7 +31,7 @@ import java.util.function.Function;
 import org.tensorics.core.tensor.Position;
 
 /**
- * Utility class to create {@link Function}s to be used to map() a stream of Entry<Position, T>. Using these convenience
+ * Utility class to create {@link Function}s to be used to map() a stream of {@code Entry<Position, T>}. Using these convenience
  * functions avoids the user having to explicitly extract the Entry, modify it and re-build it in the end.
  * 
  * @author mihostet

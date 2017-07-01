@@ -314,7 +314,7 @@ public final class Positions {
      * Returns all positions which can be built from the values of the passed in classes that are assumed to be enum
      * classes. This is basically the runtime-checked version of {@link #cartesianProduct(Set)}
      * 
-     * @param enumClasses the enum classes from which to get their values
+     * @param classes the enum classes from which to get their values
      * @return an iterable containing the positions which are constructed from the values of the enums
      * @throws IllegalArgumentException in case not all clases are enums
      */

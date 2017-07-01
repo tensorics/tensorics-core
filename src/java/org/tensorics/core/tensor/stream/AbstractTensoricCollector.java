@@ -43,7 +43,7 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
  * @author mihostet
  * @param <V> stream elements
  * @param <T> elements of the tensor to be produced
- * @param <O> output (e.g. Tensor<T> or Tensorbacked<T>)
+ * @param <O> output (e.g. {@code Tensor<T>} or {@code Tensorbacked<T>})
  */
 public abstract class AbstractTensoricCollector<V, T, O> implements Collector<V, Map<Position, T>, O> {
 

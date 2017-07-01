@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 import org.tensorics.core.tensor.Position;
 
 /**
- * Utility class to produce {@link Predicate}s to use in a stream of Entry<Position, T>, in particular for the
+ * Utility class to produce {@link Predicate}s to use in a stream of {@code Entry<Position, T>}, in particular for the
  * filter() method, in a convenient way.
  * 
  * @author mihostet

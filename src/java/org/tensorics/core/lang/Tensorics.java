@@ -93,9 +93,6 @@ public final class Tensorics {
         return new TensoricSupport<>(EnvironmentImpl.of(field, ManipulationOptions.defaultOptions(field)));
     }
 
-    /**
-     * @see TensorStructurals#merge(Set)
-     */
     public static <E> Tensor<E> merge(Iterable<Tensor<E>> tensors) {
         return TensorStructurals.merge(tensors);
     }
@@ -385,16 +382,10 @@ public final class Tensorics {
         return Tensorbackeds.filter(tensorbacked);
     }
 
-    /**
-     * @see TensorStructurals#setContext(Tensor, Context)
-     */
     public static <S> Tensor<S> setContext(Tensor<S> tensor, Position context) {
         return TensorStructurals.setContext(tensor, context);
     }
 
-    /**
-     * @see Tensorbackeds#setContext(Tensorbacked, Context)
-     */
     public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Position context) {
         return Tensorbackeds.setContext(tensorbacked, context);
     }
@@ -414,7 +405,7 @@ public final class Tensorics {
     }
 
     /**
-     * @see Tensorbackeds#shapesOf(Tensorbacked)
+     * @see Tensorbackeds#shapeOf(Tensorbacked)
      */
     public static <TB extends Tensorbacked<?>> Iterable<Shape> shapesOf(Iterable<TB> tensorbackeds) {
         return Tensorbackeds.shapesOf(tensorbackeds);

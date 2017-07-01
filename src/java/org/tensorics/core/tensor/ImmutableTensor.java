@@ -114,7 +114,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      * 
      * @param map the map from which to construct a tensor
      * @return a new immutable tensor
-     * @deprecated use fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map)
+     * @deprecated use {@code fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map)}
      */
     @Deprecated
     public static final <T> Tensor<T> fromMap(Map<Position, T> map) {

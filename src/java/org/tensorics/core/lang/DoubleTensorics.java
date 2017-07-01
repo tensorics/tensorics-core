@@ -57,7 +57,7 @@ import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.units.Unit;
 
 /**
- * Provides delegate methods to a static instance of a TensoricSupport<Double>. This is for convenience purposes, so
+ * Provides delegate methods to a static instance of a {@code TensoricSupport<Double>}. This is for convenience purposes, so
  * that a simple calculation does not have to inherit from the support class, but can statically import methods from
  * this class.
  * 

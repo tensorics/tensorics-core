@@ -62,9 +62,9 @@ public final class TensorStructurals {
      * Merges the given set of the Tensors based on information in their context and dimensions. This operation is only
      * possible, if the following preconditions are fulfilled:
      * <ul>
-     * <li>The contexts of all the tensors have THE SAME dimensions</li> AND
+     * <li>The contexts of all the tensors have THE SAME dimensions AND</li>
      * <li>The dimensions of all the tensors are THE SAME (first found tensor dimension is taken as an reference)</li>
-     * </ul
+     * </ul>
      * 
      * @param tensors to be merged.
      * @return a merged tensor.

@@ -105,8 +105,8 @@ public final class TensorPair<V> extends AbstractPair<Tensor<V>> {
      * is not the case, then an exception will be thrown. The returned value will be a {@link ListMultimap}, because it
      * is easily possible that the returned value pairs are the same for different keys.
      * 
-     * @param positionPairs a multimap K->pairs of positions for which to retrieve the values
-     * @return a multimap K-> pairs of values, extracted from the tensor pair
+     * @param positionPairs a multimap K: pairs of positions for which to retrieve the values
+     * @return a multimap K: pairs of values, extracted from the tensor pair
      */
     public <K> ListMultimap<K, ValuePair<V>> mapValues(Multimap<K, PositionPair> positionPairs) {
         ImmutableListMultimap.Builder<K, ValuePair<V>> builder = ImmutableListMultimap.builder();

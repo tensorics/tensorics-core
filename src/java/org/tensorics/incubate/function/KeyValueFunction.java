@@ -34,8 +34,8 @@ package org.tensorics.incubate.function;
 public interface KeyValueFunction<X extends Comparable<? super X>, Y> {
 
     /**
-     * @param xValue argument of type <X>
-     * @return value of type <Y>
+     * @param xValue argument of type {@code <X>}
+     * @return value of type {@code <Y>}
      */
     Y getY(X xValue);
 }

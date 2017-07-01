@@ -42,7 +42,7 @@ import org.tensorics.core.tensor.lang.TensorSupport;
  * 
  * @author kfuchsbe
  * @param <S> the s
- * @see import org.tensorics.core.tensor.Shape
+ * @see org.tensorics.core.tensor.Shape
  * @see org.tensorics.core.math.structures.ringlike.Field
  */
 public class TensorIsCloseTo<S> extends TypeSafeDiagnosingMatcher<Tensor<S>> {

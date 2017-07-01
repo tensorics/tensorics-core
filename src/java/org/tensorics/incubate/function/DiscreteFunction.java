@@ -28,9 +28,9 @@ import java.util.List;
 /**
  * THe following conditions are guaranteed:
  * <ul>
- * <li>The x-values are ordered by their natural ordering
- * <li>the lists returned by {@link #getXs()} and {@link #getYs()} are of the same length.
- * <ul>
+ * <li>The x-values are ordered by their natural ordering</li>
+ * <li>the lists returned by {@link #getXs()} and {@link #getYs()} are of the same length.</li>
+ * </ul>
  * <p>
  * 
  * @author agorzaws

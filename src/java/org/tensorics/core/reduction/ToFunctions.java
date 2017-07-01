@@ -11,8 +11,8 @@ import org.tensorics.core.function.MapBackedDiscreteFunction;
 import org.tensorics.core.tensor.Position;
 
 /**
- * A reduction strategy which reduces all elements of dimension <X> by transforming them into a {@link DiscreteFunction}
- * s from <X> to <Y>
+ * A reduction strategy which reduces all elements of dimension {@code <X>} by transforming them into a {@link DiscreteFunction}
+ * s from {@code <X>} to {@code <Y>}
  * 
  * @author kfuchsbe, caguiler
  * @param <X> the type of the values along the X-axis, the type of coordinate (aka 'the dimension') do be reduced

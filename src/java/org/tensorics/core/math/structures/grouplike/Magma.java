@@ -25,8 +25,8 @@ package org.tensorics.core.math.structures.grouplike;
 /**
  * The algebraic structure of a Magma (or also called groupoid). It has the following properties:
  * <ul>
- * <li>a set (M) of elements of type T
- * <li>one binary operation M x M -> M
+ * <li>a set (M) of elements of type T</li>
+ * <li>one binary operation M x M : M</li>
  * </ul>
  * 
  * @param <T>

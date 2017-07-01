@@ -76,7 +76,7 @@ public final class Coordinates {
      * not given.
      * 
      * @param coordinates
-     * @throws IllegalCoordinatesException when any of the given classes are linked by the inheritance line.
+     * @throws IllegalArgumentException when any of the given classes are linked by the inheritance line.
      */
     public static void checkClassesRelations(Iterable<Class<?>> coordinates) {
         for (Class<?> one : coordinates) {

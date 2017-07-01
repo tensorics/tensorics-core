@@ -36,7 +36,7 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
  * @author mihostet
  * @param <V> steam elements
  * @param <T> elements of the tensor in the tensorbacked
- * @param <TB> tensorbacked class to produce, must extend Tensorbacked<T>
+ * @param <TB> tensorbacked class to produce, must extend {@code Tensorbacked<T>}
  */
 public class TensorbackedCollector<V, T, TB extends Tensorbacked<T>> extends AbstractTensoricCollector<V, T, TB> {
 

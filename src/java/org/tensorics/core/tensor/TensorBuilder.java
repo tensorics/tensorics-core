@@ -58,7 +58,6 @@ public interface TensorBuilder<E> {
      * tensor.
      * 
      * @param tensor the tensor, whose values to add to the tensor under construction
-     * @param position the position which will be merged with the tensor in the source tensor
      */
     void putAll(Tensor<E> tensor);
 

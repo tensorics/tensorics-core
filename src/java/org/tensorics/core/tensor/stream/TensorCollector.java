@@ -32,10 +32,10 @@ import org.tensorics.core.tensor.Tensor;
 
 /**
  * An {@link AbstractTensoricCollector} implementation to produce a generic tensor
- * 
+ *
  * @author mihostet
  * @param <V> stream elements
- * @param <T> elements of the tensor (will build a Tensor<T>)
+ * @param <T> elements of the tensor (will build a {@code Tensor<T>})
  */
 public class TensorCollector<V, T> extends AbstractTensoricCollector<V, T, Tensor<T>> {
 

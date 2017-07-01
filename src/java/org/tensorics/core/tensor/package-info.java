@@ -15,7 +15,7 @@
  * </ol>
  * An overview of the actual types is depicted in the following diagram:
  * <p>
- * <img src="./doc-files/base-hierarchy.PNG"/>
+ * <img src="./doc-files/base-hierarchy.PNG" alt="">
  */
 package org.tensorics.core.tensor;
 
