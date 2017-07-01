@@ -1,67 +1,88 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
-
-if (System.getenv('BUILD_SERVER')) {
-    apply from : './scripts/cern-configuration.gradle'
-}
-
 buildscript {
+    project.ext.CERN_VM = System.getProperty('CERN_TECHNET_VM') ?: System.getenv('CERN_TECHNET_VM') ?: false
+    project.ext.TRAVIS_CI = System.getProperty('TRAVIS') ?: System.getenv('TRAVIS') ?: false
+    project.ext.DEPLOYMENT = System.getProperty('deployment') ?: false
+    project.ext.VCS_TAG = System.getProperty('TRAVIS_TAG') ?: System.getenv('TRAVIS_TAG')
+    project.ext.POM = [
+            groupId    : 'org.tensorics',
+            artifactId : 'tensorics-core',
+            description: 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.',
+            developers : [
+                    [
+                            id   : 'kaifox',
+                            name : 'Kajetan Fuchsberger',
+                            email: 'kajetan.fuchsberger@gmail.com'
+                    ],
+                    [
+                            id   : 'agorzawski',
+                            name : 'Arek Gorzawski',
+                            email: 'agorzawski@gmail.com'
+                    ],
+                    [
+                            id   : 'michi42',
+                            name : 'Michi Hostettler',
+                            email: 'michi.hostettler@cern.ch'
+                    ],
+                    [
+                            id   : 'andreacalia',
+                            name : 'Andrea Calia',
+                            email: 'andrea.calia.46@gmail.com'
+                    ]
+            ]]
+    project.ext.INFO = [
+            repo        : 'https://github.com/tensorics/tensorics-core.git',
+            url         : 'http://tensorics.org/',
+            github      : 'https://github.com/tensorics/tensorics-core',
+            githubIssues: 'https://github.com/tensorics/tensorics-core/issues'
+    ]
+    project.ext.BINTRAY = [
+            repo        : 'tensorics-repo',
+            name        : 'org.tensorics:tensorics-core',
+            organization: 'tensorics',
+            userName    : 'tensorics-dev',
+            apiToken    : System.getenv('BINTRAY_API_TOKEN')
+    ]
+
     repositories {
-        if (System.getenv('BUILD_SERVER') || System.getProperty('CERN_TECHNET_VM')) {
-            maven {
-                url 'http://artifactory.cern.ch/repo'
-            }
-            maven {
-                url 'http://artifactory.cern.ch/jcenter'
-            }
+        if (CERN_VM) {
+            maven { url 'http://artifactory.cern.ch/repo' }
+            maven { url 'http://artifactory.cern.ch/jcenter' }
         } else {
             mavenCentral()
             jcenter()
         }
     }
-
     dependencies {
-        classpath 'net.saliman:gradle-cobertura-plugin:2.4.0'
-        classpath 'org.ow2.asm:asm:5.0.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
+        classpath 'com.netflix.nebula:nebula-publishing-plugin:5.1.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
 
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'nebula.maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
 repositories {
-    if (System.getenv('BUILD_SERVER') || System.getProperty('CERN_TECHNET_VM')) {
-        maven {
-            url 'http://artifactory.cern.ch/repo'
-        }
-        maven {
-            url 'http://artifactory.cern.ch/jcenter'
-        }
+    if (CERN_VM) {
+        maven { url 'http://artifactory.cern.ch/repo' }
+        maven { url 'http://artifactory.cern.ch/jcenter' }
     } else {
         mavenCentral()
         jcenter()
     }
 }
 
-if(System.getenv('TRAVIS')){
-    apply plugin: 'cobertura' 
-    
-    apply plugin: 'io.codearte.nexus-staging'
-    apply from : './scripts/deploy.gradle'
-
-    cobertura.coverageFormats = ['html', 'xml']
-    cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
+if (DEPLOYMENT) {
+    println 'Applying deployment scripts'
+    apply from: './scripts/bintray-deploy.gradle'
 }
 
+group 'org.streamingpool'
 
-sourceSets {
-    main { java {  srcDir 'src/java'  } }
-    test {
-        java {
-            srcDir 'src/examples'
-            srcDir 'src/test'
-        }
-    }
-}
+sourceCompatibility = 1.8
 
 dependencies {
     compile 'org.jscience:jscience:4.3.1'
@@ -76,17 +97,22 @@ dependencies {
     testCompile 'org.assertj:assertj-core:3.6.1'
 }
 
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
+sourceSets {
+    main {
+        java {
+            srcDir 'src/java'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test'
         }
     }
 }
 
-javadoc {  options.encoding = "UTF-8" }
+javadoc { options.encoding = "UTF-8" }
 
-task wrapper(type: Wrapper) { gradleVersion = '2.14.1' }
+task wrapper(type: Wrapper) { gradleVersion = '4.0' }
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -99,3 +125,12 @@ task sourcesJar(type: Jar) {
 }
 
 artifacts { archives javadocJar, sourcesJar }
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        xml.destination new File("${buildDir}/reports/jacoco/report.xml")
+        html.enabled true
+        csv.enabled false
+    }
+}
