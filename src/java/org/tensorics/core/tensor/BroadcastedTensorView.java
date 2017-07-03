@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableMap;
  * @author kfuchsbe
  * @param <V> the type of the values of the tensor
  */
-public final class BroadcastedTensorView<V> implements Tensor<V> {
+public final class BroadcastedTensorView<V> implements MapableTensor<V> {
 
     /** The original (smaller) tensor */
     private final Tensor<V> originalTensor;

@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 
 /**
@@ -46,7 +47,7 @@ public final class TensorStreams {
      * @return
      */
     public static <S> Stream<Map.Entry<Position, S>> tensorEntryStream(Tensor<S> tensor) {
-        return tensor.asMap().entrySet().stream();
+        return TensorInternals.mapFrom(tensor).entrySet().stream();
 
     }
 

@@ -27,6 +27,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.tensorics.core.tensor.operations.TensorInternals;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
@@ -125,7 +127,7 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 	public final void putAllAt(Tensor<E> tensor, Position position) {
 		checkNotNull(tensor, "The tensor must not be null!");
 		checkNotNull(position, "The position must not be null!");
-		for (Entry<Position, E> entry : tensor.asMap().entrySet()) {
+		for (Entry<Position, E> entry : TensorInternals.mapFrom(tensor).entrySet()) {
 			putAt(entry.getValue(), Positions.union(position, entry.getKey()));
 		}
 	}

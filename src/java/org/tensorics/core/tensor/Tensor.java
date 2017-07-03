@@ -22,7 +22,6 @@
 
 package org.tensorics.core.tensor;
 
-import java.util.Map;
 
 /**
  * The top interface for {@link Tensor} like objects.
@@ -56,13 +55,6 @@ public interface Tensor<E> {
 	 *             constructed from the given coordinates.
 	 */
 	E get(Object... coordinates);
-
-	/**
-	 * @return all the entries as a map of Position to value. There is no
-	 *         guarantee about the thread safety or mutability of the returned
-	 *         {@link Map}.
-	 */
-	Map<Position, E> asMap();
 
 	/**
 	 * Retrieves the shape of the tensor. As shape we understand simply the

@@ -41,7 +41,7 @@ public class SimpleMeteoExample {
 
     private void loopThroughEntries() {
         // tag::loopThroughEntries[]
-        for (Entry<Position, Double> entry : temperatures.asMap().entrySet()) {
+        for (Entry<Position, Double> entry : Tensorics.mapFrom(temperatures).entrySet()) {
             Position position = entry.getKey();
             double value = entry.getValue();
             System.out.println(position + "\t->\t" + value);

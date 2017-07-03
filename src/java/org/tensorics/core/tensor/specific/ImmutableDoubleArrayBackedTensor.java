@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.tensorics.core.tensor.AbstractTensorBuilder;
+import org.tensorics.core.tensor.MapableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -38,7 +39,7 @@ import com.google.common.collect.ImmutableMap;
  * 
  * @author kaifox
  */
-public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
+public class ImmutableDoubleArrayBackedTensor implements MapableTensor<Double> {
 
 	private final PositionIndexer indexer;
 	private final double[] values;

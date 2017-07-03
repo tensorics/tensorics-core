@@ -1,5 +1,7 @@
 package org.tensorics.core.tensor;
 
+import java.util.Map;
+
 /**
  * Enhances the tensor interface by a method to view the tensor as a map from
  * position to values. This interface is intended to be used by utility methods
@@ -11,5 +13,7 @@ package org.tensorics.core.tensor;
  *            the type of the values of the tensors
  */
 public interface MapableTensor<V> extends Tensor<V> {
+	
+	public Map<Position, V> asMap();
 
 }
