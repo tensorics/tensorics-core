@@ -62,6 +62,20 @@ public final class ImmutableScalar<V> extends AbstractScalar<V> implements Seria
 		return new ImmutableScalar<>(this.value, context);
 	}
 
+	/**
+	 * Returns a new scalar with the same value as this scalar, but the context
+	 * overridden by a position constructed from the given coordinates.
+	 * 
+	 * @param coordinates
+	 *            the coordinates for the context of the new scalar instance
+	 * @return a new immutable scalar with the new context
+	 * @throws NullPointerException
+	 *             if the given context is {@code null}
+	 */
+	public final ImmutableScalar<V> withContext(Object... coordinates) {
+		return withContext(Position.of(coordinates));
+	}
+
 	@Override
 	public Position context() {
 		return this.context;

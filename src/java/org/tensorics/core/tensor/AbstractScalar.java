@@ -1,5 +1,7 @@
 package org.tensorics.core.tensor;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -16,6 +18,7 @@ public abstract class AbstractScalar<V> implements Scalar<V> {
 
 	@Override
 	public final V get(Position position) {
+		requireNonNull(position, "position must not be null");
 		if (Position.empty().equals(position)) {
 			return value();
 		}
@@ -25,6 +28,7 @@ public abstract class AbstractScalar<V> implements Scalar<V> {
 
 	@Override
 	public final V get(Object... coordinates) {
+		requireNonNull(coordinates, "coordinates must not be null");
 		if (coordinates.length == 0) {
 			return value();
 		}
