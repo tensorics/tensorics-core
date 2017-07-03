@@ -22,6 +22,7 @@
 
 package org.tensorics.core.tensor;
 
+import static java.util.Objects.requireNonNull;
 import static org.tensorics.core.tensor.Coordinates.requireValidCoordinates;
 
 import java.io.Serializable;
@@ -78,6 +79,7 @@ public final class Position implements Serializable {
 
 	@SafeVarargs
 	public static Position of(Object... coordinates) {
+		requireNonNull(coordinates, "coordinates must not be null");
 		return createFrom(requireValidCoordinates(ImmutableMultiset.copyOf(coordinates)));
 	}
 
@@ -125,6 +127,11 @@ public final class Position implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "Position [coordinates=" + coordinates + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -140,9 +147,7 @@ public final class Position implements Serializable {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof Position)) { // TODO: this should be changed again
-											// to standard of getClass() after
-											// context refactoring
+		if (getClass() != obj.getClass()) {
 			return false;
 		}
 		Position other = (Position) obj;
@@ -154,11 +159,6 @@ public final class Position implements Serializable {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Position [coordinates=" + coordinates + "]";
 	}
 
 }
