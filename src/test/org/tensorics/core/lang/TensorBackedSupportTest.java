@@ -205,7 +205,7 @@ public class TensorBackedSupportTest {
     private Tensor<Double> prepareDoubleTensor(double factor) {
         Builder<Double> builder = ImmutableTensor.builder(getDimensions());
         for (int i = 0; i < 10; i++) {
-            builder.at(createCoordinates(i)).put(factor * i);
+            builder.putAt(factor * i, createCoordinates(i));
         }
         return builder.build();
     }
@@ -213,7 +213,7 @@ public class TensorBackedSupportTest {
     private Tensor<QuantifiedValue<Double>> prepareTensorOfQuantifiedValues(double factor) {
         Builder<QuantifiedValue<Double>> builder = ImmutableTensor.builder(getDimensions());
         for (int i = 0; i < 10; i++) {
-            builder.at(createCoordinates(i)).put(Tensorics.quantityOf(factor * i, JScienceUnit.of(MICRO(METER))));
+            builder.putAt(Tensorics.quantityOf(factor * i, JScienceUnit.of(MICRO(METER))), createCoordinates(i));
         }
         return builder.build();
     }
@@ -228,7 +228,7 @@ public class TensorBackedSupportTest {
                 entryValue = Tensorics.quantityOf(factor * i, JScienceUnit.of(MICRO(METER))).withError(newError)
                         .withValidity(false);
             }
-            builder.at(createCoordinates(i)).put(entryValue);
+            builder.putAt(entryValue, createCoordinates(i));
         }
         return builder.build();
     }

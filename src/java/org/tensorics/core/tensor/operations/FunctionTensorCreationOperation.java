@@ -52,7 +52,7 @@ public class FunctionTensorCreationOperation<V> implements CreationOperation<Ten
     public Tensor<V> perform() {
         Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
         for (Position position : shape.positionSet()) {
-            builder.at(position).put(function.apply(position));
+            builder.putAt(function.apply(position), position);
         }
         return builder.build();
     }

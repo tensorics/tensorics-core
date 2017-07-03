@@ -174,8 +174,8 @@ public class TensorCalculationsTest {
 		XCoordinate x2 = XCoordinate.of(3);
 
 		Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
-		builder.at(Position.of(ImmutableSet.of(x, y))).put(13.2);
-		builder.at(Position.of(ImmutableSet.of(x2, y))).put(-1.2);
+		builder.putAt(13.2, Position.of(ImmutableSet.of(x, y)));
+		builder.putAt(-1.2, Position.of(ImmutableSet.of(x2, y)));
 		Tensor<Double> testTensor = builder.build();
 
 		Tensor<Double> tensor = tensoricFieldUsage.calculate(tensor1).plus(testTensor);
@@ -189,13 +189,13 @@ public class TensorCalculationsTest {
 		XCoordinate x2 = XCoordinate.of(3);
 
 		Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
-		builder.at(Position.of(ImmutableSet.of(x, y))).put(13.2);
-		builder.at(Position.of(ImmutableSet.of(x2, y))).put(-1.2);
+		builder.putAt(13.2, Position.of(ImmutableSet.of(x, y)));
+		builder.putAt(-1.2, Position.of(ImmutableSet.of(x2, y)));
 		Tensor<Double> testTensor = builder.build();
 
 		Builder<Double> builder2 = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
-		builder2.at(Position.of(ImmutableSet.of(x, y))).put(1.2);
-		builder2.at(Position.of(ImmutableSet.of(x2, y))).put(1.2);
+		builder2.putAt(1.2, Position.of(ImmutableSet.of(x, y)));
+		builder2.putAt(1.2, Position.of(ImmutableSet.of(x2, y)));
 		Tensor<Double> testTensor2 = builder2.build();
 		Tensor<Double> tensor = tensoricFieldUsage.calculate(testTensor).plus(testTensor2);
 		assertEquals(14.4, tensor.get(x, y).doubleValue(), 0.001);
@@ -225,8 +225,8 @@ public class TensorCalculationsTest {
 		Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(x.getClass()));
 		double x1Add = 13.2;
 		double x2Add = -1.2;
-		builder.at(Position.of(x)).put(x1Add);
-		builder.at(Position.of(x2)).put(x2Add);
+		builder.putAt(x1Add, Position.of(x));
+		builder.putAt(x2Add, Position.of(x2));
 		Tensor<Double> testTensor = builder.build();
 		Tensor<Double> result = tensoricFieldUsage.calculate(tensor1).plus(testTensor);
 
@@ -599,7 +599,7 @@ public class TensorCalculationsTest {
 		Builder<Double> builder = ImmutableTensor.builder(dimensions);
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				builder.at(Position.of(coordinatesFor(i, j))).put(valueFor(i, j, factor));
+				builder.putAt(valueFor(i, j, factor), Position.of(coordinatesFor(i, j)));
 			}
 		}
 		return builder.build();
@@ -610,7 +610,7 @@ public class TensorCalculationsTest {
 		Builder<Boolean> builder = ImmutableTensor.builder(dimensions);
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				builder.at(Position.of(coordinatesFor(i, j))).put(flagFor(i, j));
+				builder.putAt(flagFor(i, j), Position.of(coordinatesFor(i, j)));
 			}
 		}
 		return builder.build();

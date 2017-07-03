@@ -174,7 +174,7 @@ public class ImmutableTensor<T> implements MappableTensor<T>, Serializable {
 	@Deprecated
 	public static final <T> Tensor<T> zeroDimensionalOf(T value) {
 		Builder<T> builder = builder(Collections.<Class<?>>emptySet());
-		builder.at(Position.empty()).put(value);
+		builder.putAt(value, Position.empty());
 		return builder.build();
 	}
 

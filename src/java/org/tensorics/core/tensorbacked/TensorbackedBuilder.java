@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.tensorics.core.tensor.ImmutableTensor;
-import org.tensorics.core.tensor.OngoingPut;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
@@ -64,18 +63,6 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 		this.tensorBuilder = ImmutableTensor.builder(dimensionsOf(tensorbackedClass));
 	}
 
-	public final OngoingPut<V> at(Position entryPosition) {
-		return tensorBuilder.at(entryPosition);
-	}
-
-	public final OngoingPut<V> at(Set<?> coordinates) {
-		return tensorBuilder.at(coordinates);
-	}
-
-	public final OngoingPut<V> at(Object... coordinates) {
-		return tensorBuilder.at(coordinates);
-	}
-
 	public final TensorbackedBuilder<V, TB> put(java.util.Map.Entry<Position, V> entry) {
 		tensorBuilder.put(entry);
 		return this;
@@ -87,6 +74,11 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 	}
 
 	public final TensorbackedBuilder<V, TB> putAt(V value, Object... coordinates) {
+		tensorBuilder.putAt(value, coordinates);
+		return this;
+	}
+	
+	public final TensorbackedBuilder<V, TB> putAt(V value, Set<?> coordinates) {
 		tensorBuilder.putAt(value, coordinates);
 		return this;
 	}

@@ -61,16 +61,6 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 		});
 	}
 
-	/**
-	 * Prepares to set a value at given position (a combined set of coordinates)
-	 * 
-	 * @param entryPosition
-	 *            on which future value will be placed.
-	 * @return builder object to be able to put Value in.
-	 */
-	public final OngoingPut<E> at(Position entryPosition) {
-		return new OngoingPut<E>(entryPosition, this);
-	}
 
 	@Override
 	public final void putAt(E value, Position position) {
@@ -112,15 +102,6 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 						+ " you are trying to put in to context is a BASE dimension of the tensor!");
 			}
 		}
-	}
-
-	public final OngoingPut<E> at(Set<?> coordinates) {
-		return this.at(Position.of(coordinates));
-	}
-
-	@SafeVarargs
-	public final OngoingPut<E> at(Object... coordinates) {
-		return this.at(Position.of(coordinates));
 	}
 
 	@Override

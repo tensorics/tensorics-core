@@ -40,7 +40,7 @@ public final class FakeMeteoDataImporter {
 
                 QuantifiedValue<Double> entryValue = ImmutableQuantifiedValue.<Double> of(rand.nextDouble(),
                         JScienceUnit.of(SI.CELSIUS));
-                tensorBuilder.at(Position.of(new Longitude(x), new Latitude(y))).put(entryValue);
+                tensorBuilder.putAt(entryValue, Position.of(new Longitude(x), new Latitude(y)));
             }
         }
         return tensorBuilder.build();
@@ -55,7 +55,7 @@ public final class FakeMeteoDataImporter {
                 for (int t = 0; t < 10; t++) {
                     QuantifiedValue<Double> entryValue = ImmutableQuantifiedValue.<Double> of(rand.nextDouble(),
                             JScienceUnit.of(SI.CELSIUS));
-                    tensorBuilder.at(Position.of(new Time(t), new Longitude(x), new Latitude(y))).put(entryValue);
+                    tensorBuilder.putAt(entryValue, Position.of(new Time(t), new Longitude(x), new Latitude(y)));
                 }
             }
         }
@@ -73,7 +73,7 @@ public final class FakeMeteoDataImporter {
                     if (y != 5) {
                         QuantifiedValue<Double> entryValue = ImmutableQuantifiedValue.<Double> of(rand.nextDouble(),
                                 JScienceUnit.of(SI.CELSIUS));
-                        tensorBuilder.at(Position.of(new Time(t), new Longitude(x), new Latitude(y))).put(entryValue);
+                        tensorBuilder.putAt(entryValue, Position.of(new Time(t), new Longitude(x), new Latitude(y)));
                     }
                 }
             }
