@@ -75,7 +75,7 @@ public final class TensorInternals {
 	 * passed in tensor: Tensor implementations can offer a more efficient way
 	 * to retrieve a map from them, by implementing the {@link MappableTensor}
 	 * interface. If this interface is present, then its
-	 * {@link MappableTensor#asMapOld()} method will be called. Otherwise, as a
+	 * {@link MappableTensor#asMap()} method will be called. Otherwise, as a
 	 * fallback, a new immutable map will be created from information from the
 	 * shape of the passed in tensor and its values.
 	 * 
