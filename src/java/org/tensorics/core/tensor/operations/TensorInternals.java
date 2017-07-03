@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.tensorics.core.tensor.MapableTensor;
+import org.tensorics.core.tensor.MappableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -73,20 +73,22 @@ public final class TensorInternals {
 	 * Returns a map representing the content of the given tensor. The concrete
 	 * instance of the map might differ depending on the implementation of the
 	 * passed in tensor: Tensor implementations can offer a more efficient way
-	 * to retrieve a map from them, by implementing the {@link MapableTensor}
+	 * to retrieve a map from them, by implementing the {@link MappableTensor}
 	 * interface. If this interface is present, then its
-	 * {@link MapableTensor#asMapOld()} method will be called. Otherwise, as a
+	 * {@link MappableTensor#asMapOld()} method will be called. Otherwise, as a
 	 * fallback, a new immutable map will be created from information from the
 	 * shape of the passed in tensor and its values.
 	 * 
 	 * @param tensor
 	 *            the tensor from which a map should be returned
-	 * @return a map representing the context of the tensor
+	 * @return a map representing the content of the tensor
+	 * @throws NullPointerException
+	 *             in case the passed in tensor is {@code null}
 	 */
 	public static <V> Map<Position, V> mapFrom(Tensor<V> tensor) {
 		requireNonNull(tensor, "tensor must not be null");
-		if (tensor instanceof MapableTensor) {
-			return ((MapableTensor<V>) tensor).asMap();
+		if (tensor instanceof MappableTensor) {
+			return ((MappableTensor<V>) tensor).asMap();
 		}
 		ImmutableMap.Builder<Position, V> builder = ImmutableMap.builder();
 		for (Position position : tensor.shape().positionSet()) {

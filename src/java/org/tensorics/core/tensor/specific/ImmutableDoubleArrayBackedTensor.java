@@ -25,12 +25,9 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.tensorics.core.tensor.AbstractTensorBuilder;
-import org.tensorics.core.tensor.MapableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * A specific implementation of a tensor, that contains double values. It is
@@ -39,7 +36,7 @@ import com.google.common.collect.ImmutableMap;
  * 
  * @author kaifox
  */
-public class ImmutableDoubleArrayBackedTensor implements MapableTensor<Double> {
+public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
 
 	private final PositionIndexer indexer;
 	private final double[] values;
@@ -59,15 +56,6 @@ public class ImmutableDoubleArrayBackedTensor implements MapableTensor<Double> {
 	@Override
 	public Double get(Object... coordinates) {
 		return get(Position.of(coordinates));
-	}
-
-	@Override
-	public Map<Position, Double> asMap() {
-		ImmutableMap.Builder<Position, Double> builder = ImmutableMap.builder();
-		for (Position position : indexer.allPositions()) {
-			builder.put(position, get(position));
-		}
-		return builder.build();
 	}
 
 	@Override

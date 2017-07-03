@@ -50,7 +50,7 @@ import com.google.common.collect.ImmutableMultiset;
  * @author agorzaws, kfuchsbe
  * @param <T> type of values in Tensor.
  */
-public class ImmutableTensor<T> implements MapableTensor<T>, Serializable {
+public class ImmutableTensor<T> implements MappableTensor<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
