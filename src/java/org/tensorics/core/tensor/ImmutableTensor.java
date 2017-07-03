@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Set;
 
 import org.tensorics.core.tensor.operations.TensorInternals;
@@ -170,7 +169,9 @@ public class ImmutableTensor<T> implements MappableTensor<T>, Serializable {
 	 * @return a builder for {@link ImmutableTensor}
 	 * @param <T>
 	 *            type of values in Tensor.
+	 * @deprecated use {@link ImmutableScalar} instead
 	 */
+	@Deprecated
 	public static final <T> Tensor<T> zeroDimensionalOf(T value) {
 		Builder<T> builder = builder(Collections.<Class<?>>emptySet());
 		builder.at(Position.empty()).put(value);

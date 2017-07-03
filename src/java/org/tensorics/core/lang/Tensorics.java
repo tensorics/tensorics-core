@@ -32,6 +32,7 @@ import java.util.stream.Stream;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
@@ -147,9 +148,18 @@ public final class Tensorics {
 
 	/**
 	 * @see ImmutableTensor#zeroDimensionalOf(Object)
+	 * @deprecated use {@link #scalarOf(Object)}
 	 */
+	@Deprecated
 	public static <T> Tensor<T> zeroDimensionalOf(T value) {
 		return ImmutableTensor.zeroDimensionalOf(value);
+	}
+	
+	/**
+	 * @see ImmutableScalar#of(Object)
+	 */
+	public static <T> ImmutableScalar<T> scalarOf(T value) {
+		return ImmutableScalar.of(value);
 	}
 
 	/**
