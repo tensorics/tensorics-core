@@ -83,7 +83,9 @@ public final class TensorInternals {
     public static <V> Map<Position, V> mapFrom(Tensor<V> tensor) {
         requireNonNull(tensor, "tensor must not be null");
         if (tensor instanceof Mappable) {
-            return ((Mappable<V>) tensor).asMap();
+            @SuppressWarnings("unchecked")
+			Mappable<V> mappable = (Mappable<V>) tensor;
+			return mappable.asMap();
         }
         ImmutableMap.Builder<Position, V> builder = ImmutableMap.builder();
         for (Position position : tensor.shape().positionSet()) {
