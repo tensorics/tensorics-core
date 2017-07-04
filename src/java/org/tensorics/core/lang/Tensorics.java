@@ -444,4 +444,18 @@ public final class Tensorics {
 		return TensorInternals.mapFrom(tensor);
 	}
 
+	/**
+	 * @see Position#at(Set)
+	 */
+	public static Position at(Set<?> coordinates) {
+		return Position.at(coordinates);
+	}
+
+	/**
+	 * @see Position#at(Object...)
+	 */
+	public static Position at(Object... coordinates) {
+		return Position.at(coordinates);
+	}
+
 }

@@ -60,15 +60,14 @@ public class ElementBinaryFunction<V, R> implements BinaryFunction<Tensor<V>, Te
 		return strategy.contextForLeftRight(left.context(), right.context());
 	}
 
-	private Tensor<R> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape,
-			Position resultingContext) {
-		Builder<R> tensorBuilder = ImmutableTensor.builder(resultingShape.dimensionSet());
-		for (Position position : resultingShape.positionSet()) {
-			tensorBuilder.at(position).put(operation.perform(left.get(position), right.get(position)));
-		}
-		tensorBuilder.context(resultingContext);
-		return tensorBuilder.build();
-	}
+    private Tensor<R> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape, Position resultingContext) {
+        Builder<R> tensorBuilder = ImmutableTensor.builder(resultingShape.dimensionSet());
+        for (Position position : resultingShape.positionSet()) {
+            tensorBuilder.put(position, operation.perform(left.get(position), right.get(position)));
+        }
+        tensorBuilder.context(resultingContext);
+        return tensorBuilder.build();
+    }
 
 	private Shape shape(TensorPair<V> broadcasted) {
 		ShapingStrategy strategy = optionRegistry.get(ShapingStrategy.class);

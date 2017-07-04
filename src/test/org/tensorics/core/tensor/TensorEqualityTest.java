@@ -33,7 +33,7 @@ public class TensorEqualityTest {
 
 	private static <T> Tensor<T> zeroDimensionalOf(T value) {
 		Builder<T> builder = ImmutableTensor.builder(Collections.<Class<?>>emptySet());
-		builder.at(Position.empty()).put(value);
+		builder.put(Position.empty(),value);
 		return builder.build();
 	}
 

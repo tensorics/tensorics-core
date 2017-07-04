@@ -99,7 +99,7 @@ public class TensorBackedBySetOfTensorValuesTest {
 		Builder<Double> builder = ImmutableTensor.builder(dimensions);
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				builder.at(Position.of(coordinatesFor(i, j))).put(valueFor(i, j));
+				builder.put(Position.of(coordinatesFor(i, j)), valueFor(i, j));
 			}
 		}
 		return builder.build();

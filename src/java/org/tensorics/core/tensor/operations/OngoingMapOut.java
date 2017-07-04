@@ -60,14 +60,13 @@ public final class OngoingMapOut<V> {
 
 		tensorBuilder.context(tensor.context()); // XXX IS this correct?
 
-		Multimap<Set<?>, Entry<Position, V>> fullEntries = groupBy(TensorInternals.mapFrom(tensor).entrySet(),
-				dimension);
-		for (Set<?> key : fullEntries.keySet()) {
-			Map<C1, V> values = mapByDimension(fullEntries.get(key), dimension);
-			tensorBuilder.at(Position.of(key)).put(values);
-		}
-		return tensorBuilder.build();
-	}
+        Multimap<Set<?>, Entry<Position, V>> fullEntries = groupBy(TensorInternals.mapFrom(tensor).entrySet(), dimension);
+        for (Set<?> key : fullEntries.keySet()) {
+            Map<C1, V> values = mapByDimension(fullEntries.get(key), dimension);
+            tensorBuilder.put(Position.of(key), values);
+        }
+        return tensorBuilder.build();
+    }
 
 	private static <C, C1 extends C> Set<?> coordinatesExcept(Collection<?> coordinates, Class<C1> dimension) {
 		ImmutableSet.Builder<Object> builder = ImmutableSet.builder();

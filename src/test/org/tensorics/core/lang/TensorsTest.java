@@ -128,17 +128,19 @@ public class TensorsTest {
 		assertEquals(3, shapeOfMerged.dimensionality());
 	}
 
-	private Tensor<Double> prepareTensorWithContextOf(Set<?> coordinateForContext) {
-		Builder<Double> tensorBuilder = ImmutableTensor
-				.<Double>builder(ImmutableSet.of(XCoordinate.class, YCoordinate.class));
-		if (coordinateForContext.size() > 0) {
-			tensorBuilder.context(Position.of(coordinateForContext));
-		}
-		for (int i = 1; i < 6; i++) {
-			for (int j = 1; j < 6; j++) {
-				tensorBuilder.at(YCoordinate.of(j), XCoordinate.of(i)).put((double) i * j);
-			}
-		}
-		return tensorBuilder.build();
-	}
+
+    private Tensor<Double> prepareTensorWithContextOf(Set<?> coordinateForContext) {
+        Builder<Double> tensorBuilder = ImmutableTensor.<Double> builder(ImmutableSet.of(XCoordinate.class,
+                YCoordinate.class));
+        if (coordinateForContext.size() > 0) {
+            tensorBuilder.context(Position.of(coordinateForContext));
+        }
+        for (int i = 1; i < 6; i++) {
+            for (int j = 1; j < 6; j++) {
+                Object[] coordinates = { YCoordinate.of(j), XCoordinate.of(i) };
+				tensorBuilder.put(Position.at(coordinates), ((double) i * j));
+            }
+        }
+        return tensorBuilder.build();
+    }
 }

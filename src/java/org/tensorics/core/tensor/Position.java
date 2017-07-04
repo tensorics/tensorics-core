@@ -65,8 +65,38 @@ public final class Position implements Serializable {
 		}
 	}
 
+	/**
+	 * Retrieves a position instance for the given coordinates. In order to be a
+	 * valid set to create a position, the coordinates must:
+	 * <ul>
+	 * <li>They must be disjunct in class hierarchy (e.g. one must not inherit
+	 * from another)
+	 * <li>None of them must be an instance of a position
+	 * </ul>
+	 * 
+	 * @param coordinates
+	 *            the coordinates for which to get the position instance.
+	 * @return a position instance with the given coordinates.
+	 * @throws IllegalArgumentException
+	 *             in case the coordinates are not a valid set for creating a
+	 *             position.
+	 */
 	public static Position of(Set<?> coordinates) {
 		return createFrom(requireValidCoordinates(coordinates));
+	}
+
+	/**
+	 * This is a simple convenience factory-method which delegates directly to
+	 * {@link #of(Set)}. Its only reason for existence is that in some cases
+	 * code reads better like this. (especially when using static imports).
+	 * 
+	 * @param coordinates
+	 *            the coordinates for which to get a new position
+	 * @return the position instance
+	 * @see Position#of(Set)
+	 */
+	public static Position at(Set<?> coordinates) {
+		return of(coordinates);
 	}
 
 	private static Position createFrom(Set<?> coordinates) {
@@ -77,10 +107,39 @@ public final class Position implements Serializable {
 		return EMPTY_POSITION;
 	}
 
+	/**
+	 * Retrieves a position instance, representing the given coordinates. This
+	 * is a convenience method to a call to {@link #of(Set)}.
+	 * 
+	 * @param coordinates
+	 *            the coordinates for which to retrieve a position instance
+	 * @return a position instance
+	 * @see #of(Set)
+	 */
 	@SafeVarargs
 	public static Position of(Object... coordinates) {
 		requireNonNull(coordinates, "coordinates must not be null");
+		/*
+		 * Do not delegate to #of(Set) here, because otherwise duplicates would
+		 * not throw and problems just be swallowed
+		 */
 		return createFrom(requireValidCoordinates(ImmutableMultiset.copyOf(coordinates)));
+	}
+
+	/**
+	 * This is a simple convenience factory-method which delegates directly to
+	 * {@link #of(Object...)}. Its only reason for existence is that in some
+	 * cases code reads better like this. (especially when using static
+	 * imports).
+	 * 
+	 * @param coordinates
+	 *            the coordinates for which to get a new position
+	 * @return the position instance
+	 * @see #of(Object...)
+	 */
+	@SafeVarargs
+	public static Position at(Object... coordinates) {
+		return of(coordinates);
 	}
 
 	/**

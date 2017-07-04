@@ -179,11 +179,11 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
 		ContextPropagationStrategy cps = optionRegistry.get(ContextPropagationStrategy.class);
 		Position resultingContext = cps.contextForLeftRight(left.context(), right.context());
 
-		TensorBuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
-		finalBuilder.putAllMap(result);
-		finalBuilder.context(resultingContext);
-		return finalBuilder.build();
-	}
+        TensorBuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
+        finalBuilder.putAll(result);
+        finalBuilder.context(resultingContext);
+        return finalBuilder.build();
+    }
 
 	private TensorPair<V> broadcast(Tensor<V> left, Tensor<V> right, Set<Class<?>> dimensionsNotToBroadcast) {
 		BroadcastingStrategy broadcasting = optionRegistry.get(BroadcastingStrategy.class);

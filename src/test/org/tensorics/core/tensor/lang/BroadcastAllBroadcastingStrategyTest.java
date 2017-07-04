@@ -130,15 +130,15 @@ public class BroadcastAllBroadcastingStrategyTest {
 
 	private Tensor<Double> createAB() {
 		ImmutableTensor.Builder<Double> builder = ImmutableTensor.builder(String.class);
-		builder.at(POS_A).put(1.0);
-		builder.at(POS_B).put(2.0);
+		builder.put(POS_A, 1.0);
+		builder.put(POS_B, 2.0);
 		return builder.build();
 	}
 
 	private Tensor<Double> create12() {
 		ImmutableTensor.Builder<Double> builder = ImmutableTensor.builder(Integer.class);
-		builder.at(POS_1).put(0.1);
-		builder.at(POS_2).put(0.2);
+		builder.put(POS_1, 0.1);
+		builder.put(POS_2, 0.2);
 		return builder.build();
 	}
 

@@ -49,13 +49,13 @@ public class FunctionTensorCreationOperation<V> implements CreationOperation<Ten
 		this.function = function;
 	}
 
-	@Override
-	public Tensor<V> perform() {
-		Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
-		for (Position position : shape.positionSet()) {
-			builder.at(position).put(function.apply(position));
-		}
-		return builder.build();
-	}
+    @Override
+    public Tensor<V> perform() {
+        Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
+        for (Position position : shape.positionSet()) {
+            builder.put(position, function.apply(position));
+        }
+        return builder.build();
+    }
 
 }

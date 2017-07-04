@@ -46,14 +46,15 @@ public class ElementUnaryOperation<V> implements UnaryOperation<Tensor<V>> {
 		this.elementOperation = elementOperation;
 	}
 
-	@Override
-	public Tensor<V> perform(Tensor<V> tensor) {
-		Shape shape = tensor.shape();
-		Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
-		for (Position position : shape.positionSet()) {
-			builder.at(position).put(elementOperation.perform(tensor.get(position)));
-		}
-		return builder.build();
-	}
+
+    @Override
+    public Tensor<V> perform(Tensor<V> tensor) {
+        Shape shape = tensor.shape();
+        Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
+        for (Position position : shape.positionSet()) {
+            builder.put(position, elementOperation.perform(tensor.get(position)));
+        }
+        return builder.build();
+    }
 
 }

@@ -25,6 +25,7 @@ package org.tensorics.core.lang;
 import static javax.measure.unit.SI.METER;
 import static javax.measure.unit.SI.MICRO;
 import static org.junit.Assert.assertEquals;
+import static org.tensorics.core.lang.Tensorics.at;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +36,7 @@ import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.QuantityTensorSupport;
 import org.tensorics.core.tensor.lang.QuantityTensors;
@@ -204,7 +206,7 @@ public class TensorBackedSupportTest {
 	private Tensor<Double> prepareDoubleTensor(double factor) {
 		Builder<Double> builder = ImmutableTensor.builder(getDimensions());
 		for (int i = 0; i < 10; i++) {
-			builder.at(createCoordinates(i)).put(factor * i);
+			builder.put(Position.at(createCoordinates(i)), (factor * i));
 		}
 		return builder.build();
 	}
@@ -212,7 +214,8 @@ public class TensorBackedSupportTest {
 	private Tensor<QuantifiedValue<Double>> prepareTensorOfQuantifiedValues(double factor) {
 		Builder<QuantifiedValue<Double>> builder = ImmutableTensor.builder(getDimensions());
 		for (int i = 0; i < 10; i++) {
-			builder.at(createCoordinates(i)).put(Tensorics.quantityOf(factor * i, JScienceUnit.of(MICRO(METER))));
+			builder.put(Position.at(createCoordinates(i)),
+					Tensorics.quantityOf(factor * i, JScienceUnit.of(MICRO(METER))));
 		}
 		return builder.build();
 	}
@@ -227,7 +230,7 @@ public class TensorBackedSupportTest {
 				entryValue = Tensorics.quantityOf(factor * i, JScienceUnit.of(MICRO(METER))).withError(newError)
 						.withValidity(false);
 			}
-			builder.at(createCoordinates(i)).put(entryValue);
+			builder.put(at(createCoordinates(i)), entryValue);
 		}
 		return builder.build();
 	}

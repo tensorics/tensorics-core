@@ -92,18 +92,19 @@ public final class TensorStructurals {
 		outcomeDimensionSet.addAll(dimensionSet);
 		Builder<E> tensorBuilder = ImmutableTensor.builder(outcomeDimensionSet);
 
-		for (Tensor<E> oneTensor : tensors) {
-			if (TensorStructurals.isValidInTermsOfDimensions(oneTensor, refDimensionSet,
-					refContextPosition.dimensionSet())) {
-				tensorBuilder.putAllAt(oneTensor, oneTensor.context());
-			} else {
-				throw new IllegalArgumentException(
-						"One of the tensors in the provided list does not fit the others on dimensions."
-								+ " Cannot continiue merging" + oneTensor);
-			}
-		}
-		return tensorBuilder.build();
-	}
+
+        for (Tensor<E> oneTensor : tensors) {
+            if (TensorStructurals.isValidInTermsOfDimensions(oneTensor, refDimensionSet,
+                    refContextPosition.dimensionSet())) {
+                tensorBuilder.putAll(oneTensor.context(), oneTensor);
+            } else {
+                throw new IllegalArgumentException(
+                        "One of the tensors in the provided list does not fit the others on dimensions."
+                                + " Cannot continiue merging" + oneTensor);
+            }
+        }
+        return tensorBuilder.build();
+    }
 
 	/**
 	 * Checks if the provided tensor has: the same dimension as the reference
@@ -136,22 +137,23 @@ public final class TensorStructurals {
 		return new OngoingCompletion<S>(tensor);
 	}
 
-	public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {
-		Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-		for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-			builder.putAt(function.apply(entry), entry.getKey());
-		}
-		return builder.build();
-	}
 
-	public static <S, T> Tensor<T> transformScalars(Tensor<S> tensor, Function<S, T> function) {
-		Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-		builder.context(tensor.context());
-		for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-			builder.putAt(function.apply(entry.getValue()), entry.getKey());
-		}
-		return builder.build();
-	}
+    public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {
+        Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+            builder.put(entry.getKey(), function.apply(entry));
+        }
+        return builder.build();
+    }
+
+    public static <S, T> Tensor<T> transformScalars(Tensor<S> tensor, Function<S, T> function) {
+        Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        builder.context(tensor.context());
+        for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+            builder.put(entry.getKey(), function.apply(entry.getValue()));
+        }
+        return builder.build();
+    }
 
 	public static final <S> Tensor<S> stripContext(Tensor<S> tensor) {
 		Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
@@ -159,15 +161,17 @@ public final class TensorStructurals {
 		return builder.build();
 	}
 
-	public static final <S> Tensor<S> mergeContextIntoShape(Tensor<S> tensor) {
-		if (tensor.context().coordinates().isEmpty()) {
-			throw new IllegalArgumentException("an empty context can't be merged into the positions");
-		}
-		Builder<S> builder = ImmutableTensor
-				.builder(Sets.union(tensor.shape().dimensionSet(), tensor.context().dimensionSet()));
-		builder.putAllAt(tensor, tensor.context());
-		return builder.build();
-	}
+
+    public static final <S> Tensor<S> mergeContextIntoShape(Tensor<S> tensor) {
+        if (tensor.context().coordinates().isEmpty()) {
+            throw new IllegalArgumentException("an empty context can't be merged into the positions");
+        }
+        Builder<S> builder = ImmutableTensor
+                .builder(Sets.union(tensor.shape().dimensionSet(), tensor.context().dimensionSet()));
+        builder.putAll(tensor.context(), tensor);
+        return builder.build();
+    }
+
 
 	public static final <S> Tensor<S> setContext(Tensor<S> tensor, Position context) {
 		Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
@@ -186,15 +190,16 @@ public final class TensorStructurals {
 		Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
 		builder.context(tensor.context());
 
-		Shape shape = Shapes.union(tensor.shape(), second.shape());
-		for (Position position : shape.positionSet()) {
-			if (tensor.shape().contains(position)) {
-				builder.putAt(tensor.get(position), position);
-			} else {
-				builder.putAt(second.get(position), position);
-			}
-		}
-		return builder.build();
-	}
+
+        Shape shape = Shapes.union(tensor.shape(), second.shape());
+        for (Position position : shape.positionSet()) {
+            if (tensor.shape().contains(position)) {
+                builder.put(position, tensor.get(position));
+            } else {
+                builder.put(position, second.get(position));
+            }
+        }
+        return builder.build();
+    }
 
 }

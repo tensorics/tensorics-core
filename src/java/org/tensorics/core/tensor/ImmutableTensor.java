@@ -119,44 +119,7 @@ public class ImmutableTensor<T> extends AbstractTensor<T> implements Mappable<T>
 	 */
 	public static final <T> Tensor<T> fromMap(Set<Class<?>> dimensions, Map<Position, T> map) {
 		Builder<T> builder = builder(dimensions);
-		builder.putAllMap(map);
-		return builder.build();
-	}
-
-	/**
-	 * Creates a tensor from the given map, where the map has to contain the
-	 * positions as keys and the values as values. The dimensions of the tensors
-	 * are automatically derived from the positions in the map. If they are
-	 * inconsistent, this method throws; if the map is empty, an empty zero
-	 * dimensional tensor is returned.
-	 *
-	 * @param map
-	 *            the map from which to construct a tensor
-	 * @return a new immutable tensor
-	 * @deprecated use
-	 *             {@code fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map)}
-	 */
-	@Deprecated
-	public static final <T> Tensor<T> fromMap(Map<Position, T> map) {
-		if (map.isEmpty()) {
-			return zeroDimensionalEmptyTensor();
-		} else {
-			return fromMap(extractDimensionsAndEnsureConsistency(map), map);
-		}
-	}
-
-	private static <T> Set<Class<?>> extractDimensionsAndEnsureConsistency(Map<Position, T> data) {
-		Position anyPosition = data.keySet().iterator().next();
-		boolean sameDim = data.keySet().stream().map(Position::dimensionSet).allMatch(anyPosition::isConsistentWith);
-		if (!sameDim) {
-			throw new IllegalArgumentException(
-					"For creating a Tensor from the map, all the positions must have the same dimensions");
-		}
-		return anyPosition.dimensionSet();
-	}
-
-	private static <T> Tensor<T> zeroDimensionalEmptyTensor() {
-		Builder<T> builder = builder(Collections.<Class<?>>emptySet());
+		builder.putAll(map);
 		return builder.build();
 	}
 
@@ -174,7 +137,7 @@ public class ImmutableTensor<T> extends AbstractTensor<T> implements Mappable<T>
 	@Deprecated
 	public static final <T> Tensor<T> zeroDimensionalOf(T value) {
 		Builder<T> builder = builder(Collections.<Class<?>>emptySet());
-		builder.at(Position.empty()).put(value);
+		builder.put(Position.empty(), value);
 		return builder.build();
 	}
 
@@ -187,7 +150,7 @@ public class ImmutableTensor<T> extends AbstractTensor<T> implements Mappable<T>
 	 */
 	public static final <T> Tensor<T> copyOf(Tensor<T> tensor) {
 		Builder<T> builder = builder(tensor.shape().dimensionSet());
-		builder.putAllMap(TensorInternals.mapFrom(tensor));
+		builder.putAll(TensorInternals.mapFrom(tensor));
 		builder.context(tensor.context());
 		return builder.build();
 	}
@@ -204,7 +167,7 @@ public class ImmutableTensor<T> extends AbstractTensor<T> implements Mappable<T>
 	 */
 	public static <T> Builder<T> builderFrom(Tensor<T> tensor) {
 		Builder<T> builder = builder(tensor.shape().dimensionSet());
-		builder.putAllMap(TensorInternals.mapFrom(tensor));
+		builder.putAll(TensorInternals.mapFrom(tensor));
 		return builder;
 	}
 
@@ -294,30 +257,13 @@ public class ImmutableTensor<T> extends AbstractTensor<T> implements Mappable<T>
 		}
 
 		@Override
-		protected void putItAt(S value, Position position) {
+		protected void putIt(Position position, S value) {
 			this.entries.put(position, value);
 		}
 
 		@Override
-		public void putAllMap(Map<Position, S> newEntries) {
-			for (java.util.Map.Entry<Position, S> entry : newEntries.entrySet()) {
-				this.put(entry);
-			}
-		}
-
-		@Override
-		public void removeAt(Position position) {
+		public void remove(Position position) {
 			entries.remove(position);
-		}
-
-		@Override
-		public void put(java.util.Map.Entry<Position, S> entry) {
-			this.putAt(entry.getValue(), entry.getKey());
-		}
-
-		@Override
-		public void putAll(Tensor<S> tensor) {
-			this.putAllAt(tensor);
 		}
 
 	}

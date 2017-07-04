@@ -56,15 +56,19 @@ public class SimpleMeteoExample {
 		// end::getValue[]
 	}
 
-	@SuppressWarnings("unused")
-	private Tensor<Double> createTemperatures() {
-		// tag::createTensor[]
-		TensorBuilder<Double> builder = Tensorics.builder(City.class, Day.class); // <1>
 
-		builder.putAt(18.5, City.NEW_YORK, Day.APRIL_1_2014); // <2>
-		builder.putAt(25.0, City.NEW_YORK, Day.JUNE_1_2014);
-		builder.putAt(19.8, City.GENEVA, Day.APRIL_1_2014);
-		builder.putAt(24.7, City.GENEVA, Day.JUNE_1_2014);
+    @SuppressWarnings("unused")
+    private Tensor<Double> createTemperatures() {
+        // tag::createTensor[]
+        TensorBuilder<Double> builder = Tensorics.builder(City.class, Day.class);
+		Object[] coordinates = { City.NEW_YORK, Day.APRIL_1_2014 }; // <1>
+        builder.put(Position.at(coordinates), 18.5);
+		Object[] coordinates1 = { City.NEW_YORK, Day.JUNE_1_2014 }; // <2>
+        builder.put(Position.at(coordinates1), 25.0);
+		Object[] coordinates2 = { City.GENEVA, Day.APRIL_1_2014 };
+        builder.put(Position.at(coordinates2), 19.8);
+		Object[] coordinates3 = { City.GENEVA, Day.JUNE_1_2014 };
+        builder.put(Position.at(coordinates3), 24.7);
 
 		Tensor<Double> temps = builder.build(); // <3>
 		// end::createTensor[]

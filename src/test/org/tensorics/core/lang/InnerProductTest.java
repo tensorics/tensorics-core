@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.variance.Covariant;
 import org.tensorics.core.tensor.variance.Covariants;
@@ -224,7 +225,8 @@ public class InnerProductTest extends TensoricDoubleSupport {
 		for (int i = 0; i < coordinates.length; i++) {
 			for (Plane plane : Plane.values()) {
 				Coord coordinate = coordinates[i];
-				builder1.at(coordinate, plane).put((coordinate.ordinal() + 1) * factor * (plane.ordinal() + 1));
+				Object[] coordinates1 = { coordinate, plane };
+				builder1.put(Position.at(coordinates1), ((coordinate.ordinal() + 1) * factor * (plane.ordinal() + 1)));
 			}
 		}
 		return builder1.build();
@@ -234,7 +236,8 @@ public class InnerProductTest extends TensoricDoubleSupport {
 		Builder<Double> builder1 = ImmutableTensor.builder(Coord.class);
 		for (int i = 0; i < coordinates.length; i++) {
 			Coord coordinate = coordinates[i];
-			builder1.at(coordinate).put((coordinate.ordinal() + 1) * factor);
+			Object[] coordinates1 = { coordinate };
+			builder1.put(Position.at(coordinates1), ((coordinate.ordinal() + 1) * factor));
 		}
 		return builder1.build();
 	}
@@ -244,7 +247,8 @@ public class InnerProductTest extends TensoricDoubleSupport {
 		Builder<Double> builder1 = ImmutableTensor.builder(CoCoord.class);
 		for (int i = 0; i < coordinates.length; i++) {
 			Coord coordinate = coordinates[i];
-			builder1.at(intantiator.create(coordinate)).put((coordinate.ordinal() + 1) * factor);
+			Object[] coordinates1 = { intantiator.create(coordinate) };
+			builder1.put(Position.at(coordinates1), ((coordinate.ordinal() + 1) * factor));
 		}
 		return builder1.build();
 	}
@@ -254,8 +258,8 @@ public class InnerProductTest extends TensoricDoubleSupport {
 		Builder<Double> builder1 = ImmutableTensor.builder(Coord.class, CoCoord.class);
 		for (Coord contra : coordinates) {
 			for (Coord co : coordinates) {
-				builder1.at(contra, intantiator.create(co))
-						.put(((contra.ordinal() + 1) * contraFactor) + ((co.ordinal() + 1) * coFactor));
+				Object[] coordinates1 = { contra, intantiator.create(co) };
+				builder1.put(Position.at(coordinates1), (((contra.ordinal() + 1) * contraFactor) + ((co.ordinal() + 1) * coFactor)));
 			}
 		}
 		return builder1.build();

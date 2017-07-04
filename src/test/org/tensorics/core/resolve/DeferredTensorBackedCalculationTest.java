@@ -22,6 +22,7 @@
 package org.tensorics.core.resolve;
 
 import static org.junit.Assert.assertEquals;
+import static org.tensorics.core.lang.Tensorics.at;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -77,7 +78,7 @@ public class DeferredTensorBackedCalculationTest {
 	private Tensor<Double> prepareDoubleTensor(double factor) {
 		Builder<Double> builder = ImmutableTensor.builder(getDimensions());
 		for (int i = 0; i < 10; i++) {
-			builder.at(createCoordinates(i)).put(factor * i);
+			builder.put(at(createCoordinates(i) ), (factor * i));
 		}
 		return builder.build();
 	}

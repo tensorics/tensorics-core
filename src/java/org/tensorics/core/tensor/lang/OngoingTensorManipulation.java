@@ -53,27 +53,23 @@ public class OngoingTensorManipulation<V> {
 		this.tensor = tensor;
 	}
 
-	/**
-	 * Extracts from the tensor only those elements where the values in the
-	 * given mask is {@code true}. The resulting tensors will then have the same
-	 * dimensionality as the original tensor, but will only have that many
-	 * elements as there are {@code true} elements in the mask tensor.
-	 * 
-	 * @param mask
-	 *            the mask which determines which elements shall be present in
-	 *            the new tensor.
-	 * @return A tensor which will contain only those elements which have
-	 *         {@code true} flags in the mask
-	 */
-	public Tensor<V> extractWhereTrue(Tensor<Boolean> mask) {
-		Builder<V> tensorBuilder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-		for (java.util.Map.Entry<Position, V> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-			if (mask.get(entry.getKey()).booleanValue()) {
-				tensorBuilder.at(entry.getKey()).put(entry.getValue());
-			}
-		}
-		return tensorBuilder.build();
-	}
+    /**
+     * Extracts from the tensor only those elements where the values in the given mask is {@code true}. The resulting
+     * tensors will then have the same dimensionality as the original tensor, but will only have that many elements as
+     * there are {@code true} elements in the mask tensor.
+     * 
+     * @param mask the mask which determines which elements shall be present in the new tensor.
+     * @return A tensor which will contain only those elements which have {@code true} flags in the mask
+     */
+    public Tensor<V> extractWhereTrue(Tensor<Boolean> mask) {
+        Builder<V> tensorBuilder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        for (java.util.Map.Entry<Position, V> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+            if (mask.get(entry.getKey()).booleanValue()) {
+                tensorBuilder.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return tensorBuilder.build();
+    }
 
 	/**
 	 * Retrieves all the unique coordinates of the given type.

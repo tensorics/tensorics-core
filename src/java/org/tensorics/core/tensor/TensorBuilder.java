@@ -23,32 +23,15 @@ package org.tensorics.core.tensor;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * The interface any builder of a tensor has to implement
  * 
  * @author kfuchsbe
- * @param <E>
+ * @param <V>
  *            the type of the tensor values
  */
-public interface TensorBuilder<E> {
-
-	void putAt(E value, Position position);
-
-	void putAt(E value, Object... coordinates);
-
-	void putAt(E value, Set<?> coordinates);
-
-	void removeAt(Position position);
-
-	/**
-	 * @deprecated use {@link #context(Position)}
-	 */
-	@Deprecated
-	default void setTensorContext(Position context) {
-		context(context);
-	}
+public interface TensorBuilder<V> {
 
 	void context(Position context);
 
@@ -63,29 +46,20 @@ public interface TensorBuilder<E> {
 	 *            the tensor, whose values to add to the tensor under
 	 *            construction
 	 */
-	void putAll(Tensor<E> tensor);
+	void putAll(Tensor<V> tensor);
 
-	void putAllAt(Tensor<E> tensor, Position position);
+	void putAll(Position position, Tensor<V> tensor);
 
-	/**
-	 * Puts all the values of the given tensor into the new tensor at a position
-	 * represented by the given coordinates. This is a convenience method for
-	 * {@link #putAllAt(Tensor, Position)}.
-	 * 
-	 * @param tensor
-	 *            the tensor whose values to put into the tensor unser
-	 *            construction
-	 * @param coordinates
-	 *            the coordinates defining the position where to put the values
-	 */
-	void putAllAt(Tensor<E> tensor, Object... coordinates);
+	void put(Position position, V value);
 
-	void putAllAt(Tensor<E> tensor, Set<?> coordinates);
+	void put(Entry<Position, V> entry);
 
-	void put(Entry<Position, E> entry);
+	void remove(Position position);
 
-	void putAllMap(Map<Position, E> newEntries);
+	void putAll(Map<Position, V> newEntries);
 
-	Tensor<E> build();
+	void putAll(Position position, Map<Position, V> map);
 
+	Tensor<V> build();
+	
 }

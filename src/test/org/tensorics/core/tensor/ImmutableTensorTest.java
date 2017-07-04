@@ -42,16 +42,17 @@ public class ImmutableTensorTest {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
-	@Test
-	public void testMergingContextBackIntoShape() {
-		Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
-		tensorBuilder.context(Position.of("TestContext"));
-		tensorBuilder.putAt(0.0, Position.of(0.0, 0));
-		tensorBuilder.putAt(42.42, Position.of(23.0, 42));
-		Tensor<Double> tensor = tensorBuilder.build();
-		Tensor<Double> tensorWithMergedContext = Tensorics.mergeContextIntoShape(tensor);
-		assertEquals(tensor, Tensorics.from(tensorWithMergedContext).extract("TestContext"));
-	}
+
+    @Test
+    public void testMergingContextBackIntoShape() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
+        tensorBuilder.context(Position.of("TestContext"));
+        tensorBuilder.put(Position.of(0.0, 0), 0.0);
+        tensorBuilder.put(Position.of(23.0, 42), 42.42);
+        Tensor<Double> tensor = tensorBuilder.build();
+        Tensor<Double> tensorWithMergedContext = Tensorics.mergeContextIntoShape(tensor);
+        assertEquals(tensor, Tensorics.from(tensorWithMergedContext).extract("TestContext"));
+    }
 
 	@Test
 	public void testDoubleToDoubleTensor() {
@@ -74,14 +75,15 @@ public class ImmutableTensorTest {
 		assertEquals(tensor, Tensorics.from(tensor).extract(Position.empty()));
 	}
 
-	@Test
-	public void testExtractionOfCompletePosition() {
-		Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
-		tensorBuilder.putAt(0.0, Position.of(0.0, 0));
-		tensorBuilder.putAt(42.42, Position.of(23.0, 42));
-		Tensor<Double> tensor = tensorBuilder.build();
-		assertEquals(tensor.get(23.0, 42), Tensorics.from(tensor).extract(Position.of(23.0, 42)).get());
-	}
+
+    @Test
+    public void testExtractionOfCompletePosition() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
+        tensorBuilder.put(Position.of(0.0, 0), 0.0);
+        tensorBuilder.put(Position.of(23.0, 42), 42.42);
+        Tensor<Double> tensor = tensorBuilder.build();
+        assertEquals(tensor.get(23.0, 42), Tensorics.from(tensor).extract(Position.of(23.0, 42)).get());
+    }
 
 	@Test
 	public void testZeroDimensionTensor() {
@@ -122,9 +124,10 @@ public class ImmutableTensorTest {
 	public void getNonExistingElementUsingInheritanceThrowsANoSuchElementException() {
 		final Object value = new Object();
 
-		Builder<Object> builder = ImmutableTensor.builder(AnyInterface.class);
-		builder.putAt(value, AnyClass.INSTANCE1);
-		ImmutableTensor<Object> tensor = builder.build();
+        Builder<Object> builder = ImmutableTensor.builder(AnyInterface.class);
+		Object[] coordinates = { AnyClass.INSTANCE1 };
+        builder.put(Position.at(coordinates), value);
+        ImmutableTensor<Object> tensor = builder.build();
 
 		thrown.expect(NoSuchElementException.class);
 		assertEquals(tensor.get(AnyClass.INSTANCE2), value);
