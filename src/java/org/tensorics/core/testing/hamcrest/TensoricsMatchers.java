@@ -32,12 +32,12 @@ import org.tensorics.core.tensor.Tensor;
  */
 public final class TensoricsMatchers {
 
-    private TensoricsMatchers() {
-        /* Only static methods */
-    }
+	private TensoricsMatchers() {
+		/* Only static methods */
+	}
 
-    public static <V> Matcher<Tensor<V>> allElementsEqualTo(V value) {
-        return AllElementsEqualTo.allElementsEqualTo(value);
-    }
+	public static <V> Matcher<Tensor<V>> allElementsEqualTo(V value) {
+		return AllElementsEqualTo.allElementsEqualTo(value);
+	}
 
 }

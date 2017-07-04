@@ -28,18 +28,23 @@ import java.util.function.Function;
  * An operation that converts one type of object into another.
  * 
  * @author kfuchsbe, caguiler
- * @param <T> the type of the object which shall be converted
- * @param <R> the return type, i.e. the type into which the object shall be converted
+ * @param <T>
+ *            the type of the object which shall be converted
+ * @param <R>
+ *            the return type, i.e. the type into which the object shall be
+ *            converted
  */
 @FunctionalInterface
 public interface Conversion<T, R> extends Function<T, R> {
 
-    /**
-     * Has to implement the conversion logic to convert the given object into an object of type R.
-     * 
-     * @param object the object to convert
-     * @return an object of the correct return type.
-     */
-    @Override
-    R apply(T object);
+	/**
+	 * Has to implement the conversion logic to convert the given object into an
+	 * object of type R.
+	 * 
+	 * @param object
+	 *            the object to convert
+	 * @return an object of the correct return type.
+	 */
+	@Override
+	R apply(T object);
 }

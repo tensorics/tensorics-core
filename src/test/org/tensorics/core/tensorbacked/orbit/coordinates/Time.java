@@ -23,18 +23,18 @@
 package org.tensorics.core.tensorbacked.orbit.coordinates;
 
 public class Time implements OrbitCoordinate {
-    private final long time;
+	private final long time;
 
-    /**
-     * @param time
-     */
-    public Time(long time) {
-        super();
-        this.time = time;
-    }
+	/**
+	 * @param time
+	 */
+	public Time(long time) {
+		super();
+		this.time = time;
+	}
 
-    public long getTime() {
-        return time;
-    }
+	public long getTime() {
+		return time;
+	}
 
 }

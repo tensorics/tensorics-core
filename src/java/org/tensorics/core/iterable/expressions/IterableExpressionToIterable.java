@@ -12,24 +12,25 @@ import org.tensorics.core.tree.domain.Expression;
 import com.google.common.collect.Lists;
 
 /**
- * A simple expression which contains a list of expressions of T, which can be resolved into an list of T, by resolving
- * each one individually.
+ * A simple expression which contains a list of expressions of T, which can be
+ * resolved into an list of T, by resolving each one individually.
  * 
  * @author kfuchsbe
- * @param <T> the type of the resolved elements
+ * @param <T>
+ *            the type of the resolved elements
  */
 public class IterableExpressionToIterable<T> extends AbstractDeferredExpression<Iterable<T>> {
 
-    private final List<? extends Expression<T>> expressions;
+	private final List<? extends Expression<T>> expressions;
 
-    public IterableExpressionToIterable(Iterable<? extends Expression<T>> expressions) {
-        super();
-        this.expressions = Lists.newArrayList(expressions);
-    }
+	public IterableExpressionToIterable(Iterable<? extends Expression<T>> expressions) {
+		super();
+		this.expressions = Lists.newArrayList(expressions);
+	}
 
-    @Override
-    public List<? extends Expression<T>> getChildren() {
-        return this.expressions;
-    }
+	@Override
+	public List<? extends Expression<T>> getChildren() {
+		return this.expressions;
+	}
 
 }

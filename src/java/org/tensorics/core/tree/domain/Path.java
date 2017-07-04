@@ -33,21 +33,21 @@ import java.util.List;
  */
 public final class Path {
 
-    private final List<Node> nodes = new ArrayList<>();
+	private final List<Node> nodes = new ArrayList<>();
 
-    public Path() {
-        this(Collections.<Node> emptyList());
-    }
+	public Path() {
+		this(Collections.<Node>emptyList());
+	}
 
-    public Path(List<Node> nodes) {
-        this.nodes.addAll(nodes);
-    }
+	public Path(List<Node> nodes) {
+		this.nodes.addAll(nodes);
+	}
 
-    public List<Node> getPath() {
-        return new ArrayList<Node>(nodes);
-    }
+	public List<Node> getPath() {
+		return new ArrayList<Node>(nodes);
+	}
 
-    public void add(Node node) {
-        this.nodes.add(node);
-    }
+	public void add(Node node) {
+		this.nodes.add(node);
+	}
 }

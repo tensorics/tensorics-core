@@ -28,10 +28,11 @@ import org.tensorics.core.math.structures.grouplike.AbelianGroup;
  * A ringlike algebraic structure, whose additive monoid is an abelian group.
  * 
  * @author kfuchsbe
- * @param <T> the type of the elements of the underlying set
+ * @param <T>
+ *            the type of the elements of the underlying set
  */
 public interface Ring<T> extends Semiring<T> {
 
-    @Override
-    AbelianGroup<T> additionStructure();
+	@Override
+	AbelianGroup<T> additionStructure();
 }

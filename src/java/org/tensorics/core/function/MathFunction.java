@@ -27,9 +27,11 @@ import java.util.function.Function;
  * The general function from X to Y
  * 
  * @author kfuchsbe
- * @param <X> the type of the values in x-direction (Independent variable)
- * @param <Y> the type of the values in y-direction (Dependent variable)
+ * @param <X>
+ *            the type of the values in x-direction (Independent variable)
+ * @param <Y>
+ *            the type of the values in y-direction (Dependent variable)
  */
 public interface MathFunction<X, Y> extends Function<X, Y> {
-    /* Marker interface */
+	/* Marker interface */
 }

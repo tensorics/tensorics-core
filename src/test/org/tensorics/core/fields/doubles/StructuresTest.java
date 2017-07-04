@@ -28,9 +28,9 @@ import org.junit.Test;
 
 public class StructuresTest {
 
-    @Test
-    public void verifyUtilityClass() {
-        assertUtilityClass(Structures.class);
-    }
+	@Test
+	public void verifyUtilityClass() {
+		assertUtilityClass(Structures.class);
+	}
 
 }

@@ -35,68 +35,68 @@ import org.tensorics.core.tree.domain.ResolvingContextImpl;
  */
 public class PickResolverTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
-    @SuppressWarnings("unchecked")
-    private static final Expression<Iterable<Integer>> SOURCE_EXPRESSION = mock(Expression.class);
-    private static final List<Integer> SOURCE_LIST = Arrays.asList(1, 2, 3, 4);
+	@SuppressWarnings("unchecked")
+	private static final Expression<Iterable<Integer>> SOURCE_EXPRESSION = mock(Expression.class);
+	private static final List<Integer> SOURCE_LIST = Arrays.asList(1, 2, 3, 4);
 
-    private EditableResolvingContext context;
-    private ResolvingEngine engine;
+	private EditableResolvingContext context;
+	private ResolvingEngine engine;
 
-    @Before
-    public void setUp() {
-        context = prepareContext();
-        engine = defaultEngineWithAdditional(new PickResolver<>());
-    }
+	@Before
+	public void setUp() {
+		context = prepareContext();
+		engine = defaultEngineWithAdditional(new PickResolver<>());
+	}
 
-    @SuppressWarnings("unchecked")
-    public void testCannotResolveSourceExpression() {
-        thrown.expect(ResolvedContextDidNotGrowException.class);
-        resolve(fromFirst(mock(Expression.class), 1));
-    }
+	@SuppressWarnings("unchecked")
+	public void testCannotResolveSourceExpression() {
+		thrown.expect(ResolvedContextDidNotGrowException.class);
+		resolve(fromFirst(mock(Expression.class), 1));
+	}
 
-    @Test
-    public void testIterableValuesAreCorrectlyPickedUpFromStart() {
-        for (int offset = 0; offset < SOURCE_LIST.size(); offset++) {
-            Integer value = resolve(fromFirst(SOURCE_EXPRESSION, offset));
-            Integer expected = SOURCE_LIST.get(offset);
-            assertEquals(value, expected);
-        }
-    }
+	@Test
+	public void testIterableValuesAreCorrectlyPickedUpFromStart() {
+		for (int offset = 0; offset < SOURCE_LIST.size(); offset++) {
+			Integer value = resolve(fromFirst(SOURCE_EXPRESSION, offset));
+			Integer expected = SOURCE_LIST.get(offset);
+			assertEquals(value, expected);
+		}
+	}
 
-    @Test
-    public void testIterableValuesAreCorrectlyPickedUpFromEnd() {
-        for (int offset = 0; offset < SOURCE_LIST.size(); offset++) {
-            Integer value = resolve(fromLast(SOURCE_EXPRESSION, offset));
-            Integer expected = SOURCE_LIST.get(SOURCE_LIST.size() - 1 - offset);
-            assertEquals(expected, value);
-        }
-    }
+	@Test
+	public void testIterableValuesAreCorrectlyPickedUpFromEnd() {
+		for (int offset = 0; offset < SOURCE_LIST.size(); offset++) {
+			Integer value = resolve(fromLast(SOURCE_EXPRESSION, offset));
+			Integer expected = SOURCE_LIST.get(SOURCE_LIST.size() - 1 - offset);
+			assertEquals(expected, value);
+		}
+	}
 
-    @Test
-    public void testNegativeOffset() {
-        thrown.expect(ResolvingException.class);
-        thrown.expectCause(isA(ArrayIndexOutOfBoundsException.class));
-        resolve(fromLast(SOURCE_EXPRESSION, -1));
-    }
+	@Test
+	public void testNegativeOffset() {
+		thrown.expect(ResolvingException.class);
+		thrown.expectCause(isA(ArrayIndexOutOfBoundsException.class));
+		resolve(fromLast(SOURCE_EXPRESSION, -1));
+	}
 
-    @Test
-    public void testOverSizeOffset() {
-        thrown.expect(ResolvingException.class);
-        thrown.expectCause(isA(ArrayIndexOutOfBoundsException.class));
-        resolve(fromLast(SOURCE_EXPRESSION, SOURCE_LIST.size()));
-    }
+	@Test
+	public void testOverSizeOffset() {
+		thrown.expect(ResolvingException.class);
+		thrown.expectCause(isA(ArrayIndexOutOfBoundsException.class));
+		resolve(fromLast(SOURCE_EXPRESSION, SOURCE_LIST.size()));
+	}
 
-    private <T> T resolve(PickExpression<T> expression) {
-        return engine.resolve(expression, context);
-    }
+	private <T> T resolve(PickExpression<T> expression) {
+		return engine.resolve(expression, context);
+	}
 
-    private static EditableResolvingContext prepareContext() {
-        EditableResolvingContext context = new ResolvingContextImpl();
-        context.put(SOURCE_EXPRESSION, SOURCE_LIST);
-        return context;
-    }
+	private static EditableResolvingContext prepareContext() {
+		EditableResolvingContext context = new ResolvingContextImpl();
+		context.put(SOURCE_EXPRESSION, SOURCE_LIST);
+		return context;
+	}
 
 }

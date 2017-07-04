@@ -27,17 +27,18 @@ import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.tree.domain.Expression;
 
 /**
- * Represents a deferred expression which takes expressions of {@link DiscreteFunction} and converts them into
- * expressions of iterable.
+ * Represents a deferred expression which takes expressions of
+ * {@link DiscreteFunction} and converts them into expressions of iterable.
  * 
  * @author kfuchsbe, caguiler
- * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
+ * @param <Y>
+ *            the type of the dependent variable in the {@link DiscreteFunction}
  */
 public class DiscreteFunctionToIterableExpression<Y>
-        extends ConversionOperationExpression<DiscreteFunction<?, Y>, Iterable<Y>> {
+		extends ConversionOperationExpression<DiscreteFunction<?, Y>, Iterable<Y>> {
 
-    public DiscreteFunctionToIterableExpression(Conversion<DiscreteFunction<?, Y>, Iterable<Y>> operation,
-            Expression<DiscreteFunction<?, Y>> source) {
-        super(operation, source);
-    }
+	public DiscreteFunctionToIterableExpression(Conversion<DiscreteFunction<?, Y>, Iterable<Y>> operation,
+			Expression<DiscreteFunction<?, Y>> source) {
+		super(operation, source);
+	}
 }

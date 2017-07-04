@@ -38,46 +38,49 @@ import org.tensorics.core.tensor.options.LeftContextPreservedStrategy;
 import com.google.common.collect.ImmutableList;
 
 /**
- * A class that provides static methods to deal with manipulations options and creating repositories for them.
+ * A class that provides static methods to deal with manipulations options and
+ * creating repositories for them.
  * 
  * @author agorzaws
  */
 public final class ManipulationOptions {
 
-    private static final double DEFAULT_CONFIDENCE_LEVEL = 0.95;
+	private static final double DEFAULT_CONFIDENCE_LEVEL = 0.95;
 
-    private ManipulationOptions() {
-        /* Only static methods */
-    }
+	private ManipulationOptions() {
+		/* Only static methods */
+	}
 
-    // tag::classdef[]
-    /**
-     * Creates a new instance of an Option registry, supporting the given field, which will contain the default options,
-     * as there are:
-     * <ul>
-     * <li>{@link IntersectionShapingStrategy} for shaping strategy.</li>
-     * <li>{@link BroadcastMissingDimensionsStrategy} for broadcasting strategy</li>
-     * <li>{@link RequireBothValidStrategy}</li>
-     * <li>{@link UncorrelatedErrorPropagationStrategy}</li>
-     * <li>{@link JScienceQuantificationStrategy}</li>
-     * <li>{@link LeftContextPreservedStrategy}</li>
-     * <li>{@link LinearInterpolationStrategy}
-     * </ul>
-     * 
-     * @param field the for which to create the option-instances
-     * @return a new (immutable) option registry, containing the default options
-     */
-    @SuppressWarnings("deprecation")
-    public static <T> OptionRegistry<ManipulationOption> defaultOptions(ExtendedField<T> field) {
-        return ImmutableOptionRegistry.of(ImmutableList.of(//
-                new IntersectionShapingStrategy(), //
-                new BroadcastMissingDimensionsStrategy(), //
-                new RequireBothValidStrategy(), //
-                new UncorrelatedErrorPropagationStrategy<>(field), //
-                new JScienceQuantificationStrategy<>(field.cheating()), //
-                new LeftContextPreservedStrategy(),
-                new ImmutableConfidenceLevel<>(field.cheating().fromDouble(DEFAULT_CONFIDENCE_LEVEL)),
-                new LinearInterpolationStrategy<>(field)));
-    }
-    // end::classdef[]
+	// tag::classdef[]
+	/**
+	 * Creates a new instance of an Option registry, supporting the given field,
+	 * which will contain the default options, as there are:
+	 * <ul>
+	 * <li>{@link IntersectionShapingStrategy} for shaping strategy.</li>
+	 * <li>{@link BroadcastMissingDimensionsStrategy} for broadcasting
+	 * strategy</li>
+	 * <li>{@link RequireBothValidStrategy}</li>
+	 * <li>{@link UncorrelatedErrorPropagationStrategy}</li>
+	 * <li>{@link JScienceQuantificationStrategy}</li>
+	 * <li>{@link LeftContextPreservedStrategy}</li>
+	 * <li>{@link LinearInterpolationStrategy}
+	 * </ul>
+	 * 
+	 * @param field
+	 *            the for which to create the option-instances
+	 * @return a new (immutable) option registry, containing the default options
+	 */
+	@SuppressWarnings("deprecation")
+	public static <T> OptionRegistry<ManipulationOption> defaultOptions(ExtendedField<T> field) {
+		return ImmutableOptionRegistry.of(ImmutableList.of(//
+				new IntersectionShapingStrategy(), //
+				new BroadcastMissingDimensionsStrategy(), //
+				new RequireBothValidStrategy(), //
+				new UncorrelatedErrorPropagationStrategy<>(field), //
+				new JScienceQuantificationStrategy<>(field.cheating()), //
+				new LeftContextPreservedStrategy(),
+				new ImmutableConfidenceLevel<>(field.cheating().fromDouble(DEFAULT_CONFIDENCE_LEVEL)),
+				new LinearInterpolationStrategy<>(field)));
+	}
+	// end::classdef[]
 }

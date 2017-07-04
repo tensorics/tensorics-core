@@ -28,9 +28,10 @@ import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
 /**
- * A strategy for shaping tensors resulting from binary (element wise) operations, which just takes the intersection of
- * both shapes. This means that the resulting shape will be such, that it will only contain positions which are
- * contained in both incoming shapes.
+ * A strategy for shaping tensors resulting from binary (element wise)
+ * operations, which just takes the intersection of both shapes. This means that
+ * the resulting shape will be such, that it will only contain positions which
+ * are contained in both incoming shapes.
  * <p>
  * Example: <blockquote>
  * 
@@ -45,13 +46,13 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class IntersectionShapingStrategy implements ShapingStrategy {
 
-    @Override
-    public <C> Shape shapeLeftRight(Tensor<?> left, Tensor<?> right) {
-        return intersection(left.shape(), right.shape());
-    }
+	@Override
+	public <C> Shape shapeLeftRight(Tensor<?> left, Tensor<?> right) {
+		return intersection(left.shape(), right.shape());
+	}
 
-    @Override
-    public Class<ShapingStrategy> getMarkerInterface() {
-        return ShapingStrategy.class;
-    }
+	@Override
+	public Class<ShapingStrategy> getMarkerInterface() {
+		return ShapingStrategy.class;
+	}
 }

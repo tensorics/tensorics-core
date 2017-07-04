@@ -37,27 +37,27 @@ import com.google.common.collect.ImmutableList;
  */
 public class ScalarIterableSupportTest {
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testNoElement() {
-        usage().averageOf(Collections.<Double> emptyList());
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void testNoElement() {
+		usage().averageOf(Collections.<Double>emptyList());
+	}
 
-    private ScalarIterableSupport<Double> usage() {
-        return new ScalarIterableSupport<>(doubles());
-    }
+	private ScalarIterableSupport<Double> usage() {
+		return new ScalarIterableSupport<>(doubles());
+	}
 
-    @Test
-    public void testOneElementOne() {
-        assertEquals(1.0, usage().averageOf(ImmutableList.<Double> of(1.0)), 0.000001);
-    }
+	@Test
+	public void testOneElementOne() {
+		assertEquals(1.0, usage().averageOf(ImmutableList.<Double>of(1.0)), 0.000001);
+	}
 
-    @Test
-    public void testOneElementZero() {
-        assertEquals(0.0, usage().averageOf(ImmutableList.<Double> of(0.0)), 0.0000001);
-    }
+	@Test
+	public void testOneElementZero() {
+		assertEquals(0.0, usage().averageOf(ImmutableList.<Double>of(0.0)), 0.0000001);
+	}
 
-    @Test
-    public void testTwoElements() throws Exception {
-        assertEquals(0.5, usage().averageOf(ImmutableList.<Double> of(0.0, 1.0)), 0.00001);
-    }
+	@Test
+	public void testTwoElements() throws Exception {
+		assertEquals(0.5, usage().averageOf(ImmutableList.<Double>of(0.0, 1.0)), 0.00001);
+	}
 }

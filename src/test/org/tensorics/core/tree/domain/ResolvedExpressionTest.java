@@ -28,9 +28,9 @@ import org.junit.Test;
 
 public class ResolvedExpressionTest {
 
-    @Test
-    public void getReturnsCorrectValue() {
-        assertEquals(Integer.valueOf(1), ResolvedExpression.of(1).get());
-    }
+	@Test
+	public void getReturnsCorrectValue() {
+		assertEquals(Integer.valueOf(1), ResolvedExpression.of(1).get());
+	}
 
 }

@@ -32,23 +32,23 @@ import org.tensorics.core.tensor.operations.TensorInternals;
 
 public class OngoingTensorbackedCompletion<TB extends Tensorbacked<S>, S> {
 
-    private final TB tensorbacked;
+	private final TB tensorbacked;
 
-    OngoingTensorbackedCompletion(TB tensorbacked) {
-        this.tensorbacked = checkNotNull(tensorbacked, "tensorbacked must not be null");
-    }
+	OngoingTensorbackedCompletion(TB tensorbacked) {
+		this.tensorbacked = checkNotNull(tensorbacked, "tensorbacked must not be null");
+	}
 
-    public TB with(Tensor<S> second) {
-        Tensor<S> tensor = completeWith(tensorbacked.tensor(), second);
-        return createBackedByTensor(TensorbackedInternals.classOf(tensorbacked), tensor);
-    }
+	public TB with(Tensor<S> second) {
+		Tensor<S> tensor = completeWith(tensorbacked.tensor(), second);
+		return createBackedByTensor(TensorbackedInternals.classOf(tensorbacked), tensor);
+	}
 
-    public TB with(TB second) {
-        return with(second.tensor());
-    }
+	public TB with(TB second) {
+		return with(second.tensor());
+	}
 
-    public TB with(Shape shape, S value) {
-        return with(TensorInternals.sameValues(shape, value));
-    }
+	public TB with(Shape shape, S value) {
+		return with(TensorInternals.sameValues(shape, value));
+	}
 
 }

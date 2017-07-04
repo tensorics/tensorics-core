@@ -22,15 +22,18 @@
 package org.tensorics.core.function;
 
 /**
- * A builder for discrete functions. It provides methods to easily build {@link DiscreteFunction}s
+ * A builder for discrete functions. It provides methods to easily build
+ * {@link DiscreteFunction}s
  * 
  * @author kfuchsbe
- * @param <X> the type of the values along the X-axis
- * @param <Y> the type of the values along the Y-axis
+ * @param <X>
+ *            the type of the values along the X-axis
+ * @param <Y>
+ *            the type of the values along the Y-axis
  */
 public interface DiscreteFunctionBuilder<X, Y> {
 
-    DiscreteFunctionBuilder<X, Y> put(X key, Y value);
+	DiscreteFunctionBuilder<X, Y> put(X key, Y value);
 
-    DiscreteFunction<X, Y> build();
+	DiscreteFunction<X, Y> build();
 }

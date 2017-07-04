@@ -23,5 +23,5 @@
 package org.tensorics.core.tensorbacked.orbit.coordinates;
 
 public interface OrbitCoordinate {
-    /* only a marker interface */
+	/* only a marker interface */
 }

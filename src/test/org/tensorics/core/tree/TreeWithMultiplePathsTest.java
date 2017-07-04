@@ -41,67 +41,68 @@ import com.google.common.reflect.TypeToken;
 
 public class TreeWithMultiplePathsTest {
 
-    private Node rootNode;
+	private Node rootNode;
 
-    private Node child1;
-    private Node child2;
+	private Node child1;
+	private Node child2;
 
-    private Node child11;
-    private Node child12;
-    private Node child21;
+	private Node child11;
+	private Node child12;
+	private Node child21;
 
-    private Node childCommon;
+	private Node childCommon;
 
-    private static interface ExceptionHandlingNodeWithChildren<R> extends ExceptionHandlingNode<R>, Node {
-        /* Nothing to do, but required for mocking */
-    }
+	private static interface ExceptionHandlingNodeWithChildren<R> extends ExceptionHandlingNode<R>, Node {
+		/* Nothing to do, but required for mocking */
+	}
 
-    /*
-     * rootNode / \ / \ child1(EH) child2 / \ \ / \ \ child11 child12 child21 \ / / \ / / childCommon
-     */
-    @Before
-    public void setUp() throws Exception {
-        rootNode = mock(Node.class);
+	/*
+	 * rootNode / \ / \ child1(EH) child2 / \ \ / \ \ child11 child12 child21 \
+	 * / / \ / / childCommon
+	 */
+	@Before
+	public void setUp() throws Exception {
+		rootNode = mock(Node.class);
 
-        child1 = mock(ExceptionHandlingNodeWithChildren.class);
-        child2 = mock(Node.class);
-        child11 = mock(Node.class);
-        child12 = mock(Node.class);
-        child21 = mock(Node.class);
+		child1 = mock(ExceptionHandlingNodeWithChildren.class);
+		child2 = mock(Node.class);
+		child11 = mock(Node.class);
+		child12 = mock(Node.class);
+		child21 = mock(Node.class);
 
-        childCommon = mock(Node.class);
+		childCommon = mock(Node.class);
 
-        when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child1, child2));
-        when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child11, child12));
-        when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child21));
+		when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child1, child2));
+		when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child11, child12));
+		when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child21));
 
-        when(child11.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
-        when(child12.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
-        when(child21.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
+		when(child11.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(childCommon));
+		when(child12.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(childCommon));
+		when(child21.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(childCommon));
 
-        when(rootNode.toString()).thenReturn("rootNode");
-        when(child1.toString()).thenReturn("child1");
-        when(child2.toString()).thenReturn("child2");
-        when(child12.toString()).thenReturn("child12");
-        when(child11.toString()).thenReturn("child11");
-        when(child21.toString()).thenReturn("child21");
-        when(childCommon.toString()).thenReturn("childCommon");
-    }
+		when(rootNode.toString()).thenReturn("rootNode");
+		when(child1.toString()).thenReturn("child1");
+		when(child2.toString()).thenReturn("child2");
+		when(child12.toString()).thenReturn("child12");
+		when(child11.toString()).thenReturn("child11");
+		when(child21.toString()).thenReturn("child21");
+		when(childCommon.toString()).thenReturn("childCommon");
+	}
 
-    @Test(expected = NoMatchingNodeFoundException.class)
-    public void testFindClosestHandlingNodeCommon() throws Exception {
-        assertFoundNodes(childCommon, child1, child2);
-    }
+	@Test(expected = NoMatchingNodeFoundException.class)
+	public void testFindClosestHandlingNodeCommon() throws Exception {
+		assertFoundNodes(childCommon, child1, child2);
+	}
 
-    private void assertFoundNodes(Node childNode, Node... expectedNodes) {
-        Set<ExceptionHandlingNode<?>> nodes = Trees.findClosestAncestorNodeFromNodesToRootOfType(childNode, rootNode,
-                new TypeToken<ExceptionHandlingNode<?>>() {
-                    private static final long serialVersionUID = 1L;
-                });
-        assertEquals(Arrays.asList(expectedNodes).size(), nodes.size());
-        for (Node node : expectedNodes) {
-            assertEquals(true, nodes.contains(node));
-        }
-    }
+	private void assertFoundNodes(Node childNode, Node... expectedNodes) {
+		Set<ExceptionHandlingNode<?>> nodes = Trees.findClosestAncestorNodeFromNodesToRootOfType(childNode, rootNode,
+				new TypeToken<ExceptionHandlingNode<?>>() {
+					private static final long serialVersionUID = 1L;
+				});
+		assertEquals(Arrays.asList(expectedNodes).size(), nodes.size());
+		for (Node node : expectedNodes) {
+			assertEquals(true, nodes.contains(node));
+		}
+	}
 
 }

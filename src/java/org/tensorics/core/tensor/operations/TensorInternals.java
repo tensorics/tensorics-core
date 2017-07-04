@@ -45,29 +45,29 @@ import com.google.common.collect.ImmutableMap;
  */
 public final class TensorInternals {
 
-    private TensorInternals() {
-        /* only static methods */
-    }
+	private TensorInternals() {
+		/* only static methods */
+	}
 
-    public static <T> OngoingMapOut<T> mapOut(Tensor<T> tensor) {
-        return new OngoingMapOut<>(tensor);
-    }
+	public static <T> OngoingMapOut<T> mapOut(Tensor<T> tensor) {
+		return new OngoingMapOut<>(tensor);
+	}
 
-    public static <T> Set<Entry<Position, T>> entrySetOf(Tensor<T> tensor) {
-        return mapFrom(tensor).entrySet();
-    }
+	public static <T> Set<Entry<Position, T>> entrySetOf(Tensor<T> tensor) {
+		return mapFrom(tensor).entrySet();
+	}
 
-    public static <S> Tensor<S> sameValues(Shape shape, S value) {
-        return new SingleValueTensorCreationOperation<S>(shape, value).perform();
-    }
+	public static <S> Tensor<S> sameValues(Shape shape, S value) {
+		return new SingleValueTensorCreationOperation<S>(shape, value).perform();
+	}
 
-    public static <S> Tensor<S> createFrom(Shape shape, Supplier<S> supplier) {
-        return new FunctionTensorCreationOperation<>(shape, forSupplier(supplier)).perform();
-    }
+	public static <S> Tensor<S> createFrom(Shape shape, Supplier<S> supplier) {
+		return new FunctionTensorCreationOperation<>(shape, forSupplier(supplier)).perform();
+	}
 
-    public static <S> Tensor<S> createFrom(Shape shape, Function<Position, S> function) {
-        return new FunctionTensorCreationOperation<>(shape, function).perform();
-    }
+	public static <S> Tensor<S> createFrom(Shape shape, Function<Position, S> function) {
+		return new FunctionTensorCreationOperation<>(shape, function).perform();
+	}
 
 	/**
 	 * Returns a map representing the content of the given tensor. The concrete

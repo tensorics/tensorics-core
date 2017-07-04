@@ -31,25 +31,25 @@ import org.tensorics.core.units.Unit;
 
 public class OngoingQuantityIterableValueExtraction<V> {
 
-    private final QuantityOperationRepository<V> operationRepository;
-    private final Iterable<QuantifiedValue<V>> quantities;
+	private final QuantityOperationRepository<V> operationRepository;
+	private final Iterable<QuantifiedValue<V>> quantities;
 
-    public OngoingQuantityIterableValueExtraction(Iterable<QuantifiedValue<V>> quantities,
-            QuantityOperationRepository<V> operationRepository) {
-        this.quantities = quantities;
-        this.operationRepository = operationRepository;
-    }
+	public OngoingQuantityIterableValueExtraction(Iterable<QuantifiedValue<V>> quantities,
+			QuantityOperationRepository<V> operationRepository) {
+		this.quantities = quantities;
+		this.operationRepository = operationRepository;
+	}
 
-    public List<V> inUnitsOf(Unit unit) {
-        List<V> results = new ArrayList<>();
-        for (QuantifiedValue<V> quantity : quantities) {
-            results.add(operationRepository.environment().quantification().convertValueToUnit(quantity, unit).value());
-        }
-        return results;
-    }
+	public List<V> inUnitsOf(Unit unit) {
+		List<V> results = new ArrayList<>();
+		for (QuantifiedValue<V> quantity : quantities) {
+			results.add(operationRepository.environment().quantification().convertValueToUnit(quantity, unit).value());
+		}
+		return results;
+	}
 
-    public List<V> inUnitsOf(javax.measure.unit.Unit<?> unit) {
-        return inUnitsOf(JScienceUnit.of(unit));
-    }
+	public List<V> inUnitsOf(javax.measure.unit.Unit<?> unit) {
+		return inUnitsOf(JScienceUnit.of(unit));
+	}
 
 }

@@ -31,27 +31,29 @@ import org.tensorics.core.testing.hamcrest.ScalarIsCloseTo;
 import org.tensorics.core.testing.hamcrest.TensorIsCloseTo;
 
 /**
- * Part of a fluent clause to create a matcher which will allow to check if some value is 'close to' some other value.
+ * Part of a fluent clause to create a matcher which will allow to check if some
+ * value is 'close to' some other value.
  * 
  * @author kfuchsbe
- * @param <S> the type of the scalar for which a matcher has to be created
+ * @param <S>
+ *            the type of the scalar for which a matcher has to be created
  */
 public class OngoingCloseToMatcherCreation<S> {
 
-    private final Environment<S> environment;
-    private final S tolerance;
+	private final Environment<S> environment;
+	private final S tolerance;
 
-    public OngoingCloseToMatcherCreation(Environment<S> environment, S tolerance) {
-        super();
-        this.environment = environment;
-        this.tolerance = tolerance;
-    }
+	public OngoingCloseToMatcherCreation(Environment<S> environment, S tolerance) {
+		super();
+		this.environment = environment;
+		this.tolerance = tolerance;
+	}
 
-    public Matcher<S> closeTo(S value) {
-        return new ScalarIsCloseTo<S>(new ScalarSupport<>(environment.field()), value, tolerance);
-    }
+	public Matcher<S> closeTo(S value) {
+		return new ScalarIsCloseTo<S>(new ScalarSupport<>(environment.field()), value, tolerance);
+	}
 
-    public Matcher<Tensor<S>> closeTo(Tensor<S> tensor) {
-        return new TensorIsCloseTo<S>(new TensorSupport<>(environment), tensor, tolerance);
-    }
+	public Matcher<Tensor<S>> closeTo(Tensor<S> tensor) {
+		return new TensorIsCloseTo<S>(new TensorSupport<>(environment), tensor, tolerance);
+	}
 }

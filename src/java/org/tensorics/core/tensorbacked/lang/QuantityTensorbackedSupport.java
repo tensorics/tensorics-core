@@ -32,32 +32,35 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedInternals;
 
 /**
- * Provides starting methods for tensoric eDSL expressions, which are related to tensors of quantities.
+ * Provides starting methods for tensoric eDSL expressions, which are related to
+ * tensors of quantities.
  * 
  * @author kfuchsbe
- * @param <V> the type of the scalar values (elements of the field on which the operations are based on)
+ * @param <V>
+ *            the type of the scalar values (elements of the field on which the
+ *            operations are based on)
  */
 public class QuantityTensorbackedSupport<V> extends QuantityIterableSupport<V> {
 
-    private final QuantityOperationRepository<V> pseudoField;
+	private final QuantityOperationRepository<V> pseudoField;
 
-    public QuantityTensorbackedSupport(QuantityEnvironment<V> environment) {
-        super(environment);
-        this.pseudoField = new QuantityOperationRepository<>(environment);
-    }
+	public QuantityTensorbackedSupport(QuantityEnvironment<V> environment) {
+		super(environment);
+		this.pseudoField = new QuantityOperationRepository<>(environment);
+	}
 
-    public <QTB extends Tensorbacked<QuantifiedValue<V>>> OngoingQuantifiedTensorBackedOperation<QTB, V> calculate(
-            QTB left) {
-        return new OngoingQuantifiedTensorBackedOperation<>(pseudoField, left);
-    }
+	public <QTB extends Tensorbacked<QuantifiedValue<V>>> OngoingQuantifiedTensorBackedOperation<QTB, V> calculate(
+			QTB left) {
+		return new OngoingQuantifiedTensorBackedOperation<>(pseudoField, left);
+	}
 
-    public <QTB extends Tensorbacked<QuantifiedValue<V>>> QTB negativeOf(QTB tensorBacked) {
-        Tensor<QuantifiedValue<V>> perform = new ElementUnaryOperation<>(pseudoField.additiveInversion())
-                .perform(tensorBacked.tensor());
-        /* safe cast since we ensure QTB as a type in the argument! */
-        @SuppressWarnings("unchecked")
-        Class<QTB> tensorBackedClass = (Class<QTB>) tensorBacked.getClass();
-        return TensorbackedInternals.createBackedByTensor(tensorBackedClass, perform);
-    }
+	public <QTB extends Tensorbacked<QuantifiedValue<V>>> QTB negativeOf(QTB tensorBacked) {
+		Tensor<QuantifiedValue<V>> perform = new ElementUnaryOperation<>(pseudoField.additiveInversion())
+				.perform(tensorBacked.tensor());
+		/* safe cast since we ensure QTB as a type in the argument! */
+		@SuppressWarnings("unchecked")
+		Class<QTB> tensorBackedClass = (Class<QTB>) tensorBacked.getClass();
+		return TensorbackedInternals.createBackedByTensor(tensorBackedClass, perform);
+	}
 
 }
