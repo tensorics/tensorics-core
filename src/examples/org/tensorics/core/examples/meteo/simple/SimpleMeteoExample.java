@@ -57,7 +57,6 @@ public class SimpleMeteoExample {
 	}
 
 
-    @SuppressWarnings("unused")
     private Tensor<Double> createTemperatures() {
         // tag::createTensor[]
         TensorBuilder<Double> builder = Tensorics.builder(City.class, Day.class); // <1>
@@ -68,7 +67,7 @@ public class SimpleMeteoExample {
 
 		Tensor<Double> temps = builder.build(); // <3>
 		// end::createTensor[]
-		return temperatures;
+		return temps;
 	}
 
 	public static void main(String[] args) {
