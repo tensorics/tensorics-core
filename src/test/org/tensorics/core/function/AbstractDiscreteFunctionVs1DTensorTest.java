@@ -92,12 +92,11 @@ public abstract class AbstractDiscreteFunctionVs1DTensorTest {
     }
 
     private <T> void assertThatAllTensorElementsEqualTo(Tensor<T> tensor, T value) {
-
-        assertTrue(tensor.asMap().values().stream().allMatch(value::equals));
+        assertTrue(Tensorics.mapFrom(tensor).values().stream().allMatch(value::equals));
     }
 
     private <T> void assertTensorNotEmpty(Tensor<T> tensor) {
-        assertFalse(tensor.asMap().isEmpty());
+        assertFalse(Tensorics.mapFrom(tensor).isEmpty());
     }
 
     private <T> void assertThatTensorContainsCoordinatesOfTwoOperands(Tensor<T> tensorResult, Tensor<T> operand1,

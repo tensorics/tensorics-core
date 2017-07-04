@@ -34,6 +34,7 @@ import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
 
 /**
  * Part of the tensoric fluent API which provides methods to describe misc manipulations on a given tensor.
@@ -60,7 +61,7 @@ public class OngoingTensorManipulation<V> {
      */
     public Tensor<V> extractWhereTrue(Tensor<Boolean> mask) {
         Builder<V> tensorBuilder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        for (java.util.Map.Entry<Position, V> entry : tensor.asMap().entrySet()) {
+        for (java.util.Map.Entry<Position, V> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             if (mask.get(entry.getKey()).booleanValue()) {
                 tensorBuilder.at(entry.getKey()).put(entry.getValue());
             }

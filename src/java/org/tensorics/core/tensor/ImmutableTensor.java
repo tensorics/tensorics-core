@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.tensorics.core.tensor.operations.TensorInternals;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultiset;
 
@@ -48,7 +50,7 @@ import com.google.common.collect.ImmutableMultiset;
  * @author agorzaws, kfuchsbe
  * @param <T> type of values in Tensor.
  */
-public class ImmutableTensor<T> implements Tensor<T>, Serializable {
+public class ImmutableTensor<T> implements MappableTensor<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -161,7 +163,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      */
     public static final <T> Tensor<T> copyOf(Tensor<T> tensor) {
         Builder<T> builder = builder(tensor.shape().dimensionSet());
-        builder.putAllMap(tensor.asMap());
+        builder.putAllMap(TensorInternals.mapFrom(tensor));
         builder.context(tensor.context());
         return builder.build();
     }
@@ -175,7 +177,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
      */
     public static <T> Builder<T> builderFrom(Tensor<T> tensor) {
         Builder<T> builder = builder(tensor.shape().dimensionSet());
-        builder.putAllMap(tensor.asMap());
+        builder.putAllMap(TensorInternals.mapFrom(tensor));
         return builder;
     }
 

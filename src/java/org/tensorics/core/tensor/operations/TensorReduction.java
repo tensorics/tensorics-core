@@ -59,7 +59,7 @@ public class TensorReduction<C, E, R> implements Conversion<Tensor<E>, Tensor<R>
 
 		Builder<R> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());
 		builder.context(reductionStrategy.context(value.context()));
-		for (Entry<Position, Map<C, E>> entry : mapped.asMap().entrySet()) {
+		for (Entry<Position, Map<C, E>> entry : TensorInternals.mapFrom(mapped).entrySet()) {
 			R reducedValue = reductionStrategy.reduce(entry.getValue(), entry.getKey());
 			if (reducedValue != null) {
 				builder.at(entry.getKey()).put(reducedValue);
