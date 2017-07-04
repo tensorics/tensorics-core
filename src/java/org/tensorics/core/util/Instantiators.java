@@ -47,11 +47,12 @@ public final class Instantiators {
      * this:
      * 
      * <pre>
-     * {@code
-     *   Instantiator<Argument, Instance> instantiator =
-     *      instantiatorFor(Instance.class).withArgumentType(Argument.class);
+     * {
+     *     &#64;code
+     *     Instantiator<Argument, Instance> instantiator = instantiatorFor(Instance.class)
+     *             .withArgumentType(Argument.class);
      * 
-     *   Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
+     *     Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
      * }
      * </pre>
      * 

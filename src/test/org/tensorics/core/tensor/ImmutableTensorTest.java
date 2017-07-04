@@ -85,7 +85,7 @@ public class ImmutableTensorTest {
 
     @Test
     public void testZeroDimensionTensor() {
-        Tensor<Double> asZeroDimension = Tensorics.zeroDimensionalOf(2.4);
+        Tensor<Double> asZeroDimension = Tensorics.scalarOf(2.4);
         assertEquals(2.4, asZeroDimension.get(), 0.0);
         assertEquals(0, asZeroDimension.shape().dimensionality());
         assertEquals(1, asZeroDimension.shape().size());

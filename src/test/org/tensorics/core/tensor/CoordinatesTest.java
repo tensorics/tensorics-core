@@ -104,7 +104,7 @@ public class CoordinatesTest {
         assertThat(result).containsExactlyInAnyOrder(IA.class, IB.class);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void parentClassObjectIntersection() {
         ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, B.class);
         ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(Object.class);

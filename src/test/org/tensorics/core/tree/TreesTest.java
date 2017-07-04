@@ -64,10 +64,10 @@ public class TreesTest {
         child22 = mock(Node.class);
         child221 = mock(Node.class);
 
-        when(rootNode.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child1, child2));
-        when(child1.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child11, child12));
-        when(child2.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child21, child22));
-        when(child22.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child221));
+        when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child1, child2));
+        when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child11, child12));
+        when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child21, child22));
+        when(child22.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child221));
     }
 
     @Test
@@ -83,7 +83,8 @@ public class TreesTest {
     @Test
     public void testSubTreeContentFullTree() {
         List<Node> allNodes = Trees.subTreeContent(rootNode);
-        assertEquals(ImmutableList.of(child11, child12, child1, child21, child221, child22, child2, rootNode), allNodes);
+        assertEquals(ImmutableList.of(child11, child12, child1, child21, child221, child22, child2, rootNode),
+                allNodes);
     }
 
     @Test

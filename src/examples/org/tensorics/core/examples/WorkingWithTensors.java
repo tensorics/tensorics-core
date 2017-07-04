@@ -6,8 +6,8 @@ import org.tensorics.core.lang.Tensorics;
 
 @SuppressWarnings("unused")
 public class WorkingWithTensors {
-	{
-		TensoricSupport<Double> support = Tensorics.using(Structures.doubles());
+    {
+        TensoricSupport<Double> support = Tensorics.using(Structures.doubles());
 
-	}
+    }
 }

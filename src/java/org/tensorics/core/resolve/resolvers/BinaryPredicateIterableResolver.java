@@ -32,7 +32,8 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  * @param <T> the input type of the expression
  * @author caguiler
  */
-public class BinaryPredicateIterableResolver<T> extends AbstractResolver<Boolean, BinaryPredicateIterableExpression<T>> {
+public class BinaryPredicateIterableResolver<T>
+        extends AbstractResolver<Boolean, BinaryPredicateIterableExpression<T>> {
 
     @Override
     public boolean canResolve(BinaryPredicateIterableExpression<T> expression, ResolvingContext context) {
@@ -44,6 +45,7 @@ public class BinaryPredicateIterableResolver<T> extends AbstractResolver<Boolean
         Iterable<T> left = context.resolvedValueOf(expression.getLeft());
         T right = context.resolvedValueOf(expression.getRight());
         BinaryPredicate<T> predicate = expression.getPredicate();
-        return StreamSupport.stream(left.spliterator(),true).allMatch(leftElement -> predicate.test(leftElement,right));
+        return StreamSupport.stream(left.spliterator(), true)
+                .allMatch(leftElement -> predicate.test(leftElement, right));
     }
 }

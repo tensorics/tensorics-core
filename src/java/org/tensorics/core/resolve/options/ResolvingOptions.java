@@ -42,8 +42,8 @@ public final class ResolvingOptions {
     /**
      * The list of default options.
      */
-    private static final ImmutableList<ResolvingOption> DEFAULT_OPTIONS = ImmutableList.<ResolvingOption> of(
-            new RethrowExceptionHandlingStrategy(), new TakeFirstResolverSelectionStrategy());
+    private static final ImmutableList<ResolvingOption> DEFAULT_OPTIONS = ImmutableList
+            .<ResolvingOption> of(new RethrowExceptionHandlingStrategy(), new TakeFirstResolverSelectionStrategy());
 
     private ResolvingOptions() {
         /* only static methods */

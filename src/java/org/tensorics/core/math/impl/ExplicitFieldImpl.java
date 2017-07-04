@@ -95,7 +95,7 @@ public class ExplicitFieldImpl<T> implements ExplicitField<T> {
             }
         };
     }
-    
+
     @Override
     public final BinaryOperation<T> subtraction() {
         return subtractionOperation;
@@ -155,6 +155,5 @@ public class ExplicitFieldImpl<T> implements ExplicitField<T> {
     public Comparator<T> comparator() {
         return comparator;
     }
-
 
 }

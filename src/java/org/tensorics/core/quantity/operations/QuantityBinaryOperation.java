@@ -33,8 +33,8 @@ import org.tensorics.core.quantity.options.QuantityEnvironment;
  * @author kfuchsbe
  * @param <V> the type of the scalar values on which all operations are based on (elements of a field)
  */
-public abstract class QuantityBinaryOperation<V> extends AbstractQuantityOperation<V> implements
-        BinaryOperation<QuantifiedValue<V>> {
+public abstract class QuantityBinaryOperation<V> extends AbstractQuantityOperation<V>
+        implements BinaryOperation<QuantifiedValue<V>> {
 
     private final BinaryOperation<V> scalarBinaryOeration;
 

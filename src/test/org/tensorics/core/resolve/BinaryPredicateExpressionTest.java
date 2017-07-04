@@ -20,7 +20,6 @@
 
 package org.tensorics.core.resolve;
 
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -70,6 +69,7 @@ public class BinaryPredicateExpressionTest {
 
         assertFalse(falseResult);
     }
+
     @Test
     public void testIsLessThanForIterableExpressions() throws Exception {
 

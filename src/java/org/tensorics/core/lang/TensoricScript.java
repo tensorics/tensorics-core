@@ -43,7 +43,7 @@ import org.tensorics.core.tree.domain.Node;
  * @param <E> the type of the elements of the field on which all the calculations are based on.
  * @param <T> the type which shall be returned by the script, after it is executed (resolved)
  */
-public abstract class TensoricScript<E, T> extends TensoricExpressionSupport<E> implements Expression<T> {
+public abstract class TensoricScript<E, T> extends TensoricExpressionSupport<E>implements Expression<T> {
 
     private static final boolean RESOLVED = false;
     private final Expression<T> internalExpression;

@@ -28,7 +28,7 @@ package org.tensorics.core.commons.operations;
  * @author caguiler
  */
 public final class Conversions {
-    
+
     /**
      * Returns the identity conversion.
      */

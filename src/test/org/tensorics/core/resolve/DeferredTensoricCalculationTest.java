@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.resolve;
@@ -77,7 +77,7 @@ public class DeferredTensoricCalculationTest {
 
             @Override
             protected Expression<Tensor<Double>> describe() {
-                return ResolvedExpression.of(Tensorics.zeroDimensionalOf(0.4));
+                return ResolvedExpression.of(Tensorics.scalarOf(0.4));
             }
         });
         assertEquals(0.4, result.get(), 0.00001);

@@ -124,8 +124,8 @@ public final class CoContraDimensionPairs {
      * @return one pair to use for that dimension
      */
     private static CoContraDimensionPair choose(Collection<CoContraDimensionPair> pairsForOneDimension) {
-        checkState(!pairsForOneDimension.isEmpty(), "No pairs of dimension found for one dimension-type. "
-                + "Must be some wrong call to this method.");
+        checkState(!pairsForOneDimension.isEmpty(),
+                "No pairs of dimension found for one dimension-type. " + "Must be some wrong call to this method.");
         if (pairsForOneDimension.size() == 1) {
             return Iterables.getFirst(pairsForOneDimension, null);
         }

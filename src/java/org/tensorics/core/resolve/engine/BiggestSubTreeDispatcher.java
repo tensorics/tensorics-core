@@ -162,9 +162,9 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
                 try {
                     resolveNode(expression, context, resolverSetlection);
                 } catch (final RuntimeException e) {
-                    exceptionHandling.handleWithRootNodeFailingNodeException(ExceptionHandlingRequest.builder()
-                            .withRoot(rootNode).withThrowingNode(expression).withException(e).withContext(context)
-                            .build());
+                    exceptionHandling.handleWithRootNodeFailingNodeException(
+                            ExceptionHandlingRequest.builder().withRoot(rootNode).withThrowingNode(expression)
+                                    .withException(e).withContext(context).build());
                 }
             }
             return context;

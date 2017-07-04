@@ -34,5 +34,4 @@ public class NumberOfDay {
         return true;
     }
 
-    
 }

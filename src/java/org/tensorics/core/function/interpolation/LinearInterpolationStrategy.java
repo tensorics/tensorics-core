@@ -18,7 +18,7 @@ import com.google.common.base.Preconditions;
  * @see InterpolationStrategy
  * @author agorzaws, caguiler
  */
-public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y> implements InterpolationStrategy<Y> {
+public class LinearInterpolationStrategy<Y> extends ScalarSupport<Y>implements InterpolationStrategy<Y> {
 
     private static final long serialVersionUID = 1L;
 

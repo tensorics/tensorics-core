@@ -116,7 +116,8 @@ public final class Tensorbackeds {
      * example:
      * 
      * <pre>
-     * {@code
+     * {
+     *     &#64;code
      *     // Assume that Orbit and OrbitTimeseries are tensorbacked objects
      *     List<> orbits = new ArrayList<>();
      *     // assume the list is filled

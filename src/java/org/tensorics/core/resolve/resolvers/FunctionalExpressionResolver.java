@@ -7,7 +7,6 @@ package org.tensorics.core.resolve.resolvers;
 import org.tensorics.core.functional.expressions.FunctionalExpression;
 import org.tensorics.core.tree.domain.ResolvingContext;
 
-
 public class FunctionalExpressionResolver<R> extends AbstractResolver<R, FunctionalExpression<R>> {
 
     @Override

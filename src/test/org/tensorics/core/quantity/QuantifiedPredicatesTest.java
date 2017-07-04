@@ -29,13 +29,13 @@ public class QuantifiedPredicatesTest {
         final TensoricSupport<Double> withLowConfidence = DoubleTensorics.with(confidenceLevelOf(0.68));
         assertTrue(withLowConfidence.testIf(v1).isLessThan(v2));
         assertTrue(withLowConfidence.testIf(v1).isLessThan(v3));
-    }    
+    }
 
     @Test
     public void compareExactToErrorous() {
         ImmutableQuantifiedValue<Double> v1 = Tensorics.quantityOf(99.9, SI.METER);
         ImmutableQuantifiedValue<Double> v2 = Tensorics.quantityOf(100.0, SI.METER).withError(0.1);
-        
+
         assertFalse(DoubleTensorics.testIf(v1).isLessThan(v2));
         assertFalse(DoubleTensorics.testIf(v2).isGreaterThan(v1));
         assertFalse(DoubleTensorics.testIf(v2).isLessThan(v1));
@@ -43,18 +43,18 @@ public class QuantifiedPredicatesTest {
 
         v1 = v1.withError(0.0);
         v2 = v2.withError(0.01);
-        
+
         assertTrue(DoubleTensorics.testIf(v1).isLessThan(v2));
         assertTrue(DoubleTensorics.testIf(v2).isGreaterThan(v1));
         assertFalse(DoubleTensorics.testIf(v2).isLessThan(v1));
         assertFalse(DoubleTensorics.testIf(v1).isGreaterThan(v2));
     }
-    
+
     @Test
     public void compareExactValues() {
         ImmutableQuantifiedValue<Double> v1 = Tensorics.quantityOf(99.9, SI.METER);
         ImmutableQuantifiedValue<Double> v2 = Tensorics.quantityOf(100.0, SI.METER);
-        
+
         assertTrue(DoubleTensorics.testIf(v1).isLessThan(v2));
         assertTrue(DoubleTensorics.testIf(v2).isGreaterThan(v1));
         assertFalse(DoubleTensorics.testIf(v2).isLessThan(v1));
@@ -62,7 +62,7 @@ public class QuantifiedPredicatesTest {
 
         v1 = v1.withError(0.0);
         v2 = v2.withError(0.0);
-        
+
         assertTrue(DoubleTensorics.testIf(v1).isLessThan(v2));
         assertTrue(DoubleTensorics.testIf(v2).isGreaterThan(v1));
         assertFalse(DoubleTensorics.testIf(v2).isLessThan(v1));
@@ -73,7 +73,7 @@ public class QuantifiedPredicatesTest {
     public void compareZeros() {
         QuantifiedValue<Double> v1 = Tensorics.quantityOf(0.0, SI.METER).withError(0.0);
         QuantifiedValue<Double> v2 = Tensorics.quantityOf(0.0, SI.METER).withError(0.0);
-        
+
         assertFalse(DoubleTensorics.testIf(v1).isLessThan(v2));
         assertFalse(DoubleTensorics.testIf(v1).isGreaterThan(v2));
     }
@@ -81,19 +81,20 @@ public class QuantifiedPredicatesTest {
     @Test
     public void compareEqualValue() {
         QuantifiedValue<Double> v1 = Tensorics.quantityOf(99.9, SI.METER);
-        
+
         assertFalse(DoubleTensorics.testIf(v1).isLessThan(v1));
         assertFalse(DoubleTensorics.testIf(v1).isGreaterThan(v1));
     }
-    
-    @Test(expected=IllegalArgumentException.class)
+
+    @Test(expected = IllegalArgumentException.class)
     public void throwOnInconsistentUnits() {
         QuantifiedValue<Double> v1 = Tensorics.quantityOf(100.0, SI.METER).withError(90.0);
         QuantifiedValue<Double> v2 = Tensorics.quantityOf(190.0, SI.AMPERE).withError(1.0);
-        
+
         DoubleTensorics.testIf(v1).isLessThan(v2);
         DoubleTensorics.testIf(v1).isGreaterThan(v2);
     }
+
     @Test
     public void convertUnitsForComparison() {
         QuantifiedValue<Double> v1 = Tensorics.quantityOf(1.0, SI.METER).withError(0.01);
@@ -101,6 +102,6 @@ public class QuantifiedPredicatesTest {
 
         assertFalse(DoubleTensorics.testIf(v1).isLessThan(v2));
         assertTrue(DoubleTensorics.testIf(v1).isGreaterThan(v2));
-    }    
+    }
 
 }

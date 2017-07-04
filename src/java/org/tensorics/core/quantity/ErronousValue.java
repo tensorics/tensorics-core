@@ -26,7 +26,6 @@ import java.io.Serializable;
 
 import com.google.common.base.Optional;
 
-
 /**
  * A scalar value that additionally holds an error. The error type is the same as the value type.
  * 

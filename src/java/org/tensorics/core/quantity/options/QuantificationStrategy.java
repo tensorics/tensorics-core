@@ -40,9 +40,9 @@ public interface QuantificationStrategy<T> extends ManipulationOption {
     Unit multiply(Unit left, Unit right);
 
     Unit divide(Unit left, Unit right);
-    
+
     Unit root(Unit left, T right);
-    
+
     Unit power(Unit unit, T value);
 
     Unit one();

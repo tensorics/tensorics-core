@@ -27,7 +27,6 @@ import org.tensorics.core.quantity.ErronousValue;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Instances of this class define, how the errors have to be propagated in different situations.
  * <p>

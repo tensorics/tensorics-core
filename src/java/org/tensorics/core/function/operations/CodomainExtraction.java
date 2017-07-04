@@ -28,7 +28,8 @@ import org.tensorics.core.function.DiscreteFunction;
 import com.google.common.base.Preconditions;
 
 /**
- * A conversion that takes a {@link DiscreteFunction} and produces an iterable that contains the values of its codomain. See <a href="https://en.wikipedia.org/wiki/Codomain">Codomain</a>
+ * A conversion that takes a {@link DiscreteFunction} and produces an iterable that contains the values of its codomain.
+ * See <a href="https://en.wikipedia.org/wiki/Codomain">Codomain</a>
  *
  * @param <Y> the type of the dependent variable (output)of the discrete function
  * @author caguiler

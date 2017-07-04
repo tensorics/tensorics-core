@@ -21,7 +21,7 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
  * @author caguiler
  * @param <V> the type of the scalars (elements of the field on which the variance will be based)
  */
-public class IterableVar<V> extends ScalarSupport<V> implements IterableOperation<V> {
+public class IterableVar<V> extends ScalarSupport<V>implements IterableOperation<V> {
 
     private final IterableAverage<V> iterableAverage;
     private final ExtendedField<V> field;

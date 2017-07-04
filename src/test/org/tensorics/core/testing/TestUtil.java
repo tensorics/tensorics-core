@@ -72,8 +72,8 @@ public class TestUtil {
         throw new RuntimeException("Error while validating utility class.", e);
     }
 
-    private static void verifyInternalUtilityClass(final Class<?> clazz) throws NoSuchMethodException,
-            InstantiationException, IllegalAccessException, InvocationTargetException {
+    private static void verifyInternalUtilityClass(final Class<?> clazz)
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         verifyClassIsFinal(clazz);
         verifyPrivateConstructor(clazz);
         verifyAllMethodsStatic(clazz);
@@ -83,8 +83,8 @@ public class TestUtil {
         assertTrue("class must be final", Modifier.isFinal(clazz.getModifiers()));
     }
 
-    private static void verifyPrivateConstructor(final Class<?> clazz) throws NoSuchMethodException,
-            InstantiationException, IllegalAccessException, InvocationTargetException {
+    private static void verifyPrivateConstructor(final Class<?> clazz)
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         assertEquals("There must be only one constructor", 1, clazz.getDeclaredConstructors().length);
         final Constructor<?> constructor = clazz.getDeclaredConstructor();
         if (constructor.isAccessible() || !Modifier.isPrivate(constructor.getModifiers())) {
@@ -101,8 +101,8 @@ public class TestUtil {
         }
     }
 
-    private static void callPrivateConstructor(final Constructor<?> constructor) throws InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+    private static void callPrivateConstructor(final Constructor<?> constructor)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException {
         constructor.setAccessible(true);
         constructor.newInstance();
         constructor.setAccessible(false);

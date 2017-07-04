@@ -50,7 +50,6 @@ import org.tensorics.core.units.JScienceUnit;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Test that verifies if {@link TensorSupport} is valid for {@link Tensorbacked} objects as well. Analogous tests covers
  * the and {@link QuantityTensorSupport}
@@ -122,8 +121,8 @@ public class TensorBackedSupportTest {
     @Test
     public void testTensorOfDoubleCalcDividedTensor() {
         MultibeamOrbit negativeOf = fullTensoricSupport.negativeOf(multibeamTensorBacked1);
-        MultibeamOrbit elementTimesBy = fullTensoricSupport.calculate(multibeamTensorBacked1).elementDividedBy(
-                negativeOf);
+        MultibeamOrbit elementTimesBy = fullTensoricSupport.calculate(multibeamTensorBacked1)
+                .elementDividedBy(negativeOf);
         double value3 = elementTimesBy.getValueAt("name 9", Beam.B1, Plane.H);
         assertEquals(-1, value3, 0.001);
     }
