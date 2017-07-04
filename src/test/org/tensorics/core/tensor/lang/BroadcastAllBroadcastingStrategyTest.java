@@ -40,7 +40,7 @@ import org.tensorics.core.tensor.options.BroadcastingStrategy;
 
 public class BroadcastAllBroadcastingStrategyTest {
 
-	private static final Tensor<Double> ZERO_DIMENSIONAL_ZERO = Tensorics.scalarOf(0.0);
+	private static final Tensor<Double> ZERO_DIMENSIONAL_ZERO = Tensorics.zeroDimensionalOf(0.0);
 
 	private static final Position POS_A = Position.of("A");
 	private static final Position POS_B = Position.of("B");
