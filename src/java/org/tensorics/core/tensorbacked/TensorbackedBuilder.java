@@ -33,136 +33,99 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
 /**
- * A builder for tensor backed objects, which takes care that only positions
- * which are compatible with the dimensions of the foreseen underlaying tensor
- * are put into it. Internally, it uses a builder for a tensor, to which most of
- * the methods are delegated. At build time, the tensor is encapsulated in the
- * according tensor backed class.
+ * A builder for tensor backed objects, which takes care that only positions which are compatible with the dimensions of
+ * the foreseen underlaying tensor are put into it. Internally, it uses a builder for a tensor, to which most of the
+ * methods are delegated. At build time, the tensor is encapsulated in the according tensor backed class.
  * <p>
  * This class is not thread safe.
  * 
  * @author kfuchsbe
- * @param <V>
- *            the type of the values of the tensor (and thus also the tensor
- *            backed object)
- * @param <TB>
- *            the type of the tensor backed object
+ * @param <V> the type of the values of the tensor (and thus also the tensor backed object)
+ * @param <TB> the type of the tensor backed object
  */
 public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 
-	private final Class<TB> tensorbackedClass;
-	private final ImmutableTensor.Builder<V> tensorBuilder;
+    private final Class<TB> tensorbackedClass;
+    private final ImmutableTensor.Builder<V> tensorBuilder;
 
-	/**
-	 * Constructor for the builder, which takes the target class of the
-	 * tensorbacked as an argument. Will only be instantiated by the
-	 * neighbouring utility class. Therefore it is package private.
-	 */
-	TensorbackedBuilder(Class<TB> tensorbackedClass) {
-		this.tensorbackedClass = tensorbackedClass;
-		this.tensorBuilder = ImmutableTensor.builder(dimensionsOf(tensorbackedClass));
-	}
+    /**
+     * Constructor for the builder, which takes the target class of the tensorbacked as an argument. Will only be
+     * instantiated by the neighbouring utility class. Therefore it is package private.
+     */
+    TensorbackedBuilder(Class<TB> tensorbackedClass) {
+        this.tensorbackedClass = tensorbackedClass;
+        this.tensorBuilder = ImmutableTensor.builder(dimensionsOf(tensorbackedClass));
+    }
 
-	public final TensorbackedBuilder<V, TB> put(java.util.Map.Entry<Position, V> entry) {
-		tensorBuilder.put(entry);
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> put(java.util.Map.Entry<Position, V> entry) {
+        tensorBuilder.put(entry);
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAt(V value, Position position) {
-		tensorBuilder.put(position, value);
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> put(Position position, V value) {
+        tensorBuilder.put(position, value);
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAt(V value, Object... coordinates) {
-		tensorBuilder.put(Position.at(coordinates), value);
-		return this;
-	}
-	
-	public final TensorbackedBuilder<V, TB> putAt(V value, Set<?> coordinates) {
-		tensorBuilder.put(Position.at(coordinates), value);
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> putAll(Set<java.util.Map.Entry<Position, V>> entries) {
+        for (java.util.Map.Entry<Position, V> entry : entries) {
+            tensorBuilder.put(entry);
+        }
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAll(Set<java.util.Map.Entry<Position, V>> entries) {
-		for (java.util.Map.Entry<Position, V> entry : entries) {
-			tensorBuilder.put(entry);
-		}
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> putAll(Position position, Map<Position, V> entries) {
+        tensorBuilder.putAll(position, entries);
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAllAt(Tensor<V> tensor, Position position) {
-		tensorBuilder.putAll(position, tensor);
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> putAll(Position position, Tensor<V> tensor) {
+        tensorBuilder.putAll(position, tensor);
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAllAt(Tensorbacked<V> tensorbacked, Position position) {
-		tensorBuilder.putAll(position, tensorbacked.tensor());
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> putAll(Position position, Tensorbacked<V> tensorbacked) {
+        tensorBuilder.putAll(position, tensorbacked.tensor());
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAllAt(Tensor<V> tensor, Object... coordinates) {
-		tensorBuilder.putAll(Position.at(coordinates), tensor);
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> putAll(TB tensorBacked) {
+        tensorBuilder.putAll(tensorBacked.tensor());
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAllAt(Tensorbacked<V> tensorbacked, Object... coordinates) {
-		tensorBuilder.putAll(Position.at(coordinates), tensorbacked.tensor());
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> putAll(Tensor<V> tensor) {
+        tensorBuilder.putAll(tensor);
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAll(TB tensorBacked) {
-		tensorBuilder.putAll(tensorBacked.tensor());
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> putAll(Map<Position, V> newEntries) {
+        tensorBuilder.putAll(newEntries);
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAll(Tensor<V> tensor) {
-		tensorBuilder.putAll(tensor);
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> remove(Position position) {
+        tensorBuilder.remove(position);
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> putAllMap(Map<Position, V> newEntries) {
-		tensorBuilder.putAll(newEntries);
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> context(Position context) {
+        tensorBuilder.context(context);
+        return this;
+    }
 
-	public final TensorbackedBuilder<V, TB> removeAt(Position position) {
-		tensorBuilder.remove(position);
-		return this;
-	}
+    public final TensorbackedBuilder<V, TB> context(Object... coordinates) {
+        return this.context(Position.of(coordinates));
+    }
 
-	public final TensorbackedBuilder<V, TB> context(Position context) {
-		tensorBuilder.context(context);
-		return this;
-	}
-
-	/**
-	 * @deprecated use {@link #context(Position)}
-	 */
-	@Deprecated
-	public final TensorbackedBuilder<V, TB> withContext(Position context) {
-		return this.context(context);
-	}
-
-	public final TensorbackedBuilder<V, TB> context(Object... coordinates) {
-		return this.context(Position.of(coordinates));
-	}
-
-	/**
-	 * @deprecated use {@link #context(Object...)}
-	 */
-	@Deprecated
-	public final TensorbackedBuilder<V, TB> withContext(Object... coordinates) {
-		return this.context(coordinates);
-	}
-
-	/**
-	 * Builds the tensor backed object, after all the content is set.
-	 * 
-	 * @return a new instance of the tensor backed object, containing all the
-	 *         data as described after instantiating the builder.
-	 */
-	public TB build() {
-		return createBackedByTensor(tensorbackedClass, tensorBuilder.build());
-	}
+    /**
+     * Builds the tensor backed object, after all the content is set.
+     * 
+     * @return a new instance of the tensor backed object, containing all the data as described after instantiating the
+     *         builder.
+     */
+    public TB build() {
+        return createBackedByTensor(tensorbackedClass, tensorBuilder.build());
+    }
 
 }
