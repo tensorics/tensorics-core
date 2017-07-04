@@ -62,8 +62,10 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 	}
 
 
+	
+
 	@Override
-	public final void putAt(E value, Position position) {
+	public final void put(Position position, E value) {
 		Preconditions.checkNotNull(value, "value must not be null!");
 		Preconditions.checkNotNull(position, "position must not be null");
 		Positions.assertConsistentDimensions(position, this.dimensions);
@@ -73,20 +75,14 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 
 	protected abstract void putItAt(E value, Position position);
 
-	@Override
-	public final void putAt(E value, Object... coordinates) {
-		this.putAt(value, Position.of(coordinates));
-	}
+	
 
 	@Override
 	public void putAt(E value, Set<?> coordinates) {
-		putAt(value, Position.of(coordinates));
+		put(Position.of(coordinates), value);
 	}
 
-	@Override
-	public void putAllAt(Tensor<E> tensor, Set<?> coordinates) {
-		putAllAt(tensor, Position.of(coordinates));
-	}
+	
 
 	@Override
 	public void context(Position newContext) {
@@ -104,20 +100,18 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 		}
 	}
 
+	
+
 	@Override
-	public final void putAllAt(Tensor<E> tensor, Position position) {
+	public final void putAll(Position position, Tensor<E> tensor) {
 		checkNotNull(tensor, "The tensor must not be null!");
 		checkNotNull(position, "The position must not be null!");
 		for (Entry<Position, E> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-			putAt(entry.getValue(), Positions.union(position, entry.getKey()));
+			put(Positions.union(position, entry.getKey()), entry.getValue());
 		}
 	}
 
-	@Override
-	@SafeVarargs
-	public final void putAllAt(Tensor<E> tensor, Object... coordinates) {
-		putAllAt(tensor, Position.of(coordinates));
-	}
+	
 
 	public Set<Class<?>> dimensions() {
 		return dimensions;

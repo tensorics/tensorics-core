@@ -72,9 +72,9 @@ public class TensorStreamsTest {
     @Before
     public void prepareTensor() {
         Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
-        tensorBuilder.putAt(0.0, Position.of(0.0, 0));
-        tensorBuilder.putAt(42.42, Position.of(23.0, 1));
-        tensorBuilder.putAt(2.0, Position.of(23.0, 2));
+        tensorBuilder.put(Position.of(0.0, 0), 0.0);
+        tensorBuilder.put(Position.of(23.0, 1), 42.42);
+        tensorBuilder.put(Position.of(23.0, 2), 2.0);
         tensor = tensorBuilder.build();
     }
 

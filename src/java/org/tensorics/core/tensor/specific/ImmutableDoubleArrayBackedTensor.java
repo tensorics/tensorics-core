@@ -110,13 +110,13 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
 		}
 
 		@Override
-		public void removeAt(Position position) {
+		public void remove(Position position) {
 			throw new UnsupportedOperationException("Cannot remove a value");
 		}
 
 		@Override
 		public void put(java.util.Map.Entry<Position, Double> entry) {
-			putAt(entry.getValue(), entry.getKey());
+			put(entry.getKey(), entry.getValue());
 		}
 
 		@Override

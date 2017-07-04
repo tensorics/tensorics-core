@@ -77,7 +77,7 @@ public class DeferredTensoricCalculationTest {
 
             @Override
             protected Expression<Tensor<Double>> describe() {
-                return ResolvedExpression.of(Tensorics.zeroDimensionalOf(0.4));
+                return ResolvedExpression.of(Tensorics.scalarOf(0.4));
             }
         });
         assertEquals(0.4, result.get(), 0.00001);

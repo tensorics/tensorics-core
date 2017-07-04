@@ -69,7 +69,7 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 	}
 
 	public final TensorbackedBuilder<V, TB> putAt(V value, Position position) {
-		tensorBuilder.putAt(value, position);
+		tensorBuilder.put(position, value);
 		return this;
 	}
 
@@ -126,7 +126,7 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 	}
 
 	public final TensorbackedBuilder<V, TB> removeAt(Position position) {
-		tensorBuilder.removeAt(position);
+		tensorBuilder.remove(position);
 		return this;
 	}
 

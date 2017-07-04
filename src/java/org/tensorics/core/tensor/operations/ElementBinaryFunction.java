@@ -63,7 +63,7 @@ public class ElementBinaryFunction<V, R> implements BinaryFunction<Tensor<V>, Te
     private Tensor<R> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape, Position resultingContext) {
         Builder<R> tensorBuilder = ImmutableTensor.builder(resultingShape.dimensionSet());
         for (Position position : resultingShape.positionSet()) {
-            tensorBuilder.putAt(operation.perform(left.get(position), right.get(position)), position);
+            tensorBuilder.put(position, operation.perform(left.get(position), right.get(position)));
         }
         tensorBuilder.context(resultingContext);
         return tensorBuilder.build();

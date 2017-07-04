@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
@@ -44,7 +45,7 @@ public class MathFunctionsTest {
     public void setUp() {
         initOneDimensionalTensor();
         initTwoDimensionalTensor();
-        zeroDimensionalTensor = ImmutableTensor.zeroDimensionalOf(0D);
+        zeroDimensionalTensor = Tensorics.scalarOf(0D);
 
         initDiscreteFunction();
 
@@ -96,9 +97,9 @@ public class MathFunctionsTest {
         for (int i = 1; i <= LIMIT_OF_FIRST_DIMENSION; ++i) {
             for (char c = 'a'; c < LIMIT_OF_SECOND_DIMENSION; ++c) {
                 if (i != LIMIT_OF_FIRST_DIMENSION && c != LIMIT_OF_FIRST_DIMENSION) {
-                    builder.putAt(false, Position.of(i, c));
+                    builder.put(Position.of(i, c), false);
                 } else {
-                    builder.putAt(true, Position.of(i, c));
+                    builder.put(Position.of(i, c), true);
                 }
             }
         }

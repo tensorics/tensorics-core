@@ -46,8 +46,8 @@ public class ImmutableTensorTest {
     public void testMergingContextBackIntoShape() {
         Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
         tensorBuilder.context(Position.of("TestContext"));
-        tensorBuilder.putAt(0.0, Position.of(0.0, 0));
-        tensorBuilder.putAt(42.42, Position.of(23.0, 42));
+        tensorBuilder.put(Position.of(0.0, 0), 0.0);
+        tensorBuilder.put(Position.of(23.0, 42), 42.42);
         Tensor<Double> tensor = tensorBuilder.build();
         Tensor<Double> tensorWithMergedContext = Tensorics.mergeContextIntoShape(tensor);
         assertEquals(tensor, Tensorics.from(tensorWithMergedContext).extract("TestContext"));
@@ -77,8 +77,8 @@ public class ImmutableTensorTest {
     @Test
     public void testExtractionOfCompletePosition() {
         Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
-        tensorBuilder.putAt(0.0, Position.of(0.0, 0));
-        tensorBuilder.putAt(42.42, Position.of(23.0, 42));
+        tensorBuilder.put(Position.of(0.0, 0), 0.0);
+        tensorBuilder.put(Position.of(23.0, 42), 42.42);
         Tensor<Double> tensor = tensorBuilder.build();
         assertEquals(tensor.get(23.0, 42), Tensorics.from(tensor).extract(Position.of(23.0, 42)).get());
     }

@@ -49,8 +49,8 @@ public class BooleanStepFunctionExample {
         assertEquals(Position.of(AMPLIFIER), slicedTensor.context());
 
         TensorBuilder<Boolean> builder = Tensorics.builderFrom(tensor);
-        builder.putAt(false, Position.of(new Date(5L), AMPLIFIER));
-        builder.putAt(true, Position.of(new Date(6L), AMPLIFIER));
+        builder.put(Position.of(new Date(5L), AMPLIFIER),  false);
+        builder.put(Position.of(new Date(6L), AMPLIFIER),  true);
 
         assertEquals(true, builder.build().get(Position.of(AMPLIFIER, new Date(6L))));
         assertEquals(false, builder.build().get(Position.of(ORIGIN, AMPLIFIER)));
@@ -64,10 +64,9 @@ public class BooleanStepFunctionExample {
     private Tensor<Boolean> createStepFunction() {
         TensorBuilder<Boolean> stepFunctionBuilder = Tensorics.builder(Date.class, Signal.class);
         stepFunctionBuilder.putAt(false, ORIGIN, AMPLIFIER);
-        stepFunctionBuilder.putAt(false, Position.of(PIXEL1, ORIGIN));
-        stepFunctionBuilder.putAt(false, Position.of(PIXEL1, new Date(1L)));
-        stepFunctionBuilder.putAt(true, Position.of(new Date(2L), PIXEL1));
-        stepFunctionBuilder.putAt(true, Position.of(new Date(3L), PIXEL1));
+        stepFunctionBuilder.put(Position.of(PIXEL1, ORIGIN), false);
+        stepFunctionBuilder.put(Position.of(new Date(2L), PIXEL1),  true);
+        stepFunctionBuilder.put(Position.of(new Date(3L), PIXEL1),  true);
         return stepFunctionBuilder.build();
     }
 

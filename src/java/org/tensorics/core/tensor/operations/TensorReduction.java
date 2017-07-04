@@ -62,7 +62,7 @@ public class TensorReduction<C, E, R> implements Conversion<Tensor<E>, Tensor<R>
 		for (Entry<Position, Map<C, E>> entry : TensorInternals.mapFrom(mapped).entrySet()) {
 			R reducedValue = reductionStrategy.reduce(entry.getValue(), entry.getKey());
 			if (reducedValue != null) {
-				builder.putAt(reducedValue, entry.getKey());
+				builder.put(entry.getKey(), reducedValue);
 			}
 		}
 		return builder.build();
