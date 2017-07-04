@@ -185,8 +185,8 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     }
 
     @Override
-    public Context context() {
-        return Context.of(context);
+    public Position context() {
+        return this.context;
     }
 
     @Override

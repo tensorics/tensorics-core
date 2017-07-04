@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.tensorics.core.tensor.AbstractTensorBuilder;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
@@ -76,8 +75,8 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
 	}
 
 	@Override
-	public Context context() {
-		return Context.of(this.tensorContext);
+	public Position context() {
+		return this.tensorContext;
 	}
 
 	public static Builder builder(PositionIndexer indexer) {

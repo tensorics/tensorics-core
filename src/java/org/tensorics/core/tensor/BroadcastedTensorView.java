@@ -100,7 +100,7 @@ public final class BroadcastedTensorView<V> implements Tensor<V> {
     }
 
     @Override
-    public Context context() {
+    public Position context() {
         return originalTensor.context();
     }
 
