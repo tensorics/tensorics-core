@@ -417,4 +417,11 @@ public final class Tensorics {
         return Tensorbackeds.complete(tensorbacked);
     }
 
+    /**
+     * @see TensorInternals#mapFrom(Tensor)
+     */
+    public static <V> Map<Position, V> mapFrom(Tensor<V> tensor) {
+        return TensorInternals.mapFrom(tensor);
+    }
+
 }

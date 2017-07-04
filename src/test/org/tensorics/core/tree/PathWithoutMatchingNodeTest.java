@@ -78,13 +78,13 @@ public class PathWithoutMatchingNodeTest {
 
         childCommon = mock(Node.class);
 
-        when(rootNode.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child1, child2));
-        when(child1.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child11, child12));
-        when(child2.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(child21));
+        when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child1, child2));
+        when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child11, child12));
+        when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child21));
 
-        when(child11.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(childCommon));
-        when(child12.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(childCommon));
-        when(child21.getChildren()).thenAnswer((args)-> ImmutableList.<Node> of(childCommon));
+        when(child11.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
+        when(child12.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
+        when(child21.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
 
         when(rootNode.toString()).thenReturn("rootNode");
         when(child1.toString()).thenReturn("child1");

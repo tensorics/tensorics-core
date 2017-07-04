@@ -42,13 +42,13 @@ public interface TensorBuilder<E> {
     void removeAt(Position position);
 
     /**
-     * @deprecated use {@link #context(Position)} 
+     * @deprecated use {@link #context(Position)}
      */
-	@Deprecated
-	default void setTensorContext(Position context) {
-		context(context);
-	}
-    
+    @Deprecated
+    default void setTensorContext(Position context) {
+        context(context);
+    }
+
     void context(Position context);
 
     /**

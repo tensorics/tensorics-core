@@ -27,10 +27,12 @@ import java.util.stream.Stream;
 
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 
 /**
- * Utility class for producing streams of {@code Entry<Position, T>} out of Tensors and collecting them back into Tensors.
+ * Utility class for producing streams of {@code Entry<Position, T>} out of Tensors and collecting them back into
+ * Tensors.
  *
  * @author mihostet
  */
@@ -46,13 +48,13 @@ public final class TensorStreams {
      * @return
      */
     public static <S> Stream<Map.Entry<Position, S>> tensorEntryStream(Tensor<S> tensor) {
-        return tensor.asMap().entrySet().stream();
+        return TensorInternals.mapFrom(tensor).entrySet().stream();
 
     }
 
     /**
-     * Build a collector to collect a stream of {@code Entry<Position,T>} to a generic {@code Tensor<T>} of the dimensions defined in
-     * the set of classes.
+     * Build a collector to collect a stream of {@code Entry<Position,T>} to a generic {@code Tensor<T>} of the
+     * dimensions defined in the set of classes.
      *
      * @param dimensions the dimensions of the tensor to construct
      * @return
@@ -62,8 +64,8 @@ public final class TensorStreams {
     }
 
     /**
-     * Build a collector to collect an arbitrary stream to a generic {@code Tensor<T>} of the given dimensions. Functions
-     * mapping the values to {@link Position} and T must be provided.
+     * Build a collector to collect an arbitrary stream to a generic {@code Tensor<T>} of the given dimensions.
+     * Functions mapping the values to {@link Position} and T must be provided.
      *
      * @param positionMapper function mapping stream values to Position
      * @param valueMapper function mapping stream values to tensor values
@@ -71,19 +73,19 @@ public final class TensorStreams {
      * @return
      */
     public static <V, T> TensorCollector<V, T> toTensor(Function<V, Position> positionMapper,
-                                                        Function<V, T> valueMapper, Set<Class<?>> dimensions) {
+            Function<V, T> valueMapper, Set<Class<?>> dimensions) {
         return new TensorCollector<>(dimensions, positionMapper, valueMapper);
     }
 
     /**
-     * Build a collector to collect a stream of {@code Entry<Position,T>} to a {@code Tensorbacked<T>} class. The {@link Position}s in
-     * the stream must be consistent with the dimensions of the Tensorbacked.
+     * Build a collector to collect a stream of {@code Entry<Position,T>} to a {@code Tensorbacked<T>} class. The
+     * {@link Position}s in the stream must be consistent with the dimensions of the Tensorbacked.
      *
      * @param tensorBackedClass the tensorbacked to produce
      * @return
      */
     public static <T, TB extends Tensorbacked<T>> TensorbackedCollector<Map.Entry<Position, T>, T, TB> toTensorbacked(
-        Class<TB> tensorBackedClass) {
+            Class<TB> tensorBackedClass) {
         return new TensorbackedCollector<>(tensorBackedClass, Map.Entry::getKey, Map.Entry::getValue);
     }
 
@@ -98,7 +100,7 @@ public final class TensorStreams {
      * @return
      */
     public static <V, T, TB extends Tensorbacked<T>> TensorbackedCollector<V, T, TB> toTensorbacked(
-        Class<TB> tensorBackedClass, Function<V, Position> positionMapper, Function<V, T> valueMapper) {
+            Class<TB> tensorBackedClass, Function<V, Position> positionMapper, Function<V, T> valueMapper) {
         return new TensorbackedCollector<>(tensorBackedClass, positionMapper, valueMapper);
     }
 

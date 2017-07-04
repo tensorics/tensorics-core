@@ -100,7 +100,7 @@ public class TensorbackedBuilderTest {
     @Test
     public void putOneEntryIsEqualToOriginal() {
         TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
-        builder.put(Iterables.getFirst(oneValuePosAH().tensor().asMap().entrySet(), null));
+        builder.put(Iterables.getFirst(Tensorics.mapFrom(oneValuePosAH().tensor()).entrySet(), null));
         assertThat(builder.build(), equalTo(oneValuePosAH()));
     }
 
@@ -129,7 +129,7 @@ public class TensorbackedBuilderTest {
 
     private SinglebeamOrbit oneValuePosCopied() {
         TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
-        builder.putAll(oneValuePosAH().tensor().asMap().entrySet());
+        builder.putAll(Tensorics.mapFrom(oneValuePosAH().tensor()).entrySet());
         SinglebeamOrbit copiedOrbit = builder.build();
         return copiedOrbit;
     }

@@ -120,10 +120,10 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
         Set<Class<?>> leftDimensionsToReduce = CoContraDimensionPairs.leftDimensionsIn(pairsToReduce);
         Set<Class<?>> rightDimensionsToReduce = CoContraDimensionPairs.rightDimensionsIn(pairsToReduce);
 
-        Set<Class<?>> remainingLeftDimensions = Sets.difference(broadcasted.left().shape().dimensionSet(),
-                leftDimensionsToReduce).immutableCopy();
-        Set<Class<?>> remainingRightDimensions = Sets.difference(broadcasted.right().shape().dimensionSet(),
-                rightDimensionsToReduce).immutableCopy();
+        Set<Class<?>> remainingLeftDimensions = Sets
+                .difference(broadcasted.left().shape().dimensionSet(), leftDimensionsToReduce).immutableCopy();
+        Set<Class<?>> remainingRightDimensions = Sets
+                .difference(broadcasted.right().shape().dimensionSet(), rightDimensionsToReduce).immutableCopy();
 
         Set<Class<?>> targetDimensions = Sets.union(remainingLeftDimensions, remainingRightDimensions).immutableCopy();
         Set<Class<?>> remainingCommonDimensions = Sets.intersection(remainingLeftDimensions, remainingRightDimensions);
@@ -133,8 +133,8 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
          */
         Set<Class<?>> uniqueLeftDimensions = Sets.difference(remainingLeftDimensions, remainingCommonDimensions);
         Set<Class<?>> uniqueRightDimensions = Sets.difference(remainingRightDimensions, remainingCommonDimensions);
-        Multimap<Position, Position> nonUniqueToRightPositions = Positions.mapByStripping(broadcasted.right().shape()
-                .positionSet(), uniqueRightDimensions);
+        Multimap<Position, Position> nonUniqueToRightPositions = Positions
+                .mapByStripping(broadcasted.right().shape().positionSet(), uniqueRightDimensions);
 
         DimensionStripper stripper = Positions.stripping(uniqueLeftDimensions);
 

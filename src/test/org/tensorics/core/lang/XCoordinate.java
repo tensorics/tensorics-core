@@ -82,7 +82,7 @@ public class XCoordinate implements TestCoordinate {
         if (o.getClass().equals(this.getClass())) {
             return this.coor - ((XCoordinate) o).getValue();
         }
-        throw new IllegalArgumentException("Cannot compare two coordinates of different Type [" + this.getClass()
-                + " : " + o.getClass() + "]");
+        throw new IllegalArgumentException(
+                "Cannot compare two coordinates of different Type [" + this.getClass() + " : " + o.getClass() + "]");
     }
 }

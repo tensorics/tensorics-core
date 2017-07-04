@@ -30,8 +30,8 @@ import org.tensorics.core.math.operations.CommutativeAssociativeOperation;
  * 
  * @author kfuchsbe
  * @param <T> the type of elements of the underlying set.
- * @see <a
- *      href="http://en.wikipedia.org/wiki/Commutative_semigroup">http://en.wikipedia.org/wiki/Commutative_semigroup</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Commutative_semigroup">http://en.wikipedia.org/wiki/Commutative_semigroup
+ *      </a>
  */
 public interface CommutativeSemigroup<T> extends Semigroup<T> {
 

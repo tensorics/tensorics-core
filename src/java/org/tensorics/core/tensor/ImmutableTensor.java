@@ -2,7 +2,7 @@
 /*******************************************************************************
 *
 * This file is part of tensorics.
-* 
+*
 * Copyright (c) 2008-2011, CERN. All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-* 
+*
 ******************************************************************************/
 // @formatter:on
 
@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
+import org.tensorics.core.tensor.operations.TensorInternals;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultiset;
@@ -44,11 +46,11 @@ import com.google.common.collect.ImmutableMultiset;
  * {@link ImmutableTensor} is immutable.
  * <p>
  * The toString() method does not print all the tensor entries.
- * 
+ *
  * @author agorzaws, kfuchsbe
  * @param <T> type of values in Tensor.
  */
-public class ImmutableTensor<T> implements Tensor<T>, Serializable {
+public class ImmutableTensor<T> implements Tensor<T>, Mappable<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,7 +62,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
     /**
      * Package-private constructor to be called from builder
-     * 
+     *
      * @param builder to be used when {@link ImmutableTensor} is created.
      */
     ImmutableTensor(Builder<T> builder) {
@@ -72,7 +74,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     /**
      * Returns a builder for an {@link ImmutableTensor}. As argument it takes set of class of coordinates which
      * represent the dimensions of the tensor.
-     * 
+     *
      * @param dimensions a set of classes that can later be used as coordinates for the tensor entries.
      * @return a builder for {@link ImmutableTensor}
      * @param <T> type of values in Tensor.
@@ -84,7 +86,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
     /**
      * Returns a builder for an {@link ImmutableTensor}. The dimensions (classes of coordinates) of the future tensor
      * have to be given as arguments here.
-     * 
+     *
      * @param dimensions the dimensions of the tensor to create
      * @return a builder for an immutable tensor
      * @param <T> the type of values of the tensor
@@ -95,7 +97,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
     /**
      * Creates a tensor from the given map, where the map has to contain the positions as keys and the values as values.
-     * 
+     *
      * @param dimensions the desired dimensions of the tensor. This has to be consistent with the position - keys in the
      *            map.
      * @param map the map from which to construct a tensor
@@ -106,12 +108,12 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
         builder.putAllMap(map);
         return builder.build();
     }
-    
+
     /**
      * Creates a tensor from the given map, where the map has to contain the positions as keys and the values as values.
      * The dimensions of the tensors are automatically derived from the positions in the map. If they are inconsistent,
      * this method throws; if the map is empty, an empty zero dimensional tensor is returned.
-     * 
+     *
      * @param map the map from which to construct a tensor
      * @return a new immutable tensor
      * @deprecated use {@code fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map)}
@@ -142,7 +144,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
     /**
      * Returns the builder that can create special tensor of dimension size equal ZERO.
-     * 
+     *
      * @param value to be used.
      * @return a builder for {@link ImmutableTensor}
      * @param <T> type of values in Tensor.
@@ -155,27 +157,27 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
     /**
      * Creates an immutable copy of the given tensor.
-     * 
+     *
      * @param tensor the tensor whose element to copy
      * @return new immutable Tensor
      */
     public static final <T> Tensor<T> copyOf(Tensor<T> tensor) {
         Builder<T> builder = builder(tensor.shape().dimensionSet());
-        builder.putAllMap(tensor.asMap());
+        builder.putAllMap(TensorInternals.mapFrom(tensor));
         builder.context(tensor.context());
         return builder.build();
     }
 
     /**
      * Returns a builder for an {@link ImmutableTensor} which is initiliased with the given {@link ImmutableTensor}.
-     * 
+     *
      * @param tensor a Tensor with which the {@link Builder} is initialized
      * @return a {@link Builder} for an {@link ImmutableTensor}
      * @param <T> type of values in Tensor.
      */
     public static <T> Builder<T> builderFrom(Tensor<T> tensor) {
         Builder<T> builder = builder(tensor.shape().dimensionSet());
-        builder.putAllMap(tensor.asMap());
+        builder.putAllMap(TensorInternals.mapFrom(tensor));
         return builder;
     }
 
@@ -231,7 +233,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
     /**
      * A builder for an immutable tensor.
-     * 
+     *
      * @author kfuchsbe
      * @param <S> the type of the values to be added
      */
@@ -245,7 +247,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
         /**
          * Builds the entries map as an {@link ImmutableMap}.
-         * 
+         *
          * @return
          */
         public Map<Position, S> createEntriesMap() {
@@ -254,7 +256,7 @@ public class ImmutableTensor<T> implements Tensor<T>, Serializable {
 
         /**
          * Builds an {@link ImmutableTensor} from all elements put before.
-         * 
+         *
          * @return an {@link ImmutableTensor}.
          */
         @Override

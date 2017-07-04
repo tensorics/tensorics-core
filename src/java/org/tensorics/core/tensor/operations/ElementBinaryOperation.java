@@ -36,14 +36,14 @@ import org.tensorics.core.tensor.options.ShapingStrategy;
  * <p>
  * To decide on the resulting shape of the tensor, two strategies are used here:
  * <ul>
- * <li> {@link BroadcastingStrategy}
- * <li> {@link ShapingStrategy}
+ * <li>{@link BroadcastingStrategy}
+ * <li>{@link ShapingStrategy}
  * </ul>
  * 
  * @author kfuchsbe
  * @param <V> The type of the tensor values
  */
-public class ElementBinaryOperation<V> extends ElementBinaryFunction<V, V> implements BinaryOperation<Tensor<V>> {
+public class ElementBinaryOperation<V> extends ElementBinaryFunction<V, V>implements BinaryOperation<Tensor<V>> {
 
     public ElementBinaryOperation(BinaryOperation<V> operation, OptionRegistry<ManipulationOption> optionRegistry) {
         super(operation, optionRegistry);

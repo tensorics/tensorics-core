@@ -25,11 +25,7 @@ package org.tensorics.core.tensor;
 import static org.tensorics.core.tensor.Positions.stripping;
 import static org.tensorics.core.tensor.Shapes.outerProduct;
 
-import java.util.Map;
-
 import org.tensorics.core.tensor.Positions.DimensionStripper;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Lets a tensors appear as a tensor with a bigger shape. The final ('broadcasted') shape of the tensor has more
@@ -79,15 +75,6 @@ public final class BroadcastedTensorView<V> implements Tensor<V> {
     @Override
     public V get(Object... coordinates) {
         return get(Position.of(coordinates));
-    }
-
-    @Override
-    public Map<Position, V> asMap() {
-        ImmutableMap.Builder<Position, V> builder = ImmutableMap.builder();
-        for (Position position : broadcastedShape.positionSet()) {
-            builder.put(position, get(position));
-        }
-        return builder.build();
     }
 
     private Position toOriginal(Position position) {

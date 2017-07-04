@@ -101,13 +101,13 @@ public class ImmutableTensorTest {
     @Test
     public void fromMapWithOneEntry() {
         Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0);
-        assertEquals(Tensorics.fromMap(ImmutableSet.of(Integer.class), map).asMap(), map);
+        assertEquals(Tensorics.mapFrom(Tensorics.fromMap(ImmutableSet.of(Integer.class), map)), map);
     }
 
     @Test
     public void fromEmptyMap() {
         Map<Position, Integer> map = ImmutableMap.of();
-        assertEquals(Tensorics.fromMap(ImmutableSet.of(), map).asMap(), map);
+        assertEquals(Tensorics.mapFrom(Tensorics.fromMap(ImmutableSet.of(), map)), map);
     }
 
     @Test

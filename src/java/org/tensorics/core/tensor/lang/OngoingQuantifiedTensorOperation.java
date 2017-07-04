@@ -37,8 +37,8 @@ import org.tensorics.core.tensor.operations.ElementBinaryOperation;
  * @author kfuchsbe
  * @param <S> the type of the scalars (elements of the field on which all the operations are based on)
  */
-public class OngoingQuantifiedTensorOperation<S> implements
-        OngoingOperation<Tensor<QuantifiedValue<S>>, QuantifiedValue<S>> {
+public class OngoingQuantifiedTensorOperation<S>
+        implements OngoingOperation<Tensor<QuantifiedValue<S>>, QuantifiedValue<S>> {
 
     private final QuantityOperationRepository<S> operationRepository;
     private final Tensor<QuantifiedValue<S>> left;
@@ -83,7 +83,7 @@ public class OngoingQuantifiedTensorOperation<S> implements
 
     private Tensor<QuantifiedValue<S>> evaluate(Tensor<QuantifiedValue<S>> right,
             BinaryOperation<QuantifiedValue<S>> operation) {
-        return new ElementBinaryOperation<>(operation, operationRepository.environment().options())
-                .perform(left, right);
+        return new ElementBinaryOperation<>(operation, operationRepository.environment().options()).perform(left,
+                right);
     }
 }

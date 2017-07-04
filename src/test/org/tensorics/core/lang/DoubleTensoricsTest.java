@@ -57,7 +57,7 @@ public class DoubleTensoricsTest {
         verifyQuantifiedIterableOperationResult(DoubleTensorics::rmsOfQ, 6.204836823, AMPERE);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testRmsOfEmptyIterableOfQuantifiedDouble() {
         iterableSample = Collections.emptyList();
         verifyQuantifiedIterableOperationResult(DoubleTensorics::rmsOfQ, 0.0, Unit.ONE);

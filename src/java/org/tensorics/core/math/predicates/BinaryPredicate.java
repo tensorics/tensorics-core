@@ -34,7 +34,7 @@ public interface BinaryPredicate<T> extends BinaryFunction<T, Boolean> {
     /**
      * Evaluates the predicate (condition) on the given arguments.
      *
-     * @param left  the left operator of the condition
+     * @param left the left operator of the condition
      * @param right the right operator of the condition
      * @return {@code true} if the predicate is fulfilled, {@code false} otherwise.
      */

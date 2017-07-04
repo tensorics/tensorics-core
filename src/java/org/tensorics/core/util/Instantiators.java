@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -29,7 +29,7 @@ import com.google.common.base.Preconditions;
 /**
  * Contains utility methods which help to instantiate classes which follow certain conventions. The most common one is
  * that e.g. a class provides a constructor with one argument of a certain type.
- * 
+ *
  * @author kfuchsbe
  */
 public final class Instantiators {
@@ -45,16 +45,16 @@ public final class Instantiators {
      * Starting point for fluent clauses to create instantiators for certain type of objects. A typical example for the
      * creation of a certain type of object (Instance) with an argument of a certain type (Argument) could look like
      * this:
-     * 
+     *
      * <pre>
-     * {@code
-     *   Instantiator<Argument, Instance> instantiator =
-     *      instantiatorFor(Instance.class).withArgumentType(Argument.class);
-     * 
-     *   Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
-     * }
+     * <code>
+     *         Instantiator<Argument, Instance> instantiator = instantiatorFor(Instance.class)
+     *                 .withArgumentType(Argument.class);
+     *
+     *         Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
+     * </code>
      * </pre>
-     * 
+     *
      * @param instanceClass the type of the objects to be created by the instantiator
      * @return an objects that provides methods for refinements of the instantiator
      */
@@ -64,7 +64,7 @@ public final class Instantiators {
 
     /**
      * Part of a fluent API to create Instantiators with one arguments.
-     * 
+     *
      * @author kfuchsbe
      * @param <T> the type of the objects that will be finally created by the instantiators
      */
@@ -75,7 +75,7 @@ public final class Instantiators {
         /**
          * Constructor, which takes the class of the objects to instantiate, package private because it will be
          * instantiated from within this class only.
-         * 
+         *
          * @param instanceClass the type of the objects to create
          */
         OngoingInstantiatorCreation(InstantiatorType type, Class<T> instanceClass) {
@@ -91,7 +91,7 @@ public final class Instantiators {
          * Creates the Instantiator for the previously specified object type and the given type of arguments for the
          * object constructor. The returned Instantiator is reusable and thread safe, because it does not contain any
          * state.
-         * 
+         *
          * @param argumentClass the type of the argument of the constructor for the object
          * @return a new instantiator
          */

@@ -43,8 +43,8 @@ public class TensorbackedExpressionSupport<V> {
     }
 
     public final <TB extends Tensorbacked<V>> Expression<TB> elementNegativeOfTB(Expression<TB> tensorbacked) {
-        return new UnaryOperationExpression<>(new ElementTensorBackedUnaryOperation<V, TB>(environment.field()
-                .additiveInversion()), tensorbacked);
+        return new UnaryOperationExpression<>(
+                new ElementTensorBackedUnaryOperation<V, TB>(environment.field().additiveInversion()), tensorbacked);
     }
 
     public final <TB extends Tensorbacked<V>> OngoingDeferredTensorBackedOperation<V, TB> calculateTB(

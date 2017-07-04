@@ -129,8 +129,8 @@ public class TensorsTest {
     }
 
     private Tensor<Double> prepareTensorWithContextOf(Set<?> coordinateForContext) {
-        Builder<Double> tensorBuilder = ImmutableTensor.<Double> builder(ImmutableSet.of(XCoordinate.class,
-                YCoordinate.class));
+        Builder<Double> tensorBuilder = ImmutableTensor
+                .<Double> builder(ImmutableSet.of(XCoordinate.class, YCoordinate.class));
         if (coordinateForContext.size() > 0) {
             tensorBuilder.context(Position.of(coordinateForContext));
         }

@@ -28,7 +28,6 @@ import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Groups a value together with its unit. Additionally an error and a validity flag can be provided. If the latter two
  * are not present explicitely given, then the validity will be {@code true} and the (optional) error will not be

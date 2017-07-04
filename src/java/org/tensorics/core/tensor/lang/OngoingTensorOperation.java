@@ -107,8 +107,8 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
      * @see InnerTensorOperation
      */
     public Tensor<V> times(Tensor<V> right) {
-        return new InnerTensorOperation<V>(environment.field().multiplication(),
-                new IterableSum<>(environment.field()), environment.options()).perform(left, right);
+        return new InnerTensorOperation<V>(environment.field().multiplication(), new IterableSum<>(environment.field()),
+                environment.options()).perform(left, right);
     }
 
 }

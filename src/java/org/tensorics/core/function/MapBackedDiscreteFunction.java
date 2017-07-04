@@ -90,8 +90,6 @@ public class MapBackedDiscreteFunction<X, Y> implements DiscreteFunction<X, Y>, 
         }
         return true;
     }
-    
-    
 
     @Override
     public String toString() {

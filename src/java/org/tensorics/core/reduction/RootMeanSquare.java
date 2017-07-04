@@ -34,7 +34,7 @@ import org.tensorics.core.tensor.Position;
  * @author kfuchsbe
  * @param <S> the type of the scalars (field elements) on which all the operations are based on.
  */
-public class RootMeanSquare<S> extends ScalarIterableSupport<S> implements ReductionStrategy<Object, S, S> {
+public class RootMeanSquare<S> extends ScalarIterableSupport<S>implements ReductionStrategy<Object, S, S> {
 
     public RootMeanSquare(ExtendedField<S> field) {
         super(field);

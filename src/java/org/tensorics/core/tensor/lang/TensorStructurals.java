@@ -35,6 +35,7 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Shapes;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -125,7 +126,7 @@ public final class TensorStructurals {
 
     public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {
         Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        for (Entry<Position, S> entry : tensor.asMap().entrySet()) {
+        for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             builder.putAt(function.apply(entry), entry.getKey());
         }
         return builder.build();
@@ -134,7 +135,7 @@ public final class TensorStructurals {
     public static <S, T> Tensor<T> transformScalars(Tensor<S> tensor, Function<S, T> function) {
         Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());
-        for (Entry<Position, S> entry : tensor.asMap().entrySet()) {
+        for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             builder.putAt(function.apply(entry.getValue()), entry.getKey());
         }
         return builder.build();

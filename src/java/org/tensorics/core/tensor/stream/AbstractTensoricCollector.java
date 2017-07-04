@@ -49,9 +49,8 @@ public abstract class AbstractTensoricCollector<V, T, O> implements Collector<V,
 
     private final Function<V, Position> positionMapper;
     private final Function<V, T> valueMapper;
-    
-    public AbstractTensoricCollector(Function<V, Position> positionMapper,
-            Function<V, T> valueMapper) {
+
+    public AbstractTensoricCollector(Function<V, Position> positionMapper, Function<V, T> valueMapper) {
         this.positionMapper = positionMapper;
         this.valueMapper = valueMapper;
     }

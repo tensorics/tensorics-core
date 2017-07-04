@@ -141,7 +141,6 @@ public final class Shapes {
                 .unique(transform(shape.positionSet(), toGuavaFunction(Positions.stripping(dimensionsToStrip)))));
     }
 
-    
     /**
      * Constructs a shape that contains all positions resulting from the outer product of the positions of the left
      * shape with those of the right shape. It is required that the two shapes have no overlap of dimensions (i.e. none
@@ -194,7 +193,8 @@ public final class Shapes {
         if (left.dimensionality() != right.dimensionality()) {
             throw new IllegalArgumentException("Left and right shape do not have the same dimensionality!");
         }
-        Set<Class<?>> dimensionalIntersection = Coordinates.parentClassIntersection(left.dimensionSet(), right.dimensionSet());
+        Set<Class<?>> dimensionalIntersection = Coordinates.parentClassIntersection(left.dimensionSet(),
+                right.dimensionSet());
         if (dimensionalIntersection.size() != left.dimensionality()) {
             throw new IllegalArgumentException("The shapes are not compatible!");
         }

@@ -54,13 +54,13 @@ public class InterpolationAtTest {
         Tensor<Double> bySlicingAt = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
                 .bySlicingAt(NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE);
 
-        assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE - NUMBER_OF_INCOPLETE_IN_THE_MIDDLE, bySlicingAt.shape()
-                .positionSet().size());
+        assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE - NUMBER_OF_INCOPLETE_IN_THE_MIDDLE,
+                bySlicingAt.shape().positionSet().size());
 
         bySlicingAt = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
                 .bySlicingAt(NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END);
-        assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE - NUMBER_OF_INCOPLETE_AT_THE_END, bySlicingAt.shape().positionSet()
-                .size());
+        assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE - NUMBER_OF_INCOPLETE_AT_THE_END,
+                bySlicingAt.shape().positionSet().size());
     }
 
     @Test
@@ -73,10 +73,14 @@ public class InterpolationAtTest {
 
         assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
 
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), 2.0, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), 2.5, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), 2.0, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), 42.0, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), 2.0,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), 2.5,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), 2.0,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), 42.0,
+                DOUBLE_COMPARISON_TOLERANCE);
 
     }
 
@@ -85,31 +89,37 @@ public class InterpolationAtTest {
         testTenosor = getTensorThreeCoordinates();
 
         Tensor<Double> interpolated = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
-                .byInterpolatedSlicingAt(COORDINATE_BEFORE_THE_FIRST)
-                .interpolatingWith(new TestInterpolation());
+                .byInterpolatedSlicingAt(COORDINATE_BEFORE_THE_FIRST).interpolatingWith(new TestInterpolation());
 
         assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
 
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), -1.0, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), -2.0, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), -1.0, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), -81.0, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), -1.0,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), -2.0,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), -1.0,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), -81.0,
+                DOUBLE_COMPARISON_TOLERANCE);
     }
-    
+
     @Test
     public void extrapolateValuesAfterTheLastByInterpolation() {
         testTenosor = getTensorThreeCoordinates();
 
         Tensor<Double> interpolated = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
-                .byInterpolatedSlicingAt(COORDINATE_AFTER_THE_LAST)
-                .interpolatingWith(new TestInterpolation());
+                .byInterpolatedSlicingAt(COORDINATE_AFTER_THE_LAST).interpolatingWith(new TestInterpolation());
 
         assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
 
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), 1.75, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), 23.9, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), 14.0, DOUBLE_COMPARISON_TOLERANCE);
-        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), 0.5, DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM1), 1.75,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM1), 23.9,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST1"), TestEnum.ENUM2), 14.0,
+                DOUBLE_COMPARISON_TOLERANCE);
+        assertEquals(interpolated.get(new TestNameCoordinate("TEST2"), TestEnum.ENUM2), 0.5,
+                DOUBLE_COMPARISON_TOLERANCE);
     }
 
     @Test

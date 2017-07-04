@@ -241,7 +241,7 @@ public class TensorCalculationsTest {
     }
 
     private void checkCorrectlyAdded(XCoordinate x, double x1Add, Tensor<Double> result) {
-        for (java.util.Map.Entry<Position, Double> entry : result.asMap().entrySet()) {
+        for (java.util.Map.Entry<Position, Double> entry : Tensorics.mapFrom(result).entrySet()) {
             Position position = entry.getKey();
             if (x.equals(position.coordinateFor(XCoordinate.class))) {
                 assertEquals(tensor1.get(position) + x1Add, entry.getValue(), 0.0000001);
