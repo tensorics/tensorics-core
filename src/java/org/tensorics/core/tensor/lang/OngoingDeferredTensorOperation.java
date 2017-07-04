@@ -68,11 +68,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
 	/**
 	 * Creates an expression that describes the addition of two tensor
-	 * expressions. <<<<<<< HEAD
-	 *
-	 * =======
-	 * 
-	 * >>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
+	 * expressions.
 	 * 
 	 * @param right
 	 *            as tensor to add
