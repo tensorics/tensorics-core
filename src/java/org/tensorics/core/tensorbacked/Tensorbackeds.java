@@ -149,11 +149,7 @@ public final class Tensorbackeds {
 	 * quantities as values. This is a convenience method to calling the
 	 * {@link QuantityTensors#validitiesOf(Tensor)} method on the tensor
 	 * contained in the tensorbacked.
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacked class from which to get the validities
 	 * @return a tensor containing only the validities of the values of the
@@ -168,11 +164,7 @@ public final class Tensorbackeds {
 	 * as values. This is a convenience method to calling
 	 * {@link QuantityTensors#valuesOf(Tensor)} on the tensor backing the
 	 * tensorbacked object.
-<<<<<<< HEAD
 	 * 
-=======
-	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacked object from which to retrieve the values
 	 * @return a tensor containing the values of quantities in the tensorbacked
@@ -186,11 +178,7 @@ public final class Tensorbackeds {
 	 * Retrieves the errors from the tensorbacked object. This is a convenience
 	 * method to calling {@link QuantityTensors#errorsOf(Tensor)} on the tensor
 	 * backing the tensorbacked object.
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacked object from which to retrieve the errors
 	 * @return a tensor containing the errors of the quantities within the
@@ -203,11 +191,7 @@ public final class Tensorbackeds {
 	/**
 	 * Retrieves the unit of a tensorbacked object by looking at the underlaying
 	 * tensor.
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacked object from which to retrieve the unit
 	 * @return the unit
@@ -220,11 +204,7 @@ public final class Tensorbackeds {
 
 	/**
 	 * Retrieves a set of all positions within a tensorbacked class.
-<<<<<<< HEAD
 	 * 
-=======
-	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensor backed object
 	 * @return a set containing all positions of the tensorbacked object
@@ -235,11 +215,7 @@ public final class Tensorbackeds {
 
 	/**
 	 * Retrieves the shape of the tensor backed object.
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacke object from which to retrieve the shape
 	 * @return the shape of the internal tensor of the object
@@ -253,11 +229,7 @@ public final class Tensorbackeds {
 	 * the shapes is conserved from the iteration order of the input iterable
 	 * and the returned iterable will have the same number of elements than the
 	 * input collection.
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbackeds
 	 *            the tensorbacked objects from which to get the shapes
 	 * @return an iterable contining the shapes of the tensor backed objects
@@ -270,11 +242,7 @@ public final class Tensorbackeds {
 	 * Starting for a fluent clause, that allows to flatten one or multiple
 	 * dimensions of the internal tensor of the tensor backed object into maps
 	 * or tensors of lists.
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensor backed object whose internal tensor is subject to
 	 *            flattening of values
@@ -290,11 +258,7 @@ public final class Tensorbackeds {
 	 * returns them in a new iterable. The order of iteration is conserved from
 	 * the input iterable and also duplicated entries are returned in a
 	 * duplicated manner.
-<<<<<<< HEAD
 	 * 
-=======
-	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbackeds
 	 *            the iterable of tensorbackeds from which to retrieve the
 	 *            tensors
@@ -308,11 +272,7 @@ public final class Tensorbackeds {
 	/**
 	 * Starting point for a fluent clause to complete a tensorbacked object with
 	 * other values.
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensor backed object to complete
 	 * @return an intermediate object that will allow to specify details on how
@@ -327,11 +287,7 @@ public final class Tensorbackeds {
 	 * the given class. The resulting dimensions must match the dimensions
 	 * required by the resulting object's class.
 	 * <p>
-<<<<<<< HEAD
 	 * 
-=======
-	 *
->>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param toBeMerged
 	 *            the tensor backed objects that shall be merged into one
 	 * @param classToReturn
