@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -46,21 +46,17 @@ public final class Instantiators {
 	 * Starting point for fluent clauses to create instantiators for certain
 	 * type of objects. A typical example for the creation of a certain type of
 	 * object (Instance) with an argument of a certain type (Argument) could
-	 * look like this:
-	 * 
+	 * look like this: 
+	 *
 	 * <pre>
-	 * {
-	 * 	&#64;code
-	 * 	Instantiator<Argument, Instance> instantiator = instantiatorFor(Instance.class)
-	 * 			.withArgumentType(Argument.class);
-	 * 
-	 * 	Instance instance = instantiator.create(anArgument); // anArgument
-	 * 															// being of
-	 * 															// type
-	 * 															// Argument
-	 * }
+	 * <code>
+	 *         Instantiator<Argument, Instance> instantiator = instantiatorFor(Instance.class)
+	 *                 .withArgumentType(Argument.class);
+	 *
+	 *         Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
+	 * </code>
 	 * </pre>
-	 * 
+	 *
 	 * @param instanceClass
 	 *            the type of the objects to be created by the instantiator
 	 * @return an objects that provides methods for refinements of the
@@ -71,7 +67,12 @@ public final class Instantiators {
 	}
 
 	/**
-	 * Part of a fluent API to create Instantiators with one arguments.
+	 * Part of a fluent API to create Instantiators with one arguments. <<<<<<<
+	 * HEAD
+	 * 
+	 * =======
+	 *
+	 * >>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * 
 	 * @author kfuchsbe
 	 * @param <T>
@@ -85,7 +86,11 @@ public final class Instantiators {
 		/**
 		 * Constructor, which takes the class of the objects to instantiate,
 		 * package private because it will be instantiated from within this
-		 * class only.
+		 * class only. <<<<<<< HEAD
+		 * 
+		 * =======
+		 *
+		 * >>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 		 * 
 		 * @param instanceClass
 		 *            the type of the objects to create
@@ -103,7 +108,11 @@ public final class Instantiators {
 		 * Creates the Instantiator for the previously specified object type and
 		 * the given type of arguments for the object constructor. The returned
 		 * Instantiator is reusable and thread safe, because it does not contain
-		 * any state.
+		 * any state. <<<<<<< HEAD
+		 * 
+		 * =======
+		 *
+		 * >>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 		 * 
 		 * @param argumentClass
 		 *            the type of the argument of the constructor for the object

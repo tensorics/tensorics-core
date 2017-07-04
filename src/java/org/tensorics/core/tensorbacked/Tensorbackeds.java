@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -42,7 +42,7 @@ import com.google.common.base.Optional;
 
 /**
  * Contains (public) utility methods for tensor backed objects.
- * 
+ *
  * @author kfuchsbe
  */
 public final class Tensorbackeds {
@@ -59,7 +59,7 @@ public final class Tensorbackeds {
 	 * allow to add content to the tensor backed object and construct it at the
 	 * end. Only coordinates wich are compatible with the dimensions as
 	 * annotated in the tensor backed class are allowed.
-	 * 
+	 *
 	 * @param tensorbackedClass
 	 *            the type of tensor backed object to be created.
 	 * @return a builder for the tensor backed object
@@ -98,7 +98,7 @@ public final class Tensorbackeds {
 	 * A convenience method to retrieve the number of dimensions of a tensor
 	 * backed object. This is a shortcut to retrieving the dimensionality of the
 	 * underlaying tensor of the tensor backed object.
-	 * 
+	 *
 	 * @param tensorbacked
 	 *            the tensor backed object from which to retrieve the dimensions
 	 * @return the number of dimensions of the tensor backed object
@@ -111,7 +111,7 @@ public final class Tensorbackeds {
 	 * Creates a new empty instance of a tensorbacked class of the given type.
 	 * This is simply a convenience method for calling
 	 * {@link TensorbackedBuilder#build()} on an empty builder.
-	 * 
+	 *
 	 * @param tensorbackedClass
 	 *            the class of the tensor backed object to create
 	 * @return a new empty instance of the tensorbacked object.
@@ -124,16 +124,16 @@ public final class Tensorbackeds {
 	 * Starting point for a fluent clause to construct tensor backed objects by
 	 * different means from other objects. For example:
 	 * 
+	 *
 	 * <pre>
-	 * {
-	 * 	&#64;code
-	 * 	// Assume that Orbit and OrbitTimeseries are tensorbacked objects
-	 * 	List<> orbits = new ArrayList<>();
-	 * 	// assume the list is filled
-	 * 	OrbitTimeseries orbitTimeseries = construct(OrbitTimeseries.class).byMerging(orbits);
-	 * }
+	 * <code>
+	 *     // Assume that Orbit and OrbitTimeseries are tensorbacked objects
+	 *     List<> orbits = new ArrayList<>();
+	 *     // assume the list is filled
+	 *     OrbitTimeseries orbitTimeseries = construct(OrbitTimeseries.class).byMerging(orbits);
+	 * </code>
 	 * </pre>
-	 * 
+	 *
 	 * @param tensorbackedClass
 	 *            the type of the tensorbacked object that should be constructed
 	 * @return an object which provides further methods to define the
@@ -149,7 +149,11 @@ public final class Tensorbackeds {
 	 * quantities as values. This is a convenience method to calling the
 	 * {@link QuantityTensors#validitiesOf(Tensor)} method on the tensor
 	 * contained in the tensorbacked.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacked class from which to get the validities
 	 * @return a tensor containing only the validities of the values of the
@@ -164,7 +168,11 @@ public final class Tensorbackeds {
 	 * as values. This is a convenience method to calling
 	 * {@link QuantityTensors#valuesOf(Tensor)} on the tensor backing the
 	 * tensorbacked object.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacked object from which to retrieve the values
 	 * @return a tensor containing the values of quantities in the tensorbacked
@@ -178,7 +186,11 @@ public final class Tensorbackeds {
 	 * Retrieves the errors from the tensorbacked object. This is a convenience
 	 * method to calling {@link QuantityTensors#errorsOf(Tensor)} on the tensor
 	 * backing the tensorbacked object.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacked object from which to retrieve the errors
 	 * @return a tensor containing the errors of the quantities within the
@@ -191,7 +203,11 @@ public final class Tensorbackeds {
 	/**
 	 * Retrieves the unit of a tensorbacked object by looking at the underlaying
 	 * tensor.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacked object from which to retrieve the unit
 	 * @return the unit
@@ -204,7 +220,11 @@ public final class Tensorbackeds {
 
 	/**
 	 * Retrieves a set of all positions within a tensorbacked class.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensor backed object
 	 * @return a set containing all positions of the tensorbacked object
@@ -215,7 +235,11 @@ public final class Tensorbackeds {
 
 	/**
 	 * Retrieves the shape of the tensor backed object.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensorbacke object from which to retrieve the shape
 	 * @return the shape of the internal tensor of the object
@@ -229,7 +253,11 @@ public final class Tensorbackeds {
 	 * the shapes is conserved from the iteration order of the input iterable
 	 * and the returned iterable will have the same number of elements than the
 	 * input collection.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbackeds
 	 *            the tensorbacked objects from which to get the shapes
 	 * @return an iterable contining the shapes of the tensor backed objects
@@ -242,7 +270,11 @@ public final class Tensorbackeds {
 	 * Starting for a fluent clause, that allows to flatten one or multiple
 	 * dimensions of the internal tensor of the tensor backed object into maps
 	 * or tensors of lists.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensor backed object whose internal tensor is subject to
 	 *            flattening of values
@@ -258,7 +290,11 @@ public final class Tensorbackeds {
 	 * returns them in a new iterable. The order of iteration is conserved from
 	 * the input iterable and also duplicated entries are returned in a
 	 * duplicated manner.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbackeds
 	 *            the iterable of tensorbackeds from which to retrieve the
 	 *            tensors
@@ -272,7 +308,11 @@ public final class Tensorbackeds {
 	/**
 	 * Starting point for a fluent clause to complete a tensorbacked object with
 	 * other values.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param tensorbacked
 	 *            the tensor backed object to complete
 	 * @return an intermediate object that will allow to specify details on how
@@ -287,7 +327,11 @@ public final class Tensorbackeds {
 	 * the given class. The resulting dimensions must match the dimensions
 	 * required by the resulting object's class.
 	 * <p>
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
 	 * @param toBeMerged
 	 *            the tensor backed objects that shall be merged into one
 	 * @param classToReturn

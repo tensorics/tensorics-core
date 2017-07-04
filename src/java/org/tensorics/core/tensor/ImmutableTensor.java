@@ -55,7 +55,7 @@ import com.google.common.collect.ImmutableMultiset;
  * @param <T>
  *            type of values in Tensor.
  */
-public class ImmutableTensor<T> extends AbstractTensor<T> implements MappableTensor<T>, Serializable {
+public class ImmutableTensor<T> extends AbstractTensor<T> implements Mappable<T>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 

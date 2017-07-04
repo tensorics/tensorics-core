@@ -37,7 +37,7 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
 /**
  * Part of the fluent API for binary (and higher) operations on tensors. It
  * provides methods to define the remaining operands.
- *
+ * 
  * @author agorzaws, kfuchbe
  * @param <V>
  */
@@ -48,7 +48,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 	private final OptionRegistry<ManipulationOption> optionRegistry;
 
 	/**
-	 * Creates a new instance of the this ongoing operation.
+	 * Creates a new instance of the this ongoing operation. <<<<<<< HEAD
 	 *
 	 * @param field
 	 *            the field to use
@@ -68,8 +68,12 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
 	/**
 	 * Creates an expression that describes the addition of two tensor
-	 * expressions.
+	 * expressions. <<<<<<< HEAD
 	 *
+	 * =======
+	 * 
+	 * >>>>>>> refs/heads/as-map-not-part-of-tensor-interface-anymore
+	 * 
 	 * @param right
 	 *            as tensor to add
 	 * @return result of summing two tensors

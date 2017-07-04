@@ -33,8 +33,7 @@ import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 /**
  * Part of the tensorics fluent API that provides methods to describe the right
  * hand part of binary operations on tensors containing quantified values.
- *
- * @author kfuchsbe
+ * @author kaifox
  * @param <S>
  *            the type of the scalars (elements of the field on which all the
  *            operations are based on)

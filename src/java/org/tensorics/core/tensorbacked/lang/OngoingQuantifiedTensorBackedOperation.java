@@ -92,7 +92,7 @@ public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<Qua
 
 	@Override
 	public QTB elementDividedByV(QuantifiedValue<S> value) {
-		return elementDividedByQT(Tensorics.zeroDimensionalOf(value));
+		return elementDividedByQT(Tensorics.scalarOf(value));
 	}
 
 	private QTB evaluate(Tensor<QuantifiedValue<S>> right, BinaryOperation<QuantifiedValue<S>> operation) {
