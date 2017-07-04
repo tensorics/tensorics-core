@@ -27,7 +27,6 @@ import org.tensorics.core.tensor.AbstractTensor;
 import org.tensorics.core.tensor.AbstractTensorBuilder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
-import org.tensorics.core.tensor.Tensor;
 
 /**
  * A specific implementation of a tensor, that contains double values. It is
