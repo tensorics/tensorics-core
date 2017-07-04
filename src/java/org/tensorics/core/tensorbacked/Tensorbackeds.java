@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -42,7 +42,7 @@ import com.google.common.base.Optional;
 
 /**
  * Contains (public) utility methods for tensor backed objects.
- * 
+ *
  * @author kfuchsbe
  */
 public final class Tensorbackeds {
@@ -58,7 +58,7 @@ public final class Tensorbackeds {
      * Creates a new builder for the given tensor backed class. The builder will allow to add content to the tensor
      * backed object and construct it at the end. Only coordinates wich are compatible with the dimensions as annotated
      * in the tensor backed class are allowed.
-     * 
+     *
      * @param tensorbackedClass the type of tensor backed object to be created.
      * @return a builder for the tensor backed object
      */
@@ -69,7 +69,7 @@ public final class Tensorbackeds {
     /**
      * Retrieves the dimensions from the given class inheriting from tensor backed. This is done by inspecting the
      * {@link Dimensions} annotation.
-     * 
+     *
      * @param tensorBackedClass the class for which to determine the dimensions
      * @return the set of dimensions (classes of coordinates) which are required to create an instance of the given
      *         class.
@@ -81,7 +81,7 @@ public final class Tensorbackeds {
     /**
      * A convenience method to retrieve the size (number of entries) of a tensor backed object. This is nothing else
      * than a shortcut to the size of the underlaying tensor.
-     * 
+     *
      * @param tensorbacked the tensor backed object for which to retrieve the size
      * @return the size (number of entries) of the object
      */
@@ -92,7 +92,7 @@ public final class Tensorbackeds {
     /**
      * A convenience method to retrieve the number of dimensions of a tensor backed object. This is a shortcut to
      * retrieving the dimensionality of the underlaying tensor of the tensor backed object.
-     * 
+     *
      * @param tensorbacked the tensor backed object from which to retrieve the dimensions
      * @return the number of dimensions of the tensor backed object
      */
@@ -103,7 +103,7 @@ public final class Tensorbackeds {
     /**
      * Creates a new empty instance of a tensorbacked class of the given type. This is simply a convenience method for
      * calling {@link TensorbackedBuilder#build()} on an empty builder.
-     * 
+     *
      * @param tensorbackedClass the class of the tensor backed object to create
      * @return a new empty instance of the tensorbacked object.
      */
@@ -114,17 +114,16 @@ public final class Tensorbackeds {
     /**
      * Starting point for a fluent clause to construct tensor backed objects by different means from other objects. For
      * example:
-     * 
+     *
      * <pre>
-     * {
-     *     &#64;code
+     * <code>
      *     // Assume that Orbit and OrbitTimeseries are tensorbacked objects
      *     List<> orbits = new ArrayList<>();
      *     // assume the list is filled
      *     OrbitTimeseries orbitTimeseries = construct(OrbitTimeseries.class).byMerging(orbits);
-     * }
+     * </code>
      * </pre>
-     * 
+     *
      * @param tensorbackedClass the type of the tensorbacked object that should be constructed
      * @return an object which provides further methods to define the construction of the object
      */
@@ -137,7 +136,7 @@ public final class Tensorbackeds {
      * Retrieves the validities from a tensorbacked object which contains quantities as values. This is a convenience
      * method to calling the {@link QuantityTensors#validitiesOf(Tensor)} method on the tensor contained in the
      * tensorbacked.
-     * 
+     *
      * @param tensorbacked the tensorbacked class from which to get the validities
      * @return a tensor containing only the validities of the values of the tensorbacked class
      */
@@ -148,7 +147,7 @@ public final class Tensorbackeds {
     /**
      * Retrieves the values of a tensorbacked object which contains quantities as values. This is a convenience method
      * to calling {@link QuantityTensors#valuesOf(Tensor)} on the tensor backing the tensorbacked object.
-     * 
+     *
      * @param tensorbacked the tensorbacked object from which to retrieve the values
      * @return a tensor containing the values of quantities in the tensorbacked object
      */
@@ -159,7 +158,7 @@ public final class Tensorbackeds {
     /**
      * Retrieves the errors from the tensorbacked object. This is a convenience method to calling
      * {@link QuantityTensors#errorsOf(Tensor)} on the tensor backing the tensorbacked object.
-     * 
+     *
      * @param tensorbacked the tensorbacked object from which to retrieve the errors
      * @return a tensor containing the errors of the quantities within the tensorbacked object
      */
@@ -169,7 +168,7 @@ public final class Tensorbackeds {
 
     /**
      * Retrieves the unit of a tensorbacked object by looking at the underlaying tensor.
-     * 
+     *
      * @param tensorbacked the tensorbacked object from which to retrieve the unit
      * @return the unit
      * @throws IllegalArgumentException if the unit cannot be determined
@@ -180,7 +179,7 @@ public final class Tensorbackeds {
 
     /**
      * Retrieves a set of all positions within a tensorbacked class.
-     * 
+     *
      * @param tensorbacked the tensor backed object
      * @return a set containing all positions of the tensorbacked object
      */
@@ -190,7 +189,7 @@ public final class Tensorbackeds {
 
     /**
      * Retrieves the shape of the tensor backed object.
-     * 
+     *
      * @param tensorbacked the tensorbacke object from which to retrieve the shape
      * @return the shape of the internal tensor of the object
      */
@@ -202,7 +201,7 @@ public final class Tensorbackeds {
      * Retrieves all the shapes of the given tensorbacked objects. The order of the shapes is conserved from the
      * iteration order of the input iterable and the returned iterable will have the same number of elements than the
      * input collection.
-     * 
+     *
      * @param tensorbackeds the tensorbacked objects from which to get the shapes
      * @return an iterable contining the shapes of the tensor backed objects
      */
@@ -213,7 +212,7 @@ public final class Tensorbackeds {
     /**
      * Starting for a fluent clause, that allows to flatten one or multiple dimensions of the internal tensor of the
      * tensor backed object into maps or tensors of lists.
-     * 
+     *
      * @param tensorbacked the tensor backed object whose internal tensor is subject to flattening of values
      * @return an object which allows to further specify the flattening operation
      */
@@ -225,7 +224,7 @@ public final class Tensorbackeds {
      * Retrieves the tensor from each tensorbacked in the given iterable and returns them in a new iterable. The order
      * of iteration is conserved from the input iterable and also duplicated entries are returned in a duplicated
      * manner.
-     * 
+     *
      * @param tensorbackeds the iterable of tensorbackeds from which to retrieve the tensors
      * @return an iterable containing the tensors from the given iterable of tensorbackeds
      */
@@ -235,7 +234,7 @@ public final class Tensorbackeds {
 
     /**
      * Starting point for a fluent clause to complete a tensorbacked object with other values.
-     * 
+     *
      * @param tensorbacked the tensor backed object to complete
      * @return an intermediate object that will allow to specify details on how the object shall be completed
      */
@@ -247,7 +246,7 @@ public final class Tensorbackeds {
      * Merges the given {@link Tensorbacked}s into one {@link Tensorbacked} of the given class. The resulting dimensions
      * must match the dimensions required by the resulting object's class.
      * <p>
-     * 
+     *
      * @param toBeMerged the tensor backed objects that shall be merged into one
      * @param classToReturn the type of the tensor backed that should be resulting from the merge
      * @return a new tensor backed object resulting from the the merge of the tensors
