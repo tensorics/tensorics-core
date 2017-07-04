@@ -21,98 +21,95 @@ import org.tensorics.core.tensor.operations.TensorInternals;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
 
 public class AbstractTensorbackedTest {
-    public interface FirstCoordinateInterface {
-        /* marker interface */
-    }
+	public interface FirstCoordinateInterface {
+		/* marker interface */
+	}
 
-    public enum FirstCoordinate implements FirstCoordinateInterface {
-        FIRST_1,
-        FIRST_2,
-        FIRST_3;
-    }
+	public enum FirstCoordinate implements FirstCoordinateInterface {
+		FIRST_1, FIRST_2, FIRST_3;
+	}
 
-    public enum SecondCoordinate {
-        SECOND_1,
-        SECOND_2;
-    }
+	public enum SecondCoordinate {
+		SECOND_1, SECOND_2;
+	}
 
-    @Dimensions({ FirstCoordinate.class, SecondCoordinate.class })
-    public static class LeafClassTensorbacked extends AbstractTensorbacked<Double> {
-        private static final long serialVersionUID = 1L;
+	@Dimensions({ FirstCoordinate.class, SecondCoordinate.class })
+	public static class LeafClassTensorbacked extends AbstractTensorbacked<Double> {
+		private static final long serialVersionUID = 1L;
 
-        public LeafClassTensorbacked(Tensor<Double> tensor) {
-            super(tensor);
-        }
-    }
+		public LeafClassTensorbacked(Tensor<Double> tensor) {
+			super(tensor);
+		}
+	}
 
-    @Dimensions({ FirstCoordinateInterface.class, SecondCoordinate.class })
-    public static class InterfaceTensorbacked extends AbstractTensorbacked<Double> {
-        private static final long serialVersionUID = 1L;
+	@Dimensions({ FirstCoordinateInterface.class, SecondCoordinate.class })
+	public static class InterfaceTensorbacked extends AbstractTensorbacked<Double> {
+		private static final long serialVersionUID = 1L;
 
-        public InterfaceTensorbacked(Tensor<Double> tensor) {
-            super(tensor);
-        }
-    }
+		public InterfaceTensorbacked(Tensor<Double> tensor) {
+			super(tensor);
+		}
+	}
 
-    private Tensor<Double> buildTensorFor(Class<?>... dimensions) {
-        TensorBuilder<Double> builder = Tensorics.builder(dimensions);
-        builder.putAt(11.0, FirstCoordinate.FIRST_1, SecondCoordinate.SECOND_1);
-        builder.putAt(12.0, FirstCoordinate.FIRST_1, SecondCoordinate.SECOND_2);
-        builder.putAt(21.0, FirstCoordinate.FIRST_2, SecondCoordinate.SECOND_1);
-        return builder.build();
-    }
+	private Tensor<Double> buildTensorFor(Class<?>... dimensions) {
+		TensorBuilder<Double> builder = Tensorics.builder(dimensions);
+		builder.putAt(11.0, FirstCoordinate.FIRST_1, SecondCoordinate.SECOND_1);
+		builder.putAt(12.0, FirstCoordinate.FIRST_1, SecondCoordinate.SECOND_2);
+		builder.putAt(21.0, FirstCoordinate.FIRST_2, SecondCoordinate.SECOND_1);
+		return builder.build();
+	}
 
-    private final Tensor<Double> leafClassTensor = buildTensorFor(FirstCoordinate.class, SecondCoordinate.class);
-    private final Tensor<Double> interfaceTensor = buildTensorFor(FirstCoordinateInterface.class,
-            SecondCoordinate.class);
+	private final Tensor<Double> leafClassTensor = buildTensorFor(FirstCoordinate.class, SecondCoordinate.class);
+	private final Tensor<Double> interfaceTensor = buildTensorFor(FirstCoordinateInterface.class,
+			SecondCoordinate.class);
 
-    @Test
-    public void canConstructLeafClassTensorbackedFromLeafClassTensor() {
-        LeafClassTensorbacked tb = new LeafClassTensorbacked(leafClassTensor);
-        assertEquals(TensorInternals.mapFrom(tb.tensor()), TensorInternals.mapFrom(leafClassTensor));
-        assertEquals(TensorbackedInternals.dimensionsOf(LeafClassTensorbacked.class),
-                tb.tensor().shape().dimensionSet());
-    }
+	@Test
+	public void canConstructLeafClassTensorbackedFromLeafClassTensor() {
+		LeafClassTensorbacked tb = new LeafClassTensorbacked(leafClassTensor);
+		assertEquals(TensorInternals.mapFrom(tb.tensor()), TensorInternals.mapFrom(leafClassTensor));
+		assertEquals(TensorbackedInternals.dimensionsOf(LeafClassTensorbacked.class),
+				tb.tensor().shape().dimensionSet());
+	}
 
-    @Test(expected = IllegalArgumentException.class)
-    public void canNotConstructLeafClassTensorbackedFromInterfaceClassTensor() {
-        LeafClassTensorbacked tb = new LeafClassTensorbacked(interfaceTensor);
-        assertEquals(Tensorics.mapFrom(tb.tensor()), TensorInternals.mapFrom(interfaceTensor));
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void canNotConstructLeafClassTensorbackedFromInterfaceClassTensor() {
+		LeafClassTensorbacked tb = new LeafClassTensorbacked(interfaceTensor);
+		assertEquals(Tensorics.mapFrom(tb.tensor()), TensorInternals.mapFrom(interfaceTensor));
+	}
 
-    public void canConstructInterfaceTensorbackedFromLeafClassTensor() {
-        InterfaceTensorbacked tb = new InterfaceTensorbacked(leafClassTensor);
-        assertEquals(Tensorics.mapFrom(tb.tensor()), TensorInternals.mapFrom(leafClassTensor));
-        assertEquals(TensorbackedInternals.dimensionsOf(InterfaceTensorbacked.class),
-                tb.tensor().shape().dimensionSet());
-    }
+	public void canConstructInterfaceTensorbackedFromLeafClassTensor() {
+		InterfaceTensorbacked tb = new InterfaceTensorbacked(leafClassTensor);
+		assertEquals(Tensorics.mapFrom(tb.tensor()), TensorInternals.mapFrom(leafClassTensor));
+		assertEquals(TensorbackedInternals.dimensionsOf(InterfaceTensorbacked.class),
+				tb.tensor().shape().dimensionSet());
+	}
 
-    @Test
-    public void canNotConstructInterfaceTensorbackedFromInterfaceClassTensor() {
-        InterfaceTensorbacked tb = new InterfaceTensorbacked(interfaceTensor);
-        assertEquals(Tensorics.mapFrom(tb.tensor()), TensorInternals.mapFrom(interfaceTensor));
-    }
+	@Test
+	public void canNotConstructInterfaceTensorbackedFromInterfaceClassTensor() {
+		InterfaceTensorbacked tb = new InterfaceTensorbacked(interfaceTensor);
+		assertEquals(Tensorics.mapFrom(tb.tensor()), TensorInternals.mapFrom(interfaceTensor));
+	}
 
-    @Test
-    public void interfaceTensorbackedCalculationTest() {
-        InterfaceTensorbacked tb = new InterfaceTensorbacked(interfaceTensor);
-        InterfaceTensorbacked result = DoubleTensorics.calculate(tb).plus(tb);
+	@Test
+	public void interfaceTensorbackedCalculationTest() {
+		InterfaceTensorbacked tb = new InterfaceTensorbacked(interfaceTensor);
+		InterfaceTensorbacked result = DoubleTensorics.calculate(tb).plus(tb);
 
-        assertResultOfCalculation(result);
-    }
+		assertResultOfCalculation(result);
+	}
 
-    @Test
-    public void leafClassTensorbackedCalculationTest() {
-        LeafClassTensorbacked tb = new LeafClassTensorbacked(leafClassTensor);
-        LeafClassTensorbacked result = DoubleTensorics.calculate(tb).plus(tb);
+	@Test
+	public void leafClassTensorbackedCalculationTest() {
+		LeafClassTensorbacked tb = new LeafClassTensorbacked(leafClassTensor);
+		LeafClassTensorbacked result = DoubleTensorics.calculate(tb).plus(tb);
 
-        assertResultOfCalculation(result);
-    }
+		assertResultOfCalculation(result);
+	}
 
-    private void assertResultOfCalculation(AbstractTensorbacked<?> result) {
-        Assertions.assertThat(result.tensor().get(FIRST_1, SECOND_1)).isEqualTo(valueOf(22));
-        Assertions.assertThat(result.tensor().get(FIRST_1, SECOND_2)).isEqualTo(valueOf(24));
-        Assertions.assertThat(result.tensor().get(FIRST_2, SECOND_1)).isEqualTo(valueOf(42));
-    }
+	private void assertResultOfCalculation(AbstractTensorbacked<?> result) {
+		Assertions.assertThat(result.tensor().get(FIRST_1, SECOND_1)).isEqualTo(valueOf(22));
+		Assertions.assertThat(result.tensor().get(FIRST_1, SECOND_2)).isEqualTo(valueOf(24));
+		Assertions.assertThat(result.tensor().get(FIRST_2, SECOND_1)).isEqualTo(valueOf(42));
+	}
 
 }

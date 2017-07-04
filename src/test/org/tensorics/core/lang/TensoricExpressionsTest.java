@@ -10,9 +10,9 @@ import org.junit.Test;
 
 public class TensoricExpressionsTest {
 
-    @Test
-    public void verifyUtilityClass() {
-        assertUtilityClass(TensoricExpressions.class);
-    }
+	@Test
+	public void verifyUtilityClass() {
+		assertUtilityClass(TensoricExpressions.class);
+	}
 
 }

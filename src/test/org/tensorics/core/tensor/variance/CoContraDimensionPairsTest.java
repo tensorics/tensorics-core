@@ -28,9 +28,9 @@ import org.junit.Test;
 
 public class CoContraDimensionPairsTest {
 
-    @Test
-    public void verifyUtilityClass() {
-        assertUtilityClass(CoContraDimensionPairs.class);
-    }
+	@Test
+	public void verifyUtilityClass() {
+		assertUtilityClass(CoContraDimensionPairs.class);
+	}
 
 }

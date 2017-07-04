@@ -14,59 +14,61 @@ import org.tensorics.core.tree.domain.Expression;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Expression that evaluates using a {@link FuncN} function. This is a lambda-like expression.
+ * Expression that evaluates using a {@link FuncN} function. This is a
+ * lambda-like expression.
  * 
  * @see FiniteArgumentFunction
- * @param <R> the type of the result of the expression
+ * @param <R>
+ *            the type of the result of the expression
  */
 public class FunctionalExpression<R> extends AbstractDeferredExpression<R> {
 
-    private final List<Expression<?>> children;
-    private final FuncN<R> func;
+	private final List<Expression<?>> children;
+	private final FuncN<R> func;
 
-    public FunctionalExpression(List<Expression<?>> children, FuncN<R> func) {
-        this.children = ImmutableList.copyOf(children);
-        this.func = func;
-    }
+	public FunctionalExpression(List<Expression<?>> children, FuncN<R> func) {
+		this.children = ImmutableList.copyOf(children);
+		this.func = func;
+	}
 
-    @Override
-    public List<Expression<?>> getChildren() {
-        return this.children;
-    }
+	@Override
+	public List<Expression<?>> getChildren() {
+		return this.children;
+	}
 
-    public FuncN<R> function() {
-        return func;
-    }
+	public FuncN<R> function() {
+		return func;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((children == null) ? 0 : children.hashCode());
-        result = prime * result + ((func == null) ? 0 : func.hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((children == null) ? 0 : children.hashCode());
+		result = prime * result + ((func == null) ? 0 : func.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        FunctionalExpression<?> other = (FunctionalExpression<?>) obj;
-        if (children == null) {
-            if (other.children != null)
-                return false;
-        } else if (!children.equals(other.children))
-            return false;
-        if (func == null) {
-            if (other.func != null)
-                return false;
-        } else if (!func.equals(other.func))
-            return false;
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FunctionalExpression<?> other = (FunctionalExpression<?>) obj;
+		if (children == null) {
+			if (other.children != null)
+				return false;
+		} else if (!children.equals(other.children))
+			return false;
+		if (func == null) {
+			if (other.func != null)
+				return false;
+		} else if (!func.equals(other.func))
+			return false;
+		return true;
+	}
 
 }

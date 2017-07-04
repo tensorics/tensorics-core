@@ -28,9 +28,9 @@ import org.junit.Test;
 
 public class ResolvingEnginesTest {
 
-    @Test
-    public void verifyUtilityClass() {
-        assertUtilityClass(ResolvingEngines.class);
-    }
+	@Test
+	public void verifyUtilityClass() {
+		assertUtilityClass(ResolvingEngines.class);
+	}
 
 }

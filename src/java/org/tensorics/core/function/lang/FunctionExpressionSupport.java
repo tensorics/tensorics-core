@@ -30,25 +30,30 @@ import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
 
 /**
- * Specialisation of {@link FunctionExpressionSupportWithConversionAndComparator} for expressions of
- * {@link DiscreteFunction}s from Y to Y.
+ * Specialisation of
+ * {@link FunctionExpressionSupportWithConversionAndComparator} for expressions
+ * of {@link DiscreteFunction}s from Y to Y.
  * 
  * @author caguiler
- * @param <Y> the type of the independent variable (input) and dependent variable (output) of the discrete function and
- *            the type of the scalar values (elements of the field) on which to operate
+ * @param <Y>
+ *            the type of the independent variable (input) and dependent
+ *            variable (output) of the discrete function and the type of the
+ *            scalar values (elements of the field) on which to operate
  */
 public class FunctionExpressionSupport<Y> extends FunctionExpressionSupportWithConversionAndComparator<Y, Y> {
 
-    public FunctionExpressionSupport(Environment<Y> environment) {
-        super(environment, Conversions.identity(), environment.field().comparator());
-    }
+	public FunctionExpressionSupport(Environment<Y> environment) {
+		super(environment, Conversions.identity(), environment.field().comparator());
+	}
 
-    /***
-     * @param conversion defines how to transform a value of X type to Y type
-     * @return a {@link FunctionExpressionSupportWithConversionAndComparator} with a given {@link Conversion} set
-     */
-    public final <X> FunctionExpressionSupportWithConversionAndComparator<X, Y> withConversionAndComparator(
-            Conversion<X, Y> conversion, Comparator<X> comparator) {
-        return new FunctionExpressionSupportWithConversionAndComparator<>(environment(), conversion, comparator);
-    }
+	/***
+	 * @param conversion
+	 *            defines how to transform a value of X type to Y type
+	 * @return a {@link FunctionExpressionSupportWithConversionAndComparator}
+	 *         with a given {@link Conversion} set
+	 */
+	public final <X> FunctionExpressionSupportWithConversionAndComparator<X, Y> withConversionAndComparator(
+			Conversion<X, Y> conversion, Comparator<X> comparator) {
+		return new FunctionExpressionSupportWithConversionAndComparator<>(environment(), conversion, comparator);
+	}
 }

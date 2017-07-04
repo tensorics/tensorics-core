@@ -14,17 +14,17 @@ import org.tensorics.core.tensor.options.IntersectionShapingStrategy;
 
 public abstract class AbstractWeatherHistory extends TensoricSupport<Double> {
 
-    public AbstractWeatherHistory() {
-        super(EnvironmentImpl.of(Structures.doubles(), ManipulationOptions.defaultOptions(Structures.doubles()))
-                .with(new IntersectionShapingStrategy()));
-    }
+	public AbstractWeatherHistory() {
+		super(EnvironmentImpl.of(Structures.doubles(), ManipulationOptions.defaultOptions(Structures.doubles()))
+				.with(new IntersectionShapingStrategy()));
+	}
 
-    public abstract List<City> getCities();
+	public abstract List<City> getCities();
 
-    // tag::import[]
-    public Tensor<QuantifiedValue<Double>> importDataForCities() {
-        return FakeMeteoDataImporter.importFromPast();
-    }
-    // end::import[]
+	// tag::import[]
+	public Tensor<QuantifiedValue<Double>> importDataForCities() {
+		return FakeMeteoDataImporter.importFromPast();
+	}
+	// end::import[]
 
 }

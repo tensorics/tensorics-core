@@ -32,10 +32,10 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Time;
 @Dimensions({ Time.class, Beam.class, Plane.class, Bpm.class })
 public class MultibeamOrbitEvolution extends AbstractOrbit {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public MultibeamOrbitEvolution(Tensor<Double> tensor) {
-        super(tensor);
-    }
+	public MultibeamOrbitEvolution(Tensor<Double> tensor) {
+		super(tensor);
+	}
 
 }

@@ -29,55 +29,63 @@ import java.util.Set;
  * The interface any builder of a tensor has to implement
  * 
  * @author kfuchsbe
- * @param <E> the type of the tensor values
+ * @param <E>
+ *            the type of the tensor values
  */
 public interface TensorBuilder<E> {
 
-    void putAt(E value, Position position);
+	void putAt(E value, Position position);
 
-    void putAt(E value, Object... coordinates);
+	void putAt(E value, Object... coordinates);
 
-    void putAt(E value, Set<?> coordinates);
+	void putAt(E value, Set<?> coordinates);
 
-    void removeAt(Position position);
+	void removeAt(Position position);
 
-    /**
-     * @deprecated use {@link #context(Position)}
-     */
-    @Deprecated
-    default void setTensorContext(Position context) {
-        context(context);
-    }
+	/**
+	 * @deprecated use {@link #context(Position)}
+	 */
+	@Deprecated
+	default void setTensorContext(Position context) {
+		context(context);
+	}
 
-    void context(Position context);
+	void context(Position context);
 
-    /**
-     * Puts all the values of the given tensor into the new tensor, at the given position. The positions in the new
-     * tensor will be the merged positions of the original coordinates in the tensor with the given target position.
-     * Therefore, the given position is not allowed to have a dimensions overlap with the positions in the original
-     * tensor.
-     * 
-     * @param tensor the tensor, whose values to add to the tensor under construction
-     */
-    void putAll(Tensor<E> tensor);
+	/**
+	 * Puts all the values of the given tensor into the new tensor, at the given
+	 * position. The positions in the new tensor will be the merged positions of
+	 * the original coordinates in the tensor with the given target position.
+	 * Therefore, the given position is not allowed to have a dimensions overlap
+	 * with the positions in the original tensor.
+	 * 
+	 * @param tensor
+	 *            the tensor, whose values to add to the tensor under
+	 *            construction
+	 */
+	void putAll(Tensor<E> tensor);
 
-    void putAllAt(Tensor<E> tensor, Position position);
+	void putAllAt(Tensor<E> tensor, Position position);
 
-    /**
-     * Puts all the values of the given tensor into the new tensor at a position represented by the given coordinates.
-     * This is a convenience method for {@link #putAllAt(Tensor, Position)}.
-     * 
-     * @param tensor the tensor whose values to put into the tensor unser construction
-     * @param coordinates the coordinates defining the position where to put the values
-     */
-    void putAllAt(Tensor<E> tensor, Object... coordinates);
+	/**
+	 * Puts all the values of the given tensor into the new tensor at a position
+	 * represented by the given coordinates. This is a convenience method for
+	 * {@link #putAllAt(Tensor, Position)}.
+	 * 
+	 * @param tensor
+	 *            the tensor whose values to put into the tensor unser
+	 *            construction
+	 * @param coordinates
+	 *            the coordinates defining the position where to put the values
+	 */
+	void putAllAt(Tensor<E> tensor, Object... coordinates);
 
-    void putAllAt(Tensor<E> tensor, Set<?> coordinates);
+	void putAllAt(Tensor<E> tensor, Set<?> coordinates);
 
-    void put(Entry<Position, E> entry);
+	void put(Entry<Position, E> entry);
 
-    void putAllMap(Map<Position, E> newEntries);
+	void putAllMap(Map<Position, E> newEntries);
 
-    Tensor<E> build();
+	Tensor<E> build();
 
 }

@@ -36,44 +36,44 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  */
 public final class Resolvers {
 
-    private Resolvers() {
-        /* Only static methods */
-    }
+	private Resolvers() {
+		/* Only static methods */
+	}
 
-    public static ResolverRepository defaultRepository() {
-        List<Resolver<?, ?>> resolvers = createDefaultResolvers();
-        return repositoryWithResolvers(resolvers);
-    }
+	public static ResolverRepository defaultRepository() {
+		List<Resolver<?, ?>> resolvers = createDefaultResolvers();
+		return repositoryWithResolvers(resolvers);
+	}
 
-    public static ResolverRepository defaultRepositoryWithAdditional(Resolver<?, ?>... resolvers) {
-        List<Resolver<?, ?>> allResolvers = createDefaultResolvers();
-        allResolvers.addAll(Arrays.asList(resolvers));
-        System.err.println("Resolvers: " + allResolvers);
-        return repositoryWithResolvers(allResolvers);
-    }
+	public static ResolverRepository defaultRepositoryWithAdditional(Resolver<?, ?>... resolvers) {
+		List<Resolver<?, ?>> allResolvers = createDefaultResolvers();
+		allResolvers.addAll(Arrays.asList(resolvers));
+		System.err.println("Resolvers: " + allResolvers);
+		return repositoryWithResolvers(allResolvers);
+	}
 
-    private static ResolverRepository repositoryWithResolvers(List<Resolver<?, ?>> resolvers) {
-        ListBackedResolverRepository repository = new ListBackedResolverRepository();
-        repository.setResolvers(resolvers);
-        return repository;
-    }
+	private static ResolverRepository repositoryWithResolvers(List<Resolver<?, ?>> resolvers) {
+		ListBackedResolverRepository repository = new ListBackedResolverRepository();
+		repository.setResolvers(resolvers);
+		return repository;
+	}
 
-    private static List<Resolver<?, ?>> createDefaultResolvers() {
-        List<Resolver<?, ?>> resolvers = new ArrayList<>();
-        resolvers.add(new UnaryOperationResolver<>());
-        resolvers.add(new BinaryOperationResolver<>());
-        resolvers.add(new CreationOperationResolver<>());
-        resolvers.add(new TensoricScriptResolver<>());
-        resolvers.add(new ConversionOperationResolver<>());
-        resolvers.add(new BinaryPredicateResolver<>());
-        resolvers.add(new BinaryPredicateIterableResolver<>());
-        resolvers.add(new FunctionalExpressionResolver<>());
-        resolvers.add(new IterableExpressionToIterableResolver<>());
-        return resolvers;
-    }
+	private static List<Resolver<?, ?>> createDefaultResolvers() {
+		List<Resolver<?, ?>> resolvers = new ArrayList<>();
+		resolvers.add(new UnaryOperationResolver<>());
+		resolvers.add(new BinaryOperationResolver<>());
+		resolvers.add(new CreationOperationResolver<>());
+		resolvers.add(new TensoricScriptResolver<>());
+		resolvers.add(new ConversionOperationResolver<>());
+		resolvers.add(new BinaryPredicateResolver<>());
+		resolvers.add(new BinaryPredicateIterableResolver<>());
+		resolvers.add(new FunctionalExpressionResolver<>());
+		resolvers.add(new IterableExpressionToIterableResolver<>());
+		return resolvers;
+	}
 
-    public static final boolean contextResolvesAll(List<? extends Expression<?>> expressions,
-            ResolvingContext context) {
-        return expressions.stream().allMatch(context::resolves);
-    }
+	public static final boolean contextResolvesAll(List<? extends Expression<?>> expressions,
+			ResolvingContext context) {
+		return expressions.stream().allMatch(context::resolves);
+	}
 }

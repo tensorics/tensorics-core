@@ -28,77 +28,78 @@ import java.util.Objects;
 import org.tensorics.core.commons.util.Named;
 
 /**
- * An expression that needs no further processing. It contains already its own result, which can be simply retrieved by
- * the {@link #get()} method.
+ * An expression that needs no further processing. It contains already its own
+ * result, which can be simply retrieved by the {@link #get()} method.
  * 
  * @author kfuchsbe
- * @param <R> the type of the resulting value of the expression
+ * @param <R>
+ *            the type of the resulting value of the expression
  */
 public final class ResolvedExpression<R> implements Expression<R>, Named {
 
-    private final R value;
+	private final R value;
 
-    private ResolvedExpression(R value) {
-        this.value = value;
-    }
+	private ResolvedExpression(R value) {
+		this.value = value;
+	}
 
-    public static <T> ResolvedExpression<T> of(T value) {
-        return new ResolvedExpression<T>(value);
-    }
+	public static <T> ResolvedExpression<T> of(T value) {
+		return new ResolvedExpression<T>(value);
+	}
 
-    @Override
-    public boolean isResolved() {
-        return true;
-    }
+	@Override
+	public boolean isResolved() {
+		return true;
+	}
 
-    @Override
-    public R get() {
-        return value;
-    }
+	@Override
+	public R get() {
+		return value;
+	}
 
-    @Override
-    public List<Node> getChildren() {
-        return Collections.emptyList();
-    }
+	@Override
+	public List<Node> getChildren() {
+		return Collections.emptyList();
+	}
 
-    @Override
-    public String toString() {
-        return "ResolvedExpression [value=" + value + "]";
-    }
+	@Override
+	public String toString() {
+		return "ResolvedExpression [value=" + value + "]";
+	}
 
-    @Override
-    public String name() {
-        return Objects.toString(value);
-    }
+	@Override
+	public String name() {
+		return Objects.toString(value);
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        ResolvedExpression<?> other = (ResolvedExpression<?>) obj;
-        if (value == null) {
-            if (other.value != null) {
-                return false;
-            }
-        } else if (!value.equals(other.value)) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ResolvedExpression<?> other = (ResolvedExpression<?>) obj;
+		if (value == null) {
+			if (other.value != null) {
+				return false;
+			}
+		} else if (!value.equals(other.value)) {
+			return false;
+		}
+		return true;
+	}
 
 }

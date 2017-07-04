@@ -11,12 +11,12 @@ import org.tensorics.core.tree.domain.Expression;
 
 public class IsNotEqualExpression<T> extends BinaryPredicateExpression<T> {
 
-    public IsNotEqualExpression(Expression<T> left, Expression<T> right) {
-        super(new IsNotEqualTo<>(), left, right);
-    }
+	public IsNotEqualExpression(Expression<T> left, Expression<T> right) {
+		super(new IsNotEqualTo<>(), left, right);
+	}
 
-    @Override
-    public String toString() {
-        return format("%s is not equal to %s", getLeft(), getRight());
-    }
+	@Override
+	public String toString() {
+		return format("%s is not equal to %s", getLeft(), getRight());
+	}
 }

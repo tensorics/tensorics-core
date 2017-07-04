@@ -31,6 +31,6 @@ import org.tensorics.core.tensor.Position;
  */
 public interface ContextPropagationStrategy extends ManipulationOption {
 
-    Position contextForLeftRight(Position leftContext, Position rightContext);
+	Position contextForLeftRight(Position leftContext, Position rightContext);
 
 }

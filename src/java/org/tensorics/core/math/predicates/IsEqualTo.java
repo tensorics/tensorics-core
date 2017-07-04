@@ -6,14 +6,14 @@ package org.tensorics.core.math.predicates;
 
 public final class IsEqualTo<T> implements BinaryPredicate<T> {
 
-    @Override
-    public Boolean perform(T left, T right) {
-        return test(left, right);
-    }
+	@Override
+	public Boolean perform(T left, T right) {
+		return test(left, right);
+	}
 
-    @Override
-    public boolean test(T left, T right) {
-        return left.equals(right);
-    }
+	@Override
+	public boolean test(T left, T right) {
+		return left.equals(right);
+	}
 
 }

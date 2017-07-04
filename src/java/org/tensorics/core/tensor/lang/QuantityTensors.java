@@ -40,66 +40,67 @@ import com.google.common.base.Optional;
  */
 public final class QuantityTensors {
 
-    /**
-     * private constructor to avoid instantiation
-     */
-    private QuantityTensors() {
-        /* only static methods */
-    }
+	/**
+	 * private constructor to avoid instantiation
+	 */
+	private QuantityTensors() {
+		/* only static methods */
+	}
 
-    public static <S> Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
-        Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.context(tensor.context());
-        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().value());
-        }
-        return builder.build();
-    }
+	public static <S> Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
+		Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+		builder.context(tensor.context());
+		for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+			builder.at(entry.getKey()).put(entry.getValue().value());
+		}
+		return builder.build();
+	}
 
-    public static <S> Tensor<Optional<S>> errorsOf(Tensor<QuantifiedValue<S>> tensor) {
-        Builder<Optional<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.context(tensor.context());
-        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().error());
-        }
-        return builder.build();
-    }
+	public static <S> Tensor<Optional<S>> errorsOf(Tensor<QuantifiedValue<S>> tensor) {
+		Builder<Optional<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+		builder.context(tensor.context());
+		for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+			builder.at(entry.getKey()).put(entry.getValue().error());
+		}
+		return builder.build();
+	}
 
-    public static <S> Tensor<S> errorsOfOr(Tensor<QuantifiedValue<S>> tensor, S defaultValue) {
-        Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.context(tensor.context());
-        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().error().or(defaultValue));
-        }
-        return builder.build();
-    }
+	public static <S> Tensor<S> errorsOfOr(Tensor<QuantifiedValue<S>> tensor, S defaultValue) {
+		Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+		builder.context(tensor.context());
+		for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+			builder.at(entry.getKey()).put(entry.getValue().error().or(defaultValue));
+		}
+		return builder.build();
+	}
 
-    public static <S> Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
-        Builder<Boolean> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.context(tensor.context());
-        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().validity());
-        }
-        return builder.build();
-    }
+	public static <S> Tensor<Boolean> validitiesOf(Tensor<QuantifiedValue<S>> tensor) {
+		Builder<Boolean> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+		builder.context(tensor.context());
+		for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+			builder.at(entry.getKey()).put(entry.getValue().validity());
+		}
+		return builder.build();
+	}
 
-    public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
-        /*
-         * XXX this is nasty! Even an empty tensor should have a correct unit ...probably?
-         */
-        for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            return entry.getValue().unit();
-        }
-        throw new IllegalArgumentException("No entries in the given tensor! Cannot find out what is the unit.");
-    }
+	public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
+		/*
+		 * XXX this is nasty! Even an empty tensor should have a correct unit
+		 * ...probably?
+		 */
+		for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+			return entry.getValue().unit();
+		}
+		throw new IllegalArgumentException("No entries in the given tensor! Cannot find out what is the unit.");
+	}
 
-    public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
-        Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.context(tensor.context());
-        for (java.util.Map.Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(ImmutableQuantifiedValue.of(entry.getValue(), unit));
-        }
-        return builder.build();
-    }
+	public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
+		Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+		builder.context(tensor.context());
+		for (java.util.Map.Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+			builder.at(entry.getKey()).put(ImmutableQuantifiedValue.of(entry.getValue(), unit));
+		}
+		return builder.build();
+	}
 
 }

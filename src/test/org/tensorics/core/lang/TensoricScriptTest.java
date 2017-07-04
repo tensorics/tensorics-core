@@ -31,26 +31,26 @@ import org.tensorics.core.tree.domain.ExpressionIsUnresolvedException;
 
 public class TensoricScriptTest {
 
-    private TensoricScript<Double, Double> script;
+	private TensoricScript<Double, Double> script;
 
-    @Before
-    public void setUpBeforeClass() throws Exception {
-        script = new DoubleScript<Double>() {
+	@Before
+	public void setUpBeforeClass() throws Exception {
+		script = new DoubleScript<Double>() {
 
-            @Override
-            protected Expression<Double> describe() {
-                return null;
-            }
-        };
-    }
+			@Override
+			protected Expression<Double> describe() {
+				return null;
+			}
+		};
+	}
 
-    @Test
-    public void scriptIsNotResolved() {
-        assertFalse(script.isResolved());
-    }
+	@Test
+	public void scriptIsNotResolved() {
+		assertFalse(script.isResolved());
+	}
 
-    @Test(expected = ExpressionIsUnresolvedException.class)
-    public void scriptThrowsOnGet() {
-        script.get();
-    }
+	@Test(expected = ExpressionIsUnresolvedException.class)
+	public void scriptThrowsOnGet() {
+		script.get();
+	}
 }

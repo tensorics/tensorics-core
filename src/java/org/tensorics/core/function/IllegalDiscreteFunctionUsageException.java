@@ -29,9 +29,9 @@ package org.tensorics.core.function;
  */
 public class IllegalDiscreteFunctionUsageException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public IllegalDiscreteFunctionUsageException(String message) {
-        super(message);
-    }
+	public IllegalDiscreteFunctionUsageException(String message) {
+		super(message);
+	}
 }

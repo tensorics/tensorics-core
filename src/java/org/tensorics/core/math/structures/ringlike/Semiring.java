@@ -52,14 +52,15 @@ import org.tensorics.core.math.structures.grouplike.Monoid;
  * </ol>
  * 
  * @author kfuchsbe
- * @param <T> the type of the elements of the structure
+ * @param <T>
+ *            the type of the elements of the structure
  */
 public interface Semiring<T> extends RinglikeStructure<T> {
 
-    @Override
-    CommutativeMonoid<T> additionStructure();
+	@Override
+	CommutativeMonoid<T> additionStructure();
 
-    @Override
-    Monoid<T> multiplicationStructure();
+	@Override
+	Monoid<T> multiplicationStructure();
 
 }

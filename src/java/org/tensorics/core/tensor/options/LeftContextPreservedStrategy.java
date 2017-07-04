@@ -26,13 +26,13 @@ import org.tensorics.core.tensor.Position;
 
 public class LeftContextPreservedStrategy implements ContextPropagationStrategy {
 
-    @Override
-    public Position contextForLeftRight(Position leftContext, Position rightContext) {
-        return leftContext;
-    }
+	@Override
+	public Position contextForLeftRight(Position leftContext, Position rightContext) {
+		return leftContext;
+	}
 
-    @Override
-    public Class<? extends ManipulationOption> getMarkerInterface() {
-        return ContextPropagationStrategy.class;
-    }
+	@Override
+	public Class<? extends ManipulationOption> getMarkerInterface() {
+		return ContextPropagationStrategy.class;
+	}
 }

@@ -33,61 +33,64 @@ import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
 /**
- * Provide tensoric eDSL elements which serve as starting point for descriptions of expressions of quantities.
+ * Provide tensoric eDSL elements which serve as starting point for descriptions
+ * of expressions of quantities.
  * 
  * @author kfuchsbe
- * @param <V> the type of the elements of the field on which all the operations are based on.
+ * @param <V>
+ *            the type of the elements of the field on which all the operations
+ *            are based on.
  */
 public class QuantityExpressionSupport<V> {
 
-    private final QuantityOperationRepository<V> pseudoField;
+	private final QuantityOperationRepository<V> pseudoField;
 
-    protected QuantityExpressionSupport(QuantityEnvironment<V> environment) {
-        this.pseudoField = new QuantityOperationRepository<>(environment);
-    }
+	protected QuantityExpressionSupport(QuantityEnvironment<V> environment) {
+		this.pseudoField = new QuantityOperationRepository<>(environment);
+	}
 
-    public Expression<QuantifiedValue<V>> valueOf(V value, Unit unit) {
-        return ResolvedExpression.of((QuantifiedValue<V>) Tensorics.quantityOf(value, unit));
-    }
+	public Expression<QuantifiedValue<V>> valueOf(V value, Unit unit) {
+		return ResolvedExpression.of((QuantifiedValue<V>) Tensorics.quantityOf(value, unit));
+	}
 
-    public Expression<QuantifiedValue<V>> valueOf(V value, javax.measure.unit.Unit<?> unit) {
-        return valueOf(value, JScienceUnit.of(unit));
-    }
+	public Expression<QuantifiedValue<V>> valueOf(V value, javax.measure.unit.Unit<?> unit) {
+		return valueOf(value, JScienceUnit.of(unit));
+	}
 
-    public OngoingDeferredQuantifiedScalarOperation<V> calculate(V value, javax.measure.unit.Unit<?> unit) {
-        return calculate(valueOf(value, unit));
-    }
+	public OngoingDeferredQuantifiedScalarOperation<V> calculate(V value, javax.measure.unit.Unit<?> unit) {
+		return calculate(valueOf(value, unit));
+	}
 
-    public OngoingDeferredQuantifiedScalarOperation<V> calculate(Expression<QuantifiedValue<V>> scalar) {
-        return new OngoingDeferredQuantifiedScalarOperation<>(scalar, pseudoField);
-    }
+	public OngoingDeferredQuantifiedScalarOperation<V> calculate(Expression<QuantifiedValue<V>> scalar) {
+		return new OngoingDeferredQuantifiedScalarOperation<>(scalar, pseudoField);
+	}
 
-    public Expression<QuantifiedValue<V>> negativeOf(QuantifiedValue<V> element) {
-        return negativeOf(ResolvedExpression.of(element));
-    }
+	public Expression<QuantifiedValue<V>> negativeOf(QuantifiedValue<V> element) {
+		return negativeOf(ResolvedExpression.of(element));
+	}
 
-    public Expression<QuantifiedValue<V>> negativeOf(Expression<QuantifiedValue<V>> element) {
-        return new UnaryOperationExpression<>(pseudoField.additiveInversion(), element);
-    }
+	public Expression<QuantifiedValue<V>> negativeOf(Expression<QuantifiedValue<V>> element) {
+		return new UnaryOperationExpression<>(pseudoField.additiveInversion(), element);
+	}
 
-    public Expression<QuantifiedValue<V>> inverseOf(QuantifiedValue<V> element) {
-        return inverseOf(ResolvedExpression.of(element));
-    }
+	public Expression<QuantifiedValue<V>> inverseOf(QuantifiedValue<V> element) {
+		return inverseOf(ResolvedExpression.of(element));
+	}
 
-    public Expression<QuantifiedValue<V>> inverseOf(Expression<QuantifiedValue<V>> element) {
-        return new UnaryOperationExpression<>(pseudoField.multiplicativeInversion(), element);
-    }
+	public Expression<QuantifiedValue<V>> inverseOf(Expression<QuantifiedValue<V>> element) {
+		return new UnaryOperationExpression<>(pseudoField.multiplicativeInversion(), element);
+	}
 
-    public QuantifiedValue<V> one() {
-        return pseudoField.one();
-    }
+	public QuantifiedValue<V> one() {
+		return pseudoField.one();
+	}
 
-    public QuantifiedValue<V> zero() {
-        return pseudoField.zero();
-    }
+	public QuantifiedValue<V> zero() {
+		return pseudoField.zero();
+	}
 
-    public QuantifiedValue<V> two() {
-        return pseudoField.two();
-    }
+	public QuantifiedValue<V> two() {
+		return pseudoField.two();
+	}
 
 }

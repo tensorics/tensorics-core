@@ -32,77 +32,80 @@ import org.tensorics.core.tree.domain.Node;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Represents an expression, which takes takes (expressions of) objects of one type and converts them into others.
+ * Represents an expression, which takes takes (expressions of) objects of one
+ * type and converts them into others.
  * 
  * @author kfuchsbe
- * @param <T> the type of the values of the tensor
- * @param <R> the type of the tensorbacked object
+ * @param <T>
+ *            the type of the values of the tensor
+ * @param <R>
+ *            the type of the tensorbacked object
  */
 public class ConversionOperationExpression<T, R> extends AbstractDeferredExpression<R> {
 
-    private final Expression<T> sourceObject;
-    private final Conversion<T, R> operation;
+	private final Expression<T> sourceObject;
+	private final Conversion<T, R> operation;
 
-    public ConversionOperationExpression(Conversion<T, R> operation, Expression<T> source) {
-        super();
-        this.operation = operation;
-        this.sourceObject = source;
-    }
+	public ConversionOperationExpression(Conversion<T, R> operation, Expression<T> source) {
+		super();
+		this.operation = operation;
+		this.sourceObject = source;
+	}
 
-    @Override
-    public List<Node> getChildren() {
-        return ImmutableList.<Node> of(sourceObject);
-    }
+	@Override
+	public List<Node> getChildren() {
+		return ImmutableList.<Node>of(sourceObject);
+	}
 
-    public Expression<T> getSource() {
-        return sourceObject;
-    }
+	public Expression<T> getSource() {
+		return sourceObject;
+	}
 
-    public Conversion<T, R> getOperation() {
-        return operation;
-    }
+	public Conversion<T, R> getOperation() {
+		return operation;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((operation == null) ? 0 : operation.hashCode());
-        result = prime * result + ((sourceObject == null) ? 0 : sourceObject.hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((operation == null) ? 0 : operation.hashCode());
+		result = prime * result + ((sourceObject == null) ? 0 : sourceObject.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        ConversionOperationExpression<?, ?> other = (ConversionOperationExpression<?, ?>) obj;
-        if (operation == null) {
-            if (other.operation != null) {
-                return false;
-            }
-        } else if (!operation.equals(other.operation)) {
-            return false;
-        }
-        if (sourceObject == null) {
-            if (other.sourceObject != null) {
-                return false;
-            }
-        } else if (!sourceObject.equals(other.sourceObject)) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ConversionOperationExpression<?, ?> other = (ConversionOperationExpression<?, ?>) obj;
+		if (operation == null) {
+			if (other.operation != null) {
+				return false;
+			}
+		} else if (!operation.equals(other.operation)) {
+			return false;
+		}
+		if (sourceObject == null) {
+			if (other.sourceObject != null) {
+				return false;
+			}
+		} else if (!sourceObject.equals(other.sourceObject)) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + " [sourceObject=" + sourceObject + ", operation=" + operation + "]";
-    }
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " [sourceObject=" + sourceObject + ", operation=" + operation + "]";
+	}
 
 }

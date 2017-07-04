@@ -36,20 +36,20 @@ import org.tensorics.core.tree.domain.Expression;
  */
 public final class TensorbackedExpressions {
 
-    /**
-     * Private constructor to avoid instantiation
-     */
-    private TensorbackedExpressions() {
-        /* Only static methods */
-    }
+	/**
+	 * Private constructor to avoid instantiation
+	 */
+	private TensorbackedExpressions() {
+		/* Only static methods */
+	}
 
-    public static <V, TB extends Tensorbacked<V>> Expression<Tensor<V>> extracted(Expression<TB> tensorbacked) {
-        return new ConversionOperationExpression<>(new TensorExtractionOperation<V, TB>(), tensorbacked);
-    }
+	public static <V, TB extends Tensorbacked<V>> Expression<Tensor<V>> extracted(Expression<TB> tensorbacked) {
+		return new ConversionOperationExpression<>(new TensorExtractionOperation<V, TB>(), tensorbacked);
+	}
 
-    public static <V, TB extends Tensorbacked<V>> Expression<TB> wrapped(Class<TB> resultType,
-            Expression<Tensor<V>> tensor) {
-        return new ConversionOperationExpression<>(new TensorWrappingOperation<>(resultType), tensor);
-    }
+	public static <V, TB extends Tensorbacked<V>> Expression<TB> wrapped(Class<TB> resultType,
+			Expression<Tensor<V>> tensor) {
+		return new ConversionOperationExpression<>(new TensorWrappingOperation<>(resultType), tensor);
+	}
 
 }

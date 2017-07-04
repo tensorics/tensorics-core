@@ -26,28 +26,30 @@ import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.conditions.QuantityPedicateRepository;
 
 /**
- * Part of a fluent API clause, which allows to formulate binary conditions on quantified scalar values.
+ * Part of a fluent API clause, which allows to formulate binary conditions on
+ * quantified scalar values.
  * 
- * @param <S> the type of the scalar values
+ * @param <S>
+ *            the type of the scalar values
  * @author mihostet
  */
 public class OngoingQuantifiedScalarBinaryPredicate<S> {
 
-    private final QuantityPedicateRepository<S> pseudoField;
-    private final QuantifiedValue<S> left;
+	private final QuantityPedicateRepository<S> pseudoField;
+	private final QuantifiedValue<S> left;
 
-    public OngoingQuantifiedScalarBinaryPredicate(QuantityPedicateRepository<S> pseudoField, QuantifiedValue<S> left) {
-        super();
-        this.pseudoField = pseudoField;
-        this.left = left;
-    }
+	public OngoingQuantifiedScalarBinaryPredicate(QuantityPedicateRepository<S> pseudoField, QuantifiedValue<S> left) {
+		super();
+		this.pseudoField = pseudoField;
+		this.left = left;
+	}
 
-    public boolean isLessThan(QuantifiedValue<S> right) {
-        return pseudoField.less().test(left, right);
-    }
+	public boolean isLessThan(QuantifiedValue<S> right) {
+		return pseudoField.less().test(left, right);
+	}
 
-    public boolean isGreaterThan(QuantifiedValue<S> right) {
-        return pseudoField.greater().test(left, right);
-    }
+	public boolean isGreaterThan(QuantifiedValue<S> right) {
+		return pseudoField.greater().test(left, right);
+	}
 
 }

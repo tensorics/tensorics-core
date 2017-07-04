@@ -28,9 +28,9 @@ import org.junit.Test;
 
 public class TensorStructuralsTest {
 
-    @Test
-    public void verifyUtilityClass() {
-        assertUtilityClass(TensorStructurals.class);
-    }
+	@Test
+	public void verifyUtilityClass() {
+		assertUtilityClass(TensorStructurals.class);
+	}
 
 }

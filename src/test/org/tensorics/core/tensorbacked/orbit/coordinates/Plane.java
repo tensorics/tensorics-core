@@ -23,6 +23,5 @@
 package org.tensorics.core.tensorbacked.orbit.coordinates;
 
 public enum Plane implements OrbitCoordinate {
-    H,
-    V;
+	H, V;
 }

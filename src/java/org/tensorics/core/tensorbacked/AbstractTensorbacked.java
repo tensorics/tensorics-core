@@ -30,75 +30,77 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 
 /**
- * An abstract class for classes that are backed by a tensor. The purpose of such classes is that they can be used for
- * calculations just in the same way (or at least in a similar way) as tensors themselves.
+ * An abstract class for classes that are backed by a tensor. The purpose of
+ * such classes is that they can be used for calculations just in the same way
+ * (or at least in a similar way) as tensors themselves.
  * 
  * @author kfuchsbe
- * @param <E> the type of the elements of the tensor, which backs this class
+ * @param <E>
+ *            the type of the elements of the tensor, which backs this class
  * @see Tensorbacked
  */
 public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    protected final Tensor<E> backingTensor;
+	protected final Tensor<E> backingTensor;
 
-    @SuppressWarnings("unchecked")
-    public AbstractTensorbacked(Tensor<E> tensor) {
-        TensorbackedInternals.verifyDimensions(this.getClass(), tensor);
-        Set<Class<?>> annotatedDimensions = TensorbackedInternals.dimensionsOf(this.getClass());
-        if (annotatedDimensions.equals(tensor.shape().dimensionSet())) {
-            this.backingTensor = tensor;
-        } else {
-            this.backingTensor = copyWithDimensions(tensor, annotatedDimensions);
-        }
-    }
+	@SuppressWarnings("unchecked")
+	public AbstractTensorbacked(Tensor<E> tensor) {
+		TensorbackedInternals.verifyDimensions(this.getClass(), tensor);
+		Set<Class<?>> annotatedDimensions = TensorbackedInternals.dimensionsOf(this.getClass());
+		if (annotatedDimensions.equals(tensor.shape().dimensionSet())) {
+			this.backingTensor = tensor;
+		} else {
+			this.backingTensor = copyWithDimensions(tensor, annotatedDimensions);
+		}
+	}
 
-    private static <E> Tensor<E> copyWithDimensions(Tensor<E> tensor, Set<Class<?>> annotatedDimensions) {
-        TensorBuilder<E> builder = Tensorics.builder(annotatedDimensions);
-        builder.putAll(tensor);
-        builder.context(tensor.context());
-        return builder.build();
-    }
+	private static <E> Tensor<E> copyWithDimensions(Tensor<E> tensor, Set<Class<?>> annotatedDimensions) {
+		TensorBuilder<E> builder = Tensorics.builder(annotatedDimensions);
+		builder.putAll(tensor);
+		builder.context(tensor.context());
+		return builder.build();
+	}
 
-    @Override
-    public Tensor<E> tensor() {
-        return this.backingTensor;
-    }
+	@Override
+	public Tensor<E> tensor() {
+		return this.backingTensor;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((backingTensor == null) ? 0 : backingTensor.hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((backingTensor == null) ? 0 : backingTensor.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        AbstractTensorbacked<?> other = (AbstractTensorbacked<?>) obj;
-        if (backingTensor == null) {
-            if (other.backingTensor != null) {
-                return false;
-            }
-        } else if (!backingTensor.equals(other.backingTensor)) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		AbstractTensorbacked<?> other = (AbstractTensorbacked<?>) obj;
+		if (backingTensor == null) {
+			if (other.backingTensor != null) {
+				return false;
+			}
+		} else if (!backingTensor.equals(other.backingTensor)) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + " [backingTensor=" + backingTensor + "]";
-    }
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " [backingTensor=" + backingTensor + "]";
+	}
 
 }

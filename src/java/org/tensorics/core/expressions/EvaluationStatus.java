@@ -5,10 +5,9 @@
 package org.tensorics.core.expressions;
 
 public enum EvaluationStatus {
-    EVALUATED,
-    NOT_EVALUATED;
+	EVALUATED, NOT_EVALUATED;
 
-    public static EvaluationStatus fromBoolean(boolean isExecuted) {
-        return isExecuted ? EVALUATED : NOT_EVALUATED;
-    }
+	public static EvaluationStatus fromBoolean(boolean isExecuted) {
+		return isExecuted ? EVALUATED : NOT_EVALUATED;
+	}
 }

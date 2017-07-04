@@ -35,52 +35,52 @@ import com.google.common.collect.ImmutableSet;
 
 public class PositionArrayIndexMappingTest {
 
-    private static final ImmutableSet<Long> LONGS = ImmutableSet.of(5L, 7L);
-    private static final ImmutableSet<Integer> INTS = ImmutableSet.of(1, 2);
-    private static final ImmutableSet<String> STRINGS = ImmutableSet.of("A", "B", "C");
-    private static final int TOTAL_SIZE = 3 * 2 * 2;
+	private static final ImmutableSet<Long> LONGS = ImmutableSet.of(5L, 7L);
+	private static final ImmutableSet<Integer> INTS = ImmutableSet.of(1, 2);
+	private static final ImmutableSet<String> STRINGS = ImmutableSet.of("A", "B", "C");
+	private static final int TOTAL_SIZE = 3 * 2 * 2;
 
-    @Test
-    public void buildEmptyDoesNotThrow() {
-        PositionIndexer mapping = PositionIndexer.builder().build();
-        assertNotNull(mapping);
-    }
+	@Test
+	public void buildEmptyDoesNotThrow() {
+		PositionIndexer mapping = PositionIndexer.builder().build();
+		assertNotNull(mapping);
+	}
 
-    @Test
-    public void threeDimensionPositionsAreUnique() {
-        Builder builder = PositionIndexer.builder();
-        builder.put(String.class, STRINGS);
-        builder.put(Integer.class, INTS);
-        builder.put(Long.class, LONGS);
-        PositionIndexer mapping = builder.build();
+	@Test
+	public void threeDimensionPositionsAreUnique() {
+		Builder builder = PositionIndexer.builder();
+		builder.put(String.class, STRINGS);
+		builder.put(Integer.class, INTS);
+		builder.put(Long.class, LONGS);
+		PositionIndexer mapping = builder.build();
 
-        ImmutableSet.Builder<Integer> builder1 = ImmutableSet.builder();
-        for (Position position : allPositions()) {
-            builder1.add(mapping.indexFor(position));
-        }
-        ImmutableSet<Integer> indizes = builder1.build();
+		ImmutableSet.Builder<Integer> builder1 = ImmutableSet.builder();
+		for (Position position : allPositions()) {
+			builder1.add(mapping.indexFor(position));
+		}
+		ImmutableSet<Integer> indizes = builder1.build();
 
-        assertThat(indizes.size(), equalTo(TOTAL_SIZE));
-        assertThat(indizes, equalTo(ImmutableSet.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)));
-    }
+		assertThat(indizes.size(), equalTo(TOTAL_SIZE));
+		assertThat(indizes, equalTo(ImmutableSet.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)));
+	}
 
-    private Set<Position> allPositions() {
-        ImmutableSet.Builder<Position> builder = ImmutableSet.builder();
-        for (String string : STRINGS) {
-            for (Integer intValue : INTS) {
-                for (Long longValue : LONGS) {
-                    builder.add(Position.of(string, intValue, longValue));
-                }
-            }
-        }
-        return builder.build();
-    }
+	private Set<Position> allPositions() {
+		ImmutableSet.Builder<Position> builder = ImmutableSet.builder();
+		for (String string : STRINGS) {
+			for (Integer intValue : INTS) {
+				for (Long longValue : LONGS) {
+					builder.add(Position.of(string, intValue, longValue));
+				}
+			}
+		}
+		return builder.build();
+	}
 
-    @Test(expected = IllegalArgumentException.class)
-    public void putTwiceSameDimensionThrows() {
-        Builder builder = PositionIndexer.builder();
-        builder.put(String.class, STRINGS);
-        builder.put(String.class, STRINGS);
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void putTwiceSameDimensionThrows() {
+		Builder builder = PositionIndexer.builder();
+		builder.put(String.class, STRINGS);
+		builder.put(String.class, STRINGS);
+	}
 
 }

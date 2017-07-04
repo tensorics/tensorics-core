@@ -26,60 +26,62 @@ import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvedExpression;
 
 /**
- * Provides methods to describe the right hand part of a binary predicate for scalar expressions.
+ * Provides methods to describe the right hand part of a binary predicate for
+ * scalar expressions.
  * <p>
  * This class is part of the tensorics fluent API.
  *
- * @param <S> the type of the scalar values (elements of the field)
+ * @param <S>
+ *            the type of the scalar values (elements of the field)
  * @author caguiler
  */
 public class OngoingDeferredBinaryPredicate<S> {
 
-    private final ExtendedField<S> field;
-    private final Expression<S> left;
+	private final ExtendedField<S> field;
+	private final Expression<S> left;
 
-    public OngoingDeferredBinaryPredicate(ExtendedField<S> field, Expression<S> left) {
-        this.field = field;
-        this.left = left;
-    }
+	public OngoingDeferredBinaryPredicate(ExtendedField<S> field, Expression<S> left) {
+		this.field = field;
+		this.left = left;
+	}
 
-    public Expression<Boolean> isLessThan(Expression<S> expression) {
-        return new BinaryPredicateExpression<>(field.less(), left, expression);
-    }
+	public Expression<Boolean> isLessThan(Expression<S> expression) {
+		return new BinaryPredicateExpression<>(field.less(), left, expression);
+	}
 
-    public Expression<Boolean> isLessOrEqualThan(Expression<S> expression) {
-        return new BinaryPredicateExpression<>(field.lessOrEqual(), left, expression);
-    }
+	public Expression<Boolean> isLessOrEqualThan(Expression<S> expression) {
+		return new BinaryPredicateExpression<>(field.lessOrEqual(), left, expression);
+	}
 
-    public Expression<Boolean> isGreaterThan(Expression<S> expression) {
-        return new BinaryPredicateExpression<>(field.greater(), left, expression);
-    }
+	public Expression<Boolean> isGreaterThan(Expression<S> expression) {
+		return new BinaryPredicateExpression<>(field.greater(), left, expression);
+	}
 
-    public Expression<Boolean> isGreaterOrEqualThan(Expression<S> expression) {
-        return new BinaryPredicateExpression<>(field.greaterOrEqual(), left, expression);
-    }
+	public Expression<Boolean> isGreaterOrEqualThan(Expression<S> expression) {
+		return new BinaryPredicateExpression<>(field.greaterOrEqual(), left, expression);
+	}
 
-    public Expression<Boolean> isEqualTo(Expression<S> expression) {
-        return new BinaryPredicateExpression<>(field.equal(), left, expression);
-    }
+	public Expression<Boolean> isEqualTo(Expression<S> expression) {
+		return new BinaryPredicateExpression<>(field.equal(), left, expression);
+	}
 
-    public Expression<Boolean> isLessThan(S value) {
-        return isLessThan(ResolvedExpression.of(value));
-    }
+	public Expression<Boolean> isLessThan(S value) {
+		return isLessThan(ResolvedExpression.of(value));
+	}
 
-    public Expression<Boolean> isLessOrEqualThan(S value) {
-        return isLessOrEqualThan(ResolvedExpression.of(value));
-    }
+	public Expression<Boolean> isLessOrEqualThan(S value) {
+		return isLessOrEqualThan(ResolvedExpression.of(value));
+	}
 
-    public Expression<Boolean> isGreaterThan(S value) {
-        return isGreaterThan(ResolvedExpression.of(value));
-    }
+	public Expression<Boolean> isGreaterThan(S value) {
+		return isGreaterThan(ResolvedExpression.of(value));
+	}
 
-    public Expression<Boolean> isGreaterOrEqualThan(S value) {
-        return isGreaterOrEqualThan(ResolvedExpression.of(value));
-    }
+	public Expression<Boolean> isGreaterOrEqualThan(S value) {
+		return isGreaterOrEqualThan(ResolvedExpression.of(value));
+	}
 
-    public Expression<Boolean> isEqualTo(S value) {
-        return isEqualTo(ResolvedExpression.of(value));
-    }
+	public Expression<Boolean> isEqualTo(S value) {
+		return isEqualTo(ResolvedExpression.of(value));
+	}
 }

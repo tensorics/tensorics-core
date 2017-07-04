@@ -23,62 +23,63 @@
 package org.tensorics.core.units;
 
 /**
- * Encapsulates the implementation of unit by the use of units of the jscience library (V 4.3)
+ * Encapsulates the implementation of unit by the use of units of the jscience
+ * library (V 4.3)
  * 
  * @author kfuchsbe
  */
 public final class JScienceUnit implements Unit {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public static final JScienceUnit ONE = JScienceUnit.of(javax.measure.unit.Unit.ONE);
+	public static final JScienceUnit ONE = JScienceUnit.of(javax.measure.unit.Unit.ONE);
 
-    private final javax.measure.unit.Unit<?> unit;
+	private final javax.measure.unit.Unit<?> unit;
 
-    private JScienceUnit(javax.measure.unit.Unit<?> unit) {
-        this.unit = unit;
-    }
+	private JScienceUnit(javax.measure.unit.Unit<?> unit) {
+		this.unit = unit;
+	}
 
-    public static JScienceUnit of(javax.measure.unit.Unit<?> unit) {
-        return new JScienceUnit(unit);
-    }
+	public static JScienceUnit of(javax.measure.unit.Unit<?> unit) {
+		return new JScienceUnit(unit);
+	}
 
-    public javax.measure.unit.Unit<?> getUnit() {
-        return unit;
-    }
+	public javax.measure.unit.Unit<?> getUnit() {
+		return unit;
+	}
 
-    @Override
-    public String toString() {
-        return this.unit.toString();
-    }
+	@Override
+	public String toString() {
+		return this.unit.toString();
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        JScienceUnit other = (JScienceUnit) obj;
-        if (unit == null) {
-            if (other.unit != null) {
-                return false;
-            }
-        } else if (!unit.equals(other.unit)) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		JScienceUnit other = (JScienceUnit) obj;
+		if (unit == null) {
+			if (other.unit != null) {
+				return false;
+			}
+		} else if (!unit.equals(other.unit)) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((unit == null) ? 0 : unit.hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+		return result;
+	}
 
 }
