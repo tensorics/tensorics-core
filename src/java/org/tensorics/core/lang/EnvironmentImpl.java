@@ -84,5 +84,4 @@ public final class EnvironmentImpl<V> implements QuantityEnvironment<V> {
         return new EnvironmentImpl<>(extendedField, optionRegistry.with(newOption));
     }
 
-
 }

@@ -39,10 +39,10 @@ public final class InterpolatedFunction<X extends Comparable<X>, Y> implements C
     private InterpolatedFunction(DiscreteFunction<X, Y> function, InterpolationStrategy<X, Y> strategy) {
         this.interpolationStrategy = strategy;
         this.discreteFunction = function;
-        Preconditions
-                .checkArgument(discreteFunction != null, "Argument '" + "DiscreteFunction" + "' must not be null!");
-        Preconditions.checkArgument(interpolationStrategy != null, "Argument '" + "InterpolationStrategy"
-                + "' must not be null!");
+        Preconditions.checkArgument(discreteFunction != null,
+                "Argument '" + "DiscreteFunction" + "' must not be null!");
+        Preconditions.checkArgument(interpolationStrategy != null,
+                "Argument '" + "InterpolationStrategy" + "' must not be null!");
     }
 
     @Override

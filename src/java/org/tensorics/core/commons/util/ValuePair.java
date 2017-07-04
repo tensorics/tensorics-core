@@ -43,8 +43,8 @@ public final class ValuePair<V> extends AbstractPair<V> {
      * @param rightValue the right value of the pair
      */
     private ValuePair(V leftValue, V rightValue) {
-        super(checkNotNull(leftValue, "leftValue must not be null"), checkNotNull(rightValue,
-                "rightValue must not be null"));
+        super(checkNotNull(leftValue, "leftValue must not be null"),
+                checkNotNull(rightValue, "rightValue must not be null"));
     }
 
     public static <V> ValuePair<V> fromLeftRight(V leftValue, V rightValue) {

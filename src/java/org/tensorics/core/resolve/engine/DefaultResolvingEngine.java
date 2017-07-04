@@ -54,7 +54,8 @@ public class DefaultResolvingEngine implements ResolvingEngine {
     }
 
     @Override
-    public <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode, ResolvingOption... options) {
+    public <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
+            ResolvingOption... options) {
         return resolveDetailed(rootNode, Contexts.newResolvingContext(), options);
     }
 

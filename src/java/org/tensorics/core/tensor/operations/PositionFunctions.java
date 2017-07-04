@@ -26,7 +26,6 @@ import java.util.function.Supplier;
 
 import org.tensorics.core.tensor.Position;
 
-
 public final class PositionFunctions {
 
     private PositionFunctions() {

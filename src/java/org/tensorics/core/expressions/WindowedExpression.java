@@ -12,9 +12,9 @@ import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 import org.tensorics.core.tree.domain.Expression;
 
 /**
- * Expression that evaluates the targetExpression given the result of the enabling expression. The enabling
- * expression is an {@link Expression} of {@link Boolean} that decides if the targetExpression is
- * resolved or not. This expression resolves into an {@link EvaluationStatus}.
+ * Expression that evaluates the targetExpression given the result of the enabling expression. The enabling expression
+ * is an {@link Expression} of {@link Boolean} that decides if the targetExpression is resolved or not. This expression
+ * resolves into an {@link EvaluationStatus}.
  * 
  * @see WindowedExpressionResolver
  * @param T the type of the target expression

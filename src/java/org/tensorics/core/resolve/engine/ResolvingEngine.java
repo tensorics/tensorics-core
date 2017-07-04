@@ -41,6 +41,6 @@ public interface ResolvingEngine {
 
     <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode, ResolvingOption... options);
 
-    <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode, ResolvingContext initialContext,
-            ResolvingOption... options);
+    <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
+            ResolvingContext initialContext, ResolvingOption... options);
 }

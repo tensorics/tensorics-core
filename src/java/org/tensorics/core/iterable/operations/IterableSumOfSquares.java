@@ -31,7 +31,7 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
  * @author kfuchsbe
  * @param <V> the type of the elements of the field.
  */
-public class IterableSumOfSquares<V> extends ScalarSupport<V> implements IterableOperation<V> {
+public class IterableSumOfSquares<V> extends ScalarSupport<V>implements IterableOperation<V> {
 
     public IterableSumOfSquares(ExtendedField<V> field) {
         super(field);

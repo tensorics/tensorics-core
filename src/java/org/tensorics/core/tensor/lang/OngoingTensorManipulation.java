@@ -126,7 +126,7 @@ public class OngoingTensorManipulation<V> {
         @SuppressWarnings("unchecked")
         Class<C> dimension = (Class<C>) coordinate.getClass();
         Class<? super C> correctDimension = Coordinates.mapToAnEntry(dimension, tensor.shape().dimensionSet());
-        
+
         return TensorStructurals.from(tensor).reduce(correctDimension).bySlicingAt(coordinate);
     }
 

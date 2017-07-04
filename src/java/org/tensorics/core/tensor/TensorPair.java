@@ -54,8 +54,8 @@ public final class TensorPair<V> extends AbstractPair<Tensor<V>> {
      * @throws NullPointerException if one of the arguments is {@code null}
      */
     private TensorPair(Tensor<V> leftTensor, Tensor<V> rightTensor) {
-        super(checkNotNull(leftTensor, "leftTensor must not be null"), checkNotNull(rightTensor,
-                "rightTensor must not be null"));
+        super(checkNotNull(leftTensor, "leftTensor must not be null"),
+                checkNotNull(rightTensor, "rightTensor must not be null"));
     }
 
     public static <V> TensorPair<V> fromLeftRight(Tensor<V> leftTensor, Tensor<V> rightTensor) {

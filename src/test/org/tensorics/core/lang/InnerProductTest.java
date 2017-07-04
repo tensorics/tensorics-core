@@ -183,8 +183,8 @@ public class InnerProductTest extends TensoricDoubleSupport {
     }
 
     private Tensor<Double> simpleCoContraTimesCoContra() {
-        return calculate(coAndContravariant(1.0, 2.0, Coord.values())).times(
-                coAndContravariant(3.0, 4.0, Coord.values()));
+        return calculate(coAndContravariant(1.0, 2.0, Coord.values()))
+                .times(coAndContravariant(3.0, 4.0, Coord.values()));
     }
 
     private Tensor<Double> co2Contra2Multiplication() {
@@ -257,8 +257,8 @@ public class InnerProductTest extends TensoricDoubleSupport {
         Builder<Double> builder1 = ImmutableTensor.builder(Coord.class, CoCoord.class);
         for (Coord contra : coordinates) {
             for (Coord co : coordinates) {
-                builder1.at(contra, intantiator.create(co)).put(
-                        ((contra.ordinal() + 1) * contraFactor) + ((co.ordinal() + 1) * coFactor));
+                builder1.at(contra, intantiator.create(co))
+                        .put(((contra.ordinal() + 1) * contraFactor) + ((co.ordinal() + 1) * coFactor));
             }
         }
         return builder1.build();

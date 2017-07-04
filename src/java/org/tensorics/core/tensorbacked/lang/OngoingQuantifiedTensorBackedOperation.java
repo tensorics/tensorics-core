@@ -41,8 +41,8 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
  * @param <QTB> the type of the quantified tensor backed instances
  * @param <S> the type of the scalars (elements of the field on which all the operations are based on)
  */
-public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<QuantifiedValue<S>>, S> implements
-        OngoingOperation<QTB, QuantifiedValue<S>> {
+public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<QuantifiedValue<S>>, S>
+        implements OngoingOperation<QTB, QuantifiedValue<S>> {
 
     private final QuantityOperationRepository<S> pseudoField;
     private final QTB left;
@@ -92,8 +92,8 @@ public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<Qua
     }
 
     private QTB evaluate(Tensor<QuantifiedValue<S>> right, BinaryOperation<QuantifiedValue<S>> operation) {
-        Tensor<QuantifiedValue<S>> perform = new ElementBinaryOperation<>(operation, pseudoField.environment()
-                .options()).perform(left.tensor(), right);
+        Tensor<QuantifiedValue<S>> perform = new ElementBinaryOperation<>(operation,
+                pseudoField.environment().options()).perform(left.tensor(), right);
         return createBackedByTensor(classOf(left), perform);
     }
 

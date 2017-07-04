@@ -75,7 +75,7 @@ public final class ManipulationOptions {
                 new RequireBothValidStrategy(), //
                 new UncorrelatedErrorPropagationStrategy<>(field), //
                 new JScienceQuantificationStrategy<>(field.cheating()), //
-                new LeftContextPreservedStrategy(), 
+                new LeftContextPreservedStrategy(),
                 new ImmutableConfidenceLevel<>(field.cheating().fromDouble(DEFAULT_CONFIDENCE_LEVEL)),
                 new LinearInterpolationStrategy<>(field)));
     }

@@ -19,7 +19,7 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
  * @author caguiler
  * @param <V> the type of the scalars (elements of the field on which the standard deviation will be based)
  */
-public class IterableStd<V> extends ScalarSupport<V> implements IterableOperation<V> {
+public class IterableStd<V> extends ScalarSupport<V>implements IterableOperation<V> {
 
     private final IterableVar<V> iterableVar;
     private final ExtendedField<V> field;

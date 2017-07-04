@@ -30,7 +30,6 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
-
 /**
  * Uses the given function from a position to the tensor to create the values of the tensor.
  * 

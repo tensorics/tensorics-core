@@ -39,8 +39,8 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
  * @author kfuchsbe
  * @param <S> the type of the scalar values (elements of the fields)
  */
-public class OngoingDeferredQuantifiedTensorOperation<S> implements
-        OngoingOperation<Expression<Tensor<QuantifiedValue<S>>>, QuantifiedValue<S>> {
+public class OngoingDeferredQuantifiedTensorOperation<S>
+        implements OngoingOperation<Expression<Tensor<QuantifiedValue<S>>>, QuantifiedValue<S>> {
 
     private final QuantityOperationRepository<S> pseudoField;
     private final Expression<Tensor<QuantifiedValue<S>>> left;

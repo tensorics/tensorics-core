@@ -33,7 +33,5 @@ public class Team {
             return false;
         return true;
     }
-    
-    
 
 }
