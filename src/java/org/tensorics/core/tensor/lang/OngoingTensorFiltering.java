@@ -55,7 +55,7 @@ public class OngoingTensorFiltering<E> {
         builder.context(tensor.context());
         for (Entry<Position, E> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             if (coordinateRange.contains(entry.getKey().coordinateFor(coordinateClass))) {
-                builder.putAt(entry.getValue(), entry.getKey());
+                builder.put(entry.getKey(), entry.getValue());
             }
         }
         return builder.build();

@@ -154,7 +154,7 @@ public final class Tensorics {
 	public static <T> Tensor<T> zeroDimensionalOf(T value) {
 		return ImmutableTensor.zeroDimensionalOf(value);
 	}
-	
+
 	/**
 	 * @see ImmutableScalar#of(Object)
 	 */
@@ -441,6 +441,20 @@ public final class Tensorics {
 	 */
 	public static <V> Map<Position, V> mapFrom(Tensor<V> tensor) {
 		return TensorInternals.mapFrom(tensor);
+	}
+
+	/**
+	 * @see Position#at(Set)
+	 */
+	public static Position at(Set<?> coordinates) {
+		return Position.at(coordinates);
+	}
+
+	/**
+	 * @see Position#at(Object...)
+	 */
+	public static Position at(Object... coordinates) {
+		return Position.at(coordinates);
 	}
 
 }

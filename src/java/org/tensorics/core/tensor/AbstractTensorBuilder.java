@@ -24,6 +24,7 @@ package org.tensorics.core.tensor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -61,42 +62,16 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 		});
 	}
 
-	/**
-	 * Prepares to set a value at given position (a combined set of coordinates)
-	 * 
-	 * @param entryPosition
-	 *            on which future value will be placed.
-	 * @return builder object to be able to put Value in.
-	 */
-	public final OngoingPut<E> at(Position entryPosition) {
-		return new OngoingPut<E>(entryPosition, this);
-	}
-
 	@Override
-	public final void putAt(E value, Position position) {
+	public final void put(Position position, E value) {
 		Preconditions.checkNotNull(value, "value must not be null!");
 		Preconditions.checkNotNull(position, "position must not be null");
 		Positions.assertConsistentDimensions(position, this.dimensions);
 		this.callback.verify(value);
-		this.putItAt(value, position);
+		this.putIt(position, value);
 	}
 
-	protected abstract void putItAt(E value, Position position);
-
-	@Override
-	public final void putAt(E value, Object... coordinates) {
-		this.putAt(value, Position.of(coordinates));
-	}
-
-	@Override
-	public void putAt(E value, Set<?> coordinates) {
-		putAt(value, Position.of(coordinates));
-	}
-
-	@Override
-	public void putAllAt(Tensor<E> tensor, Set<?> coordinates) {
-		putAllAt(tensor, Position.of(coordinates));
-	}
+	protected abstract void putIt(Position position, E value);
 
 	@Override
 	public void context(Position newContext) {
@@ -114,28 +89,34 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 		}
 	}
 
-	public final OngoingPut<E> at(Set<?> coordinates) {
-		return this.at(Position.of(coordinates));
-	}
-
-	@SafeVarargs
-	public final OngoingPut<E> at(Object... coordinates) {
-		return this.at(Position.of(coordinates));
+	@Override
+	public void putAll(Tensor<E> tensor) {
+		this.putAll(Position.empty(), tensor);
 	}
 
 	@Override
-	public final void putAllAt(Tensor<E> tensor, Position position) {
+	public final void putAll(Position position, Tensor<E> tensor) {
 		checkNotNull(tensor, "The tensor must not be null!");
+		putAll(position, TensorInternals.mapFrom(tensor));
+	}
+
+	@Override
+	public void putAll(Map<Position, E> newEntries) {
+		putAll(Position.empty(), newEntries);
+	}
+
+	@Override
+	public void putAll(Position position, Map<Position, E> map) {
+		checkNotNull(map, "The map must not be null!");
 		checkNotNull(position, "The position must not be null!");
-		for (Entry<Position, E> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-			putAt(entry.getValue(), Positions.union(position, entry.getKey()));
+		for (Entry<Position, E> entry : map.entrySet()) {
+			put(Positions.union(position, entry.getKey()), entry.getValue());
 		}
 	}
 
 	@Override
-	@SafeVarargs
-	public final void putAllAt(Tensor<E> tensor, Object... coordinates) {
-		putAllAt(tensor, Position.of(coordinates));
+	public void put(java.util.Map.Entry<Position, E> entry) {
+		this.put(entry.getKey(), entry.getValue());
 	}
 
 	public Set<Class<?>> dimensions() {

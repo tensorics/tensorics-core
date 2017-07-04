@@ -22,7 +22,6 @@
 package org.tensorics.core.tensor.specific;
 
 import java.util.Arrays;
-import java.util.Map;
 
 import org.tensorics.core.tensor.AbstractTensorBuilder;
 import org.tensorics.core.tensor.Position;
@@ -89,7 +88,7 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
 		}
 
 		@Override
-		protected void putItAt(Double value, Position position) {
+		protected void putIt(Position position, Double value) {
 			this.values[indexer.indexFor(position)] = value;
 		}
 
@@ -103,25 +102,9 @@ public class ImmutableDoubleArrayBackedTensor implements Tensor<Double> {
 		}
 
 		@Override
-		public void putAllMap(Map<Position, Double> newEntries) {
-			for (java.util.Map.Entry<Position, Double> one : newEntries.entrySet()) {
-				putItAt(one.getValue(), one.getKey());
-			}
-		}
-
-		@Override
-		public void removeAt(Position position) {
+		public void remove(Position position) {
 			throw new UnsupportedOperationException("Cannot remove a value");
 		}
 
-		@Override
-		public void put(java.util.Map.Entry<Position, Double> entry) {
-			putAt(entry.getValue(), entry.getKey());
-		}
-
-		@Override
-		public void putAll(Tensor<Double> tensor) {
-			putAllAt(tensor);
-		}
 	}
 }

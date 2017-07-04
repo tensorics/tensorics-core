@@ -62,7 +62,7 @@ public final class OngoingMapOut<V> {
         Multimap<Set<?>, Entry<Position, V>> fullEntries = groupBy(TensorInternals.mapFrom(tensor).entrySet(), dimension);
         for (Set<?> key : fullEntries.keySet()) {
             Map<C1, V> values = mapByDimension(fullEntries.get(key), dimension);
-            tensorBuilder.at(Position.of(key)).put(values);
+            tensorBuilder.put(Position.of(key), values);
         }
         return tensorBuilder.build();
     }

@@ -51,7 +51,7 @@ public final class QuantityTensors {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().value());
+            builder.put(entry.getKey(), entry.getValue().value());
         }
         return builder.build();
     }
@@ -60,7 +60,7 @@ public final class QuantityTensors {
         Builder<Optional<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().error());
+            builder.put(entry.getKey(), entry.getValue().error());
         }
         return builder.build();
     }
@@ -69,7 +69,7 @@ public final class QuantityTensors {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().error().or(defaultValue));
+            builder.put(entry.getKey(), entry.getValue().error().or(defaultValue));
         }
         return builder.build();
     }
@@ -78,7 +78,7 @@ public final class QuantityTensors {
         Builder<Boolean> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(entry.getValue().validity());
+            builder.put(entry.getKey(), entry.getValue().validity());
         }
         return builder.build();
     }
@@ -97,7 +97,7 @@ public final class QuantityTensors {
         Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());
         for (java.util.Map.Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.at(entry.getKey()).put(ImmutableQuantifiedValue.of(entry.getValue(), unit));
+            builder.put(entry.getKey(), ImmutableQuantifiedValue.of(entry.getValue(), unit));
         }
         return builder.build();
     }

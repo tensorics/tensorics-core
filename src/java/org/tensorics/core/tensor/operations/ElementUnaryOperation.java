@@ -49,7 +49,7 @@ public class ElementUnaryOperation<V> implements UnaryOperation<Tensor<V>> {
         Shape shape = tensor.shape();
         Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
         for (Position position : shape.positionSet()) {
-            builder.at(position).put(elementOperation.perform(tensor.get(position)));
+            builder.put(position, elementOperation.perform(tensor.get(position)));
         }
         return builder.build();
     }

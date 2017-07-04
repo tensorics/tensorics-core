@@ -53,13 +53,13 @@ public class CoordinatesOnInterfacesTest {
     @Test
     public void testBuilderPutValidInstancesWithFinalClasses() {
         TensorBuilder<Double> builder = Tensorics.builder(TestClassA.class, TestClassB.class, TestClassC.class);
-        builder.putAt(SAMPLE_VALUE, Position.of(new TestClassA(1), new TestClassB(1), new TestClassC()));
+        builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassC()), SAMPLE_VALUE);
     }
 
     @Test
     public void testBuilderPutValidInstances() {
         TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestC.class);
-        builder.putAt(SAMPLE_VALUE, Position.of(new TestClassA(1), new TestClassB(1), new TestClassC()));
+        builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassC()), SAMPLE_VALUE);
     }
 
     @Test
@@ -67,9 +67,9 @@ public class CoordinatesOnInterfacesTest {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("assignable");
         TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
-        builder.putAt(SAMPLE_VALUE, Position.of(new TestClassA(1), new TestClassB(1), new TestClassD()));
+        builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassD()), SAMPLE_VALUE);
     }
-
+    
     /*
      * Should not put if position consist of a class that inherits from two dimension classes.
      */
@@ -78,7 +78,7 @@ public class CoordinatesOnInterfacesTest {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("assignable");
         TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
-        builder.putAt(SAMPLE_VALUE, Position.of(new TestClassA(1), new TestClassB(1), new TestClassWrongD()));
+        builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassWrongD()), SAMPLE_VALUE);
     }
 
     /*
@@ -88,7 +88,7 @@ public class CoordinatesOnInterfacesTest {
     public void testTensorGetFinalClasses() {
         TensorBuilder<Double> builder = Tensorics.builder(TestClassA.class, TestClassB.class);
         Position testPosition = Position.of(new TestClassA(1), new TestClassB(1));
-        builder.putAt(SAMPLE_VALUE, testPosition);
+        builder.put(testPosition, SAMPLE_VALUE);
         Tensor<Double> tensor = builder.build();
         tensor.get(testPosition);
     }
@@ -104,8 +104,8 @@ public class CoordinatesOnInterfacesTest {
         Position testPosition = Position.of(new TestClassA(1), new TestClassB(2));
         Position testPosition2 = Position.of(new TestClassA(2), new TestClassB(1));
 
-        builder.putAt(SAMPLE_VALUE, testPosition);
-        builder.putAt(SAMPLE_VALUE * SAMPLE_VALUE, testPosition2);
+        builder.put(testPosition, SAMPLE_VALUE);
+        builder.put(testPosition2, (SAMPLE_VALUE * SAMPLE_VALUE));
 
         Tensor<Double> tensor = builder.build();
 
@@ -164,9 +164,9 @@ public class CoordinatesOnInterfacesTest {
         Position testPosition2 = Position.of(new TestClassA(2), new TestClassB(1));
         Position testPosition3 = Position.of(new TestClassA(3), new TestClassB(1));
 
-        builder.putAt(SAMPLE_VALUE, testPosition);
-        builder.putAt(SAMPLE_VALUE * SAMPLE_VALUE, testPosition2);
-        builder.putAt(SAMPLE_VALUE * SAMPLE_VALUE * SAMPLE_VALUE, testPosition3);
+        builder.put(testPosition, SAMPLE_VALUE);
+        builder.put(testPosition2, (SAMPLE_VALUE * SAMPLE_VALUE));
+        builder.put(testPosition3, (SAMPLE_VALUE * SAMPLE_VALUE * SAMPLE_VALUE));
 
         Tensor<Double> tensor = builder.build();
 
@@ -178,7 +178,7 @@ public class CoordinatesOnInterfacesTest {
     public void testShapeForGivenInterface() {
         TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestC.class);
         TestClassA testClassA = new TestClassA(1);
-        builder.putAt(SAMPLE_VALUE, Position.of(testClassA, new TestClassB(1), new TestClassC()));
+        builder.put(Position.of(testClassA, new TestClassB(1), new TestClassC()), SAMPLE_VALUE);
         Tensor<Double> tensor = builder.build();
         Set<TestA> coordinatesOfType = tensor.shape().coordinatesOfType(TestA.class);
         assertTrue(coordinatesOfType.contains(testClassA));

@@ -90,7 +90,7 @@ public final class TensorStructurals {
         for (Tensor<E> oneTensor : tensors) {
             if (TensorStructurals.isValidInTermsOfDimensions(oneTensor, refDimensionSet,
                     refContextPosition.dimensionSet())) {
-                tensorBuilder.putAllAt(oneTensor, oneTensor.context());
+                tensorBuilder.putAll(oneTensor.context(), oneTensor);
             } else {
                 throw new IllegalArgumentException(
                         "One of the tensors in the provided list does not fit the others on dimensions."
@@ -127,7 +127,7 @@ public final class TensorStructurals {
     public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {
         Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.putAt(function.apply(entry), entry.getKey());
+            builder.put(entry.getKey(), function.apply(entry));
         }
         return builder.build();
     }
@@ -136,7 +136,7 @@ public final class TensorStructurals {
         Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());
         for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-            builder.putAt(function.apply(entry.getValue()), entry.getKey());
+            builder.put(entry.getKey(), function.apply(entry.getValue()));
         }
         return builder.build();
     }
@@ -153,7 +153,7 @@ public final class TensorStructurals {
         }
         Builder<S> builder = ImmutableTensor
                 .builder(Sets.union(tensor.shape().dimensionSet(), tensor.context().dimensionSet()));
-        builder.putAllAt(tensor, tensor.context());
+        builder.putAll(tensor.context(), tensor);
         return builder.build();
     }
 
@@ -177,9 +177,9 @@ public final class TensorStructurals {
         Shape shape = Shapes.union(tensor.shape(), second.shape());
         for (Position position : shape.positionSet()) {
             if (tensor.shape().contains(position)) {
-                builder.putAt(tensor.get(position), position);
+                builder.put(position, tensor.get(position));
             } else {
-                builder.putAt(second.get(position), position);
+                builder.put(position, second.get(position));
             }
         }
         return builder.build();

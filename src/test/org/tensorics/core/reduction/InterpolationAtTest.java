@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 
@@ -126,12 +127,17 @@ public class InterpolationAtTest {
 
     private Tensor<Double> getTensorTwoCoordinates() {
         TensorBuilder<Double> builder = Tensorics.builder(ComparableCoordinate.class, TestNameCoordinate.class);
+		Object[] coordinates = { new ComparableCoordinate(1), new TestNameCoordinate("TEST1") };
 
-        builder.putAt(1.0, new ComparableCoordinate(1), new TestNameCoordinate("TEST1"));
-        builder.putAt(1.0, new ComparableCoordinate(1), new TestNameCoordinate("TEST2"));
-        builder.putAt(2.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1"));
-        builder.putAt(3.5, new ComparableCoordinate(3), new TestNameCoordinate("TEST1"));
-        builder.putAt(4.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"));
+        builder.put(Position.at(coordinates), 1.0);
+		Object[] coordinates1 = { new ComparableCoordinate(1), new TestNameCoordinate("TEST2") };
+        builder.put(Position.at(coordinates1), 1.0);
+		Object[] coordinates2 = { NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1") };
+        builder.put(Position.at(coordinates2), 2.0);
+		Object[] coordinates3 = { new ComparableCoordinate(3), new TestNameCoordinate("TEST1") };
+        builder.put(Position.at(coordinates3), 3.5);
+		Object[] coordinates4 = { new ComparableCoordinate(3), new TestNameCoordinate("TEST2") };
+        builder.put(Position.at(coordinates4), 4.0);
 
         return builder.build();
     }
@@ -139,30 +145,40 @@ public class InterpolationAtTest {
     private Tensor<Double> getTensorThreeCoordinates() {
         TensorBuilder<Double> builder = Tensorics.builder(ComparableCoordinate.class, TestNameCoordinate.class,
                 TestEnum.class);
+		Object[] coordinates = { new ComparableCoordinate(1), new TestNameCoordinate("TEST1"), TestEnum.ENUM1 };
 
         // enum1
-        builder.putAt(1.0, new ComparableCoordinate(1), new TestNameCoordinate("TEST1"), TestEnum.ENUM1);
-        builder.putAt(1.0, new ComparableCoordinate(1), new TestNameCoordinate("TEST2"), TestEnum.ENUM1);
-        builder.putAt(2.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1"),
-                TestEnum.ENUM1);
-        builder.putAt(3.5, new ComparableCoordinate(3), new TestNameCoordinate("TEST1"), TestEnum.ENUM1);
-        builder.putAt(4.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"), TestEnum.ENUM1);
-        builder.putAt(3.25, new ComparableCoordinate(4), new TestNameCoordinate("TEST1"), TestEnum.ENUM1);
-        builder.putAt(0.32, new ComparableCoordinate(4), new TestNameCoordinate("TEST2"), TestEnum.ENUM1);
-        builder.putAt(4.25, NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END, new TestNameCoordinate("TEST2"),
-                TestEnum.ENUM1);
+        builder.put(Position.at(coordinates), 1.0);
+		Object[] coordinates1 = { new ComparableCoordinate(1), new TestNameCoordinate("TEST2"), TestEnum.ENUM1 };
+        builder.put(Position.at(coordinates1), 1.0);
+		Object[] coordinates2 = { NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1"), TestEnum.ENUM1 };
+        builder.put(Position.at(coordinates2), 2.0);
+		Object[] coordinates3 = { new ComparableCoordinate(3), new TestNameCoordinate("TEST1"), TestEnum.ENUM1 };
+        builder.put(Position.at(coordinates3), 3.5);
+		Object[] coordinates4 = { new ComparableCoordinate(3), new TestNameCoordinate("TEST2"), TestEnum.ENUM1 };
+        builder.put(Position.at(coordinates4), 4.0);
+		Object[] coordinates5 = { new ComparableCoordinate(4), new TestNameCoordinate("TEST1"), TestEnum.ENUM1 };
+        builder.put(Position.at(coordinates5), 3.25);
+		Object[] coordinates6 = { new ComparableCoordinate(4), new TestNameCoordinate("TEST2"), TestEnum.ENUM1 };
+        builder.put(Position.at(coordinates6), 0.32);
+		Object[] coordinates7 = { NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END, new TestNameCoordinate("TEST2"), TestEnum.ENUM1 };
+        builder.put(Position.at(coordinates7), 4.25);
+		Object[] coordinates8 = { new ComparableCoordinate(1), new TestNameCoordinate("TEST1"), TestEnum.ENUM2 };
 
         // enum2
-        builder.putAt(1.0, new ComparableCoordinate(1), new TestNameCoordinate("TEST1"), TestEnum.ENUM2);
-        builder.putAt(1.0, new ComparableCoordinate(1), new TestNameCoordinate("TEST2"), TestEnum.ENUM2);
-        builder.putAt(2.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1"),
-                TestEnum.ENUM2);
-        builder.putAt(42.0, NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST2"),
-                TestEnum.ENUM2);
-        builder.putAt(3.5, new ComparableCoordinate(3), new TestNameCoordinate("TEST1"), TestEnum.ENUM2);
-        builder.putAt(4.0, new ComparableCoordinate(3), new TestNameCoordinate("TEST2"), TestEnum.ENUM2);
-        builder.putAt(3.0, NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END, new TestNameCoordinate("TEST2"),
-                TestEnum.ENUM2);
+        builder.put(Position.at(coordinates8), 1.0);
+		Object[] coordinates9 = { new ComparableCoordinate(1), new TestNameCoordinate("TEST2"), TestEnum.ENUM2 };
+        builder.put(Position.at(coordinates9), 1.0);
+		Object[] coordinates10 = { NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST1"), TestEnum.ENUM2 };
+        builder.put(Position.at(coordinates10), 2.0);
+		Object[] coordinates11 = { NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE, new TestNameCoordinate("TEST2"), TestEnum.ENUM2 };
+        builder.put(Position.at(coordinates11), 42.0);
+		Object[] coordinates12 = { new ComparableCoordinate(3), new TestNameCoordinate("TEST1"), TestEnum.ENUM2 };
+        builder.put(Position.at(coordinates12), 3.5);
+		Object[] coordinates13 = { new ComparableCoordinate(3), new TestNameCoordinate("TEST2"), TestEnum.ENUM2 };
+        builder.put(Position.at(coordinates13), 4.0);
+		Object[] coordinates14 = { NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END, new TestNameCoordinate("TEST2"), TestEnum.ENUM2 };
+        builder.put(Position.at(coordinates14), 3.0);
 
         return builder.build();
     }

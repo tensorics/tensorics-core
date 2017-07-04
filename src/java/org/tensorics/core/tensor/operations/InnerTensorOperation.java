@@ -169,7 +169,7 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
         Position resultingContext = cps.contextForLeftRight(left.context(), right.context());
 
         TensorBuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
-        finalBuilder.putAllMap(result);
+        finalBuilder.putAll(result);
         finalBuilder.context(resultingContext);
         return finalBuilder.build();
     }

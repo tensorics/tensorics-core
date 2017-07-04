@@ -63,7 +63,7 @@ public class OngoingTensorManipulation<V> {
         Builder<V> tensorBuilder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         for (java.util.Map.Entry<Position, V> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             if (mask.get(entry.getKey()).booleanValue()) {
-                tensorBuilder.at(entry.getKey()).put(entry.getValue());
+                tensorBuilder.put(entry.getKey(), entry.getValue());
             }
         }
         return tensorBuilder.build();

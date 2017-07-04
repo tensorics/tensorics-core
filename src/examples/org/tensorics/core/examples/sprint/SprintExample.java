@@ -40,9 +40,11 @@ public class SprintExample extends TensoricDoubleSupport {
 
 		for (int teamId = 1; teamId <= 10; teamId++) {
 			Team team = new Team(teamId);
-			focusFactorBuilder.putAt(random.nextDouble(), team);
+			Object[] coordinates = { team };
+			focusFactorBuilder.put(Position.at(coordinates), random.nextDouble());
 			for (int days = 1; days <= 20; days++) {
-				velocityBuilder.putAt(10 * random.nextDouble(), team, new NumberOfDay(days));
+				Object[] coordinates1 = { team, new NumberOfDay(days) };
+				velocityBuilder.put(Position.at(coordinates1), (10 * random.nextDouble()));
 			}
 		}
 		velocity = velocityBuilder.build();
@@ -70,8 +72,10 @@ public class SprintExample extends TensoricDoubleSupport {
 	@Test
 	public void testMergeEqualsPutAll() {
 		TensorBuilder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
-		putAllTensorBuilder.putAllAt(team1Velocity, TEAM_1);
-		putAllTensorBuilder.putAllAt(team3Velocity, TEAM_3);
+		Object[] coordinates = { TEAM_1 };
+		putAllTensorBuilder.putAll(Position.at(coordinates), team1Velocity);
+		Object[] coordinates1 = { TEAM_3 };
+		putAllTensorBuilder.putAll(Position.at(coordinates1), team3Velocity);
 		Tensor<Double> putAllTensor = putAllTensorBuilder.build();
 
 		assertEquals(putAllTensor, mergedTensor);
