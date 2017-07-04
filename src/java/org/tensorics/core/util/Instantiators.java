@@ -49,12 +49,12 @@ public final class Instantiators {
 	 * look like this: 
 	 *
 	 * <pre>
-	 * <code>
+	 * {@code
 	 *         Instantiator<Argument, Instance> instantiator = instantiatorFor(Instance.class)
 	 *                 .withArgumentType(Argument.class);
 	 *
 	 *         Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
-	 * </code>
+	 * }
 	 * </pre>
 	 *
 	 * @param instanceClass
