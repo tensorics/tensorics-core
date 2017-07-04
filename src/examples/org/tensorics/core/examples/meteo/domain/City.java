@@ -5,8 +5,8 @@ import org.tensorics.core.examples.meteo.domain.coordinates.Longitude;
 
 public interface City {
 
-	Longitude getLongitude();
+    Longitude getLongitude();
 
-	Latitude getLatitude();
+    Latitude getLatitude();
 
 }

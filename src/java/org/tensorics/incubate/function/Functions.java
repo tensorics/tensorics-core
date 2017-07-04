@@ -49,7 +49,8 @@ public final class Functions {
         return convertToDiscreteFunctionFrom(times, values, errors);
     }
 
-    public static List<Double> getXsIntersection(DiscreteFunction<Double, ?> first, DiscreteFunction<Double, ?> second) {
+    public static List<Double> getXsIntersection(DiscreteFunction<Double, ?> first,
+            DiscreteFunction<Double, ?> second) {
 
         List<Double> firstTs = first.getXs();
         List<Double> secondTs = second.getXs();

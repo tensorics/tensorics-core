@@ -97,7 +97,7 @@ public class OngoingTensorBackedOperation<TB extends Tensorbacked<V>, V> impleme
 
     @Override
     public TB elementTimesV(V value) {
-        return elementTimesT(Tensorics.zeroDimensionalOf(value));
+        return elementTimesT(Tensorics.scalarOf(value));
     }
 
     @Override
@@ -118,7 +118,7 @@ public class OngoingTensorBackedOperation<TB extends Tensorbacked<V>, V> impleme
 
     @Override
     public TB elementDividedByV(V value) {
-        return elementDividedByT(Tensorics.zeroDimensionalOf(value));
+        return elementDividedByT(Tensorics.scalarOf(value));
     }
 
     private TB evaluate(Tensor<V> right, BinaryOperation<V> operation) {

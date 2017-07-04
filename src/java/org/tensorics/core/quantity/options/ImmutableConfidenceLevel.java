@@ -29,7 +29,7 @@ import org.tensorics.core.commons.options.ManipulationOption;
 /**
  * Default immutable implementation of {@link ConfidenceLevel} to hold the value set by the user.
  * 
- * @author mihostet 
+ * @author mihostet
  * @param <S>
  */
 public class ImmutableConfidenceLevel<S> implements ConfidenceLevel<S> {

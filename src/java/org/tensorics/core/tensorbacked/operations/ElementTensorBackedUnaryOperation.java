@@ -35,8 +35,8 @@ import org.tensorics.core.tensorbacked.TensorbackedInternals;
  * @param <V> the type the values of the tensor
  * @param <TB> the type of the tensor backed object
  */
-public class ElementTensorBackedUnaryOperation<V, TB extends Tensorbacked<V>> implements
-        TensorBackedUnaryOperation<V, TB> {
+public class ElementTensorBackedUnaryOperation<V, TB extends Tensorbacked<V>>
+        implements TensorBackedUnaryOperation<V, TB> {
 
     private final UnaryOperation<V> elementOperation;
 

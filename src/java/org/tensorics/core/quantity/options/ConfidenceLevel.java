@@ -27,7 +27,7 @@ import org.tensorics.core.commons.options.ManipulationOption;
 /**
  * {@link ManipulationOption} to allow setting a confidence level for statistical tests.
  * 
- * @author mihostet 
+ * @author mihostet
  * @param <S>
  */
 public interface ConfidenceLevel<S> extends ManipulationOption {

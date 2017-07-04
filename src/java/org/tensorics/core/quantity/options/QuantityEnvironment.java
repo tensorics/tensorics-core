@@ -36,7 +36,7 @@ public interface QuantityEnvironment<S> extends Environment<S> {
     ErrorPropagationStrategy<S> errorPropagation();
 
     QuantificationStrategy<S> quantification();
-    
+
     S confidenceLevel();
 
 }

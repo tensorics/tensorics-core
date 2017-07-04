@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -37,7 +37,7 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
 /**
  * Part of the fluent API for binary (and higher) operations on tensors. It provides methods to define the remaining
  * operands.
- * 
+ *
  * @author agorzaws, kfuchbe
  * @param <V>
  */
@@ -49,7 +49,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     /**
      * Creates a new instance of the this ongoing operation.
-     * 
+     *
      * @param field the field to use
      * @param optionRegistry the registry containing all the options to use for the following operations
      * @param left the expression to be used as the left operand of the following operations
@@ -63,7 +63,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     /**
      * Creates an expression that describes the addition of two tensor expressions.
-     * 
+     *
      * @param right as tensor to add
      * @return result of summing two tensors
      */
@@ -79,7 +79,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     @Override
     public Expression<Tensor<V>> elementDividedByV(V value) {
-        Tensor<V> right = Tensorics.zeroDimensionalOf(value);
+        Tensor<V> right = Tensorics.scalarOf(value);
         return elementDividedBy(ResolvedExpression.of(right));
     }
 
@@ -90,7 +90,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     @Override
     public Expression<Tensor<V>> elementTimesV(V value) {
-        Tensor<V> right = Tensorics.zeroDimensionalOf(value);
+        Tensor<V> right = Tensorics.scalarOf(value);
         return elementTimes(ResolvedExpression.of(right));
     }
 

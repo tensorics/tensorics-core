@@ -55,7 +55,7 @@ public class BinaryOperationExpression<T> extends AbstractDeferredExpression<T> 
     public BinaryOperation<T> getOperation() {
         return operation;
     }
- 
+
     public Expression<T> getLeft() {
         return left;
     }

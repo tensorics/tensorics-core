@@ -31,7 +31,7 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
  * @author kfuchsbe
  * @param <V> the type of the elements of the field on which the operation is based on.
  */
-public class IterableSum<V> extends ScalarSupport<V> implements IterableOperation<V> {
+public class IterableSum<V> extends ScalarSupport<V>implements IterableOperation<V> {
 
     public IterableSum(ExtendedField<V> field) {
         super(field);

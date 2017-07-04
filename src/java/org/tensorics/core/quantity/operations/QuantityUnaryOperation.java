@@ -32,8 +32,8 @@ import org.tensorics.core.quantity.options.QuantityEnvironment;
  * @author kfuchsbe
  * @param <S> the type of the scalar values (field elements) on which all the operations are based on
  */
-public abstract class QuantityUnaryOperation<S> extends AbstractQuantityOperation<S> implements
-        UnaryOperation<QuantifiedValue<S>> {
+public abstract class QuantityUnaryOperation<S> extends AbstractQuantityOperation<S>
+        implements UnaryOperation<QuantifiedValue<S>> {
 
     protected QuantityUnaryOperation(QuantityEnvironment<S> environment) {
         super(environment);

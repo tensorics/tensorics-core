@@ -18,4 +18,3 @@
  * <img src="./doc-files/base-hierarchy.PNG" alt="">
  */
 package org.tensorics.core.tensor;
-

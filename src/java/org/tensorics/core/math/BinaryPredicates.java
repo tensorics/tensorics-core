@@ -35,8 +35,8 @@ public final class BinaryPredicates {
 
     /**
      * Negates the given binary predicate. Thus, the {@link BinaryPredicate#test(Object, Object)} will return the
-     * logically negated value of the original. For example, if the predicate is {@code '<='}, then this method will transform
-     * the predicate {@code (a <= b) to !(a <= b)}, which is equivalent to {@code (a > b)}.
+     * logically negated value of the original. For example, if the predicate is {@code '<='}, then this method will
+     * transform the predicate {@code (a <= b) to !(a <= b)}, which is equivalent to {@code (a > b)}.
      *
      * @param original the original predicate.
      * @return
@@ -46,8 +46,8 @@ public final class BinaryPredicates {
     }
 
     /**
-     * Inverts the given binary predicate. Thus, if e.g. the predicate is {@code '<='}, then this method will transform the
-     * predicate {@code (a <= b)} to {@code (a >= b)}.
+     * Inverts the given binary predicate. Thus, if e.g. the predicate is {@code '<='}, then this method will transform
+     * the predicate {@code (a <= b)} to {@code (a >= b)}.
      *
      * @param original the original predicate.
      * @return the inverted predicate.

@@ -31,7 +31,6 @@ import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Base class for operations on physical quantities, that can perform sum or difference, depending on the scalar
  * operation that is passed into the constructor. The left and right operand will be converted to the same unit (if they

@@ -68,7 +68,7 @@ public class ImmutableQuantifiedScalarTest {
         assertEquals(10.5, DoubleTensorics.absoluteValueOf(scalar).value(), 0.000001);
         assertEquals(42.5, DoubleTensorics.absoluteValueOf(negativeScalar).value(), 0.000001);
     }
-    
+
     @Test
     public void serializableAndDeserializedIsEquals() throws IOException, ClassNotFoundException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();

@@ -56,7 +56,8 @@ public class HandleWithFirstCapableAncestorStrategy extends AbstractExceptionHan
         if (handlingNodes.isEmpty()) {
             throw new ResolvingException(
                     "No node could be found to handle exception which occured during the processing of node '"
-                            + parameterObject.getThrowingNode() + "'.", parameterObject.getException());
+                            + parameterObject.getThrowingNode() + "'.",
+                    parameterObject.getException());
         }
         for (ExceptionHandlingNode<?> handlingNode : handlingNodes) {
             putHandled(parameterObject.getException(), handlingNode, parameterObject.getContext());

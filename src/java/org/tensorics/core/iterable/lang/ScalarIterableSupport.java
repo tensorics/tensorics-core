@@ -59,11 +59,11 @@ public class ScalarIterableSupport<V> extends ScalarSupport<V> {
     public V sumOfSquaresOf(Iterable<V> values) {
         return repository.sumOfSquares().apply(values);
     }
-    
+
     public V varOf(Iterable<V> values) {
         return repository.var().apply(values);
     }
-    
+
     public V stdOf(Iterable<V> values) {
         return repository.std().apply(values);
     }

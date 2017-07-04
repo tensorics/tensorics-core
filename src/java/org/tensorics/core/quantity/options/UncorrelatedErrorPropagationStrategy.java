@@ -28,7 +28,6 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
 
 import com.google.common.base.Optional;
 
-
 /**
  * This error propagation assumes uncorrelated errors.
  * <p>
@@ -38,7 +37,7 @@ import com.google.common.base.Optional;
  * @author kfuchsbe
  * @param <V>
  */
-public class UncorrelatedErrorPropagationStrategy<V> extends ScalarSupport<V> implements ErrorPropagationStrategy<V> {
+public class UncorrelatedErrorPropagationStrategy<V> extends ScalarSupport<V>implements ErrorPropagationStrategy<V> {
 
     public UncorrelatedErrorPropagationStrategy(ExtendedField<V> field) {
         super(field);

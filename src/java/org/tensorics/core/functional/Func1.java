@@ -12,7 +12,7 @@ package org.tensorics.core.functional;
  */
 @FunctionalInterface
 public interface Func1<T, R> extends FiniteArgumentFunction<R> {
-    
+
     R apply(T t);
 
     @Override

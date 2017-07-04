@@ -17,7 +17,6 @@ import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
-
 /**
  * Unit tests for {@link MathFunctions}
  * 

@@ -31,7 +31,7 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
  * @author kfuchsbe
  * @param <V> the type of the elements of the field.
  */
-public class IterableSize<V> extends ScalarSupport<V> implements IterableOperation<V> {
+public class IterableSize<V> extends ScalarSupport<V>implements IterableOperation<V> {
 
     public IterableSize(ExtendedField<V> field) {
         super(field);

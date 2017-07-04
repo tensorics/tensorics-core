@@ -34,8 +34,7 @@ import org.tensorics.core.function.DiscreteFunction;
  * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
-public class DiscreteFunctionDivision<X, Y>
-        extends AbstractDiscreteFunctionBinaryOperation<X, Y> {
+public class DiscreteFunctionDivision<X, Y> extends AbstractDiscreteFunctionBinaryOperation<X, Y> {
 
     DiscreteFunctionDivision(Environment<Y> environment, Conversion<X, Y> conversion, Comparator<X> comparator) {
         super(environment, conversion, environment.field().division(), comparator);

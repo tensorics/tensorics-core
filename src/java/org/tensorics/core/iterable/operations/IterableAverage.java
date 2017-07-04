@@ -33,7 +33,7 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
  * @author kfuchsbe
  * @param <V> the type of the scalar values over which to average.
  */
-public class IterableAverage<V> extends ScalarSupport<V> implements IterableOperation<V> {
+public class IterableAverage<V> extends ScalarSupport<V>implements IterableOperation<V> {
 
     private final IterableSize<V> size;
     private final IterableSum<V> sum;

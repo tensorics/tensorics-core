@@ -51,7 +51,8 @@ public class FunctionSupportWithConversionAndComparator<X, Y> extends ScalarIter
      * @param environment the {@link Environment} for this support
      * @param conversion defines how to transform a value of X type to Y type
      */
-    FunctionSupportWithConversionAndComparator(Environment<Y> environment, Conversion<X, Y> conversion, Comparator<X> comparator) {
+    FunctionSupportWithConversionAndComparator(Environment<Y> environment, Conversion<X, Y> conversion,
+            Comparator<X> comparator) {
         super(environment.field());
         this.environment = environment;
         this.conversion = conversion;

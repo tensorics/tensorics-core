@@ -8,19 +8,18 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
 
-
-@Dimensions({Latitude.class, Longitude.class, Time.class})
+@Dimensions({ Latitude.class, Longitude.class, Time.class })
 public class Temperature implements Tensorbacked<QuantifiedValue<Double>> {
 
-	private final Tensor<QuantifiedValue<Double>> temperature;
-	
-	public Temperature(Tensor<QuantifiedValue<Double>> temperature) {
-		this.temperature = temperature;
-	}
+    private final Tensor<QuantifiedValue<Double>> temperature;
 
-	@Override
-	public Tensor<QuantifiedValue<Double>> tensor() {
-		return temperature;
-	}
+    public Temperature(Tensor<QuantifiedValue<Double>> temperature) {
+        this.temperature = temperature;
+    }
+
+    @Override
+    public Tensor<QuantifiedValue<Double>> tensor() {
+        return temperature;
+    }
 
 }

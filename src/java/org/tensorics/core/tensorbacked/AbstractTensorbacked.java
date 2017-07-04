@@ -50,7 +50,7 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serial
         if (annotatedDimensions.equals(tensor.shape().dimensionSet())) {
             this.backingTensor = tensor;
         } else {
-            this.backingTensor = copyWithDimensions(tensor, annotatedDimensions);            
+            this.backingTensor = copyWithDimensions(tensor, annotatedDimensions);
         }
     }
 

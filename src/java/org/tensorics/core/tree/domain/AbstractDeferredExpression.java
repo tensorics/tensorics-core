@@ -40,8 +40,8 @@ public abstract class AbstractDeferredExpression<R> implements Expression<R> {
 
     @Override
     public final R get() {
-        throw new ExpressionIsUnresolvedException("It is not possible to get the value of a deferred expression ('"
-                + this.toString() + "')");
+        throw new ExpressionIsUnresolvedException(
+                "It is not possible to get the value of a deferred expression ('" + this.toString() + "')");
     }
 
 }

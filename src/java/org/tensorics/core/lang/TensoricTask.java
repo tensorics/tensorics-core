@@ -33,7 +33,7 @@ import java.util.concurrent.Callable;
  * @param <E> the type of the elements of the tensors
  * @param <T> the type of the result of the script.
  */
-public abstract class TensoricTask<E, T> extends TensoricSupport<E> implements Callable<T> {
+public abstract class TensoricTask<E, T> extends TensoricSupport<E>implements Callable<T> {
 
     public TensoricTask(EnvironmentImpl<E> environment) {
         super(environment);

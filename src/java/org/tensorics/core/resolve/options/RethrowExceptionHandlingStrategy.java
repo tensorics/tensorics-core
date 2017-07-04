@@ -37,8 +37,9 @@ public class RethrowExceptionHandlingStrategy extends AbstractExceptionHandlingS
 
     @Override
     public void handleWithRootNodeFailingNodeException(ExceptionHandlingRequest parameterObject) {
-        throw new ResolvingException("Exception occured during processing of node '"
-                + parameterObject.getThrowingNode() + "'.", parameterObject.getException());
+        throw new ResolvingException(
+                "Exception occured during processing of node '" + parameterObject.getThrowingNode() + "'.",
+                parameterObject.getException());
     }
 
 }

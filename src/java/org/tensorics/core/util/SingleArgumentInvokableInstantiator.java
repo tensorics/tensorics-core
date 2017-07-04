@@ -55,8 +55,9 @@ public abstract class SingleArgumentInvokableInstantiator<A, R> implements Insta
             return invokable.invoke(null, argument);
         } catch (IllegalAccessException | //
                 IllegalArgumentException | InvocationTargetException e) {
-            throw new IllegalArgumentException("Invokable of class '" + instanceClass
-                    + "' could not be invoked with argument '" + argument + "'", e);
+            throw new IllegalArgumentException(
+                    "Invokable of class '" + instanceClass + "' could not be invoked with argument '" + argument + "'",
+                    e);
         }
     }
 

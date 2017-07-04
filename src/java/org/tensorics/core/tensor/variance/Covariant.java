@@ -45,8 +45,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * (because tensorics treats coordinates of the same class as the same coordinate-dimension).
  * 
  * @param <C> the type of the (contravariant!) coordinate
- * @see <a href="http://en.wikipedia.org/wiki/Covariance_and_contravariance_of_vectors">
- *      http://en.wikipedia.org/wiki/Covariance_and_contravariance_of_vectors</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Covariance_and_contravariance_of_vectors"> http://en.wikipedia.org/wiki/
+ *      Covariance_and_contravariance_of_vectors</a>
  * @author kfuchsbe
  */
 public class Covariant<C> {

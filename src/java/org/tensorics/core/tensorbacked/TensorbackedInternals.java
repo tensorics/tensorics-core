@@ -57,7 +57,7 @@ public final class TensorbackedInternals {
      * @return the set of dimentions (classses of coordinates) which are required to create an instance of the given
      *         class.
      */
-    public static  <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
+    public static <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
         Dimensions dimensionAnnotation = tensorBackedClass.getAnnotation(Dimensions.class);
         if (dimensionAnnotation == null) {
             throw new IllegalArgumentException(
