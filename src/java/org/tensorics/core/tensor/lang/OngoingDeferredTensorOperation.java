@@ -48,7 +48,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 	private final OptionRegistry<ManipulationOption> optionRegistry;
 
 	/**
-	 * Creates a new instance of the this ongoing operation. <<<<<<< HEAD
+	 * Creates a new instance of the this ongoing operation.
 	 *
 	 * @param field
 	 *            the field to use
