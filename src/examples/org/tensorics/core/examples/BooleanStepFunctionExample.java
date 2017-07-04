@@ -63,7 +63,8 @@ public class BooleanStepFunctionExample {
 
     private Tensor<Boolean> createStepFunction() {
         TensorBuilder<Boolean> stepFunctionBuilder = Tensorics.builder(Date.class, Signal.class);
-        stepFunctionBuilder.putAt(false, ORIGIN, AMPLIFIER);
+		Object[] coordinates = { ORIGIN, AMPLIFIER };
+        stepFunctionBuilder.put(Position.at(coordinates), false);
         stepFunctionBuilder.put(Position.of(PIXEL1, ORIGIN), false);
         stepFunctionBuilder.put(Position.of(new Date(2L), PIXEL1),  true);
         stepFunctionBuilder.put(Position.of(new Date(3L), PIXEL1),  true);

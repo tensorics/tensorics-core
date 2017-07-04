@@ -74,12 +74,12 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 	}
 
 	public final TensorbackedBuilder<V, TB> putAt(V value, Object... coordinates) {
-		tensorBuilder.putAt(value, coordinates);
+		tensorBuilder.put(Position.at(coordinates), value);
 		return this;
 	}
 	
 	public final TensorbackedBuilder<V, TB> putAt(V value, Set<?> coordinates) {
-		tensorBuilder.putAt(value, coordinates);
+		tensorBuilder.put(Position.at(coordinates), value);
 		return this;
 	}
 
@@ -91,22 +91,22 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 	}
 
 	public final TensorbackedBuilder<V, TB> putAllAt(Tensor<V> tensor, Position position) {
-		tensorBuilder.putAllAt(tensor, position);
+		tensorBuilder.putAll(position, tensor);
 		return this;
 	}
 
 	public final TensorbackedBuilder<V, TB> putAllAt(Tensorbacked<V> tensorbacked, Position position) {
-		tensorBuilder.putAllAt(tensorbacked.tensor(), position);
+		tensorBuilder.putAll(position, tensorbacked.tensor());
 		return this;
 	}
 
 	public final TensorbackedBuilder<V, TB> putAllAt(Tensor<V> tensor, Object... coordinates) {
-		tensorBuilder.putAllAt(tensor, coordinates);
+		tensorBuilder.putAll(Position.at(coordinates), tensor);
 		return this;
 	}
 
 	public final TensorbackedBuilder<V, TB> putAllAt(Tensorbacked<V> tensorbacked, Object... coordinates) {
-		tensorBuilder.putAllAt(tensorbacked.tensor(), coordinates);
+		tensorBuilder.putAll(Position.at(coordinates), tensorbacked.tensor());
 		return this;
 	}
 
@@ -121,7 +121,7 @@ public class TensorbackedBuilder<V, TB extends Tensorbacked<V>> {
 	}
 
 	public final TensorbackedBuilder<V, TB> putAllMap(Map<Position, V> newEntries) {
-		tensorBuilder.putAllMap(newEntries);
+		tensorBuilder.putAll(newEntries);
 		return this;
 	}
 

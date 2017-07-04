@@ -23,24 +23,15 @@ package org.tensorics.core.tensor;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * The interface any builder of a tensor has to implement
  * 
  * @author kfuchsbe
- * @param <E>
+ * @param <V>
  *            the type of the tensor values
  */
-public interface TensorBuilder<E> {
-
-	/**
-	 * @deprecated use {@link #context(Position)}
-	 */
-	@Deprecated
-	default void setTensorContext(Position context) {
-		context(context);
-	}
+public interface TensorBuilder<V> {
 
 	void context(Position context);
 
@@ -55,53 +46,20 @@ public interface TensorBuilder<E> {
 	 *            the tensor, whose values to add to the tensor under
 	 *            construction
 	 */
-	void putAll(Tensor<E> tensor);
+	void putAll(Tensor<V> tensor);
 
-	void put(Position position, E value);
+	void putAll(Position position, Tensor<V> tensor);
 
-	void put(Entry<Position, E> entry);
+	void put(Position position, V value);
+
+	void put(Entry<Position, V> entry);
 
 	void remove(Position position);
 
-	Tensor<E> build();
+	void putAll(Map<Position, V> newEntries);
 
-	void putAll(Position position, Tensor<E> tensor);
+	void putAll(Position position, Map<Position, V> map);
 
-	void putAllMap(Map<Position, E> newEntries);
-
-	/*
-	 * TO get rid off
-	 */
-
-	default void putAllAt(Tensor<E> tensor, Position position) {
-		putAll(position, tensor);
-	}
-
-	/**
-	 * Puts all the values of the given tensor into the new tensor at a position
-	 * represented by the given coordinates. This is a convenience method for
-	 * {@link #putAllAt(Tensor, Position)}.
-	 * 
-	 * @param tensor
-	 *            the tensor whose values to put into the tensor unser
-	 *            construction
-	 * @param coordinates
-	 *            the coordinates defining the position where to put the values
-	 */
-	default void putAllAt(Tensor<E> tensor, Object... coordinates) {
-		putAll(Position.at(coordinates), tensor);
-	}
-
-	default void putAllAt(Tensor<E> tensor, Set<?> coordinates) {
-		putAll(Position.at(coordinates), tensor);
-	}
-
-	default void putAt(E value, Object... coordinates) {
-		put(Position.at(coordinates), value);
-	}
-
-	default void putAt(E value, Set<?> coordinates) {
-		put(Position.at(coordinates), value);
-	}
-
+	Tensor<V> build();
+	
 }

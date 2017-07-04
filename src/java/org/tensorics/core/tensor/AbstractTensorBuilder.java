@@ -24,6 +24,7 @@ package org.tensorics.core.tensor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -61,28 +62,16 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 		});
 	}
 
-
-	
-
 	@Override
 	public final void put(Position position, E value) {
 		Preconditions.checkNotNull(value, "value must not be null!");
 		Preconditions.checkNotNull(position, "position must not be null");
 		Positions.assertConsistentDimensions(position, this.dimensions);
 		this.callback.verify(value);
-		this.putItAt(value, position);
+		this.putIt(position, value);
 	}
 
-	protected abstract void putItAt(E value, Position position);
-
-	
-
-	@Override
-	public void putAt(E value, Set<?> coordinates) {
-		put(Position.of(coordinates), value);
-	}
-
-	
+	protected abstract void putIt(Position position, E value);
 
 	@Override
 	public void context(Position newContext) {
@@ -100,18 +89,35 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 		}
 	}
 
-	
+	@Override
+	public void putAll(Tensor<E> tensor) {
+		this.putAll(Position.empty(), tensor);
+	}
 
 	@Override
 	public final void putAll(Position position, Tensor<E> tensor) {
 		checkNotNull(tensor, "The tensor must not be null!");
+		putAll(position, TensorInternals.mapFrom(tensor));
+	}
+
+	@Override
+	public void putAll(Map<Position, E> newEntries) {
+		putAll(Position.empty(), newEntries);
+	}
+
+	@Override
+	public void putAll(Position position, Map<Position, E> map) {
+		checkNotNull(map, "The map must not be null!");
 		checkNotNull(position, "The position must not be null!");
-		for (Entry<Position, E> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+		for (Entry<Position, E> entry : map.entrySet()) {
 			put(Positions.union(position, entry.getKey()), entry.getValue());
 		}
 	}
 
-	
+	@Override
+	public void put(java.util.Map.Entry<Position, E> entry) {
+		this.put(entry.getKey(), entry.getValue());
+	}
 
 	public Set<Class<?>> dimensions() {
 		return dimensions;

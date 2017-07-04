@@ -38,7 +38,8 @@ public class CoordinateClassHierarchyTest {
         TensorBuilder<Double> builder = Tensorics.builder(dimensions);
         for (Object firstCoordinate : first.getEnumConstants()) {
             for (Object secondCoordinate : second.getEnumConstants()) {
-                builder.putAt(1.0, firstCoordinate, secondCoordinate);
+                Object[] coordinates = { firstCoordinate, secondCoordinate };
+				builder.put(Position.at(coordinates), 1.0);
             }
         }
         return builder.build();

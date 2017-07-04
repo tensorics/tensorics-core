@@ -7,6 +7,7 @@ package org.tensorics.core.function;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.TensorBuilder;
 
 /**
@@ -24,8 +25,10 @@ public class DiscreteFunctionVs1DTensorWithCommonCoordinatesTest extends Abstrac
         TensorBuilder<Double> builder3 = Tensorics.builder(Double.class);
 
         for (double i = 0; i < 10; ++i) {
-            builder2.putAt(2.0, i);
-            builder3.putAt(3.0, i);
+            Object[] coordinates = { i };
+			builder2.put(Position.at(coordinates), 2.0);
+			Object[] coordinates1 = { i };
+            builder3.put(Position.at(coordinates1), 3.0);
         }
 
         two = builder2.build();

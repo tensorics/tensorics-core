@@ -136,7 +136,8 @@ public class TensorsTest {
         }
         for (int i = 1; i < 6; i++) {
             for (int j = 1; j < 6; j++) {
-                tensorBuilder.putAt((double) i * j, YCoordinate.of(j), XCoordinate.of(i));
+                Object[] coordinates = { YCoordinate.of(j), XCoordinate.of(i) };
+				tensorBuilder.put(Position.at(coordinates), ((double) i * j));
             }
         }
         return tensorBuilder.build();

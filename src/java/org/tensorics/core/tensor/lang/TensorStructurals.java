@@ -90,7 +90,7 @@ public final class TensorStructurals {
         for (Tensor<E> oneTensor : tensors) {
             if (TensorStructurals.isValidInTermsOfDimensions(oneTensor, refDimensionSet,
                     refContextPosition.dimensionSet())) {
-                tensorBuilder.putAllAt(oneTensor, oneTensor.context());
+                tensorBuilder.putAll(oneTensor.context(), oneTensor);
             } else {
                 throw new IllegalArgumentException(
                         "One of the tensors in the provided list does not fit the others on dimensions."
@@ -153,7 +153,7 @@ public final class TensorStructurals {
         }
         Builder<S> builder = ImmutableTensor
                 .builder(Sets.union(tensor.shape().dimensionSet(), tensor.context().dimensionSet()));
-        builder.putAllAt(tensor, tensor.context());
+        builder.putAll(tensor.context(), tensor);
         return builder.build();
     }
 

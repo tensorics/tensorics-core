@@ -123,7 +123,8 @@ public class ImmutableTensorTest {
         final Object value = new Object();
 
         Builder<Object> builder = ImmutableTensor.builder(AnyInterface.class);
-        builder.putAt(value, AnyClass.INSTANCE1);
+		Object[] coordinates = { AnyClass.INSTANCE1 };
+        builder.put(Position.at(coordinates), value);
         ImmutableTensor<Object> tensor = builder.build();
 
         thrown.expect(NoSuchElementException.class);
