@@ -12,9 +12,10 @@ import org.tensorics.core.tensor.Tensor;
 
 /**
  * A support class that contains delegation to all possible operation types:
+ * <ul>
  * <li>{@link ScalarBooleanSupport}</li>
- * <li>{@link IterableBooleanSupport}</li>
  * <li>{@link TensorBooleanSupport} that contains information about possible {@link OptionRegistry}.</li>
+ * </ul>
  * 
  * @author agorzaws
  */

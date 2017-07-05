@@ -116,13 +116,12 @@ public final class Tensorbackeds {
      * example:
      * 
      * <pre>
-     * {
-     *     &#64;code
+     * <code>
      *     // Assume that Orbit and OrbitTimeseries are tensorbacked objects
      *     List<> orbits = new ArrayList<>();
      *     // assume the list is filled
      *     OrbitTimeseries orbitTimeseries = construct(OrbitTimeseries.class).byMerging(orbits);
-     * }
+     * </code>
      * </pre>
      *
      * @param tensorbackedClass the type of the tensorbacked object that should be constructed
