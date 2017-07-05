@@ -22,12 +22,15 @@
 
 package org.tensorics.core.tensor.stream;
 
-import static org.junit.Assert.*;
+import static java.util.Collections.emptySet;
+import static org.junit.Assert.assertEquals;
 import static org.tensorics.core.tensor.stream.TensorStreamFilters.byValue;
-import static org.tensorics.core.tensor.stream.TensorStreams.toTensor;
-import static org.tensorics.core.tensor.stream.TensorStreams.toTensorbacked;
 import static org.tensorics.core.tensor.stream.TensorStreamMappers.coordinatesOfType;
 import static org.tensorics.core.tensor.stream.TensorStreamMappers.values;
+import static org.tensorics.core.tensor.stream.TensorStreams.toTensor;
+import static org.tensorics.core.tensor.stream.TensorStreams.toTensorbacked;
+
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,11 +38,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.AbstractTensorbacked;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
-import org.tensorics.core.tensor.ImmutableTensor.Builder;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -69,16 +72,16 @@ public class TensorStreamsTest {
     @Before
     public void prepareTensor() {
         Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
-        tensorBuilder.putAt(0.0, Position.of(0.0, 0));
-        tensorBuilder.putAt(42.42, Position.of(23.0, 1));
-        tensorBuilder.putAt(2.0, Position.of(23.0, 2));
+        tensorBuilder.put(Position.of(0.0, 0), 0.0);
+        tensorBuilder.put(Position.of(23.0, 1), 42.42);
+        tensorBuilder.put(Position.of(23.0, 2), 2.0);
         tensor = tensorBuilder.build();
     }
 
     @Test
     public void test() {
         Tensor<Double> mapped = Tensorics.stream(tensor).map(values(e -> e + 1)).filter(byValue(e -> e > 5))
-                .collect(toTensor());
+                .collect(toTensor(ImmutableSet.of(Double.class, Integer.class)));
 
         assertEquals(1, mapped.shape().size());
         assertEquals(43.42, mapped.get(23.0, 1), 1e-6);
@@ -100,16 +103,16 @@ public class TensorStreamsTest {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("duplicate entry");
 
-        ImmutableList.of(1, 2, 3).stream().collect(toTensor(any -> Position.empty(), v -> v));
+        ImmutableList.of(1, 2, 3).stream().collect(toTensor(any -> Position.empty(), v -> v, emptySet()));
     }
 
     @Test
     public void inconsistentPositionThrows() {
         thrown.expect(IllegalArgumentException.class);
-        //thrown.expectMessage("same dimensions");
-        thrown.expectMessage("assignable");
-        Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };        
-        ImmutableList.of(0, 1, 2).stream().collect(toTensor(i -> positions[i], v -> v));
+        thrown.expectMessage("not assignable");
+        Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };
+        ImmutableList.of(0, 1, 2).stream()
+                .collect(toTensor(i -> positions[i], v -> v, Collections.singleton(Integer.class)));
     }
 
 }

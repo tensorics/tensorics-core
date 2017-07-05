@@ -7,7 +7,8 @@ package org.tensorics.core.function;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.tensorics.core.lang.Tensorics;
-import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensorbuilder;
 
 /**
  * Extension of {@link AbstractDiscreteFunctionVs1DTensorTest} that focuses on testing 1D tensors which have NO
@@ -20,14 +21,16 @@ public class DiscreteFunctionVs1DTensorWithNoCommonCoordinatesTest extends Abstr
 
     @Before
     public void setUp() {
-        TensorBuilder<Double> builder2 = Tensorics.builder(Double.class);
-        TensorBuilder<Double> builder3 = Tensorics.builder(Double.class);
+        Tensorbuilder<Double> builder2 = Tensorics.builder(Double.class);
+        Tensorbuilder<Double> builder3 = Tensorics.builder(Double.class);
 
         for (double i = 1; i <= 10; ++i) {
             if (i % 2 == 0) {
-                builder2.putAt(2.0, i);
+                Object[] coordinates = { i };
+                builder2.put(Position.of(coordinates), 2.0);
             } else {
-                builder3.putAt(3.0, i);
+                Object[] coordinates = { i };
+                builder3.put(Position.of(coordinates), 3.0);
             }
         }
 

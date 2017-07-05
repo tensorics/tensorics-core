@@ -37,27 +37,26 @@ import org.tensorics.core.math.structures.ringlike.OrderedField;
  * @author kfuchsbe
  * @see Structures
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class DoubleField implements OrderedField<Double> {
 
     private static final double ZERO = 0.0;
     private static final double ONE = 1.0;
 
     private final CommutativeAssociativeOperation<Double> additionOperation //
-    = new CommutativeAssociativeOperation<Double>() {
-        @Override
-        public Double perform(Double left, Double right) {
-            return left + right;
-        }
-    };
+            = new CommutativeAssociativeOperation<Double>() {
+                @Override
+                public Double perform(Double left, Double right) {
+                    return left + right;
+                }
+            };
 
     private final CommutativeAssociativeOperation<Double> multiplicationOperation //
-    = new CommutativeAssociativeOperation<Double>() {
-        @Override
-        public Double perform(Double left, Double right) {
-            return left * right;
-        }
-    };
+            = new CommutativeAssociativeOperation<Double>() {
+                @Override
+                public Double perform(Double left, Double right) {
+                    return left * right;
+                }
+            };
 
     private final UnaryOperation<Double> additiveInverseOperation = new UnaryOperation<Double>() {
         @Override

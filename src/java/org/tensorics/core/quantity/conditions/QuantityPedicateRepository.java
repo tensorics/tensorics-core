@@ -33,10 +33,10 @@ import org.tensorics.core.quantity.options.QuantityEnvironment;
  * @param <S> the type of the scalar values (elements of the field)
  */
 public class QuantityPedicateRepository<S> {
-    
+
     private final BinaryPredicate<QuantifiedValue<S>> lessCondition;
     private final BinaryPredicate<QuantifiedValue<S>> greaterCondition;
-    
+
     public QuantityPedicateRepository(QuantityEnvironment<S> environment) {
         lessCondition = new QuantityLessPredicate<S>(environment);
         greaterCondition = new QuantityGreaterPredicate<S>(environment);

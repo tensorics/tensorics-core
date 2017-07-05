@@ -6,10 +6,13 @@ package org.tensorics.core.reduction;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
 import org.tensorics.core.tensor.Tensor;
+
+import com.google.common.base.Preconditions;
 
 /**
  * An abstract interpolation implementation that provides the basic functions like sorting the {@link Comparable}
@@ -19,7 +22,13 @@ import org.tensorics.core.tensor.Tensor;
  * @param <C> type of the coordinate, must be {@link Comparable}
  * @param <V> type of the value in the {@link Tensor}
  */
-public abstract class AbstractInterpolationStrategy<C extends Comparable<C>, V> implements InterpolationStrategy<C, V> {
+public abstract class AbstractInterpolationStrategy<C, V> implements InterpolationStrategy<C, V> {
+
+    private final Comparator<C> comparator;
+
+    public AbstractInterpolationStrategy(Comparator<C> comparator) {
+        this.comparator = Preconditions.checkNotNull(comparator, "comparator must not be null");
+    }
 
     /**
      * Extracts the ordered list of the comparable coordinate along which the interpolation will be done
@@ -35,11 +44,11 @@ public abstract class AbstractInterpolationStrategy<C extends Comparable<C>, V> 
 
         /* we know that slice is the class of C */
         @SuppressWarnings("unchecked")
-        Set<C> coordinatesOfType = (Set<C>) tensorWithTheOnlyOneCoordinateOfC.shape().coordinatesOfType(
-                coordineteToInterpolate.getClass());
+        Set<C> coordinatesOfType = (Set<C>) tensorWithTheOnlyOneCoordinateOfC.shape()
+                .coordinatesOfType(coordineteToInterpolate.getClass());
 
         List<C> orderedList = new ArrayList<C>(coordinatesOfType);
-        Collections.sort(orderedList);
+        Collections.sort(orderedList, this.comparator);
         return orderedList;
     }
 
@@ -49,8 +58,10 @@ public abstract class AbstractInterpolationStrategy<C extends Comparable<C>, V> 
         int dimensionality = tensor.shape().dimensionality();
         int entries = tensor.shape().size();
         if (dimensionality != 1 && entries > 0 && contains) {
+            @SuppressWarnings("unused")
             Set<?> coordinates = tensor.shape().positionSet().iterator().next().coordinates();
-            // TODO how to check if the only coordinate in the position is the class of C ?
+            // TODO how to check if the only coordinate in the position is the
+            // class of C ?
             throw new IllegalStateException("Cannot perform interpolation in the tensor of more that 1 dimension "
                     + "or the given dimension is not of the correct class.");
         }
@@ -70,7 +81,7 @@ public abstract class AbstractInterpolationStrategy<C extends Comparable<C>, V> 
         }
         int indexToReturn = -1;
         for (C one : orderedList) {
-            if (one.compareTo(referencePosition) < 0) {
+            if (comparator.compare(one, referencePosition) < 0) {
                 indexToReturn++;
             } else {
                 break;

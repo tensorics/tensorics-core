@@ -132,7 +132,9 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
         private <R, E extends Expression<R>> List<Resolver<R, E>> resolversFor(E expression) {
             List<Resolver<R, E>> castedResolvers = new ArrayList<>();
             for (Resolver<?, ?> resolver : resolvers.get(expression)) {
-                /* This cast is safe, since we took care when putting the resolvers */
+                /*
+                 * This cast is safe, since we took care when putting the resolvers
+                 */
                 @SuppressWarnings("unchecked")
                 Resolver<R, E> castedResolver = (Resolver<R, E>) resolver;
                 castedResolvers.add(castedResolver);
@@ -162,9 +164,9 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
                 try {
                     resolveNode(expression, context, resolverSetlection);
                 } catch (final RuntimeException e) {
-                    exceptionHandling.handleWithRootNodeFailingNodeException(ExceptionHandlingRequest.builder()
-                            .withRoot(rootNode).withThrowingNode(expression).withException(e).withContext(context)
-                            .build());
+                    exceptionHandling.handleWithRootNodeFailingNodeException(
+                            ExceptionHandlingRequest.builder().withRoot(rootNode).withThrowingNode(expression)
+                                    .withException(e).withContext(context).build());
                 }
             }
             return context;

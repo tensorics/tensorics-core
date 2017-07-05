@@ -22,7 +22,9 @@
 
 package org.tensorics.core.tensor;
 
+import static com.google.common.collect.ImmutableSet.of;
 import static java.util.Collections.emptySet;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -64,14 +66,14 @@ public class ShapesTest {
 
     @Before
     public void setUp() {
-        shapeA = Shape.of(POS_A);
-        shapeB = Shape.of(POS_B);
-        shapeAB = Shape.of(POS_A, POS_B);
-        shapeBC = Shape.of(POS_B, POS_C);
-        shape1 = Shape.of(POS_1);
-        shape12 = Shape.of(POS_1, POS_2);
-        shapeA1B1A2B2 = Shape.of(POS_A1, POS_A2, POS_B1, POS_B2);
-        shapeA01 = Shape.of(POS_A01);
+        shapeA = Shape.of(of(String.class), POS_A);
+        shapeB = Shape.of(of(String.class), POS_B);
+        shapeAB = Shape.of(of(String.class), POS_A, POS_B);
+        shapeBC = Shape.of(of(String.class), POS_B, POS_C);
+        shape1 = Shape.of(of(Integer.class), POS_1);
+        shape12 = Shape.of(of(Integer.class), POS_1, POS_2);
+        shapeA1B1A2B2 = Shape.of(of(Integer.class, String.class), POS_A1, POS_A2, POS_B1, POS_B2);
+        shapeA01 = Shape.of(of(String.class, Double.class), POS_A01);
     }
 
     @Test
@@ -101,12 +103,16 @@ public class ShapesTest {
 
     @Test
     public void emptyShapeIterable() {
-        assertEmptyShape(Shape.of(Collections.<Position> emptySet()));
+        Shape shape = Shape.of(Collections.emptySet(), Collections.emptySet());
+        assertEmptyShape(shape);
+        assertZeroDimensionality(shape);
     }
 
     @Test
     public void constructEmptyShapeUsingVarargs() {
-        assertEmptyShape(Shape.empty());
+        Shape shape = Shape.empty();
+        assertEmptyShape(shape);
+        assertZeroDimensionality(shape);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -116,7 +122,9 @@ public class ShapesTest {
 
     @Test
     public void intersectionOfCompatibleShapesWithEmptyResult() {
-        assertEmptyShape(intersection(shapeA, shapeB));
+        Shape intersection = intersection(shapeA, shapeB);
+        assertEmptyShape(intersection);
+        assertThat(intersection.dimensionSet()).containsExactly(String.class);
     }
 
     @Test
@@ -169,7 +177,7 @@ public class ShapesTest {
     @Test
     public void dimensionStrippedIsEqualToConstructed() {
         Shape result = dimensionStripped(shapeA1B1A2B2, ImmutableSet.of(Integer.class));
-        assertEquals(Shape.of(POS_A, POS_B), result);
+        assertEquals(Shape.of(of(String.class), POS_A, POS_B), result);
     }
 
     @Test
@@ -245,8 +253,11 @@ public class ShapesTest {
 
     private static void assertEmptyShape(Shape shape) {
         assertEquals(0, shape.size());
-        assertEquals(0, shape.dimensionality());
         assertEquals(emptySet(), shape.positionSet());
+    }
+
+    private static void assertZeroDimensionality(Shape shape) {
+        assertEquals(0, shape.dimensionality());
         assertEquals(emptySet(), shape.dimensionSet());
     }
 

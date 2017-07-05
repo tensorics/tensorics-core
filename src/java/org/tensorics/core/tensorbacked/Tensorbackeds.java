@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,32 +16,33 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
 package org.tensorics.core.tensorbacked;
 
+import static org.tensorics.core.util.Classes.classOf;
+
 import java.util.Set;
 
 import org.tensorics.core.quantity.QuantifiedValue;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensorbacked.annotation.Dimensions;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Contains (public) utility methods for tensor backed objects.
- * 
+ *
  * @author kfuchsbe
  */
 public final class Tensorbackeds {
@@ -57,12 +58,24 @@ public final class Tensorbackeds {
      * Creates a new builder for the given tensor backed class. The builder will allow to add content to the tensor
      * backed object and construct it at the end. Only coordinates wich are compatible with the dimensions as annotated
      * in the tensor backed class are allowed.
-     * 
+     *
      * @param tensorbackedClass the type of tensor backed object to be created.
      * @return a builder for the tensor backed object
      */
     public static <V, TB extends Tensorbacked<V>> TensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
         return new TensorbackedBuilder<>(tensorbackedClass);
+    }
+
+    /**
+     * Retrieves the dimensions from the given class inheriting from tensor backed. This is done by inspecting the
+     * {@link Dimensions} annotation.
+     * 
+     * @param tensorBackedClass the class for which to determine the dimensions
+     * @return the set of dimensions (classes of coordinates) which are required to create an instance of the given
+     *         class.
+     */
+    public static <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
+        return TensorbackedInternals.dimensionsOf(tensorBackedClass);
     }
 
     /**
@@ -79,7 +92,7 @@ public final class Tensorbackeds {
     /**
      * A convenience method to retrieve the number of dimensions of a tensor backed object. This is a shortcut to
      * retrieving the dimensionality of the underlaying tensor of the tensor backed object.
-     * 
+     *
      * @param tensorbacked the tensor backed object from which to retrieve the dimensions
      * @return the number of dimensions of the tensor backed object
      */
@@ -90,7 +103,7 @@ public final class Tensorbackeds {
     /**
      * Creates a new empty instance of a tensorbacked class of the given type. This is simply a convenience method for
      * calling {@link TensorbackedBuilder#build()} on an empty builder.
-     * 
+     *
      * @param tensorbackedClass the class of the tensor backed object to create
      * @return a new empty instance of the tensorbacked object.
      */
@@ -103,14 +116,15 @@ public final class Tensorbackeds {
      * example:
      * 
      * <pre>
-     * <code>
+     * {
+     *     &#64;code
      *     // Assume that Orbit and OrbitTimeseries are tensorbacked objects
      *     List<> orbits = new ArrayList<>();
      *     // assume the list is filled
      *     OrbitTimeseries orbitTimeseries = construct(OrbitTimeseries.class).byMerging(orbits);
-     * </code>
+     * }
      * </pre>
-     * 
+     *
      * @param tensorbackedClass the type of the tensorbacked object that should be constructed
      * @return an object which provides further methods to define the construction of the object
      */
@@ -123,7 +137,7 @@ public final class Tensorbackeds {
      * Retrieves the validities from a tensorbacked object which contains quantities as values. This is a convenience
      * method to calling the {@link QuantityTensors#validitiesOf(Tensor)} method on the tensor contained in the
      * tensorbacked.
-     * 
+     *
      * @param tensorbacked the tensorbacked class from which to get the validities
      * @return a tensor containing only the validities of the values of the tensorbacked class
      */
@@ -145,7 +159,7 @@ public final class Tensorbackeds {
     /**
      * Retrieves the errors from the tensorbacked object. This is a convenience method to calling
      * {@link QuantityTensors#errorsOf(Tensor)} on the tensor backing the tensorbacked object.
-     * 
+     *
      * @param tensorbacked the tensorbacked object from which to retrieve the errors
      * @return a tensor containing the errors of the quantities within the tensorbacked object
      */
@@ -155,7 +169,7 @@ public final class Tensorbackeds {
 
     /**
      * Retrieves the unit of a tensorbacked object by looking at the underlaying tensor.
-     * 
+     *
      * @param tensorbacked the tensorbacked object from which to retrieve the unit
      * @return the unit
      * @throws IllegalArgumentException if the unit cannot be determined
@@ -176,7 +190,7 @@ public final class Tensorbackeds {
 
     /**
      * Retrieves the shape of the tensor backed object.
-     * 
+     *
      * @param tensorbacked the tensorbacke object from which to retrieve the shape
      * @return the shape of the internal tensor of the object
      */
@@ -185,9 +199,21 @@ public final class Tensorbackeds {
     }
 
     /**
+     * Retrieves all the shapes of the given tensorbacked objects. The order of the shapes is conserved from the
+     * iteration order of the input iterable and the returned iterable will have the same number of elements than the
+     * input collection.
+     *
+     * @param tensorbackeds the tensorbacked objects from which to get the shapes
+     * @return an iterable contining the shapes of the tensor backed objects
+     */
+    public static final <TB extends Tensorbacked<?>> Iterable<Shape> shapesOf(Iterable<TB> tensorbackeds) {
+        return TensorbackedInternals.shapesOf(tensorbackeds);
+    }
+
+    /**
      * Starting for a fluent clause, that allows to flatten one or multiple dimensions of the internal tensor of the
      * tensor backed object into maps or tensors of lists.
-     * 
+     *
      * @param tensorbacked the tensor backed object whose internal tensor is subject to flattening of values
      * @return an object which allows to further specify the flattening operation
      */
@@ -208,6 +234,16 @@ public final class Tensorbackeds {
     }
 
     /**
+     * Starting point for a fluent clause to complete a tensorbacked object with other values.
+     *
+     * @param tensorbacked the tensor backed object to complete
+     * @return an intermediate object that will allow to specify details on how the object shall be completed
+     */
+    public static final <S, TB extends Tensorbacked<S>> OngoingTensorbackedCompletion<TB, S> complete(TB tensorbacked) {
+        return new OngoingTensorbackedCompletion<>(tensorbacked);
+    }
+
+    /**
      * Merges the given {@link Tensorbacked}s into one {@link Tensorbacked} of the given class. The resulting dimensions
      * must match the dimensions required by the resulting object's class.
      * <p>
@@ -225,11 +261,12 @@ public final class Tensorbackeds {
     }
 
     public static final <V, TB extends Tensorbacked<V>> TB stripContext(TB tensorbacked) {
-        return (TB) builderFor(tensorbacked.getClass()).putAll(tensorbacked.tensor()).build();
+        TB toReturn = builderFor(classOf(tensorbacked)).putAll(tensorbacked.tensor()).build();
+        return toReturn;
     }
 
-    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Context context) {
-        return (TB) builderFor(tensorbacked.getClass()).withContext(context).putAll(tensorbacked.tensor()).build();
+    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Position context) {
+        return builderFor(classOf(tensorbacked)).context(context).putAll(tensorbacked.tensor()).build();
     }
 
     public static final <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {

@@ -24,6 +24,7 @@ package org.tensorics.core.lang;
 
 import static org.junit.Assert.assertEquals;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
+import static org.tensorics.core.tensorbacked.Tensorbackeds.construct;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,13 +32,12 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
-import org.tensorics.core.tensorbacked.Tensorbackeds;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -123,20 +123,21 @@ public class TensorsTest {
         Set<TensorBackedTwoCoordinates> toMerge = new HashSet<>();
         toMerge.add(new TensorBackedTwoCoordinates(tensor1));
         toMerge.add(new TensorBackedTwoCoordinates(tensor2));
-        TensorBackedThreeCoordinates merged = Tensorbackeds.mergeTo(toMerge, TensorBackedThreeCoordinates.class);
+        TensorBackedThreeCoordinates merged = construct(TensorBackedThreeCoordinates.class).byMergingTb(toMerge);
         Shape shapeOfMerged = merged.tensor().shape();
         assertEquals(3, shapeOfMerged.dimensionality());
     }
 
     private Tensor<Double> prepareTensorWithContextOf(Set<?> coordinateForContext) {
-        Builder<Double> tensorBuilder = ImmutableTensor.<Double> builder(ImmutableSet.of(XCoordinate.class,
-                YCoordinate.class));
+        Builder<Double> tensorBuilder = ImmutableTensor
+                .<Double> builder(ImmutableSet.of(XCoordinate.class, YCoordinate.class));
         if (coordinateForContext.size() > 0) {
-            tensorBuilder.setTensorContext(Context.of(coordinateForContext));
+            tensorBuilder.context(Position.of(coordinateForContext));
         }
         for (int i = 1; i < 6; i++) {
             for (int j = 1; j < 6; j++) {
-                tensorBuilder.at(YCoordinate.of(j), XCoordinate.of(i)).put((double) i * j);
+                Object[] coordinates = { YCoordinate.of(j), XCoordinate.of(i) };
+                tensorBuilder.put(Tensorics.at(coordinates), ((double) i * j));
             }
         }
         return tensorBuilder.build();

@@ -22,7 +22,6 @@ import com.google.common.collect.Iterables;
  * offset define the resulting element.
  * 
  * @see PickResolver
- * @see PickResolverTest
  * @author kfuchsbe, acalia
  * @param <T> the type of the data to pick
  */

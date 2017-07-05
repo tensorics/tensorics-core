@@ -22,6 +22,7 @@
 
 package org.tensorics.core.tensor;
 
+import static java.util.Objects.requireNonNull;
 import static org.tensorics.core.tensor.Coordinates.requireValidCoordinates;
 
 import java.io.Serializable;
@@ -52,7 +53,7 @@ public final class Position implements Serializable {
 
     private ImmutableSet<?> coordinates;
 
-    private Position(Set<?> coordinates) {
+    protected Position(Set<?> coordinates) {
         this.coordinates = ImmutableSet.copyOf(coordinates);
         for (Object oneCoordinate : coordinates) {
             if (oneCoordinate instanceof Position) {
@@ -62,9 +63,39 @@ public final class Position implements Serializable {
         }
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
-    public static Position of(Set<?> coordinates) {
+    /**
+     * Retrieves a position instance for the given coordinates. In order to be a valid set to create a position, the
+     * coordinates must:
+     * <ul>
+     * <li>They must be disjunct in class hierarchy (e.g. one must not inherit from another)
+     * <li>None of them must be an instance of a position
+     * </ul>
+     * 
+     * @param coordinates the coordinates for which to get the position instance.
+     * @return a position instance with the given coordinates.
+     * @throws IllegalArgumentException in case the coordinates are not a valid set for creating a position.
+     * @throws NullPointerException if the given coordinates are {@code null}
+     */
+    public static Position of(Iterable<?> coordinates) {
+
+        requireNonNull(coordinates, "coordinates must not be null");
         return createFrom(requireValidCoordinates(coordinates));
+    }
+
+    /**
+     * Retrieves a position instance, representing the given coordinates. This is a convenience method to a call to
+     * {@link #of(Iterable)}.
+     * 
+     * @param coordinates the coordinates for which to retrieve a position instance
+     * @return a position instance
+     * @throws IllegalArgumentException in case the coordinates are not a valid set for creating a position.
+     * @throws NullPointerException if the given coordinates array is {@code null}
+     * @see #of(Iterable)
+     */
+    @SafeVarargs
+    public static Position of(Object... coordinates) {
+        requireNonNull(coordinates, "coordinates must not be null");
+        return of(ImmutableMultiset.copyOf(coordinates));
     }
 
     private static Position createFrom(Set<?> coordinates) {
@@ -73,20 +104,6 @@ public final class Position implements Serializable {
 
     public static Position empty() {
         return EMPTY_POSITION;
-    }
-
-    @SafeVarargs
-    @SuppressWarnings("PMD.ShortMethodName")
-    public static Position of(Object... coordinates) {
-        return createFrom(requireValidCoordinates(ImmutableMultiset.copyOf(coordinates)));
-    }
-
-    /**
-     * @deprecated use coordinates() instead
-     */
-    @Deprecated
-    public Set<?> getCoordinates() {
-        return coordinates();
     }
 
     public <CS> CS coordinateFor(Class<CS> dimension) {
@@ -100,7 +117,7 @@ public final class Position implements Serializable {
     /**
      * Retrieves the dimensions of this position (i.e. the type of the containing coordinates).
      * <p>
-     * <b>NOTE!</b> This dimensions may differ from the ones kept in the parent tensor!.
+     * <b>NOTE!</b> These dimensions may differ from the ones kept in the parent tensor!.
      * 
      * @return the types of the coordinates
      */
@@ -115,9 +132,14 @@ public final class Position implements Serializable {
      * @param dimensions the dimensions for which conformity has to be checked.
      * @return {@code true} if the position is conform, {@code false} if not.
      */
-    public boolean isConsistentWith(Set<? extends Class<?>> dimensions) {
-        Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
+    public boolean isConsistentWith(Set<Class<?>> dimensions) {
+        Preconditions.checkArgument(dimensions != null, "Argument 'dimensions' must not be null!");
         return Positions.areDimensionsConsistentWithCoordinates(dimensions, this);
+    }
+
+    @Override
+    public String toString() {
+        return "Position [coordinates=" + coordinates + "]";
     }
 
     @Override
@@ -148,11 +170,6 @@ public final class Position implements Serializable {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Position [coordinates=" + coordinates + "]";
     }
 
 }

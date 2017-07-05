@@ -28,7 +28,6 @@ import org.tensorics.core.quantity.options.QuantityEnvironment;
 
 import com.google.common.base.Optional;
 
-
 /**
  * @author kfuchsbe
  * @param <V>

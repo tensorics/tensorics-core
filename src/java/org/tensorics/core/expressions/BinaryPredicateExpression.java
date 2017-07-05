@@ -64,6 +64,6 @@ public class BinaryPredicateExpression<T> extends AbstractDeferredExpression<Boo
 
     @Override
     public List<Node> getChildren() {
-        return ImmutableList.<Node>of(left, right);
+        return ImmutableList.<Node> of(left, right);
     }
 }

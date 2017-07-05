@@ -70,6 +70,10 @@ public class QuantitySupport<V> {
         return operationRepository.multiplicativeInversion().perform(element);
     }
 
+    public QuantifiedValue<V> absoluteValueOf(QuantifiedValue<V> element) {
+        return operationRepository.absoluteValue().perform(element);
+    }
+
     public QuantifiedValue<V> one() {
         return operationRepository.one();
     }

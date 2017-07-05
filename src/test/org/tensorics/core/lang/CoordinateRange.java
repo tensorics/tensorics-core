@@ -30,7 +30,8 @@ public class CoordinateRange {
     private final Set<YCoordinate> yCoordinates;
     private final Set<ZCoordinate> zCoordinates;
 
-    private CoordinateRange(Set<XCoordinate> xCoordinates, Set<YCoordinate> yCoordinates, Set<ZCoordinate> zCoordinates) {
+    private CoordinateRange(Set<XCoordinate> xCoordinates, Set<YCoordinate> yCoordinates,
+            Set<ZCoordinate> zCoordinates) {
         super();
         this.xCoordinates = xCoordinates;
         this.yCoordinates = yCoordinates;

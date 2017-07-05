@@ -12,11 +12,10 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
-import org.tensorics.core.tensor.ImmutableEntry;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.Tensorbuilder;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 
 public class BooleanStepFunctionExample {
@@ -47,27 +46,28 @@ public class BooleanStepFunctionExample {
         Tensor<Boolean> tensor = stepFunctionTensor;
         Tensor<Boolean> slicedTensor = TensorStructurals.from(tensor).reduce(Signal.class).bySlicingAt(AMPLIFIER);
         assertFalse(slicedTensor.get(ORIGIN));
-        assertEquals(Position.of(AMPLIFIER), slicedTensor.context().getPosition());
+        assertEquals(Position.of(AMPLIFIER), slicedTensor.context());
 
-        TensorBuilder<Boolean> builder = Tensorics.builderFrom(tensor);
-        builder.putAt(false,Position.of(new Date(5L), AMPLIFIER));
-        builder.putAt(true,Position.of(new Date(6L), AMPLIFIER));
+        Tensorbuilder<Boolean> builder = Tensorics.builderFrom(tensor);
+        builder.put(Position.of(new Date(5L), AMPLIFIER), false);
+        builder.put(Position.of(new Date(6L), AMPLIFIER), true);
 
         assertEquals(true, builder.build().get(Position.of(AMPLIFIER, new Date(6L))));
         assertEquals(false, builder.build().get(Position.of(ORIGIN, AMPLIFIER)));
 
+        @SuppressWarnings("unused")
         Tensor<Boolean> secondTensor = builder.build();
-        
+
         TensorStructurals.from(stepFunctionTensor);
     }
 
     private Tensor<Boolean> createStepFunction() {
-        TensorBuilder<Boolean> stepFunctionBuilder = Tensorics.builder(Date.class, Signal.class);
-        stepFunctionBuilder.putAt(false, ORIGIN, AMPLIFIER);
-        stepFunctionBuilder.put(new ImmutableEntry<Boolean>(Position.of(PIXEL1, ORIGIN), false));
-        stepFunctionBuilder.put(new ImmutableEntry<Boolean>(Position.of(PIXEL1, new Date(1L)), false));
-        stepFunctionBuilder.putAt(true, Position.of(new Date(2L), PIXEL1));
-        stepFunctionBuilder.putAt(true, Position.of(new Date(3L), PIXEL1));
+        Tensorbuilder<Boolean> stepFunctionBuilder = Tensorics.builder(Date.class, Signal.class);
+        Object[] coordinates = { ORIGIN, AMPLIFIER };
+        stepFunctionBuilder.put(Tensorics.at(coordinates), false);
+        stepFunctionBuilder.put(Position.of(PIXEL1, ORIGIN), false);
+        stepFunctionBuilder.put(Position.of(new Date(2L), PIXEL1), true);
+        stepFunctionBuilder.put(Position.of(new Date(3L), PIXEL1), true);
         return stepFunctionBuilder.build();
     }
 

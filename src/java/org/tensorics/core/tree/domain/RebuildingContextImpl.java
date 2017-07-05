@@ -78,7 +78,9 @@ public class RebuildingContextImpl implements RebuildingContext {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends Node> T getUpdated(T node) {
-        /* This cast is save, since we only allow to put values of the same type of the key */
+        /*
+         * This cast is save, since we only allow to put values of the same type of the key
+         */
         return (T) nodes.get(node);
     }
 }

@@ -22,8 +22,6 @@
 
 package org.tensorics.core.tensor;
 
-import java.util.Map;
-
 /**
  * The top interface for {@link Tensor} like objects.
  * 
@@ -44,51 +42,31 @@ public interface Tensor<E> {
      * @param coordinates form N-dimensional space where to find the value.
      * @return a value at the given coordinates.
      * @throws IllegalArgumentException if the number of coordinates in incorrect
-     * @throws java.util.NoSuchElementException if the tensor contains no element for the given position
+     * @throws java.util.NoSuchElementException if the tensor contains no element for the position constructed from the
+     *             given coordinates.
      */
     E get(Object... coordinates);
 
     /**
-     * @return entry set of the tensor.
-     */
-    @Deprecated
-    Iterable<Entry<E>> entrySet();
-
-    /**
-     * @return all the entries as a map of Position to value. There is no guarantee about the thread safety or
-     *         mutability of the returned {@link Map}.
-     */
-    Map<Position, E> asMap();
-
-    /**
-     * @return the shape of the tensor. The RAW coordinates structure, no tensor values are returend here.
+     * Retrieves the shape of the tensor. As shape we understand simply the structure of a tensor: Its dimensions and
+     * the available positions.
+     * <p>
+     * Implementations have to take care that the returned value here is never {@code null}.
+     * 
+     * @return the shape of the tensor.
      */
     Shape shape();
 
     /**
-     * @return a Context of the tensor.
-     */
-    Context context();
-
-    /**
-     * An interface for tensor entries.
+     * Retrieves the context of the tensor, which is nothing else than a position. As context of the tensor we
+     * understand coordinates within a higher dimensional space than than the tensor has itself. This coordinates can
+     * e.g. transport information when e.g. a higher-dimensional tensor is split into smaller ones, so that it can
+     * potentially be reconstructed afterwards.
+     * <p>
+     * Implementations have to guarantee that the returned value here is never {@code null}.
      * 
-     * @author agorzaws
-     * @param <E> type of the values in the tensor.
+     * @return the context of the tensor.
      */
-    @Deprecated
-    interface Entry<E> {
-
-        /**
-         * @return a value of the entry, type <E>
-         */
-        E getValue();
-
-        /**
-         * @return position of the entry.
-         */
-        Position getPosition();
-
-    }
+    Position context();
 
 }

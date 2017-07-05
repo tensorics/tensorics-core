@@ -33,7 +33,7 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
  * @param <V>
  * @param <QTB>
  */
-public interface QuantifiedTensorBackedUnaryOperation<V, QTB extends Tensorbacked<QuantifiedValue<V>>> extends
-        UnaryOperation<QTB> {
+public interface QuantifiedTensorBackedUnaryOperation<V, QTB extends Tensorbacked<QuantifiedValue<V>>>
+        extends UnaryOperation<QTB> {
     /* Only a marker */
 }

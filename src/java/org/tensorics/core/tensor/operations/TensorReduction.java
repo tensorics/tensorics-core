@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.reduction.ReductionStrategy;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -56,11 +55,11 @@ public class TensorReduction<C, E, R> implements Conversion<Tensor<E>, Tensor<R>
         Tensor<Map<C, E>> mapped = TensorInternals.mapOut(value).inDirectionOf(direction);
 
         Builder<R> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());
-        builder.setTensorContext(Context.of(reductionStrategy.context(value.context().getPosition()).coordinates()));
-        for (Entry<Position, Map<C, E>> entry : mapped.asMap().entrySet()) {
+        builder.context(reductionStrategy.context(value.context()));
+        for (Entry<Position, Map<C, E>> entry : TensorInternals.mapFrom(mapped).entrySet()) {
             R reducedValue = reductionStrategy.reduce(entry.getValue(), entry.getKey());
             if (reducedValue != null) {
-                builder.at(entry.getKey()).put(reducedValue);
+                builder.put(entry.getKey(), reducedValue);
             }
         }
         return builder.build();

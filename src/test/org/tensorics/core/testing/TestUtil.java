@@ -47,7 +47,7 @@ public class TestUtil {
      * </ul>
      * Additionally, the private constructor is called once, to eliminate noise in coverage reports.
      * <p>
-     * Taken from <a href="https://github.com/trajano/maven-jee6/tree/master/maven-jee6-test">here</a>
+     * Taken from <a href= "https://github.com/trajano/maven-jee6/tree/master/maven-jee6-test">here</a>
      * 
      * @param clazz the utility class to verify.
      * @return {@code true} if everything is fine. Actually, it will never return anything else. This return value is
@@ -72,8 +72,8 @@ public class TestUtil {
         throw new RuntimeException("Error while validating utility class.", e);
     }
 
-    private static void verifyInternalUtilityClass(final Class<?> clazz) throws NoSuchMethodException,
-            InstantiationException, IllegalAccessException, InvocationTargetException {
+    private static void verifyInternalUtilityClass(final Class<?> clazz)
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         verifyClassIsFinal(clazz);
         verifyPrivateConstructor(clazz);
         verifyAllMethodsStatic(clazz);
@@ -83,8 +83,8 @@ public class TestUtil {
         assertTrue("class must be final", Modifier.isFinal(clazz.getModifiers()));
     }
 
-    private static void verifyPrivateConstructor(final Class<?> clazz) throws NoSuchMethodException,
-            InstantiationException, IllegalAccessException, InvocationTargetException {
+    private static void verifyPrivateConstructor(final Class<?> clazz)
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         assertEquals("There must be only one constructor", 1, clazz.getDeclaredConstructors().length);
         final Constructor<?> constructor = clazz.getDeclaredConstructor();
         if (constructor.isAccessible() || !Modifier.isPrivate(constructor.getModifiers())) {
@@ -101,8 +101,8 @@ public class TestUtil {
         }
     }
 
-    private static void callPrivateConstructor(final Constructor<?> constructor) throws InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+    private static void callPrivateConstructor(final Constructor<?> constructor)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException {
         constructor.setAccessible(true);
         constructor.newInstance();
         constructor.setAccessible(false);

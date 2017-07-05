@@ -30,7 +30,7 @@ import org.tensorics.core.math.operations.UnaryOperation;
  * 
  * @author kfuchsbe
  * @param <T> the type of the elements of the group
- * @see <a href="http://en.wikipedia.org/wiki/Group_(mathematics)">http://en.wikipedia.org/wiki/Group_(mathematics)</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Group_(mathematics)">http://en.wikipedia.org/wiki/Group_(mathematics)</a>
  */
 public interface Group<T> extends Monoid<T> {
 

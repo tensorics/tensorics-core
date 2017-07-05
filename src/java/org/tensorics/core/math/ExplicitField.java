@@ -33,7 +33,6 @@ import org.tensorics.core.math.predicates.BinaryPredicate;
  * 
  * @param <T> the type of the elements of the field
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public interface ExplicitField<T> {
 
     /**
@@ -48,6 +47,8 @@ public interface ExplicitField<T> {
     BinaryOperation<T> subtraction();
 
     T zero();
+
+    UnaryOperation<T> absoluteValue();
 
     /**
      * Has to return the '*' operation.

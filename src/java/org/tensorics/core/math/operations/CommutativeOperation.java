@@ -29,8 +29,8 @@ package org.tensorics.core.math.operations;
  * 
  * @author kfuchsbe
  * @param <T>
- * @see <a
- *      href="http://en.wikipedia.org/wiki/Commutative_property">http://en.wikipedia.org/wiki/Commutative_property</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Commutative_property">http://en.wikipedia.org/wiki/Commutative_property
+ *      </a>
  */
 public interface CommutativeOperation<T> extends BinaryOperation<T> {
     /* only a marker */

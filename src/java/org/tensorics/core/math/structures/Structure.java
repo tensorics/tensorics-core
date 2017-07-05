@@ -29,7 +29,7 @@ package org.tensorics.core.math.structures;
  * 
  * @author kfuchsbe
  * @param <T> the type of the elements of the mathematical structure
- * @see <a href="http://en.wikipedia.org/wiki/Algebraic_structure">http://en.wikipedia.org/wiki/Algebraic_structure</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Algebraic_structure">http://en.wikipedia.org/wiki/Algebraic_structure</a>
  */
 public interface Structure<T> {
     /* Only marker interface */

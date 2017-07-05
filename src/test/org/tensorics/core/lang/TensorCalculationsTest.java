@@ -97,8 +97,8 @@ public class TensorCalculationsTest {
         Tensor<Double> averageOverYCoordinte = TensorStructurals.from(tensor1).reduce(XCoordinate.class)
                 .byAveragingIn(doubles());
         assertEquals(tensor1.shape().dimensionSet().size() - 1, averageOverYCoordinte.shape().dimensionSet().size());
-        Set<YCoordinate> coordinateValues = TensorStructurals.from(averageOverYCoordinte).extractCoordinatesOfType(
-                YCoordinate.class);
+        Set<YCoordinate> coordinateValues = TensorStructurals.from(averageOverYCoordinte)
+                .extractCoordinatesOfType(YCoordinate.class);
         assertEquals(10, coordinateValues.size());
     }
 
@@ -174,8 +174,8 @@ public class TensorCalculationsTest {
         XCoordinate x2 = XCoordinate.of(3);
 
         Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
-        builder.at(Position.of(ImmutableSet.of(x, y))).put(13.2);
-        builder.at(Position.of(ImmutableSet.of(x2, y))).put(-1.2);
+        builder.put(Position.of(ImmutableSet.of(x, y)), 13.2);
+        builder.put(Position.of(ImmutableSet.of(x2, y)), -1.2);
         Tensor<Double> testTensor = builder.build();
 
         Tensor<Double> tensor = tensoricFieldUsage.calculate(tensor1).plus(testTensor);
@@ -189,13 +189,13 @@ public class TensorCalculationsTest {
         XCoordinate x2 = XCoordinate.of(3);
 
         Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
-        builder.at(Position.of(ImmutableSet.of(x, y))).put(13.2);
-        builder.at(Position.of(ImmutableSet.of(x2, y))).put(-1.2);
+        builder.put(Position.of(ImmutableSet.of(x, y)), 13.2);
+        builder.put(Position.of(ImmutableSet.of(x2, y)), -1.2);
         Tensor<Double> testTensor = builder.build();
 
         Builder<Double> builder2 = ImmutableTensor.builder(ImmutableSet.of(y.getClass(), x.getClass()));
-        builder2.at(Position.of(ImmutableSet.of(x, y))).put(1.2);
-        builder2.at(Position.of(ImmutableSet.of(x2, y))).put(1.2);
+        builder2.put(Position.of(ImmutableSet.of(x, y)), 1.2);
+        builder2.put(Position.of(ImmutableSet.of(x2, y)), 1.2);
         Tensor<Double> testTensor2 = builder2.build();
         Tensor<Double> tensor = tensoricFieldUsage.calculate(testTensor).plus(testTensor2);
         assertEquals(14.4, tensor.get(x, y).doubleValue(), 0.001);
@@ -222,12 +222,11 @@ public class TensorCalculationsTest {
     public void testAdditionFrom2elementsTo100WithWrongShapes() {
         XCoordinate x = XCoordinate.of(6);
         XCoordinate x2 = XCoordinate.of(3);
-        Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.<Class<? extends TestCoordinate>> of(x
-                .getClass()));
+        Builder<Double> builder = ImmutableTensor.builder(ImmutableSet.of(x.getClass()));
         double x1Add = 13.2;
         double x2Add = -1.2;
-        builder.at(Position.of(x)).put(x1Add);
-        builder.at(Position.of(x2)).put(x2Add);
+        builder.put(Position.of(x), x1Add);
+        builder.put(Position.of(x2), x2Add);
         Tensor<Double> testTensor = builder.build();
         Tensor<Double> result = tensoricFieldUsage.calculate(tensor1).plus(testTensor);
 
@@ -242,7 +241,7 @@ public class TensorCalculationsTest {
     }
 
     private void checkCorrectlyAdded(XCoordinate x, double x1Add, Tensor<Double> result) {
-        for (java.util.Map.Entry<Position, Double> entry : result.asMap().entrySet()) {
+        for (java.util.Map.Entry<Position, Double> entry : Tensorics.mapFrom(result).entrySet()) {
             Position position = entry.getKey();
             if (x.equals(position.coordinateFor(XCoordinate.class))) {
                 assertEquals(tensor1.get(position) + x1Add, entry.getValue(), 0.0000001);
@@ -278,7 +277,7 @@ public class TensorCalculationsTest {
     }
 
     @Test
-    @Ignore
+    @Ignore("takes too long. Enable for profiling")
     public void profileDoubleTensorPreparation() {
         int maxY = 1000;
         int step = 100;
@@ -502,8 +501,8 @@ public class TensorCalculationsTest {
     @Test
     public void testSimpleTensoricsTask() {
 
-        Tensor<Double> result = new TensoricTask<Double, Tensor<Double>>(EnvironmentImpl.of(doubles(),
-                ManipulationOptions.defaultOptions(doubles()))) {
+        Tensor<Double> result = new TensoricTask<Double, Tensor<Double>>(
+                EnvironmentImpl.of(doubles(), ManipulationOptions.defaultOptions(doubles()))) {
 
             @Override
             public Tensor<Double> run() {
@@ -533,8 +532,8 @@ public class TensorCalculationsTest {
         ZCoordinate z = ZCoordinate.of(0);
         Date date2 = new Date();
         if (printLog) {
-            System.out.println("done after (" + (date2.getTime() - date.getTime())
-                    + "ms); \n Multiplying (base*(-1))\t" + sdf.format(date2));
+            System.out.println("done after (" + (date2.getTime() - date.getTime()) + "ms); \n Multiplying (base*(-1))\t"
+                    + sdf.format(date2));
         }
         Tensor<Double> inversedTensor = tensoricFieldUsage.negativeOf(tensor3Big);
         Date date3 = new Date();
@@ -595,24 +594,22 @@ public class TensorCalculationsTest {
 
     @SuppressWarnings("boxing")
     private Tensor<Double> prepareValues(double factor) {
-        ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
-                .of(XCoordinate.class, YCoordinate.class);
+        ImmutableSet<Class<?>> dimensions = ImmutableSet.of(XCoordinate.class, YCoordinate.class);
         Builder<Double> builder = ImmutableTensor.builder(dimensions);
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                builder.at(Position.of(coordinatesFor(i, j))).put(valueFor(i, j, factor));
+                builder.put(Position.of(coordinatesFor(i, j)), valueFor(i, j, factor));
             }
         }
         return builder.build();
     }
 
     private Tensor<Boolean> prepareOnlyEvenValuesTrueFlag() {
-        ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet
-                .of(XCoordinate.class, YCoordinate.class);
+        ImmutableSet<Class<?>> dimensions = ImmutableSet.of(XCoordinate.class, YCoordinate.class);
         Builder<Boolean> builder = ImmutableTensor.builder(dimensions);
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                builder.at(Position.of(coordinatesFor(i, j))).put(flagFor(i, j));
+                builder.put(Position.of(coordinatesFor(i, j)), flagFor(i, j));
             }
         }
         return builder.build();
@@ -654,13 +651,12 @@ public class TensorCalculationsTest {
     }
 
     private <V> Tensor<V> createTensor(CoordinateRange range, ValueFactory<V> factory) {
-        ImmutableSet<Class<? extends TestCoordinate>> dimensions = ImmutableSet.of(XCoordinate.class,
-                YCoordinate.class, ZCoordinate.class);
+        ImmutableSet<Class<?>> dimensions = ImmutableSet.of(XCoordinate.class, YCoordinate.class, ZCoordinate.class);
         Builder<V> builder = ImmutableTensor.builder(dimensions);
         for (XCoordinate x : range.getxCoordinates()) {
             for (YCoordinate y : range.getyCoordinates()) {
                 for (ZCoordinate z : range.getzCoordinates()) {
-                    builder.putAt(factory.create(x.getValue(), y.getValue(), z.getValue()), Position.of(x, y, z));
+                    builder.put(Position.of(x, y, z), factory.create(x.getValue(), y.getValue(), z.getValue()));
                 }
             }
         }
@@ -688,8 +684,7 @@ public class TensorCalculationsTest {
         for (XCoordinate x : range.getxCoordinates()) {
             for (YCoordinate y : range.getyCoordinates()) {
                 for (ZCoordinate z : range.getzCoordinates()) {
-                    builder.putUncheckedAt(factory.create(x.getValue(), y.getValue(), z.getValue()),
-                            Position.of(x, y, z));
+                    builder.put(Position.of(x, y, z), factory.create(x.getValue(), y.getValue(), z.getValue()));
                 }
             }
         }

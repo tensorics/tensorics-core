@@ -72,7 +72,9 @@ public class ResolvingContextImpl implements EditableResolvingContext {
             return expression.get();
         }
 
-        /* This cast is safe, because we took care when putting the value that it has the right type */
+        /*
+         * This cast is safe, because we took care when putting the value that it has the right type
+         */
         @SuppressWarnings("unchecked")
         R value = (R) resolvedExpressions.get(expression);
 

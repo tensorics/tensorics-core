@@ -47,7 +47,9 @@ public class OngoingDeferredTensorBackedOperation<V, TB extends Tensorbacked<V>>
     private final Expression<TB> left;
     private final Class<TB> resultClass;
 
-    public OngoingDeferredTensorBackedOperation(Environment<V> environment, // just line wrap
+    public OngoingDeferredTensorBackedOperation(Environment<V> environment, // just
+                                                                            // line
+                                                                            // wrap
             Class<TB> resultClass, Expression<TB> left) {
         super();
         this.environment = environment;

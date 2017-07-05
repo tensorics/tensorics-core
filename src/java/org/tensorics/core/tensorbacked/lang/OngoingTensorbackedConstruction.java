@@ -21,6 +21,13 @@
 // @formatter:on
 package org.tensorics.core.tensorbacked.lang;
 
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.createBackedByTensor;
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.dimensionsOf;
+
+import java.util.Map;
+
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
@@ -43,6 +50,12 @@ public class OngoingTensorbackedConstruction<V, TB extends Tensorbacked<V>> {
 
     public TB byMergingTb(Iterable<? extends Tensorbacked<V>> tensorbackeds) {
         return byMerging(TensorbackedInternals.tensorsOf(tensorbackeds));
+    }
+
+    public TB fromMap(Map<Position, V> inputMap) {
+        Preconditions.checkNotNull(inputMap, "inputMap must not be null");
+        Tensor<V> tensor = ImmutableTensor.fromMap(dimensionsOf(tensorbackedClass), inputMap);
+        return createBackedByTensor(tensorbackedClass, tensor);
     }
 
 }

@@ -35,7 +35,6 @@ import org.tensorics.core.units.Unit;
  * @param <V> the type of the numerical scalar values
  * @param <U> the type of the unit
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
 public final class OperandPair<V, U extends Unit> implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -68,7 +67,6 @@ public final class OperandPair<V, U extends Unit> implements Serializable {
     }
 
     @Override
-    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.NPathComplexity" })
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

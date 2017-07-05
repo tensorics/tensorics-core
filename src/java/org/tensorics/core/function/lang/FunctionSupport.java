@@ -46,8 +46,8 @@ public class FunctionSupport<Y> extends FunctionSupportWithConversionAndComparat
      * @param conversion defines how to transform a value of X type to Y type
      * @return a {@link FunctionSupportWithConversionAndComparator} with a given {@link Conversion} set
      */
-    public final <X> FunctionSupportWithConversionAndComparator<X, Y> withConversionAndComparator(Conversion<X, Y> conversion,
-            Comparator<X> comparator) {
+    public final <X> FunctionSupportWithConversionAndComparator<X, Y> withConversionAndComparator(
+            Conversion<X, Y> conversion, Comparator<X> comparator) {
         return new FunctionSupportWithConversionAndComparator<>(environment(), conversion, comparator);
     }
 }

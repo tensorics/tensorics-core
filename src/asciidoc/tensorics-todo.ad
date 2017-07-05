@@ -1,22 +1,24 @@
 ---
 layout: default
 title: Tensorics Todo
-root: ../
+permalink: /projects/tensorics-core/todo/
+project: "Tensorics Core"
 ---
 = Tensorics Todo
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
 2014-07-12
 :icons: font
 :sectanchors:
+:page-liquid:
 :source-highlighter: highlightjs
-:examplesource: src/examples/org/tensorics/core/examples
-:sourcecodedir: src/java/org/tensorics/core
-:javadoc-baseurl: http://tensorics.github.io/javadoc/org/tensorics/core/tensor
+:examplesource: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples
+:sourcecodedir: {{ site.tensorics-core-dir }}/src/java/org/tensorics/core
+:javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics/core/tensor
 
 ---
- 
-IMPORTANT: This is a list of things to be included, at near future. 
- 
+
+IMPORTANT: This is a list of things to be included, at near future.
+
 == TODOs
 
 === Tensors
@@ -25,5 +27,3 @@ IMPORTANT: This is a list of things to be included, at near future.
 
 
 === Tensorbackeds
-
-

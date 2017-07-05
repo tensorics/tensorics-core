@@ -38,7 +38,6 @@ import org.tensorics.core.units.Unit;
  * @author kfuchsbe
  * @param <V> the type of the elements of the field on which all the operations are based on.
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class QuantityExpressionSupport<V> {
 
     private final QuantityOperationRepository<V> pseudoField;

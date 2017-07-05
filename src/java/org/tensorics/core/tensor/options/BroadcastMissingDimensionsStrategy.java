@@ -24,12 +24,12 @@ package org.tensorics.core.tensor.options;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.tensorics.core.tensor.Shapes.dimensionStripped;
-import static org.tensorics.core.tensor.Shapes.dimensionalIntersection;
 
 import java.util.Set;
 
 import org.tensorics.core.tensor.BroadcastedTensorView;
 import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Shapes;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorPair;
 
@@ -79,7 +79,7 @@ public class BroadcastMissingDimensionsStrategy implements BroadcastingStrategy 
         checkNotNull(left, "left tensor must not be null");
         checkNotNull(right, "right tensor must not be null");
 
-        Set<Class<?>> dimensionalIntersection = dimensionalIntersection(left.shape(), right.shape());
+        Set<Class<?>> dimensionalIntersection = Shapes.parentDimensionalIntersection(left.shape(), right.shape());
         Set<Class<?>> notBroadcastedDimensions = Sets.union(dimensionalIntersection, excludedDimensions)
                 .immutableCopy();
 

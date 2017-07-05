@@ -53,7 +53,7 @@ public class QuantityTensorbackedExpressionSupport<V> {
     }
 
     public final <TB extends Tensorbacked<QuantifiedValue<V>>> OngoingDeferredQuantifiedTensorBackedOperation<V, TB> //
-    calculateTB(Class<TB> resultClass, Expression<TB> left) {
+            calculateTB(Class<TB> resultClass, Expression<TB> left) {
         return new OngoingDeferredQuantifiedTensorBackedOperation<>(operationRepository, resultClass, left);
     }
 

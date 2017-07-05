@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.tensor.lang;
 
+import static com.google.common.collect.ImmutableSet.of;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
@@ -31,6 +32,7 @@ import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Scalar;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorPair;
@@ -39,7 +41,7 @@ import org.tensorics.core.tensor.options.BroadcastingStrategy;
 
 public class BroadcastAllBroadcastingStrategyTest {
 
-    private static final Tensor<Double> ZERO_DIMENSIONAL_ZERO = Tensorics.zeroDimensionalOf(0.0);
+    private static final Scalar<Double> ZERO_DIMENSIONAL_ZERO = Tensorics.scalarOf(0.0);
 
     private static final Position POS_A = Position.of("A");
     private static final Position POS_B = Position.of("B");
@@ -51,7 +53,7 @@ public class BroadcastAllBroadcastingStrategyTest {
     private static final Position POS_B1 = Position.of("B", 1);
     private static final Position POS_B2 = Position.of("B", 2);
 
-    private static final Shape FULL_SHAPE = Shape.of(POS_A1, POS_A2, POS_B1, POS_B2);
+    private static final Shape FULL_SHAPE = Shape.of(of(String.class, Integer.class), POS_A1, POS_A2, POS_B1, POS_B2);
 
     private BroadcastingStrategy strategy;
 
@@ -93,7 +95,7 @@ public class BroadcastAllBroadcastingStrategyTest {
         assertEquals(tensor, Tensorics.copyOf(result.right()));
 
         Tensor<Double> left = result.left();
-        assertEquals(Shape.of(POS_A, POS_B), left.shape());
+        assertEquals(Shape.of(of(String.class), POS_A, POS_B), left.shape());
         assertEquals(0.0, left.get(POS_A), 0.000001);
         assertEquals(0.0, left.get(POS_B), 0.000001);
     }
@@ -129,15 +131,15 @@ public class BroadcastAllBroadcastingStrategyTest {
 
     private Tensor<Double> createAB() {
         ImmutableTensor.Builder<Double> builder = ImmutableTensor.builder(String.class);
-        builder.at(POS_A).put(1.0);
-        builder.at(POS_B).put(2.0);
+        builder.put(POS_A, 1.0);
+        builder.put(POS_B, 2.0);
         return builder.build();
     }
 
     private Tensor<Double> create12() {
         ImmutableTensor.Builder<Double> builder = ImmutableTensor.builder(Integer.class);
-        builder.at(POS_1).put(0.1);
-        builder.at(POS_2).put(0.2);
+        builder.put(POS_1, 0.1);
+        builder.put(POS_2, 0.2);
         return builder.build();
     }
 

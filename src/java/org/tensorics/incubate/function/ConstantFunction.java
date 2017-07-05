@@ -34,8 +34,8 @@ import com.google.common.base.Preconditions;
  * @param <QX> type of arguments
  * @param <QY> type of values
  */
-public final class ConstantFunction<QX extends Quantity, QY extends Quantity> implements
-        AnalyticalFunction<Amount<QX>, Amount<QY>> {
+public final class ConstantFunction<QX extends Quantity, QY extends Quantity>
+        implements AnalyticalFunction<Amount<QX>, Amount<QY>> {
 
     private final Amount<QY> constant;
 
@@ -62,9 +62,8 @@ public final class ConstantFunction<QX extends Quantity, QY extends Quantity> im
         return constant;
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <QX extends Quantity, QY extends Quantity> ConstantFunction<QX, QY> of(Amount<QY> amount) {
-        return new ConstantFunction<QX, QY>(amount);
+        return new ConstantFunction<>(amount);
     }
 
 }

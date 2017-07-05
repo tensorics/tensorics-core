@@ -30,7 +30,7 @@ package org.tensorics.core.math.operations;
  * 
  * @author kfuchsbe
  * @param <T> the type of the elements to which this operation can be applied.
- * @see <a href="http://en.wikipedia.org/wiki/Associative">http://en.wikipedia.org/wiki/Associative</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Associative">http://en.wikipedia.org/wiki/Associative</a>
  */
 public interface AssociativeOperation<T> extends BinaryOperation<T> {
     /* Only a marker */

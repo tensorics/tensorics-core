@@ -39,9 +39,8 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
  * @author kfuchsbe
  * @param <S> the type of the scalar values (elements of the fields)
  */
-@SuppressWarnings("PMD.TooManyMethods")
-public class OngoingDeferredQuantifiedTensorOperation<S> implements
-        OngoingOperation<Expression<Tensor<QuantifiedValue<S>>>, QuantifiedValue<S>> {
+public class OngoingDeferredQuantifiedTensorOperation<S>
+        implements OngoingOperation<Expression<Tensor<QuantifiedValue<S>>>, QuantifiedValue<S>> {
 
     private final QuantityOperationRepository<S> pseudoField;
     private final Expression<Tensor<QuantifiedValue<S>>> left;
@@ -78,12 +77,12 @@ public class OngoingDeferredQuantifiedTensorOperation<S> implements
 
     @Override
     public Expression<Tensor<QuantifiedValue<S>>> elementDividedByV(QuantifiedValue<S> value) {
-        return elementDividedByQT(Tensorics.zeroDimensionalOf(value));
+        return elementDividedByQT(Tensorics.scalarOf(value));
     }
 
     @Override
     public Expression<Tensor<QuantifiedValue<S>>> elementTimesV(QuantifiedValue<S> right) {
-        return elementTimes(ResolvedExpression.of(Tensorics.zeroDimensionalOf(right)));
+        return elementTimes(ResolvedExpression.of(Tensorics.scalarOf(right)));
     }
 
     @Override

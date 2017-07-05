@@ -17,7 +17,7 @@ import org.tensorics.core.tensor.Tensor;
  * @param <E> the type of the hold values
  * @param <C> the type of the interpolation direction, must be Comparable
  */
-public class InterpolatedSlicing<C extends Comparable<C>, E> extends Slicing<C, E> {
+public class InterpolatedSlicing<C, E> extends Slicing<C, E> {
 
     private final InterpolationStrategy<C, E> strategy;
     private final Tensor<E> tensor;

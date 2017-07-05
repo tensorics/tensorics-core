@@ -34,7 +34,7 @@ import org.tensorics.core.math.structures.Structure;
 public interface GrouplikeStructure<T> extends Structure<T> {
 
     /**
-     * Has to return the binary operation (M x M -> M) for this Magma.
+     * Has to return the binary operation (M x M = M) for this Magma.
      * 
      * @return the binary operation.
      */

@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
 package org.tensorics.core.lang;
-
-import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -34,21 +32,22 @@ import java.util.stream.Stream;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
-import org.tensorics.core.tensor.Context;
+import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Scalar;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.Tensorbuilder;
 import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingTensorFiltering;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
-import org.tensorics.core.tensor.operations.FunctionTensorCreationOperation;
-import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
+import org.tensorics.core.tensor.operations.TensorInternals;
 import org.tensorics.core.tensor.stream.TensorStreams;
+import org.tensorics.core.tensorbacked.OngoingTensorbackedCompletion;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
@@ -71,10 +70,9 @@ import com.google.common.base.Optional;
  * <li>{@link QuantityTensors}
  * <li>{@link Tensorbackeds}
  * </ul>
- * 
+ *
  * @author kfuchsbe, agorzaws, mihostet
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class Tensorics {
 
     /**
@@ -87,7 +85,7 @@ public final class Tensorics {
     /**
      * Creates an instance of a 'support' type class, which provides methods as starting points for the 'fluent' API for
      * tensor manipulation.
-     * 
+     *
      * @param field the (mathematical construct) field which defines the operations for the tensor elements.
      * @return a tensoric support, which provides the starting methods for the tensoric fluent API.
      * @param <E> the types of values in the field
@@ -96,9 +94,6 @@ public final class Tensorics {
         return new TensoricSupport<>(EnvironmentImpl.of(field, ManipulationOptions.defaultOptions(field)));
     }
 
-    /**
-     * @see TensorStructurals#merge(Set)
-     */
     public static <E> Tensor<E> merge(Iterable<Tensor<E>> tensors) {
         return TensorStructurals.merge(tensors);
     }
@@ -111,39 +106,24 @@ public final class Tensorics {
     }
 
     /**
-     * @see Tensorbackeds#mergeTo(Set, Class)
+     * @see ImmutableTensor#builder(Iterable)
      */
-    public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Set<TB> toBeMerged,
-            Class<TBOUT> classToReturn) {
-        return Tensorbackeds.mergeTo(toBeMerged, classToReturn);
-    }
-
-    /**
-     * @see ImmutableTensor#builder(Set)
-     */
-    public static <T> TensorBuilder<T> builder(Set<? extends Class<?>> dimensions) {
+    public static <T> Tensorbuilder<T> builder(Iterable<Class<?>> dimensions) {
         return ImmutableTensor.builder(dimensions);
     }
 
     /**
      * @see ImmutableTensor#builder(Class...)
      */
-    public static <T> TensorBuilder<T> builder(Class<?>... dimensions) {
+    public static <T> Tensorbuilder<T> builder(Class<?>... dimensions) {
         return ImmutableTensor.builder(dimensions);
     }
 
     /**
-     * @see ImmutableTensor#fromMap(Set, Map)
+     * @see ImmutableTensor#fromMap(Iterable, Map)
      */
-    public static <T> Tensor<T> fromMap(Set<? extends Class<?>> dimensions, Map<Position, T> map) {
+    public static <T> Tensor<T> fromMap(Iterable<Class<?>> dimensions, Map<Position, T> map) {
         return ImmutableTensor.fromMap(dimensions, map);
-    }
-
-    /**
-     * @see ImmutableTensor#fromMap(Set, Map)
-     */
-    public static <T> Tensor<T> fromMap(Map<Position, T> map) {
-        return ImmutableTensor.fromMap(map);
     }
 
     /**
@@ -156,15 +136,15 @@ public final class Tensorics {
     /**
      * @see ImmutableTensor#builderFrom(Tensor)
      */
-    public static <T> TensorBuilder<T> builderFrom(Tensor<T> tensor) {
+    public static <T> Tensorbuilder<T> builderFrom(Tensor<T> tensor) {
         return ImmutableTensor.builderFrom(tensor);
     }
 
     /**
-     * @see ImmutableTensor#zeroDimensionalOf(Object)
+     * @see ImmutableScalar#of(Object)
      */
-    public static <T> Tensor<T> zeroDimensionalOf(T value) {
-        return ImmutableTensor.zeroDimensionalOf(value);
+    public static <T> ImmutableScalar<T> scalarOf(T value) {
+        return ImmutableScalar.of(value);
     }
 
     /**
@@ -176,7 +156,7 @@ public final class Tensorics {
 
     /**
      * Convenience method to create a quantity directly from a jscience unit.
-     * 
+     *
      * @param value the of the quantity
      * @param unit the unit of the quantity
      * @return a new instance of the quantity
@@ -278,11 +258,19 @@ public final class Tensorics {
         return Tensorbackeds.shapeOf(tensorbacked);
     }
 
+    public static Set<Class<?>> dimensionsOf(Tensorbacked<?> tensorbacked) {
+        return Tensorbackeds.shapeOf(tensorbacked).dimensionSet();
+    }
+
     /**
      * @see TensorStructurals#from(Tensor)
      */
     public static <V> OngoingTensorManipulation<V> from(Tensor<V> tensor) {
         return TensorStructurals.from(tensor);
+    }
+
+    public static <V> OngoingTensorManipulation<V> from(Tensorbacked<V> tensorbacked) {
+        return TensorStructurals.from(tensorbacked.tensor());
     }
 
     public static Set<Class<?>> dimensionsOf(Tensor<?> tensor) {
@@ -318,15 +306,15 @@ public final class Tensorics {
     }
 
     public static <S> Tensor<S> sameValues(Shape shape, S value) {
-        return new SingleValueTensorCreationOperation<S>(shape, value).perform();
+        return TensorInternals.sameValues(shape, value);
     }
 
     public static <S> Tensor<S> createFrom(Shape shape, Supplier<S> supplier) {
-        return new FunctionTensorCreationOperation<>(shape, forSupplier(supplier)).perform();
+        return TensorInternals.createFrom(shape, supplier);
     }
 
     public static <S> Tensor<S> createFrom(Shape shape, Function<Position, S> function) {
-        return new FunctionTensorCreationOperation<>(shape, function).perform();
+        return TensorInternals.createFrom(shape, function);
     }
 
     public static <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
@@ -341,15 +329,15 @@ public final class Tensorics {
         return TensorStructurals.transformScalars(tensor, function);
     }
 
-    public static final Tensor<QuantifiedValue<Double>> zeroDimensionalOf(double value,
+    public static final Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value,
             javax.measure.unit.Unit<?> unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
-        return zeroDimensionalOf(quantity);
+        return scalarOf(quantity);
     }
 
-    public static final Tensor<QuantifiedValue<Double>> zeroDimensionalOf(double value, Unit unit) {
+    public static final Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value, Unit unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
-        return zeroDimensionalOf(quantity);
+        return scalarOf(quantity);
     }
 
     /**
@@ -395,17 +383,11 @@ public final class Tensorics {
         return Tensorbackeds.filter(tensorbacked);
     }
 
-    /**
-     * @see TensorStructurals#setContext(Tensor, Context)
-     */
-    public static <S> Tensor<S> setContext(Tensor<S> tensor, Context context) {
+    public static <S> Tensor<S> setContext(Tensor<S> tensor, Position context) {
         return TensorStructurals.setContext(tensor, context);
     }
 
-    /**
-     * @see Tensorbackeds#setContext(Tensorbacked, Context)
-     */
-    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Context context) {
+    public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Position context) {
         return Tensorbackeds.setContext(tensorbacked, context);
     }
 
@@ -422,4 +404,40 @@ public final class Tensorics {
     public static <S> Stream<Map.Entry<Position, S>> stream(Tensorbacked<S> tensorBacked) {
         return TensorStreams.tensorEntryStream(tensorBacked.tensor());
     }
+
+    /**
+     * @see Tensorbackeds#shapeOf(Tensorbacked)
+     */
+    public static <TB extends Tensorbacked<?>> Iterable<Shape> shapesOf(Iterable<TB> tensorbackeds) {
+        return Tensorbackeds.shapesOf(tensorbackeds);
+    }
+
+    /**
+     * @see Tensorbackeds#complete(Tensorbacked)
+     */
+    public static <S, TB extends Tensorbacked<S>> OngoingTensorbackedCompletion<TB, S> complete(TB tensorbacked) {
+        return Tensorbackeds.complete(tensorbacked);
+    }
+
+    /**
+     * @see TensorInternals#mapFrom(Tensor)
+     */
+    public static <V> Map<Position, V> mapFrom(Tensor<V> tensor) {
+        return TensorInternals.mapFrom(tensor);
+    }
+
+    /**
+     * @see Position#of(Iterable)
+     */
+    public static Position at(Iterable<?> coordinates) {
+        return Position.of(coordinates);
+    }
+
+    /**
+     * @see Position#of(Object...)
+     */
+    public static Position at(Object... coordinates) {
+        return Position.of(coordinates);
+    }
+
 }

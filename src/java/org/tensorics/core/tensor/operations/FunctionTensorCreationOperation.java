@@ -30,7 +30,6 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 
-
 /**
  * Uses the given function from a position to the tensor to create the values of the tensor.
  * 
@@ -52,7 +51,7 @@ public class FunctionTensorCreationOperation<V> implements CreationOperation<Ten
     public Tensor<V> perform() {
         Builder<V> builder = ImmutableTensor.builder(shape.dimensionSet());
         for (Position position : shape.positionSet()) {
-            builder.at(position).put(function.apply(position));
+            builder.put(position, function.apply(position));
         }
         return builder.build();
     }

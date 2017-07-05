@@ -28,7 +28,6 @@ import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.ManipulationOption;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversionAndComparator;
-import org.tensorics.core.function.lang.OngoingDeferredDiscreteFunctionBinaryOperation;
 import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
 import org.tensorics.core.math.operations.BinaryFunction;
@@ -58,9 +57,9 @@ import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.units.Unit;
 
 /**
- * Provides delegate methods to a static instance of a TensoricSupport<Double>. This is for convenience purposes, so
- * that a simple calculation does not have to inherit from the support class, but can statically import methods from
- * this class.
+ * Provides delegate methods to a static instance of a {@code TensoricSupport<Double>}. This is for convenience
+ * purposes, so that a simple calculation does not have to inherit from the support class, but can statically import
+ * methods from this class.
  * 
  * @author kfuchsbe
  */
@@ -228,6 +227,10 @@ public final class DoubleTensorics {
         return SUPPORT.absoluteValueOf(value);
     }
 
+    public static final QuantifiedValue<Double> absoluteValueOf(QuantifiedValue<Double> value) {
+        return SUPPORT.absoluteValueOf(value);
+    }
+
     public static final <S, R> Tensor<R> elementwise(BinaryFunction<S, R> operation, Tensor<S> left, Tensor<S> right) {
         return SUPPORT.elementwise(operation, left, right);
     }
@@ -368,11 +371,6 @@ public final class DoubleTensorics {
     public static final Expression<Double> averageOfF(
             Expression<DiscreteFunction<Double, Double>> functionExpresssion) {
         return EXPRESSION_SUPPORT.averageOfF(functionExpresssion);
-    }
-
-    public static final <X> OngoingDeferredDiscreteFunctionBinaryOperation<X, X> calculateF(
-            Expression<DiscreteFunction<X, X>> functionExpresssion) {
-        return EXPRESSION_SUPPORT.calculateF(functionExpresssion);
     }
 
     public static final <X> FunctionExpressionSupportWithConversionAndComparator<X, Double> withConversionAndComparator(

@@ -16,12 +16,12 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
  * 
  * @author agorzaws
  */
-//tag::classdef[]
+// tag::classdef[]
 @Dimensions({ Beam.class, Plane.class, Bpm.class })
 public class MultibeamOrbit implements Tensorbacked<Double> {
 
     private final Tensor<Double> tensor;
-    
+
     public MultibeamOrbit(Tensor<Double> tensor) {
         this.tensor = tensor;
     }
@@ -36,5 +36,4 @@ public class MultibeamOrbit implements Tensorbacked<Double> {
     }
 
 }
-//end::classdef[]
-
+// end::classdef[]

@@ -39,10 +39,10 @@ public final class InterpolatedFunction<X extends Comparable<X>, Y> implements C
     private InterpolatedFunction(DiscreteFunction<X, Y> function, InterpolationStrategy<X, Y> strategy) {
         this.interpolationStrategy = strategy;
         this.discreteFunction = function;
-        Preconditions
-                .checkArgument(discreteFunction != null, "Argument '" + "DiscreteFunction" + "' must not be null!");
-        Preconditions.checkArgument(interpolationStrategy != null, "Argument '" + "InterpolationStrategy"
-                + "' must not be null!");
+        Preconditions.checkArgument(discreteFunction != null,
+                "Argument '" + "DiscreteFunction" + "' must not be null!");
+        Preconditions.checkArgument(interpolationStrategy != null,
+                "Argument '" + "InterpolationStrategy" + "' must not be null!");
     }
 
     @Override
@@ -50,7 +50,6 @@ public final class InterpolatedFunction<X extends Comparable<X>, Y> implements C
         return interpolationStrategy.interpolate(xValue, discreteFunction);
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <X extends Comparable<X>, Y> InterpolatedFunction<X, Y> of(DiscreteFunction<X, Y> function,
             InterpolationStrategy<X, Y> strategy) {
         return new InterpolatedFunction<>(function, strategy);

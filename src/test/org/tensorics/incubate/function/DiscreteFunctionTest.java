@@ -35,6 +35,7 @@ public class DiscreteFunctionTest {
     private DiscreteFunction<Double, Double> functionToTest;
 
     private static final List<Double> VALUES = new ArrayList<>();
+
     static {
         VALUES.add(5.0);
         VALUES.add(4.9);

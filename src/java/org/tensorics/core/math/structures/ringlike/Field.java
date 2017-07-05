@@ -38,7 +38,7 @@ import org.tensorics.core.math.structures.grouplike.AbelianGroup;
  * 
  * @author kfuchsbe
  * @param <T> the type of elements of the field.
- * @see <a href="http://en.wikipedia.org/wiki/Field_(mathematics)">http://en.wikipedia.org/wiki/Field_(mathematics)</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Field_(mathematics)">http://en.wikipedia.org/wiki/Field_(mathematics)</a>
  */
 public interface Field<T> extends Ring<T> {
 

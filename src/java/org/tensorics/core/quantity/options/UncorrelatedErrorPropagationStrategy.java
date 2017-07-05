@@ -28,7 +28,6 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
 
 import com.google.common.base.Optional;
 
-
 /**
  * This error propagation assumes uncorrelated errors.
  * <p>

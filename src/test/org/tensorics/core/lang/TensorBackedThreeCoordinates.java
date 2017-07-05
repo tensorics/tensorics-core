@@ -29,6 +29,8 @@ import org.tensorics.core.tensorbacked.annotation.Dimensions;
 @Dimensions({ XCoordinate.class, YCoordinate.class, ZCoordinate.class })
 public class TensorBackedThreeCoordinates extends AbstractTensorbacked<Double> {
 
+    private static final long serialVersionUID = 1L;
+
     public TensorBackedThreeCoordinates(Tensor<Double> tensor) {
         super(tensor);
     }

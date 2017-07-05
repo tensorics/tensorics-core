@@ -81,7 +81,7 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
 
     @Override
     public Tensor<V> elementDividedByV(V value) {
-        return elementDividedBy(Tensorics.zeroDimensionalOf(value));
+        return elementDividedBy(Tensorics.scalarOf(value));
     }
 
     private Tensor<V> evaluate(Tensor<V> right, BinaryOperation<V> operation) {
@@ -90,7 +90,7 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
 
     @Override
     public Tensor<V> elementTimesV(V right) {
-        return elementTimes(Tensorics.zeroDimensionalOf(right));
+        return elementTimes(Tensorics.scalarOf(right));
     }
 
     @Override
@@ -107,8 +107,8 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
      * @see InnerTensorOperation
      */
     public Tensor<V> times(Tensor<V> right) {
-        return new InnerTensorOperation<V>(environment.field().multiplication(),
-                new IterableSum<>(environment.field()), environment.options()).perform(left, right);
+        return new InnerTensorOperation<V>(environment.field().multiplication(), new IterableSum<>(environment.field()),
+                environment.options()).perform(left, right);
     }
 
 }

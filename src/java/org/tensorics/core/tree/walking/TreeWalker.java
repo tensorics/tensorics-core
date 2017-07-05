@@ -32,14 +32,14 @@ import org.tensorics.core.tree.domain.Node;
  * moments of the walk-through. The moment when a callback is called depends of the interfaces that are implemented by a
  * specific callback. Possible callbacks and their purposes are:
  * <ul>
- * <li> {@link EveryNodeCallback}: The single method of this callback will be called once for every node in the tree in
+ * <li>{@link EveryNodeCallback}: The single method of this callback will be called once for every node in the tree in
  * the order of the walkthrough.
- * <li> {@link BottomNodeCallback}: The single method of this callback will be called for every node in the tree, which
+ * <li>{@link BottomNodeCallback}: The single method of this callback will be called for every node in the tree, which
  * is a bottom node (has no children).
- * <li> {@link SkipNodeAndSubTreesCallback}: The method of this callback is called before a node (or its children) are
+ * <li>{@link SkipNodeAndSubTreesCallback}: The method of this callback is called before a node (or its children) are
  * visited. Its sole method can return a boolean flag. If the callback returns {@code true}, then the node (and all the
  * subtree starting from there) is skipped. If {@code false} is returned, the sub tree is processed normally.
- * <li> {@link StepUpCallback}: The sole method of this callback is called when some children of a node were visited and
+ * <li>{@link StepUpCallback}: The sole method of this callback is called when some children of a node were visited and
  * before the actual node is visited.
  * </ul>
  */

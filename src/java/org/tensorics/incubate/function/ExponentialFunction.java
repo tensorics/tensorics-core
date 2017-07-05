@@ -37,8 +37,8 @@ import com.google.common.base.Preconditions;
  * @param <QX> type of arguments
  * @param <QY> type of values
  */
-public class ExponentialFunction<QX extends Quantity, QY extends Quantity> implements
-        AnalyticalFunction<Amount<QX>, Amount<QY>> {
+public class ExponentialFunction<QX extends Quantity, QY extends Quantity>
+        implements AnalyticalFunction<Amount<QX>, Amount<QY>> {
 
     private final Amount<QX> inverseExpConst;
     private final Amount<QY> amplitude;
@@ -48,8 +48,8 @@ public class ExponentialFunction<QX extends Quantity, QY extends Quantity> imple
         this.inverseExpConst = builder.inverseExpConst;
 
         Preconditions.checkArgument(amplitude != null, "Argument '" + "amplitude" + "' must not be null!");
-        Preconditions.checkArgument(inverseExpConst != null, "Argument '" + "inverseExponentialConstant"
-                + "' must not be null!");
+        Preconditions.checkArgument(inverseExpConst != null,
+                "Argument '" + "inverseExponentialConstant" + "' must not be null!");
     }
 
     @Override
@@ -86,7 +86,9 @@ public class ExponentialFunction<QX extends Quantity, QY extends Quantity> imple
         private Amount<QY> amplitude;
 
         Builder() {
-            /* package private constructor to allow instantion only from the factory method */
+            /*
+             * package private constructor to allow instantion only from the factory method
+             */
         }
 
         public Builder<QX, QY> withAmplitude(Amount<QY> newAmplitude) {

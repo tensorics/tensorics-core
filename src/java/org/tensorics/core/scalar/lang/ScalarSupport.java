@@ -34,7 +34,6 @@ import org.tensorics.core.math.ExtendedField;
  * @author kfuchsbe
  * @param <V> the type of the scalar values (elements of the fields) on which to operate
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class ScalarSupport<V> implements BasicOperationSupport<V> {
 
     private final ExtendedField<V> field;
@@ -95,7 +94,7 @@ public class ScalarSupport<V> implements BasicOperationSupport<V> {
 
     @Override
     public V absoluteValueOf(V value) {
-        return squareRootOf(squareOf(value));
+        return field.absoluteValue().perform(value);
     }
 
 }

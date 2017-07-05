@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -45,16 +45,17 @@ public final class Instantiators {
      * Starting point for fluent clauses to create instantiators for certain type of objects. A typical example for the
      * creation of a certain type of object (Instance) with an argument of a certain type (Argument) could look like
      * this:
-     * 
+     *
      * <pre>
-     * <code>
-     *   Instantiator<Argument, Instance> instantiator = 
-     *      instantiatorFor(Instance.class).withArgumentType(Argument.class);
-     * 
-     *   Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
-     * </code>
+     * {
+     *     &#64;code
+     *     Instantiator<Argument, Instance> instantiator = instantiatorFor(Instance.class)
+     *             .withArgumentType(Argument.class);
+     *
+     *     Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
+     * }
      * </pre>
-     * 
+     *
      * @param instanceClass the type of the objects to be created by the instantiator
      * @return an objects that provides methods for refinements of the instantiator
      */

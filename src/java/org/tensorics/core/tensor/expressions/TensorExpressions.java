@@ -59,7 +59,10 @@ public final class TensorExpressions {
     }
 
     /* Not nice too have four parameters here, could be refactored */
-    public static <V> Expression<Tensor<V>> elementwise(BinaryOperation<V> operation, // NOSONAR (too many parameters)
+    public static <V> Expression<Tensor<V>> elementwise(BinaryOperation<V> operation, // NOSONAR
+                                                                                      // (too
+                                                                                      // many
+                                                                                      // parameters)
             Expression<Tensor<V>> leftTensor, Expression<Tensor<V>> right, OptionRegistry<ManipulationOption> options) {
         ElementBinaryOperation<V> elementQuantifiedBinaryOperation = new ElementBinaryOperation<>(operation, options);
         return new BinaryOperationExpression<>(elementQuantifiedBinaryOperation, leftTensor, right);

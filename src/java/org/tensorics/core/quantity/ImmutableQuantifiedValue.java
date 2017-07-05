@@ -28,7 +28,6 @@ import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Groups a value together with its unit. Additionally an error and a validity flag can be provided. If the latter two
  * are not present explicitely given, then the validity will be {@code true} and the (optional) error will not be
@@ -37,7 +36,6 @@ import com.google.common.base.Optional;
  * @author kfuchsbe
  * @param <V> the type of the (numerical) scalar values.
  */
-@SuppressWarnings({ "PMD.TooManyMethods", "PMD.CyclomaticComplexity" })
 public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
     private static final long serialVersionUID = 1L;
 
@@ -57,7 +55,6 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
         this(value, unit, true, Optional.<V> absent());
     }
 
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <V> ImmutableQuantifiedValue<V> of(V value, Unit unit) {
         checkArgument(value != null, "Argument 'value' must not be null!");
         checkArgument(unit != null, "Argument 'unit' must not be null!");
@@ -118,7 +115,6 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
     }
 
     @Override
-    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.NPathComplexity" })
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -158,7 +154,6 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
     }
 
     @Override
-    @SuppressWarnings("PMD.NPathComplexity")
     public int hashCode() {
         final int prime = 31;
         int result = 1;

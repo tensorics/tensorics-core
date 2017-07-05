@@ -33,7 +33,6 @@ import org.tensorics.core.math.operations.BinaryOperation;
  * @author kfuchsbe
  * @param <S> the type of the scalars (field elements)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class OngoingScalarBinaryOperation<S> implements OngoingBinaryOperation<S> {
 
     private final ExtendedField<S> field;

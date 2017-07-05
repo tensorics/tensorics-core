@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
 
 import com.google.common.collect.Range;
 
@@ -51,10 +52,10 @@ public class OngoingTensorFiltering<E> {
         checkNotNull(coordinateRange, "coordinateRange must not be null");
 
         ImmutableTensor.Builder<E> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        builder.setTensorContext(tensor.context());
-        for (Entry<Position, E> entry : tensor.asMap().entrySet()) {
+        builder.context(tensor.context());
+        for (Entry<Position, E> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             if (coordinateRange.contains(entry.getKey().coordinateFor(coordinateClass))) {
-                builder.putAt(entry.getValue(), entry.getKey());
+                builder.put(entry.getKey(), entry.getValue());
             }
         }
         return builder.build();

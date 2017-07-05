@@ -22,7 +22,7 @@
 package org.tensorics.core.tensor.options;
 
 import org.tensorics.core.commons.options.ManipulationOption;
-import org.tensorics.core.tensor.Context;
+import org.tensorics.core.tensor.Position;
 
 public class LeftContextPreservedStrategy implements ContextPropagationStrategy {
 
@@ -39,7 +39,7 @@ public class LeftContextPreservedStrategy implements ContextPropagationStrategy 
     }
 
     @Override
-    public Context contextForLeftRight(Context leftContext, Context rightContext) {
+    public Position contextForLeftRight(Position leftContext, Position rightContext) {
         return leftContext;
     }
 

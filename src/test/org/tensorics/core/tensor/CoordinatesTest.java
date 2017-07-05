@@ -21,12 +21,15 @@
 // @formatter:on
 package org.tensorics.core.tensor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableSet;
 
 public class CoordinatesTest {
 
@@ -93,27 +96,58 @@ public class CoordinatesTest {
         Coordinates.checkClassesRelations(coordinates);
     }
 
+    @Test
+    public void parentClassIntersection() {
+        ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, IB.class);
+        ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(IA.class, B.class);
+        Set<Class<?>> result = Coordinates.parentClassIntersection(leftCoordinates, rightCoordinates);
+        assertThat(result).containsExactlyInAnyOrder(IA.class, IB.class);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void parentClassObjectIntersection() {
+        ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, B.class);
+        ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(Object.class);
+        Coordinates.parentClassIntersection(leftCoordinates, rightCoordinates);
+    }
+
+    @Test
+    public void parentClassIntersectionDifferentSets() {
+        ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, B.class);
+        ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(C.class);
+        Set<Class<?>> result = Coordinates.parentClassIntersection(leftCoordinates, rightCoordinates);
+        assertThat(result).isEmpty();
+    }
+
     interface IA {
+        /* nothing to do */
     }
 
     interface IB {
+        /* nothing to do */
     }
 
     interface IC extends IB {
+        /* nothing to do */
     }
 
     interface ID {
+        /* nothing to do */
     }
 
     interface IE extends IA, ID {
+        /* nothing to do */
     }
 
     class A implements IA {
+        /* nothing to do */
     }
 
     class B implements IB {
+        /* nothing to do */
     }
 
     class C implements IC {
+        /* nothing to do */
     }
 }

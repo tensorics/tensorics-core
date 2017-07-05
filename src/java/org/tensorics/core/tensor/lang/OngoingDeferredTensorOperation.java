@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -49,7 +49,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     /**
      * Creates a new instance of the this ongoing operation.
-     * 
+     *
      * @param field the field to use
      * @param optionRegistry the registry containing all the options to use for the following operations
      * @param left the expression to be used as the left operand of the following operations
@@ -79,7 +79,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     @Override
     public Expression<Tensor<V>> elementDividedByV(V value) {
-        Tensor<V> right = Tensorics.zeroDimensionalOf(value);
+        Tensor<V> right = Tensorics.scalarOf(value);
         return elementDividedBy(ResolvedExpression.of(right));
     }
 
@@ -90,7 +90,7 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     @Override
     public Expression<Tensor<V>> elementTimesV(V value) {
-        Tensor<V> right = Tensorics.zeroDimensionalOf(value);
+        Tensor<V> right = Tensorics.scalarOf(value);
         return elementTimes(ResolvedExpression.of(right));
     }
 
@@ -100,7 +100,8 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
     }
 
     // /**
-    // * Calls multiplication operation with question for outupt's {@link ShapingStrategy}
+    // * Calls multiplication operation with question for outupt's {@link
+    // ShapingStrategy}
     // *
     // * @param right second tensoric to use
     // * @return Possibility to choose {@link ShapingStrategy}s
@@ -109,7 +110,8 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
     //
     // }
 
-    // public Expression<Tensor<V>> elementDividedBy(Expression<Tensor<V>> right) {
+    // public Expression<Tensor<V>> elementDividedBy(Expression<Tensor<V>>
+    // right) {
     //
     // }
     // /**

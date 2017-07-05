@@ -50,7 +50,6 @@ public final class ImmutableOptionRegistry<T extends Option<T>> implements Optio
      * @param processingOptions the options that will be contained in the registry
      * @return a new instance of a registry, containing the options
      */
-    @SuppressWarnings("PMD.ShortMethodName")
     public static <T extends Option<T>> ImmutableOptionRegistry<T> of(Collection<T> processingOptions) {
         return new ImmutableOptionRegistry<T>(processingOptions);
     }
@@ -81,7 +80,9 @@ public final class ImmutableOptionRegistry<T extends Option<T>> implements Optio
     @Override
     public <T1 extends T> OptionRegistry<T> with(T1 newOption) {
         List<T> mergedOptions = new ArrayList<>(this.options.values());
-        /* The new option is added at the end, because it will then override the old option, when put to the map */
+        /*
+         * The new option is added at the end, because it will then override the old option, when put to the map
+         */
         mergedOptions.add(newOption);
         return ImmutableOptionRegistry.of(mergedOptions);
     }

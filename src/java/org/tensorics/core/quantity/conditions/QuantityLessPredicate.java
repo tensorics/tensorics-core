@@ -37,8 +37,8 @@ public class QuantityLessPredicate<S> extends AbstractQuantityStatisticPredicate
 
     public QuantityLessPredicate(QuantityEnvironment<S> environment) {
         super(environment);
-        confidenceLimit = inverseGaussianCumulativeDistributionFunction(calculate(one()).minus(
-                environment.confidenceLevel()));
+        confidenceLimit = inverseGaussianCumulativeDistributionFunction(
+                calculate(one()).minus(environment.confidenceLevel()));
     }
 
     @Override

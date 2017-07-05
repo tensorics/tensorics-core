@@ -22,16 +22,17 @@
 package org.tensorics.core.tensor.lang;
 
 import static java.util.Collections.singleton;
+import static org.tensorics.core.tensor.operations.TensorInternals.entrySetOf;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensor.Entry;
 import org.tensorics.core.tensor.operations.TensorInternals;
 
 import com.google.common.collect.ImmutableListMultimap;
@@ -58,8 +59,8 @@ public class OngoingOrderedFlattening<S, C extends Comparable<C>> {
     private ListMultimap<Position, S> intoListMultimap() {
         ImmutableListMultimap.Builder<Position, S> builder = ImmutableListMultimap.builder();
         Tensor<Map<C, S>> maps = TensorInternals.mapOut(tensor).inDirectionOf(dimensionToFlatten);
-        for (Entry<Map<C, S>> entry : maps.entrySet()) {
-            Position newPosition = entry.getPosition();
+        for (Entry<Position, Map<C, S>> entry : entrySetOf(maps)) {
+            Position newPosition = entry.getKey();
             Map<C, S> map = entry.getValue();
             List<C> keys = new ArrayList<>(map.keySet());
             Collections.sort(keys);
@@ -69,7 +70,7 @@ public class OngoingOrderedFlattening<S, C extends Comparable<C>> {
         }
         return builder.build();
     }
-    
+
     public Tensor<List<C>> intoTensorOfKeyLists() {
         return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoKeyListMultimap()));
     }
@@ -77,8 +78,8 @@ public class OngoingOrderedFlattening<S, C extends Comparable<C>> {
     private ListMultimap<Position, C> intoKeyListMultimap() {
         ImmutableListMultimap.Builder<Position, C> builder = ImmutableListMultimap.builder();
         Tensor<Map<C, S>> maps = TensorInternals.mapOut(tensor).inDirectionOf(dimensionToFlatten);
-        for (Entry<Map<C, S>> entry : maps.entrySet()) {
-            Position newPosition = entry.getPosition();
+        for (Entry<Position, Map<C, S>> entry : entrySetOf(maps)) {
+            Position newPosition = entry.getKey();
             Map<C, S> map = entry.getValue();
             List<C> keys = new ArrayList<>(map.keySet());
             Collections.sort(keys);

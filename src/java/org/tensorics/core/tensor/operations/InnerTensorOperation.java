@@ -37,13 +37,12 @@ import org.tensorics.core.iterable.operations.IterableOperations;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.Operations;
 import org.tensorics.core.math.operations.BinaryOperation;
-import org.tensorics.core.tensor.Context;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.PositionPair;
 import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Positions.DimensionStripper;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.Tensorbuilder;
 import org.tensorics.core.tensor.TensorPair;
 import org.tensorics.core.tensor.options.BroadcastingStrategy;
 import org.tensorics.core.tensor.options.ContextPropagationStrategy;
@@ -121,10 +120,10 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
         Set<Class<?>> leftDimensionsToReduce = CoContraDimensionPairs.leftDimensionsIn(pairsToReduce);
         Set<Class<?>> rightDimensionsToReduce = CoContraDimensionPairs.rightDimensionsIn(pairsToReduce);
 
-        Set<Class<?>> remainingLeftDimensions = Sets.difference(broadcasted.left().shape().dimensionSet(),
-                leftDimensionsToReduce).immutableCopy();
-        Set<Class<?>> remainingRightDimensions = Sets.difference(broadcasted.right().shape().dimensionSet(),
-                rightDimensionsToReduce).immutableCopy();
+        Set<Class<?>> remainingLeftDimensions = Sets
+                .difference(broadcasted.left().shape().dimensionSet(), leftDimensionsToReduce).immutableCopy();
+        Set<Class<?>> remainingRightDimensions = Sets
+                .difference(broadcasted.right().shape().dimensionSet(), rightDimensionsToReduce).immutableCopy();
 
         Set<Class<?>> targetDimensions = Sets.union(remainingLeftDimensions, remainingRightDimensions).immutableCopy();
         Set<Class<?>> remainingCommonDimensions = Sets.intersection(remainingLeftDimensions, remainingRightDimensions);
@@ -134,8 +133,8 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
          */
         Set<Class<?>> uniqueLeftDimensions = Sets.difference(remainingLeftDimensions, remainingCommonDimensions);
         Set<Class<?>> uniqueRightDimensions = Sets.difference(remainingRightDimensions, remainingCommonDimensions);
-        Multimap<Position, Position> nonUniqueToRightPositions = Positions.mapByStripping(broadcasted.right().shape()
-                .positionSet(), uniqueRightDimensions);
+        Multimap<Position, Position> nonUniqueToRightPositions = Positions
+                .mapByStripping(broadcasted.right().shape().positionSet(), uniqueRightDimensions);
 
         DimensionStripper stripper = Positions.stripping(uniqueLeftDimensions);
 
@@ -167,11 +166,11 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
         Map<Position, V> result = IterableOperations.reduce(targetPositionToValueSet, reductionOperation);
 
         ContextPropagationStrategy cps = optionRegistry.get(ContextPropagationStrategy.class);
-        Context resultingContext = cps.contextForLeftRight(left.context(), right.context());
+        Position resultingContext = cps.contextForLeftRight(left.context(), right.context());
 
-        TensorBuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
-        finalBuilder.putAllMap(result);
-        finalBuilder.setTensorContext(resultingContext);
+        Tensorbuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
+        finalBuilder.putAll(result);
+        finalBuilder.context(resultingContext);
         return finalBuilder.build();
     }
 

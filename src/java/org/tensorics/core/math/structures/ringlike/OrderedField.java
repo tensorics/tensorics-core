@@ -38,8 +38,8 @@ import org.tensorics.core.math.predicates.BinaryPredicate;
  * 
  * @author kfuchsbe
  * @param <T> the type of the scalars in the field
- * @see <a href="http://en.wikipedia.org/wiki/Ordered_field">http://en.wikipedia.org/wiki/Ordered_field</a>
- * @see <a href="http://en.wikipedia.org/wiki/Total_order">http://en.wikipedia.org/wiki/Total_order</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Ordered_field">http://en.wikipedia.org/wiki/Ordered_field</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Total_order">http://en.wikipedia.org/wiki/Total_order</a>
  */
 public interface OrderedField<T> extends Field<T> {
 

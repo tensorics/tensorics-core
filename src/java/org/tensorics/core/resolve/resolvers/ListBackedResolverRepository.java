@@ -42,7 +42,9 @@ public class ListBackedResolverRepository implements ResolverRepository {
         List<Resolver<R, E>> toReturn = new ArrayList<>();
         for (Resolver<?, ?> resolver : resolvers) {
             if (resolver.getExpressionClass().isAssignableFrom(expression.getClass())) {
-                /* XXX Is this safe in all cases? the R type is not checked... */
+                /*
+                 * XXX Is this safe in all cases? the R type is not checked...
+                 */
                 @SuppressWarnings("unchecked")
                 Resolver<R, E> castedResolver = (Resolver<R, E>) resolver;
                 toReturn.add(castedResolver);

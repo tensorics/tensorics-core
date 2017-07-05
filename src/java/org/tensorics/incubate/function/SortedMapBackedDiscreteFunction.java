@@ -39,8 +39,8 @@ import com.google.common.collect.ImmutableSortedMap;
  * @param <X> function arguments type
  * @param <Y> function values type
  */
-public class SortedMapBackedDiscreteFunction<X extends Comparable<X>, Y> implements DiscreteFunction<X, Y>,
-        Serializable {
+public class SortedMapBackedDiscreteFunction<X extends Comparable<X>, Y>
+        implements DiscreteFunction<X, Y>, Serializable {
     private static final long serialVersionUID = 1L;
 
     private final SortedMap<X, Y> function;

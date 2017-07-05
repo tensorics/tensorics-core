@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 import org.tensorics.core.tree.domain.Expression;
-import org.tensorics.core.tree.domain.Node;
 
 import com.google.common.collect.Lists;
 

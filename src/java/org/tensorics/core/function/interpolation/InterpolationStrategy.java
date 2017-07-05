@@ -33,7 +33,6 @@ import org.tensorics.core.function.DiscreteFunction;
  * A strategy defines how to calculate values of Y of a {@link DiscreteFunction} from a finite set of values of X.
  * 
  * @author agorzaws, caguiler
- * @param <X> the type of the independent variable (input) of the discrete function
  * @param <Y> the type of the dependent variable (output) of the discrete function
  */
 public interface InterpolationStrategy<Y> extends Serializable, ManipulationOption {
@@ -46,7 +45,7 @@ public interface InterpolationStrategy<Y> extends Serializable, ManipulationOpti
      * @param function {@link DiscreteFunction} to interpolate
      * @param conversion defines how values of X domain are transformed into values of Y domain. It is needed for
      *            performing any kind of interpolation.
-     * @return the interpolated value of y for the <code>function</code> at <code>xValue</code>
+     * @return the interpolated value of y for the {@code function} at {@code xValue}
      */
     <X> Y interpolate(X xValue, DiscreteFunction<X, Y> function, Conversion<X, Y> conversion, Comparator<X> comparator);
 

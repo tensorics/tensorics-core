@@ -27,7 +27,7 @@ package org.tensorics.core.math.structures.grouplike;
  * 
  * @author kfuchsbe
  * @param <T> the type of the elements of the set on which the monoid is based
- * @see <a href="http://en.wikipedia.org/wiki/Monoid">http://en.wikipedia.org/wiki/Monoid</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Monoid">http://en.wikipedia.org/wiki/Monoid</a>
  */
 public interface Monoid<T> extends Semigroup<T> {
 

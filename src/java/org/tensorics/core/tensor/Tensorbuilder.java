@@ -23,25 +23,16 @@ package org.tensorics.core.tensor;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
- * The interface any builder of a tensor has to implement
+ * The interface any builder of a tensor have to implement.
  * 
  * @author kfuchsbe
- * @param <E> the type of the tensor values
+ * @param <V> the type of the tensor values
  */
-public interface TensorBuilder<E> {
+public interface Tensorbuilder<V> {
 
-    void putAt(E value, Position position);
-
-    void putAt(E value, Object... coordinates);
-
-    void putAt(E value, Set<?> coordinates);
-
-    void removeAt(Position position);
-
-    void setTensorContext(Context context);
+    Tensorbuilder<V> context(Position context);
 
     /**
      * Puts all the values of the given tensor into the new tensor, at the given position. The positions in the new
@@ -50,35 +41,21 @@ public interface TensorBuilder<E> {
      * tensor.
      * 
      * @param tensor the tensor, whose values to add to the tensor under construction
-     * @param position the position which will be merged with the tensor in the source tensor
      */
-    /* Not too nice yet. Should be refactored into ongoing put */
+    Tensorbuilder<V> putAll(Tensor<V> tensor);
 
-    void putAll(Tensor<E> tensor);
+    Tensorbuilder<V> putAll(Position position, Tensor<V> tensor);
 
-    void putAllAt(Tensor<E> tensor, Position position);
+    Tensorbuilder<V> put(Position position, V value);
 
-    /**
-     * Puts all the values of the given tensor into the new tensor at a position represented by the given coordinates.
-     * This is a convenience method for {@link #putAllAt(Tensor, Position)}.
-     * 
-     * @param tensor the tensor whose values to put into the tensor unser construction
-     * @param coordinates the coordinates defining the position where to put the values
-     */
-    void putAllAt(Tensor<E> tensor, Object... coordinates);
+    Tensorbuilder<V> put(Entry<Position, V> entry);
 
-    void putAllAt(Tensor<E> tensor, Set<?> coordinates);
+    Tensorbuilder<V> remove(Position position);
 
-    @Deprecated
-    void put(Tensor.Entry<E> entry);
+    Tensorbuilder<V> putAll(Map<Position, V> newEntries);
 
-    @Deprecated
-    void putAll(Iterable<Tensor.Entry<E>> newEntries);
+    Tensorbuilder<V> putAll(Position position, Map<Position, V> map);
 
-    void put(Entry<Position, E> entry);
-
-    void putAllMap(Map<Position, E> newEntries);
-
-    Tensor<E> build();
+    Tensor<V> build();
 
 }

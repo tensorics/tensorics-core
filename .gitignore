@@ -6,4 +6,5 @@ build/
 .classpath
 .project
 .settings/
-cbng-build.log
+*.log
+.idea/

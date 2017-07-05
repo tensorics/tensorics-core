@@ -21,6 +21,8 @@
 // @formatter:on
 package org.tensorics.core.tensorbacked.lang;
 
+import static org.tensorics.core.util.Classes.classOf;
+
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedInternals;
@@ -37,7 +39,7 @@ public class OngoingTensorbackedFiltering<E, TB extends Tensorbacked<E>> {
     }
 
     public <C extends Comparable<C>> TB by(Class<C> coordinateClass, Range<C> coordinateRange) {
-        return (TB) TensorbackedInternals.createBackedByTensor(tensorbacked.getClass(),
+        return TensorbackedInternals.createBackedByTensor(classOf(tensorbacked),
                 TensorStructurals.filter(tensorbacked.tensor()).by(coordinateClass, coordinateRange));
     }
 

@@ -12,11 +12,10 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  * Resolver for {@link PickExpression} expression.
  * 
  * @see PickExpression
- * @see PickResolverTest
- * @author acalia 
+ * @author acalia
  * @param <T> the type of the data to pick
  */
-public class PickResolver<T> extends AbstractResolver<T, PickExpression<T>>{
+public class PickResolver<T> extends AbstractResolver<T, PickExpression<T>> {
 
     @Override
     public boolean canResolve(PickExpression<T> expression, ResolvingContext context) {
@@ -28,7 +27,7 @@ public class PickResolver<T> extends AbstractResolver<T, PickExpression<T>>{
         Iterable<T> iterable = context.resolvedValueOf(expression.iterableExpression());
         Mode mode = expression.mode();
         int offset = expression.offset();
-        
+
         return mode.pick(iterable, offset);
     }
 

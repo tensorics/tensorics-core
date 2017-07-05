@@ -42,7 +42,7 @@ import org.tensorics.core.tensor.lang.TensorSupport;
  * 
  * @author kfuchsbe
  * @param <S> the s
- * @see import org.tensorics.core.tensor.Shape
+ * @see org.tensorics.core.tensor.Shape
  * @see org.tensorics.core.math.structures.ringlike.Field
  */
 public class TensorIsCloseTo<S> extends TypeSafeDiagnosingMatcher<Tensor<S>> {
@@ -76,8 +76,8 @@ public class TensorIsCloseTo<S> extends TypeSafeDiagnosingMatcher<Tensor<S>> {
             mismatchDescription.appendText("the following mismatches were detected (position -> value):\n");
             for (Entry<Position, Mismatch<S>> entry : mismatches.entrySet()) {
                 Mismatch<S> mismatch = entry.getValue();
-                mismatchDescription.appendText(entry.getKey() + " -> " + mismatch.value + " | expected = "
-                        + mismatch.expected + ";\n");
+                mismatchDescription.appendText(
+                        entry.getKey() + " -> " + mismatch.value + " | expected = " + mismatch.expected + ";\n");
             }
             return false;
         }

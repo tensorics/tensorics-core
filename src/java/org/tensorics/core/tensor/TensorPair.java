@@ -54,8 +54,8 @@ public final class TensorPair<V> extends AbstractPair<Tensor<V>> {
      * @throws NullPointerException if one of the arguments is {@code null}
      */
     private TensorPair(Tensor<V> leftTensor, Tensor<V> rightTensor) {
-        super(checkNotNull(leftTensor, "leftTensor must not be null"), checkNotNull(rightTensor,
-                "rightTensor must not be null"));
+        super(checkNotNull(leftTensor, "leftTensor must not be null"),
+                checkNotNull(rightTensor, "rightTensor must not be null"));
     }
 
     public static <V> TensorPair<V> fromLeftRight(Tensor<V> leftTensor, Tensor<V> rightTensor) {
@@ -76,7 +76,9 @@ public final class TensorPair<V> extends AbstractPair<Tensor<V>> {
         checkNotNull(positionPair, "positionPair must not be null");
         V left = left().get(positionPair.left());
         V right = right().get(positionPair.right());
-        /* No need to check explicitely for non-null, the ValuePair will do the job */
+        /*
+         * No need to check explicitely for non-null, the ValuePair will do the job
+         */
         return ValuePair.fromLeftRight(left, right);
     }
 
@@ -105,8 +107,8 @@ public final class TensorPair<V> extends AbstractPair<Tensor<V>> {
      * is not the case, then an exception will be thrown. The returned value will be a {@link ListMultimap}, because it
      * is easily possible that the returned value pairs are the same for different keys.
      * 
-     * @param positionPairs a multimap K->pairs of positions for which to retrieve the values
-     * @return a multimap K-> pairs of values, extracted from the tensor pair
+     * @param positionPairs a multimap K: pairs of positions for which to retrieve the values
+     * @return a multimap K: pairs of values, extracted from the tensor pair
      */
     public <K> ListMultimap<K, ValuePair<V>> mapValues(Multimap<K, PositionPair> positionPairs) {
         ImmutableListMultimap.Builder<K, ValuePair<V>> builder = ImmutableListMultimap.builder();

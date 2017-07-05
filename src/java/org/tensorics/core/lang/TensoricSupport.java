@@ -57,7 +57,6 @@ import org.tensorics.core.units.Unit;
  * @author kfuchsbe, agorzaws
  * @param <V> The type of the values of the scalars (elements of the field on which all the operations are based on)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class TensoricSupport<V> {
 
     private final TensorSupport<V> tensoricFieldUsage;
@@ -221,6 +220,10 @@ public class TensoricSupport<V> {
 
     public V absoluteValueOf(V value) {
         return tensoricFieldUsage.absoluteValueOf(value);
+    }
+
+    public QuantifiedValue<V> absoluteValueOf(QuantifiedValue<V> value) {
+        return quantifiedTensoricFieldUsage.absoluteValueOf(value);
     }
 
     public <S, R> Tensor<R> elementwise(BinaryFunction<S, R> operation, Tensor<S> left, Tensor<S> right) {

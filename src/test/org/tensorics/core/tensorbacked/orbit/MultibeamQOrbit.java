@@ -38,6 +38,8 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 @Dimensions({ Beam.class, Plane.class, Bpm.class })
 public class MultibeamQOrbit extends AbstractTensorbacked<QuantifiedValue<Double>> {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * @param tensor
      */

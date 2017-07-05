@@ -36,8 +36,8 @@ import org.tensorics.core.tensor.options.ShapingStrategy;
  * <p>
  * To decide on the resulting shape of the tensor, two strategies are used here:
  * <ul>
- * <li> {@link BroadcastingStrategy}
- * <li> {@link ShapingStrategy}
+ * <li>{@link BroadcastingStrategy}
+ * <li>{@link ShapingStrategy}
  * </ul>
  * 
  * @author kfuchsbe

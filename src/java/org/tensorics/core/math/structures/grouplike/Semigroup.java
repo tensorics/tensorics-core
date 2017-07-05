@@ -30,7 +30,7 @@ import org.tensorics.core.math.operations.AssociativeOperation;
  * 
  * @author kfuchsbe
  * @param <T> the type of the elements of the semigroup
- * @see <a href="http://en.wikipedia.org/wiki/Semigroup">http://en.wikipedia.org/wiki/Semigroup</a>
+ * @see <a href= "http://en.wikipedia.org/wiki/Semigroup">http://en.wikipedia.org/wiki/Semigroup</a>
  */
 public interface Semigroup<T> extends Magma<T> {
 

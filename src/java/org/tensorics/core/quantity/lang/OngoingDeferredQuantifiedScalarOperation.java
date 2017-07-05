@@ -37,7 +37,6 @@ import org.tensorics.core.units.Unit;
  * @author kfuchsbe
  * @param <S> the type of the scalar values (elements of the field on which the operations are based)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class OngoingDeferredQuantifiedScalarOperation<S> {
 
     private final Expression<QuantifiedValue<S>> left;

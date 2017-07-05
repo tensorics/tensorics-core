@@ -31,7 +31,6 @@ import org.tensorics.core.tree.domain.Expression;
  * expressions of iterable.
  * 
  * @author kfuchsbe, caguiler
- * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
  * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
 public class DiscreteFunctionToIterableExpression<Y>

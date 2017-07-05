@@ -34,6 +34,7 @@ import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
 
 /**
  * Part of the tensoric fluent API which provides methods to describe misc manipulations on a given tensor.
@@ -60,9 +61,9 @@ public class OngoingTensorManipulation<V> {
      */
     public Tensor<V> extractWhereTrue(Tensor<Boolean> mask) {
         Builder<V> tensorBuilder = ImmutableTensor.builder(tensor.shape().dimensionSet());
-        for (java.util.Map.Entry<Position, V> entry : tensor.asMap().entrySet()) {
+        for (java.util.Map.Entry<Position, V> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             if (mask.get(entry.getKey()).booleanValue()) {
-                tensorBuilder.at(entry.getKey()).put(entry.getValue());
+                tensorBuilder.put(entry.getKey(), entry.getValue());
             }
         }
         return tensorBuilder.build();
@@ -118,9 +119,15 @@ public class OngoingTensorManipulation<V> {
         checkArgument(coordinate != null, "Argument '" + "coordinate" + "' must not be null!");
         checkArgument(!(coordinate instanceof Position), "It is not allowed that a coordinate is of type position! "
                 + "Most probably this is a programming mistake ;-)");
+
+        /*
+         * TODO: write a nice test for this and probably have a method in shape to map dimensions
+         */
         @SuppressWarnings("unchecked")
         Class<C> dimension = (Class<C>) coordinate.getClass();
-        return TensorStructurals.from(tensor).reduce(dimension).bySlicingAt(coordinate);
+        Class<? super C> correctDimension = Coordinates.mapToAnEntry(dimension, tensor.shape().dimensionSet());
+
+        return TensorStructurals.from(tensor).reduce(correctDimension).bySlicingAt(coordinate);
     }
 
     public <C> OngoingDimensionReduction<C, V> reduce(Class<C> dimension) {

@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -28,6 +28,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.tensor.Scalar;
 import org.tensorics.core.tensor.Tensor;
 
 public class TensoricDoubleTestingSupportTest extends TensoricDoubleTestingSupport {
@@ -61,12 +62,12 @@ public class TensoricDoubleTestingSupportTest extends TensoricDoubleTestingSuppo
         return Tensorics.<Double> builder().build();
     }
 
-    private Tensor<Double> zeroDotOne() {
-        return Tensorics.zeroDimensionalOf(0.1);
+    private Scalar<Double> zeroDotOne() {
+        return Tensorics.scalarOf(0.1);
     }
 
-    private Tensor<Double> zeroTensor() {
-        return Tensorics.zeroDimensionalOf(0.0);
+    private Scalar<Double> zeroTensor() {
+        return Tensorics.scalarOf(0.0);
     }
 
 }

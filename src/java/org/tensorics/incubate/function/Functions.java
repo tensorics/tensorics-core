@@ -49,7 +49,8 @@ public final class Functions {
         return convertToDiscreteFunctionFrom(times, values, errors);
     }
 
-    public static List<Double> getXsIntersection(DiscreteFunction<Double, ?> first, DiscreteFunction<Double, ?> second) {
+    public static List<Double> getXsIntersection(DiscreteFunction<Double, ?> first,
+            DiscreteFunction<Double, ?> second) {
 
         List<Double> firstTs = first.getXs();
         List<Double> secondTs = second.getXs();
@@ -112,7 +113,7 @@ public final class Functions {
      * @return the scaled function
      */
     public static DiscreteFunction<Double, Double> //
-    scaleFunction(DiscreteFunction<Double, Double> function, double scale) {
+            scaleFunction(DiscreteFunction<Double, Double> function, double scale) {
 
         DiscreteFunctionBuilder<Double, Double> builder = SortedMapBackedDiscreteFunction.builder();
         builder.withName(function.getName());

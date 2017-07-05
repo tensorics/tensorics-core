@@ -22,8 +22,6 @@
 
 package org.tensorics.core.math;
 
-import java.util.Comparator;
-
 import org.tensorics.core.math.operations.BinaryOperation;
 
 /**
@@ -47,7 +45,7 @@ public interface ExtendedField<T> extends ExplicitField<T> {
     BinaryOperation<T> root();
 
     /**
-     * Returns an object that provides methods for cheating. The usage of these methods is highly idscouraged for
+     * Returns an object that provides methods for cheating. The usage of these methods is highly discouraged for
      * clients, because they are planned to be removed, as soon as they are not required anymore by the framework. This
      * will be the case as soon as a unit-treating framework is in place, which will be based on fields only. This is
      * also the reason, why this method is marked as deprecated.
