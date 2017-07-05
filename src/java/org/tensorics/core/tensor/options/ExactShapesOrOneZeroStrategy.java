@@ -34,6 +34,18 @@ import org.tensorics.core.tensor.Tensor;
  */
 public class ExactShapesOrOneZeroStrategy implements ShapingStrategy {
 
+    /**
+     * @deprecated use the factory methods {@link #get()}
+     */
+    @Deprecated
+    public ExactShapesOrOneZeroStrategy() {
+        /* nothing, to be changed to private */
+    }
+
+    public static ExactShapesOrOneZeroStrategy get() {
+        return new ExactShapesOrOneZeroStrategy();
+    }
+
     @Override
     public <C> Shape shapeLeftRight(Tensor<?> first, Tensor<?> second) {
         Shape shapeOfFirst = first.shape();
@@ -58,4 +70,5 @@ public class ExactShapesOrOneZeroStrategy implements ShapingStrategy {
     public Class<ShapingStrategy> getMarkerInterface() {
         return ShapingStrategy.class;
     }
+
 }
