@@ -27,7 +27,7 @@ import java.util.Set;
 
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.Tensorbuilder;
 
 /**
  * An abstract class for classes that are backed by a tensor. The purpose of
@@ -57,7 +57,7 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serial
 	}
 
 	private static <E> Tensor<E> copyWithDimensions(Tensor<E> tensor, Set<Class<?>> annotatedDimensions) {
-		TensorBuilder<E> builder = Tensorics.builder(annotatedDimensions);
+		Tensorbuilder<E> builder = Tensorics.builder(annotatedDimensions);
 		builder.putAll(tensor);
 		builder.context(tensor.context());
 		return builder.build();

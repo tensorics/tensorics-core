@@ -35,16 +35,16 @@ import com.google.common.collect.ImmutableSet;
 
 /**
  * @author kfuchsbe
- * @param <E>
+ * @param <V>
  *            the type of the elements of the tensor to build
  */
-public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
+public abstract class AbstractTensorbuilder<V> implements Tensorbuilder<V> {
 
 	private final Set<Class<?>> dimensions;
-	private final VerificationCallback<E> callback;
+	private final VerificationCallback<V> callback;
 	private Position context = Position.empty();
 
-	public AbstractTensorBuilder(Set<Class<?>> dimensions, VerificationCallback<E> callback) {
+	public AbstractTensorbuilder(Set<Class<?>> dimensions, VerificationCallback<V> callback) {
 		Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
 		Preconditions.checkArgument(callback != null, "Argument '" + "callback" + "' must not be null!");
 		Coordinates.checkClassesRelations(dimensions);
@@ -52,32 +52,34 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 		this.callback = callback;
 	}
 
-	public AbstractTensorBuilder(Set<Class<?>> dimensions) {
-		this(dimensions, new VerificationCallback<E>() {
+	public AbstractTensorbuilder(Set<Class<?>> dimensions) {
+		this(dimensions, new VerificationCallback<V>() {
 
 			@Override
-			public void verify(E scalar) {
+			public void verify(V scalar) {
 				/* Nothing to do */
 			}
 		});
 	}
 
 	@Override
-	public final void put(Position position, E value) {
+	public final Tensorbuilder<V> put(Position position, V value) {
 		Preconditions.checkNotNull(value, "value must not be null!");
 		Preconditions.checkNotNull(position, "position must not be null");
 		Positions.assertConsistentDimensions(position, this.dimensions);
 		this.callback.verify(value);
 		this.putIt(position, value);
+		return this;
 	}
 
-	protected abstract void putIt(Position position, E value);
+	protected abstract void putIt(Position position, V value);
 
 	@Override
-	public void context(Position newContext) {
+	public Tensorbuilder<V> context(Position newContext) {
 		Preconditions.checkNotNull(newContext, "context must not be null");
 		checkIfContextValid(newContext);
 		this.context = newContext;
+		return this;
 	}
 
 	private void checkIfContextValid(Position context2) {
@@ -90,33 +92,38 @@ public abstract class AbstractTensorBuilder<E> implements TensorBuilder<E> {
 	}
 
 	@Override
-	public void putAll(Tensor<E> tensor) {
+	public Tensorbuilder<V> putAll(Tensor<V> tensor) {
 		this.putAll(Position.empty(), tensor);
+		return this;
 	}
 
 	@Override
-	public final void putAll(Position position, Tensor<E> tensor) {
+	public final Tensorbuilder<V> putAll(Position position, Tensor<V> tensor) {
 		checkNotNull(tensor, "The tensor must not be null!");
 		putAll(position, TensorInternals.mapFrom(tensor));
+		return this;
 	}
 
 	@Override
-	public void putAll(Map<Position, E> newEntries) {
+	public Tensorbuilder<V> putAll(Map<Position, V> newEntries) {
 		putAll(Position.empty(), newEntries);
+		return this;
 	}
 
 	@Override
-	public void putAll(Position position, Map<Position, E> map) {
+	public Tensorbuilder<V> putAll(Position position, Map<Position, V> map) {
 		checkNotNull(map, "The map must not be null!");
 		checkNotNull(position, "The position must not be null!");
-		for (Entry<Position, E> entry : map.entrySet()) {
+		for (Entry<Position, V> entry : map.entrySet()) {
 			put(Positions.union(position, entry.getKey()), entry.getValue());
 		}
+		return this;
 	}
 
 	@Override
-	public void put(java.util.Map.Entry<Position, E> entry) {
+	public Tensorbuilder<V> put(java.util.Map.Entry<Position, V> entry) {
 		this.put(entry.getKey(), entry.getValue());
+		return this;
 	}
 
 	public Set<Class<?>> dimensions() {

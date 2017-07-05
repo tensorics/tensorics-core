@@ -56,14 +56,14 @@ public class TensorbackedBuilderTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void putInsufficientCoordinateThrows() {
 		Object[] coordinates = { BPM_A };
-        newBuilder().put(Position.at(coordinates), 1.0);
+        newBuilder().put(Position.of(coordinates), 1.0);
 	}
 
 	@Test
 	public void putOneCorrectValueWorks() {
 		TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         Object[] coordinates = { BPM_A, Plane.H };
-		builder.put(Position.at(coordinates), 1.0);
+		builder.put(Position.of(coordinates), 1.0);
 		SinglebeamOrbit orbit = builder.build();
 		assertThat(Tensorics.sizeOf(orbit), equalTo(1));
 	}
@@ -138,7 +138,7 @@ public class TensorbackedBuilderTest {
 
 	private SinglebeamOrbit oneValueCoordinatesAH() {
 		TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
-		builder.put(Position.at(POS_A_H.coordinates()), TESTVALUE_1_0);
+		builder.put(Position.of(POS_A_H.coordinates()), TESTVALUE_1_0);
 		return builder.build();
 	}
 

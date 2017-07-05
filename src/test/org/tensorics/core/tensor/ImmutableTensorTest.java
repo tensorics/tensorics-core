@@ -126,7 +126,7 @@ public class ImmutableTensorTest {
 
         Builder<Object> builder = ImmutableTensor.builder(AnyInterface.class);
 		Object[] coordinates = { AnyClass.INSTANCE1 };
-        builder.put(Position.at(coordinates), value);
+        builder.put(Position.of(coordinates), value);
         ImmutableTensor<Object> tensor = builder.build();
 
 		thrown.expect(NoSuchElementException.class);

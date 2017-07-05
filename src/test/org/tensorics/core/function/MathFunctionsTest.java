@@ -3,7 +3,7 @@ package org.tensorics.core.function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.tensorics.core.tensor.Position.at;
+import static org.tensorics.core.lang.Tensorics.at;
 
 import java.util.Collection;
 import java.util.List;

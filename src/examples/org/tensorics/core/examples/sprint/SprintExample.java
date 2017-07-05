@@ -5,6 +5,7 @@
 package org.tensorics.core.examples.sprint;
 
 import static org.junit.Assert.assertEquals;
+import static org.tensorics.core.lang.Tensorics.at;
 import static org.tensorics.core.lang.Tensorics.builder;
 import static org.tensorics.core.lang.Tensorics.from;
 
@@ -16,7 +17,7 @@ import org.tensorics.core.lang.TensoricDoubleSupport;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.Tensorbuilder;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -33,18 +34,18 @@ public class SprintExample extends TensoricDoubleSupport {
 
 	@Before
 	public void setUp() {
-		TensorBuilder<Double> velocityBuilder = builder(Team.class, NumberOfDay.class);
-		TensorBuilder<Double> focusFactorBuilder = Tensorics.builder(Team.class);
+		Tensorbuilder<Double> velocityBuilder = builder(Team.class, NumberOfDay.class);
+		Tensorbuilder<Double> focusFactorBuilder = Tensorics.builder(Team.class);
 
 		Random random = new Random();
 
 		for (int teamId = 1; teamId <= 10; teamId++) {
 			Team team = new Team(teamId);
 			Object[] coordinates = { team };
-			focusFactorBuilder.put(Position.at(coordinates), random.nextDouble());
+			focusFactorBuilder.put(at(coordinates), random.nextDouble());
 			for (int days = 1; days <= 20; days++) {
 				Object[] coordinates1 = { team, new NumberOfDay(days) };
-				velocityBuilder.put(Position.at(coordinates1), (10 * random.nextDouble()));
+				velocityBuilder.put(at(coordinates1), (10 * random.nextDouble()));
 			}
 		}
 		velocity = velocityBuilder.build();
@@ -71,11 +72,11 @@ public class SprintExample extends TensoricDoubleSupport {
 
 	@Test
 	public void testMergeEqualsPutAll() {
-		TensorBuilder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
+		Tensorbuilder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
 		Object[] coordinates = { TEAM_1 };
-		putAllTensorBuilder.putAll(Position.at(coordinates), team1Velocity);
+		putAllTensorBuilder.putAll(at(coordinates), team1Velocity);
 		Object[] coordinates1 = { TEAM_3 };
-		putAllTensorBuilder.putAll(Position.at(coordinates1), team3Velocity);
+		putAllTensorBuilder.putAll(at(coordinates1), team3Velocity);
 		Tensor<Double> putAllTensor = putAllTensorBuilder.build();
 
 		assertEquals(putAllTensor, mergedTensor);

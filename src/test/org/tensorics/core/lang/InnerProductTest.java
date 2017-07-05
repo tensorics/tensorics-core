@@ -226,7 +226,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
 			for (Plane plane : Plane.values()) {
 				Coord coordinate = coordinates[i];
 				Object[] coordinates1 = { coordinate, plane };
-				builder1.put(Position.at(coordinates1), ((coordinate.ordinal() + 1) * factor * (plane.ordinal() + 1)));
+				builder1.put(Tensorics.at(coordinates1), ((coordinate.ordinal() + 1) * factor * (plane.ordinal() + 1)));
 			}
 		}
 		return builder1.build();
@@ -237,7 +237,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
 		for (int i = 0; i < coordinates.length; i++) {
 			Coord coordinate = coordinates[i];
 			Object[] coordinates1 = { coordinate };
-			builder1.put(Position.at(coordinates1), ((coordinate.ordinal() + 1) * factor));
+			builder1.put(Tensorics.at(coordinates1), ((coordinate.ordinal() + 1) * factor));
 		}
 		return builder1.build();
 	}
@@ -248,7 +248,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
 		for (int i = 0; i < coordinates.length; i++) {
 			Coord coordinate = coordinates[i];
 			Object[] coordinates1 = { intantiator.create(coordinate) };
-			builder1.put(Position.at(coordinates1), ((coordinate.ordinal() + 1) * factor));
+			builder1.put(Tensorics.at(coordinates1), ((coordinate.ordinal() + 1) * factor));
 		}
 		return builder1.build();
 	}
@@ -259,7 +259,7 @@ public class InnerProductTest extends TensoricDoubleSupport {
 		for (Coord contra : coordinates) {
 			for (Coord co : coordinates) {
 				Object[] coordinates1 = { contra, intantiator.create(co) };
-				builder1.put(Position.at(coordinates1), (((contra.ordinal() + 1) * contraFactor) + ((co.ordinal() + 1) * coFactor)));
+				builder1.put(Tensorics.at(coordinates1), (((contra.ordinal() + 1) * contraFactor) + ((co.ordinal() + 1) * coFactor)));
 			}
 		}
 		return builder1.build();
