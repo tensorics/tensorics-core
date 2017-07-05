@@ -2,7 +2,6 @@ package org.tensorics.core.booleans;
 
 import static java.util.Objects.requireNonNull;
 
-import org.tensorics.core.booleans.lang.OngoingBooleanIterableOperation;
 import org.tensorics.core.booleans.lang.OngoingBooleanScalarOperation;
 import org.tensorics.core.booleans.lang.OngoingBooleanTensorOperation;
 import org.tensorics.core.booleans.lang.OngoingDetection;
@@ -29,7 +28,6 @@ public class BooleanSupport {
 
     private final OptionRegistry<ManipulationOption> optionRegistry;
     private final ScalarBooleanSupport scalarBooleanSupport;
-    private final IterableBooleanSupport iterableBooleanSupport;
     private final TensorBooleanSupport tensorBooleanSupport;
 
     /**
@@ -43,16 +41,11 @@ public class BooleanSupport {
     public BooleanSupport(OptionRegistry<ManipulationOption> optionRegistry) {
         this.optionRegistry = requireNonNull(optionRegistry, "optionRegistry must not be null");
         scalarBooleanSupport = new ScalarBooleanSupport();
-        iterableBooleanSupport = new IterableBooleanSupport();
         tensorBooleanSupport = new TensorBooleanSupport(optionRegistry);
     }
 
     public OngoingBooleanScalarOperation calcLogical(Boolean left) {
         return scalarBooleanSupport.calcLogical(left);
-    }
-
-    public OngoingBooleanIterableOperation calcLogical(Iterable<Boolean> leftIterable) {
-        return iterableBooleanSupport.calcLogical(leftIterable);
     }
 
     public OngoingBooleanTensorOperation calcLogical(Tensor<Boolean> leftTensor) {

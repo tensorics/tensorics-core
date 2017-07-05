@@ -59,7 +59,7 @@ public class BroadcastAllBroadcastingStrategyTest {
 
     @Before
     public void setUp() {
-        strategy = new BroadcastMissingDimensionsStrategy();
+        strategy = BroadcastMissingDimensionsStrategy.get();
     }
 
     @Test

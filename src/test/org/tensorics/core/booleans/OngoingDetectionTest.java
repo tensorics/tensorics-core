@@ -5,12 +5,12 @@
 package org.tensorics.core.booleans;
 
 import static org.junit.Assert.assertTrue;
-
+import static org.tensorics.core.lang.Tensorics.at;
 
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.Tensorbuilder;
 
 public class OngoingDetectionTest extends AbstractBooleanTest {
 
@@ -64,11 +64,11 @@ public class OngoingDetectionTest extends AbstractBooleanTest {
     }
 
     private static Tensor<Boolean> createTensorOfOneNoncomparableDimension() {
-        TensorBuilder<Boolean> builder = Tensorics.builder(TestNonComparableClass.class);
+        Tensorbuilder<Boolean> builder = Tensorics.builder(TestNonComparableClass.class);
         for (int i = 0; i < 10; i++) {
             boolean toPut = (i > 5 ? true : false);
             TestNonComparableClass testNonComparableClass = new TestNonComparableClass(i);
-            builder.putAt(toPut, testNonComparableClass);
+            builder.put(at(testNonComparableClass), toPut);
         }
         return builder.build();
     }

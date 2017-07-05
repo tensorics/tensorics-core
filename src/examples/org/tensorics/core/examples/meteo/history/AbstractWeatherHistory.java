@@ -23,7 +23,7 @@ public abstract class AbstractWeatherHistory extends TensoricSupport<Double> {
 
     // tag::import[]
     public Tensor<QuantifiedValue<Double>> importDataForCities() {
-        return FakeMeteoDataImporter.importFromPast(getCities(), TimeRange.TWO_DECADES, Sampling.ONE_DAY);
+        return FakeMeteoDataImporter.importFromPast();
     }
     // end::import[]
 

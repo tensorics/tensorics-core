@@ -11,7 +11,6 @@ import java.util.Comparator;
 
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
-import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensorbuilder;
 

@@ -6,9 +6,6 @@ package org.tensorics.core.booleans;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Arrays;
 
 import org.junit.Test;
 import org.tensorics.core.tensor.Tensor;
@@ -24,16 +21,6 @@ public class BooleanSupportTest extends AbstractBooleanTest {
     public void testBooleanScalarAlgebra() {
         Boolean with = calcLogical(true).and(false);
         assertFalse(with);
-    }
-
-    /**
-     * TODO implement the operation for iterables
-     */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBooleanIterableAlgebra() {
-        Boolean[] test1 = new Boolean[] { true, true, false };
-        Boolean[] test2 = new Boolean[] { true, true, false };
-        calcLogical(Arrays.asList(test1)).and(Arrays.asList(test2));
     }
 
     @Test

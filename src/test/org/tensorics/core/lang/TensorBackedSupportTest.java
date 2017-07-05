@@ -36,7 +36,6 @@ import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
-import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.QuantityTensorSupport;
 import org.tensorics.core.tensor.lang.QuantityTensors;
