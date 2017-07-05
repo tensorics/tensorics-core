@@ -27,7 +27,7 @@ public class OngoingDetection {
      * <p>
      * This class must implement {@link Comparable}.
      * 
-     * @param clazz of the direction to search
+     * @param direction the dimension in which direction to search
      * @return
      */
     public <C extends Comparable<C>> Iterable<C> changesAlong(Class<C> direction) {

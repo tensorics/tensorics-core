@@ -7,11 +7,13 @@ package org.tensorics.core.booleans.operations;
 import org.tensorics.core.math.operations.BinaryOperation;
 
 /**
- * Repository for logical operations <lu>
+ * Repository for logical operations 
+ * <ul>
  * <li>AND</li>
  * <li>NAND</li>
  * <li>OR</li>
- * <li>XOR</li></lu>
+ * <li>XOR</li>
+ * </ul>
  * 
  * @author agorzaws
  */
