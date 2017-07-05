@@ -37,21 +37,19 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.TensorInternals;
 
 /**
- * Part of the tensoric fluent API which provides methods to describe misc
- * manipulations on a given tensor.
+ * Part of the tensoric fluent API which provides methods to describe misc manipulations on a given tensor.
  * 
  * @author kfuchsbe
- * @param <V>
- *            the type of the values of the tensor
+ * @param <V> the type of the values of the tensor
  */
 public class OngoingTensorManipulation<V> {
 
-	private final Tensor<V> tensor;
+    private final Tensor<V> tensor;
 
-	OngoingTensorManipulation(Tensor<V> tensor) {
-		super();
-		this.tensor = tensor;
-	}
+    OngoingTensorManipulation(Tensor<V> tensor) {
+        super();
+        this.tensor = tensor;
+    }
 
     /**
      * Extracts from the tensor only those elements where the values in the given mask is {@code true}. The resulting
@@ -71,71 +69,69 @@ public class OngoingTensorManipulation<V> {
         return tensorBuilder.build();
     }
 
-	/**
-	 * Retrieves all the unique coordinates of the given type.
-	 * 
-	 * @param coordinateType
-	 *            the type of the coordinate to extract
-	 * @return a set of extracted coordinates
-	 */
-	public <C1> Set<C1> extractCoordinatesOfType(Class<C1> coordinateType) {
-		Set<C1> toReturn = new HashSet<>();
-		for (Position position : tensor.shape().positionSet()) {
-			toReturn.add(Coordinates.firstCoordinateOfTyp(position.coordinates(), coordinateType));
-		}
-		return toReturn;
-	}
+    /**
+     * Retrieves all the unique coordinates of the given type.
+     * 
+     * @param coordinateType the type of the coordinate to extract
+     * @return a set of extracted coordinates
+     */
+    public <C1> Set<C1> extractCoordinatesOfType(Class<C1> coordinateType) {
+        Set<C1> toReturn = new HashSet<>();
+        for (Position position : tensor.shape().positionSet()) {
+            toReturn.add(Coordinates.firstCoordinateOfTyp(position.coordinates(), coordinateType));
+        }
+        return toReturn;
+    }
 
-	public V get(Position position) {
-		return tensor.get(position);
-	}
+    public V get(Position position) {
+        return tensor.get(position);
+    }
 
-	public V get(Object... coordinates) {
-		return tensor.get(coordinates);
-	}
+    public V get(Object... coordinates) {
+        return tensor.get(coordinates);
+    }
 
-	public Tensor<V> extract(Position position) {
-		return extractTensor(position.coordinates());
-	}
+    public Tensor<V> extract(Position position) {
+        return extractTensor(position.coordinates());
+    }
 
-	public Tensor<V> extract(Object... coordinates) {
-		return extractTensor(Arrays.asList(coordinates));
-	}
+    public Tensor<V> extract(Object... coordinates) {
+        return extractTensor(Arrays.asList(coordinates));
+    }
 
-	public OngoingEitherGet<V> either(V defaultValue) {
-		return new OngoingEitherGet<>(tensor, defaultValue);
-	}
+    public OngoingEitherGet<V> either(V defaultValue) {
+        return new OngoingEitherGet<>(tensor, defaultValue);
+    }
 
-	private Tensor<V> extractTensor(Collection<?> coordinates) {
-		checkArgument(coordinates != null, "Argument 'coordinates' must not be null!");
-		for (Object coordinate : coordinates) {
-			checkArgument(coordinate != null, "given coordinate must not be null!");
-		}
-		Tensor<V> slice = tensor;
-		for (Object coordinate : coordinates) {
-			slice = slice(slice, coordinate);
-		}
-		return slice;
-	}
+    private Tensor<V> extractTensor(Collection<?> coordinates) {
+        checkArgument(coordinates != null, "Argument 'coordinates' must not be null!");
+        for (Object coordinate : coordinates) {
+            checkArgument(coordinate != null, "given coordinate must not be null!");
+        }
+        Tensor<V> slice = tensor;
+        for (Object coordinate : coordinates) {
+            slice = slice(slice, coordinate);
+        }
+        return slice;
+    }
 
-	private static final <C, E> Tensor<E> slice(Tensor<E> tensor, C coordinate) {
-		checkArgument(coordinate != null, "Argument '" + "coordinate" + "' must not be null!");
-		checkArgument(!(coordinate instanceof Position), "It is not allowed that a coordinate is of type position! "
-				+ "Most probably this is a programming mistake ;-)");
+    private static final <C, E> Tensor<E> slice(Tensor<E> tensor, C coordinate) {
+        checkArgument(coordinate != null, "Argument '" + "coordinate" + "' must not be null!");
+        checkArgument(!(coordinate instanceof Position), "It is not allowed that a coordinate is of type position! "
+                + "Most probably this is a programming mistake ;-)");
 
-		/*
-		 * TODO: write a nice test for this and probably have a method in shape
-		 * to map dimensions
-		 */
-		@SuppressWarnings("unchecked")
-		Class<C> dimension = (Class<C>) coordinate.getClass();
-		Class<? super C> correctDimension = Coordinates.mapToAnEntry(dimension, tensor.shape().dimensionSet());
+        /*
+         * TODO: write a nice test for this and probably have a method in shape to map dimensions
+         */
+        @SuppressWarnings("unchecked")
+        Class<C> dimension = (Class<C>) coordinate.getClass();
+        Class<? super C> correctDimension = Coordinates.mapToAnEntry(dimension, tensor.shape().dimensionSet());
 
-		return TensorStructurals.from(tensor).reduce(correctDimension).bySlicingAt(coordinate);
-	}
+        return TensorStructurals.from(tensor).reduce(correctDimension).bySlicingAt(coordinate);
+    }
 
-	public <C> OngoingDimensionReduction<C, V> reduce(Class<C> dimension) {
-		return new OngoingDimensionReduction<>(tensor, dimension);
-	}
+    public <C> OngoingDimensionReduction<C, V> reduce(Class<C> dimension) {
+        return new OngoingDimensionReduction<>(tensor, dimension);
+    }
 
 }

@@ -28,9 +28,9 @@ import org.junit.Test;
 
 public class TensorbackedsTest {
 
-	@Test
-	public void verifyUtilityClass() {
-		assertUtilityClass(Tensorbackeds.class);
-	}
+    @Test
+    public void verifyUtilityClass() {
+        assertUtilityClass(Tensorbackeds.class);
+    }
 
 }

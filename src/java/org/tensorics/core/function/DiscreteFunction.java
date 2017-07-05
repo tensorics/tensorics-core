@@ -25,28 +25,23 @@ package org.tensorics.core.function;
 import java.util.Set;
 
 /**
- * A function which has only a discrete set of points (X/Y pairs). The
- * {@link #apply(Object)} method will throw an
- * {@link IllegalDiscreteFunctionUsageException} if a Y value is requested for
- * an unknown X.
+ * A function which has only a discrete set of points (X/Y pairs). The {@link #apply(Object)} method will throw an
+ * {@link IllegalDiscreteFunctionUsageException} if a Y value is requested for an unknown X.
  * 
  * @author kfuchsbe
- * @param <X>
- *            the type of the values in x-direction (Independent variable)
- * @param <Y>
- *            the type of the values in y-direction (Dependent variable)
+ * @param <X> the type of the values in x-direction (Independent variable)
+ * @param <Y> the type of the values in y-direction (Dependent variable)
  */
 public interface DiscreteFunction<X, Y> extends MathFunction<X, Y> {
 
-	/**
-	 * @throws IllegalArgumentException
-	 *             in case the given x is not contained in the function
-	 */
-	@Override
-	Y apply(X input);
+    /**
+     * @throws IllegalArgumentException in case the given x is not contained in the function
+     */
+    @Override
+    Y apply(X input);
 
-	/**
-	 * @return values for which the function is defined
-	 */
-	Set<X> definedXValues();
+    /**
+     * @return values for which the function is defined
+     */
+    Set<X> definedXValues();
 }

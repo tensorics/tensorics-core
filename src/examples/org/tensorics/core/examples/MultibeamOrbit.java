@@ -20,20 +20,20 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 @Dimensions({ Beam.class, Plane.class, Bpm.class })
 public class MultibeamOrbit implements Tensorbacked<Double> {
 
-	private final Tensor<Double> tensor;
+    private final Tensor<Double> tensor;
 
-	public MultibeamOrbit(Tensor<Double> tensor) {
-		this.tensor = tensor;
-	}
+    public MultibeamOrbit(Tensor<Double> tensor) {
+        this.tensor = tensor;
+    }
 
-	public double getValueAt(String string, Beam beam, Plane plane) {
-		return tensor.get(beam, plane, new Bpm(string));
-	}
+    public double getValueAt(String string, Beam beam, Plane plane) {
+        return tensor.get(beam, plane, new Bpm(string));
+    }
 
-	@Override
-	public Tensor<Double> tensor() {
-		return this.tensor;
-	}
+    @Override
+    public Tensor<Double> tensor() {
+        return this.tensor;
+    }
 
 }
 // end::classdef[]

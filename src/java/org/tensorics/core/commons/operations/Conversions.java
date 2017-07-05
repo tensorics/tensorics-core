@@ -29,20 +29,20 @@ package org.tensorics.core.commons.operations;
  */
 public final class Conversions {
 
-	/**
-	 * Returns the identity conversion.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Conversion<T, T> identity() {
-		return (Conversion<T, T>) IdentityConversion.INSTANCE;
-	}
+    /**
+     * Returns the identity conversion.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Conversion<T, T> identity() {
+        return (Conversion<T, T>) IdentityConversion.INSTANCE;
+    }
 
-	private enum IdentityConversion implements Conversion<Object, Object> {
-		INSTANCE;
+    private enum IdentityConversion implements Conversion<Object, Object> {
+        INSTANCE;
 
-		@Override
-		public Object apply(Object input) {
-			return input;
-		}
-	}
+        @Override
+        public Object apply(Object input) {
+            return input;
+        }
+    }
 }

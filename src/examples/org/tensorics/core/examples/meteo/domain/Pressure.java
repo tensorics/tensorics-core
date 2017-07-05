@@ -6,15 +6,15 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
 
 public class Pressure implements Tensorbacked<QuantifiedValue<Double>> {
 
-	private final Tensor<QuantifiedValue<Double>> temperature;
+    private final Tensor<QuantifiedValue<Double>> temperature;
 
-	public Pressure(Tensor<QuantifiedValue<Double>> temperature) {
-		this.temperature = temperature;
-	}
+    public Pressure(Tensor<QuantifiedValue<Double>> temperature) {
+        this.temperature = temperature;
+    }
 
-	@Override
-	public Tensor<QuantifiedValue<Double>> tensor() {
-		return temperature;
-	}
+    @Override
+    public Tensor<QuantifiedValue<Double>> tensor() {
+        return temperature;
+    }
 
 }

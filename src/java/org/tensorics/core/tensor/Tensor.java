@@ -26,59 +26,47 @@ package org.tensorics.core.tensor;
  * The top interface for {@link Tensor} like objects.
  * 
  * @author agorzaws, kfuchsbe
- * @param <E>
- *            type of the values hold in the tensor.
+ * @param <E> type of the values hold in the tensor.
  */
 public interface Tensor<E> {
 
-	/**
-	 * @param position
-	 *            the position in the N-dimensional space where to find the
-	 *            value.
-	 * @return the value at the given position
-	 * @throws IllegalArgumentException
-	 *             when number of coordinates is not sufficient
-	 * @throws java.util.NoSuchElementException
-	 *             if the tensor contains no element for the given position
-	 */
-	E get(Position position);
+    /**
+     * @param position the position in the N-dimensional space where to find the value.
+     * @return the value at the given position
+     * @throws IllegalArgumentException when number of coordinates is not sufficient
+     * @throws java.util.NoSuchElementException if the tensor contains no element for the given position
+     */
+    E get(Position position);
 
-	/**
-	 * @param coordinates
-	 *            form N-dimensional space where to find the value.
-	 * @return a value at the given coordinates.
-	 * @throws IllegalArgumentException
-	 *             if the number of coordinates in incorrect
-	 * @throws java.util.NoSuchElementException
-	 *             if the tensor contains no element for the position
-	 *             constructed from the given coordinates.
-	 */
-	E get(Object... coordinates);
+    /**
+     * @param coordinates form N-dimensional space where to find the value.
+     * @return a value at the given coordinates.
+     * @throws IllegalArgumentException if the number of coordinates in incorrect
+     * @throws java.util.NoSuchElementException if the tensor contains no element for the position constructed from the
+     *             given coordinates.
+     */
+    E get(Object... coordinates);
 
-	/**
-	 * Retrieves the shape of the tensor. As shape we understand simply the
-	 * structure of a tensor: Its dimensions and the available positions.
-	 * <p>
-	 * Implementations have to take care that the returned value here is never
-	 * {@code null}.
-	 * 
-	 * @return the shape of the tensor.
-	 */
-	Shape shape();
+    /**
+     * Retrieves the shape of the tensor. As shape we understand simply the structure of a tensor: Its dimensions and
+     * the available positions.
+     * <p>
+     * Implementations have to take care that the returned value here is never {@code null}.
+     * 
+     * @return the shape of the tensor.
+     */
+    Shape shape();
 
-	/**
-	 * Retrieves the context of the tensor, which is nothing else than a
-	 * position. As context of the tensor we understand coordinates within a
-	 * higher dimensional space than than the tensor has itself. This
-	 * coordinates can e.g. transport information when e.g. a higher-dimensional
-	 * tensor is split into smaller ones, so that it can potentially be
-	 * reconstructed afterwards.
-	 * <p>
-	 * Implementations have to guarantee that the returned value here is never
-	 * {@code null}.
-	 * 
-	 * @return the context of the tensor.
-	 */
-	Position context();
+    /**
+     * Retrieves the context of the tensor, which is nothing else than a position. As context of the tensor we
+     * understand coordinates within a higher dimensional space than than the tensor has itself. This coordinates can
+     * e.g. transport information when e.g. a higher-dimensional tensor is split into smaller ones, so that it can
+     * potentially be reconstructed afterwards.
+     * <p>
+     * Implementations have to guarantee that the returned value here is never {@code null}.
+     * 
+     * @return the context of the tensor.
+     */
+    Position context();
 
 }

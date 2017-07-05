@@ -34,17 +34,17 @@ import org.junit.Test;
  */
 public class JScienceMiscTest {
 
-	@Test(expected = ConversionException.class)
-	public void testMisc() {
-		Amount<Length> position = Amount.valueOf(1, 0.02, SI.METER);
-		Amount<Length> position2 = Amount.valueOf(1, 0.02, SI.METER);
+    @Test(expected = ConversionException.class)
+    public void testMisc() {
+        Amount<Length> position = Amount.valueOf(1, 0.02, SI.METER);
+        Amount<Length> position2 = Amount.valueOf(1, 0.02, SI.METER);
 
-		Amount<?> positionResult = position.times(position2);
-		System.out.println(positionResult);
-		System.out.println(positionResult.getAbsoluteError());
-		System.out.println(positionResult.getRelativeError());
+        Amount<?> positionResult = position.times(position2);
+        System.out.println(positionResult);
+        System.out.println(positionResult.getAbsoluteError());
+        System.out.println(positionResult.getRelativeError());
 
-		position.divide(position2).to(SI.METER);
-	}
+        position.divide(position2).to(SI.METER);
+    }
 
 }

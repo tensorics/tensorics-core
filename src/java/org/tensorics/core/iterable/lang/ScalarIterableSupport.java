@@ -29,44 +29,43 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
  * Provides utility methods for acting on collections of field elements.
  * 
  * @author kfuchsbe
- * @param <V>
- *            the type of the values of the field
+ * @param <V> the type of the values of the field
  */
 public class ScalarIterableSupport<V> extends ScalarSupport<V> {
 
-	private final IterableOperationRepository<V> repository;
+    private final IterableOperationRepository<V> repository;
 
-	public ScalarIterableSupport(ExtendedField<V> field) {
-		super(field);
-		this.repository = new IterableOperationRepository<>(field);
-	}
+    public ScalarIterableSupport(ExtendedField<V> field) {
+        super(field);
+        this.repository = new IterableOperationRepository<>(field);
+    }
 
-	public final V averageOf(Iterable<V> values) {
-		return repository.average().apply(values);
-	}
+    public final V averageOf(Iterable<V> values) {
+        return repository.average().apply(values);
+    }
 
-	public final V sizeOf(Iterable<V> values) {
-		return repository.size().apply(values);
-	}
+    public final V sizeOf(Iterable<V> values) {
+        return repository.size().apply(values);
+    }
 
-	public final V sumOf(Iterable<V> values) {
-		return repository.sum().apply(values);
-	}
+    public final V sumOf(Iterable<V> values) {
+        return repository.sum().apply(values);
+    }
 
-	public V rmsOf(Iterable<V> values) {
-		return repository.rms().apply(values);
-	}
+    public V rmsOf(Iterable<V> values) {
+        return repository.rms().apply(values);
+    }
 
-	public V sumOfSquaresOf(Iterable<V> values) {
-		return repository.sumOfSquares().apply(values);
-	}
+    public V sumOfSquaresOf(Iterable<V> values) {
+        return repository.sumOfSquares().apply(values);
+    }
 
-	public V varOf(Iterable<V> values) {
-		return repository.var().apply(values);
-	}
+    public V varOf(Iterable<V> values) {
+        return repository.var().apply(values);
+    }
 
-	public V stdOf(Iterable<V> values) {
-		return repository.std().apply(values);
-	}
+    public V stdOf(Iterable<V> values) {
+        return repository.std().apply(values);
+    }
 
 }

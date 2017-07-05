@@ -22,18 +22,16 @@
 package org.tensorics.core.function;
 
 /**
- * This math function can return x values for (almost) any X values. The exact
- * allowed x range depends on the implementation.
+ * This math function can return x values for (almost) any X values. The exact allowed x range depends on the
+ * implementation.
  * 
  * @author kfuchsbe
- * @param <X>
- *            the type of the values in x-direction (Independent variable)
- * @param <Y>
- *            the type of the values in y-direction (Dependent variable)
+ * @param <X> the type of the values in x-direction (Independent variable)
+ * @param <Y> the type of the values in y-direction (Dependent variable)
  */
 public interface ContinuousFunction<X, Y> extends MathFunction<X, Y> {
 
-	// as an idea
-	// Range<X> allowedXRange();
+    // as an idea
+    // Range<X> allowedXRange();
 
 }

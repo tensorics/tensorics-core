@@ -28,9 +28,9 @@ import org.tensorics.core.tensor.Position;
 
 public class CoordinateToPositionFunction<C> implements Function<C, Position> {
 
-	@Override
-	public Position apply(C coordinate) {
-		return Position.of(coordinate);
-	}
+    @Override
+    public Position apply(C coordinate) {
+        return Position.of(coordinate);
+    }
 
 }

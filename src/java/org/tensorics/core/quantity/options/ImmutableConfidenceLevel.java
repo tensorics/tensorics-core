@@ -27,28 +27,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.tensorics.core.commons.options.ManipulationOption;
 
 /**
- * Default immutable implementation of {@link ConfidenceLevel} to hold the value
- * set by the user.
+ * Default immutable implementation of {@link ConfidenceLevel} to hold the value set by the user.
  * 
  * @author mihostet
  * @param <S>
  */
 public class ImmutableConfidenceLevel<S> implements ConfidenceLevel<S> {
 
-	private final S confidenceLevel;
+    private final S confidenceLevel;
 
-	public ImmutableConfidenceLevel(S confidenceLevel) {
-		this.confidenceLevel = checkNotNull(confidenceLevel, "confidenceLevel must not be null");
-	}
+    public ImmutableConfidenceLevel(S confidenceLevel) {
+        this.confidenceLevel = checkNotNull(confidenceLevel, "confidenceLevel must not be null");
+    }
 
-	@Override
-	public Class<? extends ManipulationOption> getMarkerInterface() {
-		return ConfidenceLevel.class;
-	}
+    @Override
+    public Class<? extends ManipulationOption> getMarkerInterface() {
+        return ConfidenceLevel.class;
+    }
 
-	@Override
-	public S confidenceLevel() {
-		return this.confidenceLevel;
-	}
+    @Override
+    public S confidenceLevel() {
+        return this.confidenceLevel;
+    }
 
 }

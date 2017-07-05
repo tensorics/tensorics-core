@@ -31,51 +31,51 @@ import com.google.common.collect.ImmutableSet;
 
 public class PositionTest {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
-	private static final Position POS_A = Position.of("A");
+    private static final Position POS_A = Position.of("A");
 
-	@Test
-	public void coordinatesContainPositionThrows() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("A position is contained");
-		Position.of(POS_A);
-	}
+    @Test
+    public void coordinatesContainPositionThrows() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("A position is contained");
+        Position.of(POS_A);
+    }
 
-	@Test
-	public void assertConsistentWithCorrectSet() {
-		assertConsistentDimensions(POS_A, ImmutableSet.of(String.class));
-	}
+    @Test
+    public void assertConsistentWithCorrectSet() {
+        assertConsistentDimensions(POS_A, ImmutableSet.of(String.class));
+    }
 
-	@Test
-	public void assertConsistentWithWrongSetThrows() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("assignable");
-		assertConsistentDimensions(POS_A, ImmutableSet.of(Integer.class));
-	}
+    @Test
+    public void assertConsistentWithWrongSetThrows() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("assignable");
+        assertConsistentDimensions(POS_A, ImmutableSet.of(Integer.class));
+    }
 
-	@Test
-	public void positionOfSameTypeAndNonEqualThrow() {
-		expectUniqueDimensionsException();
-		Position.of("A", "B");
-	}
+    @Test
+    public void positionOfSameTypeAndNonEqualThrow() {
+        expectUniqueDimensionsException();
+        Position.of("A", "B");
+    }
 
-	@Test
-	public void positionOfSetSameTypeThrow() {
-		expectUniqueDimensionsException();
-		Position.of(ImmutableSet.of("A", "B"));
-	}
+    @Test
+    public void positionOfSetSameTypeThrow() {
+        expectUniqueDimensionsException();
+        Position.of(ImmutableSet.of("A", "B"));
+    }
 
-	@Test
-	public void positionOfSameTypeAndSameValueThrow() {
-		expectUniqueDimensionsException();
-		Position.of("A", "A");
-	}
+    @Test
+    public void positionOfSameTypeAndSameValueThrow() {
+        expectUniqueDimensionsException();
+        Position.of("A", "A");
+    }
 
-	private void expectUniqueDimensionsException() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("unique dimensions");
-	}
+    private void expectUniqueDimensionsException() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("unique dimensions");
+    }
 
 }

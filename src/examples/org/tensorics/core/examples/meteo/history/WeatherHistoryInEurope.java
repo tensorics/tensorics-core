@@ -17,35 +17,35 @@ import org.tensorics.core.tensor.Tensor;
 
 public class WeatherHistoryInEurope extends AbstractWeatherHistory {
 
-	@Override
-	public List<City> getCities() {
-		return Arrays.<City>asList(EuropeanCapital.values());
-	}
+    @Override
+    public List<City> getCities() {
+        return Arrays.<City> asList(EuropeanCapital.values());
+    }
 
-	// tag::import[]
+    // tag::import[]
 
-	/*
-	 * calculate an average monthly temperature at the ROME Latitude like cities
-	 */
-	@SuppressWarnings("unused")
-	public void calculate() {
+    /*
+     * calculate an average monthly temperature at the ROME Latitude like cities
+     */
+    @SuppressWarnings("unused")
+    public void calculate() {
 
-		Tensor<QuantifiedValue<Double>> importedData = importDataForCities();
-		Latitude romeLatitude = EuropeanCapital.ROMA.getLatitude();
-		Tensor<QuantifiedValue<Double>> sliceAtTropicCancerAndRome = from(importedData).extract(romeLatitude);
+        Tensor<QuantifiedValue<Double>> importedData = importDataForCities();
+        Latitude romeLatitude = EuropeanCapital.ROMA.getLatitude();
+        Tensor<QuantifiedValue<Double>> sliceAtTropicCancerAndRome = from(importedData).extract(romeLatitude);
 
-		Temperature temperature = new Temperature(importedData);
+        Temperature temperature = new Temperature(importedData);
 
-		Tensor<QuantifiedValue<Double>> elementTimes = calculateQ(importedData).elementTimes(importedData);
-		Temperature elementTimes2 = calculateQ(temperature).elementTimes(temperature);
+        Tensor<QuantifiedValue<Double>> elementTimes = calculateQ(importedData).elementTimes(importedData);
+        Temperature elementTimes2 = calculateQ(temperature).elementTimes(temperature);
 
-		/* dimension will be reduced to only Longitude and Time */
-		sliceAtTropicCancerAndRome.shape().dimensionSet();
-		//
-		// from(sliceAtTropicCancerAndRome).reduce(Time.class).byAveragingIn(field)
+        /* dimension will be reduced to only Longitude and Time */
+        sliceAtTropicCancerAndRome.shape().dimensionSet();
+        //
+        // from(sliceAtTropicCancerAndRome).reduce(Time.class).byAveragingIn(field)
 
-		TensoricSupport<Double> fullTensoricSupport = Tensorics.using(Structures.doubles());
+        TensoricSupport<Double> fullTensoricSupport = Tensorics.using(Structures.doubles());
 
-	}
-	// end::import[]
+    }
+    // end::import[]
 }

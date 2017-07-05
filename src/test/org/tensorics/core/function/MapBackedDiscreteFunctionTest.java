@@ -19,35 +19,36 @@ import org.junit.Test;
  */
 public class MapBackedDiscreteFunctionTest {
 
-	private static final double UNDEFINED_X_VALUE = 33D;
-	private static final int NUMBER_OF_DEFINED_ELEMENTS = 10;
-	private MapBackedDiscreteFunction<Double, Double> identityFunction;
+    private static final double UNDEFINED_X_VALUE = 33D;
+    private static final int NUMBER_OF_DEFINED_ELEMENTS = 10;
+    private MapBackedDiscreteFunction<Double, Double> identityFunction;
 
-	@Before
-	public void setUp() {
-		MapBackedDiscreteFunction.Builder<Double, Double> builder = MapBackedDiscreteFunction.<Double, Double>builder();
-		DoubleStream.iterate(1, i -> i + 1).limit(NUMBER_OF_DEFINED_ELEMENTS).forEach(i -> builder.put(i, i));
-		identityFunction = builder.build();
-	}
+    @Before
+    public void setUp() {
+        MapBackedDiscreteFunction.Builder<Double, Double> builder = MapBackedDiscreteFunction
+                .<Double, Double> builder();
+        DoubleStream.iterate(1, i -> i + 1).limit(NUMBER_OF_DEFINED_ELEMENTS).forEach(i -> builder.put(i, i));
+        identityFunction = builder.build();
+    }
 
-	@Test
-	public void testApplyReturnsExpectedValuesForDefinedXs() {
-		//@formatter:off
+    @Test
+    public void testApplyReturnsExpectedValuesForDefinedXs() {
+        //@formatter:off
         DoubleStream.iterate(1, i -> i + 1)
                 .limit(NUMBER_OF_DEFINED_ELEMENTS)
                 .forEach(i -> assertTrue(identityFunction.apply(i).equals(i)));
         //@formatter:on
-	}
+    }
 
-	@Test(expected = IllegalDiscreteFunctionUsageException.class)
-	public void testApplyThrowsExceptionWhenRequestedValueForUndefinedX() {
-		identityFunction.apply(UNDEFINED_X_VALUE);
-	}
+    @Test(expected = IllegalDiscreteFunctionUsageException.class)
+    public void testApplyThrowsExceptionWhenRequestedValueForUndefinedX() {
+        identityFunction.apply(UNDEFINED_X_VALUE);
+    }
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void testImmutability() {
-		Set<Double> definedXValues = identityFunction.definedXValues();
-		definedXValues.add(UNDEFINED_X_VALUE);
-	}
+    @Test(expected = UnsupportedOperationException.class)
+    public void testImmutability() {
+        Set<Double> definedXValues = identityFunction.definedXValues();
+        definedXValues.add(UNDEFINED_X_VALUE);
+    }
 
 }

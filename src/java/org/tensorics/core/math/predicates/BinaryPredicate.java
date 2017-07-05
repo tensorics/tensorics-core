@@ -23,30 +23,25 @@ package org.tensorics.core.math.predicates;
 import org.tensorics.core.math.operations.BinaryFunction;
 
 /**
- * Represents a predicate (boolean-valued function) of two arguments of the same
- * type. This is a functional interface whose functional method is
- * {@link #test(Object, Object)}.
+ * Represents a predicate (boolean-valued function) of two arguments of the same type. This is a functional interface
+ * whose functional method is {@link #test(Object, Object)}.
  *
- * @param <T>
- *            the type of the operands
+ * @param <T> the type of the operands
  * @author kfuchsbe
  */
 public interface BinaryPredicate<T> extends BinaryFunction<T, Boolean> {
 
-	/**
-	 * Evaluates the predicate (condition) on the given arguments.
-	 *
-	 * @param left
-	 *            the left operator of the condition
-	 * @param right
-	 *            the right operator of the condition
-	 * @return {@code true} if the predicate is fulfilled, {@code false}
-	 *         otherwise.
-	 */
-	boolean test(T left, T right);
+    /**
+     * Evaluates the predicate (condition) on the given arguments.
+     *
+     * @param left the left operator of the condition
+     * @param right the right operator of the condition
+     * @return {@code true} if the predicate is fulfilled, {@code false} otherwise.
+     */
+    boolean test(T left, T right);
 
-	@Override
-	default Boolean perform(T left, T right) {
-		return test(left, right);
-	}
+    @Override
+    default Boolean perform(T left, T right) {
+        return test(left, right);
+    }
 }

@@ -40,41 +40,41 @@ import org.tensorics.core.units.JScienceUnit;
 
 public class ImmutableQuantifiedScalarTest {
 
-	private ImmutableQuantifiedValue<Double> scalar;
-	private ImmutableQuantifiedValue<Double> zero;
-	private ImmutableQuantifiedValue<Double> negativeScalar;
+    private ImmutableQuantifiedValue<Double> scalar;
+    private ImmutableQuantifiedValue<Double> zero;
+    private ImmutableQuantifiedValue<Double> negativeScalar;
 
-	@Before
-	public void setUp() {
-		zero = Tensorics.quantityOf(0.0, JScienceUnit.of(SI.AMPERE));
-		scalar = Tensorics.quantityOf(10.5, JScienceUnit.of(SI.AMPERE));
-		negativeScalar = Tensorics.quantityOf(-42.5, JScienceUnit.of(SI.AMPERE));
-	}
+    @Before
+    public void setUp() {
+        zero = Tensorics.quantityOf(0.0, JScienceUnit.of(SI.AMPERE));
+        scalar = Tensorics.quantityOf(10.5, JScienceUnit.of(SI.AMPERE));
+        negativeScalar = Tensorics.quantityOf(-42.5, JScienceUnit.of(SI.AMPERE));
+    }
 
-	@Test
-	public void testUnit() {
-		assertEquals(JScienceUnit.of(SI.AMPERE), scalar.unit());
-	}
+    @Test
+    public void testUnit() {
+        assertEquals(JScienceUnit.of(SI.AMPERE), scalar.unit());
+    }
 
-	@Test
-	public void testValue() {
-		assertEquals(10.5, scalar.value(), 0.000001);
-	}
+    @Test
+    public void testValue() {
+        assertEquals(10.5, scalar.value(), 0.000001);
+    }
 
-	@Test
-	public void testAbsolute() {
-		assertEquals(zero, DoubleTensorics.absoluteValueOf(zero));
-		assertEquals(0.0, DoubleTensorics.absoluteValueOf(zero).value(), 0.000001);
-		assertEquals(10.5, DoubleTensorics.absoluteValueOf(scalar).value(), 0.000001);
-		assertEquals(42.5, DoubleTensorics.absoluteValueOf(negativeScalar).value(), 0.000001);
-	}
+    @Test
+    public void testAbsolute() {
+        assertEquals(zero, DoubleTensorics.absoluteValueOf(zero));
+        assertEquals(0.0, DoubleTensorics.absoluteValueOf(zero).value(), 0.000001);
+        assertEquals(10.5, DoubleTensorics.absoluteValueOf(scalar).value(), 0.000001);
+        assertEquals(42.5, DoubleTensorics.absoluteValueOf(negativeScalar).value(), 0.000001);
+    }
 
-	@Test
-	public void serializableAndDeserializedIsEquals() throws IOException, ClassNotFoundException {
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		(new ObjectOutputStream(buffer)).writeObject(scalar);
-		Object deserialized = (new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()))).readObject();
-		assertEquals(scalar, deserialized);
-	}
+    @Test
+    public void serializableAndDeserializedIsEquals() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        (new ObjectOutputStream(buffer)).writeObject(scalar);
+        Object deserialized = (new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()))).readObject();
+        assertEquals(scalar, deserialized);
+    }
 
 }

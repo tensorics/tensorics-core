@@ -31,16 +31,16 @@ import com.google.common.base.Preconditions;
 
 class PositionToScalarFunction<S> implements Function<Position, S> {
 
-	public PositionToScalarFunction(Tensor<S> tensor) {
-		super();
-		this.tensor = Preconditions.checkNotNull(tensor, "tensor must not be null");
-	}
+    public PositionToScalarFunction(Tensor<S> tensor) {
+        super();
+        this.tensor = Preconditions.checkNotNull(tensor, "tensor must not be null");
+    }
 
-	private final Tensor<S> tensor;
+    private final Tensor<S> tensor;
 
-	@Override
-	public S apply(Position position) {
-		return tensor.get(position);
-	}
+    @Override
+    public S apply(Position position) {
+        return tensor.get(position);
+    }
 
 }

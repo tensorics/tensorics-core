@@ -33,48 +33,44 @@ import org.tensorics.core.function.operations.DiscreteFunctionOperationRepositor
 import org.tensorics.core.tree.domain.Expression;
 
 /**
- * Provides methods to describe the right hand part of a binary operation for
- * {@link DiscreteFunction} @ {@link Expression}s
+ * Provides methods to describe the right hand part of a binary operation for {@link DiscreteFunction} @
+ * {@link Expression}s
  * 
- * @param <X>
- *            the type of the independent variable (input) of the discrete
- *            function
- * @param <Y>
- *            the type of the dependent variable (output) of the discrete
- *            function and the type of the scalar values (elements of the field)
- *            on which to operate
+ * @param <X> the type of the independent variable (input) of the discrete function
+ * @param <Y> the type of the dependent variable (output) of the discrete function and the type of the scalar values
+ *            (elements of the field) on which to operate
  * @author caguiler
  */
 public class OngoingDeferredDiscreteFunctionBinaryOperation<X, Y> {
 
-	private final Expression<DiscreteFunction<X, Y>> left;
-	private final DiscreteFunctionOperationRepository<X, Y> repository;
+    private final Expression<DiscreteFunction<X, Y>> left;
+    private final DiscreteFunctionOperationRepository<X, Y> repository;
 
-	OngoingDeferredDiscreteFunctionBinaryOperation(Environment<Y> environment, Expression<DiscreteFunction<X, Y>> left,
-			Conversion<X, Y> conversion, Comparator<X> comparator) {
-		this.left = left;
-		this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion, comparator);
-	}
+    OngoingDeferredDiscreteFunctionBinaryOperation(Environment<Y> environment, Expression<DiscreteFunction<X, Y>> left,
+            Conversion<X, Y> conversion, Comparator<X> comparator) {
+        this.left = left;
+        this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion, comparator);
+    }
 
-	public final Expression<DiscreteFunction<X, Y>> plus(Expression<DiscreteFunction<X, Y>> right) {
-		return binaryExpressionOf(repository.addition(), left, right);
-	}
+    public final Expression<DiscreteFunction<X, Y>> plus(Expression<DiscreteFunction<X, Y>> right) {
+        return binaryExpressionOf(repository.addition(), left, right);
+    }
 
-	public final Expression<DiscreteFunction<X, Y>> minus(Expression<DiscreteFunction<X, Y>> right) {
-		return binaryExpressionOf(repository.subtraction(), left, right);
-	}
+    public final Expression<DiscreteFunction<X, Y>> minus(Expression<DiscreteFunction<X, Y>> right) {
+        return binaryExpressionOf(repository.subtraction(), left, right);
+    }
 
-	public final Expression<DiscreteFunction<X, Y>> times(Expression<DiscreteFunction<X, Y>> right) {
-		return binaryExpressionOf(repository.multiplication(), left, right);
-	}
+    public final Expression<DiscreteFunction<X, Y>> times(Expression<DiscreteFunction<X, Y>> right) {
+        return binaryExpressionOf(repository.multiplication(), left, right);
+    }
 
-	public final Expression<DiscreteFunction<X, Y>> dividedBy(Expression<DiscreteFunction<X, Y>> right) {
-		return binaryExpressionOf(repository.division(), left, right);
-	}
+    public final Expression<DiscreteFunction<X, Y>> dividedBy(Expression<DiscreteFunction<X, Y>> right) {
+        return binaryExpressionOf(repository.division(), left, right);
+    }
 
-	private static <X, Y> Expression<DiscreteFunction<X, Y>> binaryExpressionOf(
-			AbstractDiscreteFunctionBinaryOperation<X, Y> operation, Expression<DiscreteFunction<X, Y>> left,
-			Expression<DiscreteFunction<X, Y>> right) {
-		return new BinaryOperationExpression<>(operation, left, right);
-	}
+    private static <X, Y> Expression<DiscreteFunction<X, Y>> binaryExpressionOf(
+            AbstractDiscreteFunctionBinaryOperation<X, Y> operation, Expression<DiscreteFunction<X, Y>> left,
+            Expression<DiscreteFunction<X, Y>> right) {
+        return new BinaryOperationExpression<>(operation, left, right);
+    }
 }

@@ -36,14 +36,14 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 @Dimensions({ Beam.class, Plane.class, Bpm.class })
 public class MultibeamOrbit extends AbstractOrbit {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public MultibeamOrbit(Tensor<Double> tensor) {
-		super(tensor);
-	}
+    public MultibeamOrbit(Tensor<Double> tensor) {
+        super(tensor);
+    }
 
-	public double getValueAt(String string, Beam b2, Plane h) {
-		return backingTensor.get(b2, h, new Bpm(string));
-	}
+    public double getValueAt(String string, Beam b2, Plane h) {
+        return backingTensor.get(b2, h, new Bpm(string));
+    }
 
 }

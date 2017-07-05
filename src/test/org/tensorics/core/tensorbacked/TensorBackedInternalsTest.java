@@ -38,25 +38,25 @@ import com.google.common.collect.ImmutableSet;
 
 public class TensorBackedInternalsTest {
 
-	@Test
-	public void testDimensionsOfMultibeamOrbitEvolution() {
-		assertEquals(ImmutableSet.of(Plane.class, Bpm.class, Time.class, Beam.class),
-				dimensionsOf(MultibeamOrbitEvolution.class));
-	}
+    @Test
+    public void testDimensionsOfMultibeamOrbitEvolution() {
+        assertEquals(ImmutableSet.of(Plane.class, Bpm.class, Time.class, Beam.class),
+                dimensionsOf(MultibeamOrbitEvolution.class));
+    }
 
-	@Test
-	public void testDimensionsOfMultibeamOrbit() {
-		assertEquals(ImmutableSet.of(Plane.class, Bpm.class, Beam.class), dimensionsOf(MultibeamOrbit.class));
-	}
+    @Test
+    public void testDimensionsOfMultibeamOrbit() {
+        assertEquals(ImmutableSet.of(Plane.class, Bpm.class, Beam.class), dimensionsOf(MultibeamOrbit.class));
+    }
 
-	@Test
-	public void testDimensionsOfSinglebeamOrbit() {
-		assertEquals(ImmutableSet.of(Plane.class, Bpm.class), dimensionsOf(SinglebeamOrbit.class));
-	}
+    @Test
+    public void testDimensionsOfSinglebeamOrbit() {
+        assertEquals(ImmutableSet.of(Plane.class, Bpm.class), dimensionsOf(SinglebeamOrbit.class));
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testNoAnnotationPresent() {
-		dimensionsOf(NoAnnotationPresentOrbit.class);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testNoAnnotationPresent() {
+        dimensionsOf(NoAnnotationPresentOrbit.class);
+    }
 
 }

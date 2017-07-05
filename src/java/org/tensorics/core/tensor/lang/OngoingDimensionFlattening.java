@@ -39,31 +39,31 @@ import com.google.common.collect.Sets.SetView;
 
 public class OngoingDimensionFlattening<S> {
 
-	private final Tensor<S> tensor;
-	private final Set<Class<?>> dimensionsToFlatten;
+    private final Tensor<S> tensor;
+    private final Set<Class<?>> dimensionsToFlatten;
 
-	public OngoingDimensionFlattening(Tensor<S> tensor, Set<Class<?>> dimensions) {
-		super();
-		this.tensor = tensor;
-		this.dimensionsToFlatten = dimensions;
-	}
+    public OngoingDimensionFlattening(Tensor<S> tensor, Set<Class<?>> dimensions) {
+        super();
+        this.tensor = tensor;
+        this.dimensionsToFlatten = dimensions;
+    }
 
-	public Tensor<Set<S>> intoTensorOfSets() {
-		return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoSetMultimap()));
-	}
+    public Tensor<Set<S>> intoTensorOfSets() {
+        return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoSetMultimap()));
+    }
 
-	private SetMultimap<Position, S> intoSetMultimap() {
-		ImmutableSetMultimap.Builder<Position, S> builder = ImmutableSetMultimap.builder();
-		DimensionStripper dimensionStripper = Positions.stripping(dimensionsToFlatten);
-		for (java.util.Map.Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
-			Position newPosition = dimensionStripper.apply(entry.getKey());
-			builder.put(newPosition, entry.getValue());
-		}
-		return builder.build();
-	}
+    private SetMultimap<Position, S> intoSetMultimap() {
+        ImmutableSetMultimap.Builder<Position, S> builder = ImmutableSetMultimap.builder();
+        DimensionStripper dimensionStripper = Positions.stripping(dimensionsToFlatten);
+        for (java.util.Map.Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+            Position newPosition = dimensionStripper.apply(entry.getKey());
+            builder.put(newPosition, entry.getValue());
+        }
+        return builder.build();
+    }
 
-	private SetView<Class<?>> remainingDimensions() {
-		return Sets.difference(tensor.shape().dimensionSet(), dimensionsToFlatten);
-	}
+    private SetView<Class<?>> remainingDimensions() {
+        return Sets.difference(tensor.shape().dimensionSet(), dimensionsToFlatten);
+    }
 
 }

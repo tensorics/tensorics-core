@@ -5,8 +5,7 @@
 package org.tensorics.core.functional;
 
 /**
- * This interface represents a function that has a finite argument number in its
- * signature.
+ * This interface represents a function that has a finite argument number in its signature.
  * 
  * @see Func1
  * @see Func2
@@ -17,23 +16,21 @@ package org.tensorics.core.functional;
  * @see Func7
  * @see Func8
  * @see Func9
- * @param <R>
- *            the return type of the function
+ * @param <R> the return type of the function
  */
 public interface FiniteArgumentFunction<R> {
 
-	/**
-	 * Transform this function to a {@link FuncN}, binding the arguments
-	 * automatically.
-	 * 
-	 * @return the {@link FuncN} representation of this function
-	 */
-	FuncN<R> toFuncN();
+    /**
+     * Transform this function to a {@link FuncN}, binding the arguments automatically.
+     * 
+     * @return the {@link FuncN} representation of this function
+     */
+    FuncN<R> toFuncN();
 
-	/**
-	 * The number of arguments that the function accepts
-	 * 
-	 * @return the number of arguments
-	 */
-	int numberOfArgs();
+    /**
+     * The number of arguments that the function accepts
+     * 
+     * @return the number of arguments
+     */
+    int numberOfArgs();
 }

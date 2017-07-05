@@ -27,29 +27,27 @@ import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
 
 /**
- * A repository for statistic conditions on quantified values at a certain
- * confidence level.
+ * A repository for statistic conditions on quantified values at a certain confidence level.
  * 
  * @author mihostet
- * @param <S>
- *            the type of the scalar values (elements of the field)
+ * @param <S> the type of the scalar values (elements of the field)
  */
 public class QuantityPedicateRepository<S> {
 
-	private final BinaryPredicate<QuantifiedValue<S>> lessCondition;
-	private final BinaryPredicate<QuantifiedValue<S>> greaterCondition;
+    private final BinaryPredicate<QuantifiedValue<S>> lessCondition;
+    private final BinaryPredicate<QuantifiedValue<S>> greaterCondition;
 
-	public QuantityPedicateRepository(QuantityEnvironment<S> environment) {
-		lessCondition = new QuantityLessPredicate<S>(environment);
-		greaterCondition = new QuantityGreaterPredicate<S>(environment);
-	}
+    public QuantityPedicateRepository(QuantityEnvironment<S> environment) {
+        lessCondition = new QuantityLessPredicate<S>(environment);
+        greaterCondition = new QuantityGreaterPredicate<S>(environment);
+    }
 
-	public BinaryPredicate<QuantifiedValue<S>> less() {
-		return lessCondition;
-	}
+    public BinaryPredicate<QuantifiedValue<S>> less() {
+        return lessCondition;
+    }
 
-	public BinaryPredicate<QuantifiedValue<S>> greater() {
-		return greaterCondition;
-	}
+    public BinaryPredicate<QuantifiedValue<S>> greater() {
+        return greaterCondition;
+    }
 
 }

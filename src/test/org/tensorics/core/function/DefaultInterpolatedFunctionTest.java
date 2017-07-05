@@ -24,51 +24,50 @@ import org.tensorics.core.function.interpolation.InterpolationStrategy;
 import com.google.common.collect.ImmutableSet;
 
 /**
- * Ensures that the contract of {@link DefaultInterpolatedFunction} is
- * fulfilled.
+ * Ensures that the contract of {@link DefaultInterpolatedFunction} is fulfilled.
  * 
  * @author caguiler
  */
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultInterpolatedFunctionTest {
 
-	private static final double DEFINED_X_VALUE = 1.0;
-	private static final double UNDEFINED_X_VALUE = 33.0;
-	private static final Comparator<Double> COMPARATOR = Double::compareTo;
+    private static final double DEFINED_X_VALUE = 1.0;
+    private static final double UNDEFINED_X_VALUE = 33.0;
+    private static final Comparator<Double> COMPARATOR = Double::compareTo;
 
-	@Mock
-	DiscreteFunction<Double, Double> function;
-	@Mock
-	InterpolationStrategy<Double> interpolationStrategy;
-	@Mock
-	Conversion<Double, Double> conversion;
+    @Mock
+    DiscreteFunction<Double, Double> function;
+    @Mock
+    InterpolationStrategy<Double> interpolationStrategy;
+    @Mock
+    Conversion<Double, Double> conversion;
 
-	DefaultInterpolatedFunction<Double, Double> interpolatedFunction;
+    DefaultInterpolatedFunction<Double, Double> interpolatedFunction;
 
-	@Before
-	public void setUp() {
-		when(function.definedXValues()).thenReturn(ImmutableSet.of(DEFINED_X_VALUE));
-		when(function.apply(DEFINED_X_VALUE)).thenReturn(DEFINED_X_VALUE);
-		interpolatedFunction = new DefaultInterpolatedFunction<>(function, interpolationStrategy, conversion,
-				COMPARATOR);
-	}
+    @Before
+    public void setUp() {
+        when(function.definedXValues()).thenReturn(ImmutableSet.of(DEFINED_X_VALUE));
+        when(function.apply(DEFINED_X_VALUE)).thenReturn(DEFINED_X_VALUE);
+        interpolatedFunction = new DefaultInterpolatedFunction<>(function, interpolationStrategy, conversion,
+                COMPARATOR);
+    }
 
-	@Test
-	public void testDefinedXValuesAreTheSameThanBackedDiscreteFunction() {
-		assertEquals(interpolatedFunction.definedXValues(), function.definedXValues());
-	}
+    @Test
+    public void testDefinedXValuesAreTheSameThanBackedDiscreteFunction() {
+        assertEquals(interpolatedFunction.definedXValues(), function.definedXValues());
+    }
 
-	@Test
-	public void testItDoesNotRelyOnInterpolationStrategyForDefinedXValues() {
-		interpolatedFunction.apply(DEFINED_X_VALUE);
-		verify(function, times(1)).apply(DEFINED_X_VALUE);
-		verify(interpolationStrategy, never()).interpolate(any(), any(), any(), any());
-	}
+    @Test
+    public void testItDoesNotRelyOnInterpolationStrategyForDefinedXValues() {
+        interpolatedFunction.apply(DEFINED_X_VALUE);
+        verify(function, times(1)).apply(DEFINED_X_VALUE);
+        verify(interpolationStrategy, never()).interpolate(any(), any(), any(), any());
+    }
 
-	@Test
-	public void testItReliesOnInterpolationStrategyForUnDefinedXValues() {
-		interpolatedFunction.apply(UNDEFINED_X_VALUE);
-		verify(interpolationStrategy, times(1)).interpolate(UNDEFINED_X_VALUE, function, conversion, COMPARATOR);
-	}
+    @Test
+    public void testItReliesOnInterpolationStrategyForUnDefinedXValues() {
+        interpolatedFunction.apply(UNDEFINED_X_VALUE);
+        verify(interpolationStrategy, times(1)).interpolate(UNDEFINED_X_VALUE, function, conversion, COMPARATOR);
+    }
 
 }

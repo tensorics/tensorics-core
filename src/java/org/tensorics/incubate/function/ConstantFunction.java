@@ -31,41 +31,39 @@ import com.google.common.base.Preconditions;
 
 /**
  * @author agorzaws
- * @param <QX>
- *            type of arguments
- * @param <QY>
- *            type of values
+ * @param <QX> type of arguments
+ * @param <QY> type of values
  */
 public final class ConstantFunction<QX extends Quantity, QY extends Quantity>
-		implements AnalyticalFunction<Amount<QX>, Amount<QY>> {
+        implements AnalyticalFunction<Amount<QX>, Amount<QY>> {
 
-	private final Amount<QY> constant;
+    private final Amount<QY> constant;
 
-	private ConstantFunction(Amount<QY> constant) {
-		this.constant = constant;
-		Preconditions.checkArgument(constant != null, "Argument '" + "constant" + "' must not be null!");
-	}
+    private ConstantFunction(Amount<QY> constant) {
+        this.constant = constant;
+        Preconditions.checkArgument(constant != null, "Argument '" + "constant" + "' must not be null!");
+    }
 
-	@Override
-	public Amount<QY> getY(Amount<QX> xValue) {
-		return constant;
-	}
+    @Override
+    public Amount<QY> getY(Amount<QX> xValue) {
+        return constant;
+    }
 
-	@Override
-	public String toText() {
-		return "[y = A]";
-	}
+    @Override
+    public String toText() {
+        return "[y = A]";
+    }
 
-	public Tensor<Amount<QY>> tensor() {
-		throw new UnsupportedOperationException("Cannot get a discrete tensor from analytical function");
-	}
+    public Tensor<Amount<QY>> tensor() {
+        throw new UnsupportedOperationException("Cannot get a discrete tensor from analytical function");
+    }
 
-	public Amount<QY> getConstant() {
-		return constant;
-	}
+    public Amount<QY> getConstant() {
+        return constant;
+    }
 
-	public static <QX extends Quantity, QY extends Quantity> ConstantFunction<QX, QY> of(Amount<QY> amount) {
-		return new ConstantFunction<>(amount);
-	}
+    public static <QX extends Quantity, QY extends Quantity> ConstantFunction<QX, QY> of(Amount<QY> amount) {
+        return new ConstantFunction<>(amount);
+    }
 
 }

@@ -30,48 +30,41 @@ import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.operations.DiscreteFunctionOperationRepository;
 
 /**
- * Provides methods to describe the right hand side of binary operations on
- * {@link DiscreteFunction} from X to Y
+ * Provides methods to describe the right hand side of binary operations on {@link DiscreteFunction} from X to Y
  * 
- * @param <X>
- *            the type of the independent variable (input) of the discrete
- *            function
- * @param <Y>
- *            the type of the dependent variable (output) of the discrete
- *            function and the type of the scalar values (elements of the field)
- *            on which to operate
+ * @param <X> the type of the independent variable (input) of the discrete function
+ * @param <Y> the type of the dependent variable (output) of the discrete function and the type of the scalar values
+ *            (elements of the field) on which to operate
  * @author caguiler
  */
 public class OngoingDiscreteFunctionBinaryOperation<X, Y> {
 
-	private final DiscreteFunction<X, Y> left;
-	private final DiscreteFunctionOperationRepository<X, Y> repository;
+    private final DiscreteFunction<X, Y> left;
+    private final DiscreteFunctionOperationRepository<X, Y> repository;
 
-	/**
-	 * @param environment
-	 *            the {@link Environment} for this support
-	 * @param conversion
-	 *            defines how to transform a value of X type to Y type
-	 */
-	OngoingDiscreteFunctionBinaryOperation(Environment<Y> environment, DiscreteFunction<X, Y> left,
-			Conversion<X, Y> conversion, Comparator<X> comparator) {
-		this.left = left;
-		this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion, comparator);
-	}
+    /**
+     * @param environment the {@link Environment} for this support
+     * @param conversion defines how to transform a value of X type to Y type
+     */
+    OngoingDiscreteFunctionBinaryOperation(Environment<Y> environment, DiscreteFunction<X, Y> left,
+            Conversion<X, Y> conversion, Comparator<X> comparator) {
+        this.left = left;
+        this.repository = new DiscreteFunctionOperationRepository<>(environment, conversion, comparator);
+    }
 
-	public final DiscreteFunction<X, Y> plus(DiscreteFunction<X, Y> right) {
-		return repository.addition().perform(left, right);
-	}
+    public final DiscreteFunction<X, Y> plus(DiscreteFunction<X, Y> right) {
+        return repository.addition().perform(left, right);
+    }
 
-	public final DiscreteFunction<X, Y> minus(DiscreteFunction<X, Y> right) {
-		return repository.subtraction().perform(left, right);
-	}
+    public final DiscreteFunction<X, Y> minus(DiscreteFunction<X, Y> right) {
+        return repository.subtraction().perform(left, right);
+    }
 
-	public final DiscreteFunction<X, Y> times(DiscreteFunction<X, Y> right) {
-		return repository.multiplication().perform(left, right);
-	}
+    public final DiscreteFunction<X, Y> times(DiscreteFunction<X, Y> right) {
+        return repository.multiplication().perform(left, right);
+    }
 
-	public final DiscreteFunction<X, Y> dividedBy(DiscreteFunction<X, Y> right) {
-		return repository.division().perform(left, right);
-	}
+    public final DiscreteFunction<X, Y> dividedBy(DiscreteFunction<X, Y> right) {
+        return repository.division().perform(left, right);
+    }
 }

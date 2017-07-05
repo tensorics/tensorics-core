@@ -33,24 +33,24 @@ import org.tensorics.core.resolve.resolvers.Resolvers;
  */
 public final class ResolvingEngines {
 
-	private ResolvingEngines() {
-		/* only static methods */
-	}
+    private ResolvingEngines() {
+        /* only static methods */
+    }
 
-	public static ResolvingEngine defaultEngine() {
-		ResolverRepository defaultResolvers = Resolvers.defaultRepository();
-		return resolvingEngineWith(defaultResolvers);
-	}
+    public static ResolvingEngine defaultEngine() {
+        ResolverRepository defaultResolvers = Resolvers.defaultRepository();
+        return resolvingEngineWith(defaultResolvers);
+    }
 
-	public static ResolvingEngine defaultEngineWithAdditional(Resolver<?, ?>... resolvers) {
-		ResolverRepository defaultResolvers = Resolvers.defaultRepositoryWithAdditional(resolvers);
-		return resolvingEngineWith(defaultResolvers);
-	}
+    public static ResolvingEngine defaultEngineWithAdditional(Resolver<?, ?>... resolvers) {
+        ResolverRepository defaultResolvers = Resolvers.defaultRepositoryWithAdditional(resolvers);
+        return resolvingEngineWith(defaultResolvers);
+    }
 
-	private static ResolvingEngine resolvingEngineWith(ResolverRepository defaultResolvers) {
-		DefaultResolvingEngine engine = new DefaultResolvingEngine();
-		engine.setResolverRepository(defaultResolvers);
-		return engine;
-	}
+    private static ResolvingEngine resolvingEngineWith(ResolverRepository defaultResolvers) {
+        DefaultResolvingEngine engine = new DefaultResolvingEngine();
+        engine.setResolverRepository(defaultResolvers);
+        return engine;
+    }
 
 }

@@ -23,11 +23,10 @@
 package org.tensorics.core.commons.options;
 
 /**
- * Marker interface for options which can be used to define the behaviour of
- * iterable- and tensor operations.
+ * Marker interface for options which can be used to define the behaviour of iterable- and tensor operations.
  * 
  * @author kfuchsbe
  */
 public interface ManipulationOption extends Option<ManipulationOption> {
-	/* Just a marker interface for a special type of options. */
+    /* Just a marker interface for a special type of options. */
 }

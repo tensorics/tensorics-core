@@ -26,20 +26,18 @@ import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.math.structures.Structure;
 
 /**
- * Marks a algebraic structure that is of group-like type, aka it has one
- * operation.
+ * Marks a algebraic structure that is of group-like type, aka it has one operation.
  * 
  * @author kfuchsbe
- * @param <T>
- *            the type of the element of the underlying set.
+ * @param <T> the type of the element of the underlying set.
  */
 public interface GrouplikeStructure<T> extends Structure<T> {
 
-	/**
-	 * Has to return the binary operation (M x M = M) for this Magma.
-	 * 
-	 * @return the binary operation.
-	 */
-	BinaryOperation<T> operation();
+    /**
+     * Has to return the binary operation (M x M = M) for this Magma.
+     * 
+     * @return the binary operation.
+     */
+    BinaryOperation<T> operation();
 
 }

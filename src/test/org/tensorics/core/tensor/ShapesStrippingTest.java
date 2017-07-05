@@ -12,19 +12,20 @@ import com.google.common.collect.ImmutableSet;
 
 public class ShapesStrippingTest {
 
-	@Test
-	public void interfaceDimIsStrippedWhenPositionsAreInstances() {
-		Shape shape = new Shape(ImmutableSet.of(Dim1.class), ImmutableSet.of(Position.of(Dim1Enum.P1)));
-		Shape stripped = Shapes.dimensionStripped(shape, ImmutableSet.of(Dim1.class));
-		assertThat(stripped.dimensionality()).isEqualTo(0);
-	}
+    @Test
+    public void interfaceDimIsStrippedWhenPositionsAreInstances() {
+        Shape shape = new Shape(ImmutableSet.of(Dim1.class), ImmutableSet.of(Position.of(Dim1Enum.P1)));
+        Shape stripped = Shapes.dimensionStripped(shape, ImmutableSet.of(Dim1.class));
+        assertThat(stripped.dimensionality()).isEqualTo(0);
+    }
 
-	private interface Dim1 {
-		/* Only for testing */
-	}
+    private interface Dim1 {
+        /* Only for testing */
+    }
 
-	private enum Dim1Enum implements Dim1 {
-		P1, P2;
-	}
+    private enum Dim1Enum implements Dim1 {
+        P1,
+        P2;
+    }
 
 }

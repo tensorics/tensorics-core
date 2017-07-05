@@ -38,29 +38,30 @@ import org.tensorics.core.tensor.options.ShapingStrategy;
 
 public class ElementBinaryFunction<V, R> implements BinaryFunction<Tensor<V>, Tensor<R>> {
 
-	protected final BinaryFunction<V, R> operation;
-	protected final OptionRegistry<ManipulationOption> optionRegistry;
+    protected final BinaryFunction<V, R> operation;
+    protected final OptionRegistry<ManipulationOption> optionRegistry;
 
-	public ElementBinaryFunction(BinaryFunction<V, R> operation, OptionRegistry<ManipulationOption> optionRegistry) {
-		super();
-		this.operation = operation;
-		this.optionRegistry = optionRegistry;
-	}
+    public ElementBinaryFunction(BinaryFunction<V, R> operation, OptionRegistry<ManipulationOption> optionRegistry) {
+        super();
+        this.operation = operation;
+        this.optionRegistry = optionRegistry;
+    }
 
-	@Override
-	public Tensor<R> perform(Tensor<V> left, Tensor<V> right) {
-		TensorPair<V> broadcastedPair = broadcast(left, right);
-		Shape resultingShape = shape(broadcastedPair);
-		Position resultingContext = contextLeftRight(left, right);
-		return performOperation(broadcastedPair.left(), broadcastedPair.right(), resultingShape, resultingContext);
-	}
+    @Override
+    public Tensor<R> perform(Tensor<V> left, Tensor<V> right) {
+        TensorPair<V> broadcastedPair = broadcast(left, right);
+        Shape resultingShape = shape(broadcastedPair);
+        Position resultingContext = contextLeftRight(left, right);
+        return performOperation(broadcastedPair.left(), broadcastedPair.right(), resultingShape, resultingContext);
+    }
 
-	private Position contextLeftRight(Tensor<V> left, Tensor<V> right) {
-		ContextPropagationStrategy strategy = optionRegistry.get(ContextPropagationStrategy.class);
-		return strategy.contextForLeftRight(left.context(), right.context());
-	}
+    private Position contextLeftRight(Tensor<V> left, Tensor<V> right) {
+        ContextPropagationStrategy strategy = optionRegistry.get(ContextPropagationStrategy.class);
+        return strategy.contextForLeftRight(left.context(), right.context());
+    }
 
-    private Tensor<R> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape, Position resultingContext) {
+    private Tensor<R> performOperation(Tensor<V> left, Tensor<V> right, Shape resultingShape,
+            Position resultingContext) {
         Builder<R> tensorBuilder = ImmutableTensor.builder(resultingShape.dimensionSet());
         for (Position position : resultingShape.positionSet()) {
             tensorBuilder.put(position, operation.perform(left.get(position), right.get(position)));
@@ -69,14 +70,14 @@ public class ElementBinaryFunction<V, R> implements BinaryFunction<Tensor<V>, Te
         return tensorBuilder.build();
     }
 
-	private Shape shape(TensorPair<V> broadcasted) {
-		ShapingStrategy strategy = optionRegistry.get(ShapingStrategy.class);
-		return strategy.shapeLeftRight(broadcasted.left(), broadcasted.right());
-	}
+    private Shape shape(TensorPair<V> broadcasted) {
+        ShapingStrategy strategy = optionRegistry.get(ShapingStrategy.class);
+        return strategy.shapeLeftRight(broadcasted.left(), broadcasted.right());
+    }
 
-	private TensorPair<V> broadcast(Tensor<V> left, Tensor<V> right) {
-		BroadcastingStrategy broadcastingStrategy = optionRegistry.get(BroadcastingStrategy.class);
-		return broadcastingStrategy.broadcast(left, right, Collections.<Class<?>>emptySet());
-	}
+    private TensorPair<V> broadcast(Tensor<V> left, Tensor<V> right) {
+        BroadcastingStrategy broadcastingStrategy = optionRegistry.get(BroadcastingStrategy.class);
+        return broadcastingStrategy.broadcast(left, right, Collections.<Class<?>> emptySet());
+    }
 
 }

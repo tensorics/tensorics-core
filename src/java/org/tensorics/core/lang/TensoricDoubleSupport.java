@@ -25,8 +25,8 @@ package org.tensorics.core.lang;
 import org.tensorics.core.fields.doubles.Structures;
 
 /**
- * This is a convenience class which extends the Generic Tensoric support and
- * already preconfigures it with the field of doubles and the default options.
+ * This is a convenience class which extends the Generic Tensoric support and already preconfigures it with the field of
+ * doubles and the default options.
  * <p>
  * This class is intended to be subclasses
  * 
@@ -34,8 +34,8 @@ import org.tensorics.core.fields.doubles.Structures;
  */
 public class TensoricDoubleSupport extends TensoricSupport<Double> {
 
-	public TensoricDoubleSupport() {
-		super(EnvironmentImpl.of(Structures.doubles(), ManipulationOptions.defaultOptions(Structures.doubles())));
-	}
+    public TensoricDoubleSupport() {
+        super(EnvironmentImpl.of(Structures.doubles(), ManipulationOptions.defaultOptions(Structures.doubles())));
+    }
 
 }

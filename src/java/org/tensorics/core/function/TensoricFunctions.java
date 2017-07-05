@@ -35,28 +35,28 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
  */
 public final class TensoricFunctions {
 
-	private TensoricFunctions() {
-		/* only static methods */
-	}
+    private TensoricFunctions() {
+        /* only static methods */
+    }
 
-	public final static <S> Function<Position, S> forTensor(Tensor<S> tensor) {
-		return new PositionToScalarFunction<S>(tensor);
-	}
+    public final static <S> Function<Position, S> forTensor(Tensor<S> tensor) {
+        return new PositionToScalarFunction<S>(tensor);
+    }
 
-	public final static <S> Function<Position, S> forTensorbacked(Tensorbacked<S> tensor) {
-		return forTensor(tensor.tensor());
-	}
+    public final static <S> Function<Position, S> forTensorbacked(Tensorbacked<S> tensor) {
+        return forTensor(tensor.tensor());
+    }
 
-	public final static <C> Function<C, Position> singleCoordinate() {
-		return new CoordinateToPositionFunction<C>();
-	}
+    public final static <C> Function<C, Position> singleCoordinate() {
+        return new CoordinateToPositionFunction<C>();
+    }
 
-	public final static <C, S> Function<C, S> singleCoordinateToValue(Tensor<S> tensor) {
-		return forTensor(tensor).compose(TensoricFunctions.<C>singleCoordinate());
-	}
+    public final static <C, S> Function<C, S> singleCoordinateToValue(Tensor<S> tensor) {
+        return forTensor(tensor).compose(TensoricFunctions.<C> singleCoordinate());
+    }
 
-	public final static <C, S> Function<C, S> singleCoordinateToValue(Tensorbacked<S> tensorbacked) {
-		return singleCoordinateToValue(tensorbacked.tensor());
-	}
+    public final static <C, S> Function<C, S> singleCoordinateToValue(Tensorbacked<S> tensorbacked) {
+        return singleCoordinateToValue(tensorbacked.tensor());
+    }
 
 }

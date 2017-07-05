@@ -17,16 +17,16 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  * @param <T>
  */
 public class IterableResolvingExpressionResolver<T>
-		extends AbstractResolver<Iterable<T>, IterableResolvingExpression<T>> {
+        extends AbstractResolver<Iterable<T>, IterableResolvingExpression<T>> {
 
-	@Override
-	public boolean canResolve(IterableResolvingExpression<T> expression, ResolvingContext context) {
-		return Resolvers.contextResolvesAll(expression.expressions(), context);
-	}
+    @Override
+    public boolean canResolve(IterableResolvingExpression<T> expression, ResolvingContext context) {
+        return Resolvers.contextResolvesAll(expression.expressions(), context);
+    }
 
-	@Override
-	public Iterable<T> resolve(IterableResolvingExpression<T> expression, ResolvingContext context) {
-		return expression.expressions().stream().map(context::resolvedValueOf).collect(Collectors.toList());
-	}
+    @Override
+    public Iterable<T> resolve(IterableResolvingExpression<T> expression, ResolvingContext context) {
+        return expression.expressions().stream().map(context::resolvedValueOf).collect(Collectors.toList());
+    }
 
 }

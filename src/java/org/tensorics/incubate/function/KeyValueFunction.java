@@ -23,23 +23,19 @@
 package org.tensorics.incubate.function;
 
 /**
- * Represents the most general function that basically maps x-values to y
- * values. One could also see it as a function with exactly ONE variable (x).
- * The exact behavior of the {@link #getY(Comparable)} method depends on the
+ * Represents the most general function that basically maps x-values to y values. One could also see it as a function
+ * with exactly ONE variable (x). The exact behavior of the {@link #getY(Comparable)} method depends on the
  * implementations.
  * 
  * @author agorzaws
- * @param <X>
- *            type of arguments
- * @param <Y>
- *            type of values
+ * @param <X> type of arguments
+ * @param <Y> type of values
  */
 public interface KeyValueFunction<X extends Comparable<? super X>, Y> {
 
-	/**
-	 * @param xValue
-	 *            argument of type {@code <X>}
-	 * @return value of type {@code <Y>}
-	 */
-	Y getY(X xValue);
+    /**
+     * @param xValue argument of type {@code <X>}
+     * @return value of type {@code <Y>}
+     */
+    Y getY(X xValue);
 }

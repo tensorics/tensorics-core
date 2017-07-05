@@ -25,19 +25,16 @@ package org.tensorics.core.commons.options;
 import org.tensorics.core.math.ExtendedField;
 
 /**
- * Encapsulates a field (on which all calculations are based) and a set of
- * options, since the two are very commonly used together and have to be passed
- * on on many occasions.
+ * Encapsulates a field (on which all calculations are based) and a set of options, since the two are very commonly used
+ * together and have to be passed on on many occasions.
  * 
  * @author kfuchsbe
- * @param <S>
- *            The type of the scalar values (elements of the field on which the
- *            operations are based)
+ * @param <S> The type of the scalar values (elements of the field on which the operations are based)
  */
 public interface Environment<S> {
 
-	ExtendedField<S> field();
+    ExtendedField<S> field();
 
-	OptionRegistry<ManipulationOption> options();
+    OptionRegistry<ManipulationOption> options();
 
 }

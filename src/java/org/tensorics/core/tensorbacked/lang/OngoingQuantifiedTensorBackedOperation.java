@@ -34,76 +34,72 @@ import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 
 /**
- * Part of the tensorics fluent API that provides methods to describe the right
- * hand part of binary operations on tensor backed instances, containing
- * quantified values.
+ * Part of the tensorics fluent API that provides methods to describe the right hand part of binary operations on tensor
+ * backed instances, containing quantified values.
  * 
  * @author agorzaws
- * @param <QTB>
- *            the type of the quantified tensor backed instances
- * @param <S>
- *            the type of the scalars (elements of the field on which all the
- *            operations are based on)
+ * @param <QTB> the type of the quantified tensor backed instances
+ * @param <S> the type of the scalars (elements of the field on which all the operations are based on)
  */
 public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<QuantifiedValue<S>>, S>
-		implements OngoingOperation<QTB, QuantifiedValue<S>> {
+        implements OngoingOperation<QTB, QuantifiedValue<S>> {
 
-	private final QuantityOperationRepository<S> pseudoField;
-	private final QTB left;
+    private final QuantityOperationRepository<S> pseudoField;
+    private final QTB left;
 
-	public OngoingQuantifiedTensorBackedOperation(QuantityOperationRepository<S> pseudoField, QTB left) {
-		super();
-		this.pseudoField = pseudoField;
-		this.left = left;
-	}
+    public OngoingQuantifiedTensorBackedOperation(QuantityOperationRepository<S> pseudoField, QTB left) {
+        super();
+        this.pseudoField = pseudoField;
+        this.left = left;
+    }
 
-	@Override
-	public QTB plus(QTB right) {
-		return evaluate(right.tensor(), pseudoField.addition());
-	}
+    @Override
+    public QTB plus(QTB right) {
+        return evaluate(right.tensor(), pseudoField.addition());
+    }
 
-	@Override
-	public QTB minus(QTB right) {
-		return evaluate(right.tensor(), pseudoField.subtraction());
-	}
+    @Override
+    public QTB minus(QTB right) {
+        return evaluate(right.tensor(), pseudoField.subtraction());
+    }
 
-	@Override
-	public QTB elementTimes(QTB right) {
-		return evaluate(right.tensor(), pseudoField.multiplication());
-	}
+    @Override
+    public QTB elementTimes(QTB right) {
+        return evaluate(right.tensor(), pseudoField.multiplication());
+    }
 
-	@Override
-	public QTB elementTimesV(QuantifiedValue<S> right) {
-		return elementTimesQT(Tensorics.scalarOf(right));
-	}
+    @Override
+    public QTB elementTimesV(QuantifiedValue<S> right) {
+        return elementTimesQT(Tensorics.scalarOf(right));
+    }
 
-	public QTB elementTimesQT(Tensor<QuantifiedValue<S>> right) {
-		return evaluate(right, pseudoField.multiplication());
-	}
+    public QTB elementTimesQT(Tensor<QuantifiedValue<S>> right) {
+        return evaluate(right, pseudoField.multiplication());
+    }
 
-	@Override
-	public QTB elementDividedBy(QTB right) {
-		return evaluate(right.tensor(), pseudoField.division());
-	}
+    @Override
+    public QTB elementDividedBy(QTB right) {
+        return evaluate(right.tensor(), pseudoField.division());
+    }
 
-	public QTB elementDividedByQT(Tensor<QuantifiedValue<S>> right) {
-		return evaluate(right, pseudoField.division());
-	}
+    public QTB elementDividedByQT(Tensor<QuantifiedValue<S>> right) {
+        return evaluate(right, pseudoField.division());
+    }
 
-	@Override
-	public QTB elementDividedByV(QuantifiedValue<S> value) {
-		return elementDividedByQT(Tensorics.scalarOf(value));
-	}
+    @Override
+    public QTB elementDividedByV(QuantifiedValue<S> value) {
+        return elementDividedByQT(Tensorics.scalarOf(value));
+    }
 
-	private QTB evaluate(Tensor<QuantifiedValue<S>> right, BinaryOperation<QuantifiedValue<S>> operation) {
-		Tensor<QuantifiedValue<S>> perform = new ElementBinaryOperation<>(operation,
-				pseudoField.environment().options()).perform(left.tensor(), right);
-		return createBackedByTensor(classOf(left), perform);
-	}
+    private QTB evaluate(Tensor<QuantifiedValue<S>> right, BinaryOperation<QuantifiedValue<S>> operation) {
+        Tensor<QuantifiedValue<S>> perform = new ElementBinaryOperation<>(operation,
+                pseudoField.environment().options()).perform(left.tensor(), right);
+        return createBackedByTensor(classOf(left), perform);
+    }
 
-	@SuppressWarnings("unchecked")
-	private Class<QTB> classOf(QTB tensorBacked) {
-		return (Class<QTB>) tensorBacked.getClass();
-	}
+    @SuppressWarnings("unchecked")
+    private Class<QTB> classOf(QTB tensorBacked) {
+        return (Class<QTB>) tensorBacked.getClass();
+    }
 
 }

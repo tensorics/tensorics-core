@@ -36,21 +36,21 @@ import com.google.common.collect.ImmutableList;
 
 public class ScalarIterableExpressionSupportTest {
 
-	private ScalarIterableExpressionSupport<Double> usage;
-	private ResolvingEngine resolvingEngine;
+    private ScalarIterableExpressionSupport<Double> usage;
+    private ResolvingEngine resolvingEngine;
 
-	@Before
-	public void setUp() {
-		usage = new ScalarIterableExpressionSupport<>(doubles());
-		resolvingEngine = ResolvingEngines.defaultEngine();
-	}
+    @Before
+    public void setUp() {
+        usage = new ScalarIterableExpressionSupport<>(doubles());
+        resolvingEngine = ResolvingEngines.defaultEngine();
+    }
 
-	@Test
-	public void testAverageAndAddition() {
-		Expression<Double> average = usage.averageOf(ImmutableList.of(1.0, 2.0, 3.0, 4.0));
-		Expression<Double> sum = usage.calculate(average).plus(2.4);
-		Assert.assertEquals(4.9, resolvingEngine.resolve(sum), 0.0001);
-		System.out.println(sum);
-	}
+    @Test
+    public void testAverageAndAddition() {
+        Expression<Double> average = usage.averageOf(ImmutableList.of(1.0, 2.0, 3.0, 4.0));
+        Expression<Double> sum = usage.calculate(average).plus(2.4);
+        Assert.assertEquals(4.9, resolvingEngine.resolve(sum), 0.0001);
+        System.out.println(sum);
+    }
 
 }

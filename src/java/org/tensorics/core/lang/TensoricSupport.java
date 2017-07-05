@@ -49,224 +49,221 @@ import org.tensorics.core.tensorbacked.lang.TensorbackedSupport;
 import org.tensorics.core.units.Unit;
 
 /**
- * The main start point for expressions of the tensoric eDSL. Gives access to
- * the quantified versions of the operations and the basic tensor operations.
- * <br>
+ * The main start point for expressions of the tensoric eDSL. Gives access to the quantified versions of the operations
+ * and the basic tensor operations. <br>
  * <b>NOTE!</b><br>
  * Contains delegation methods only!
  * 
  * @author kfuchsbe, agorzaws
- * @param <V>
- *            The type of the values of the scalars (elements of the field on
- *            which all the operations are based on)
+ * @param <V> The type of the values of the scalars (elements of the field on which all the operations are based on)
  */
 public class TensoricSupport<V> {
 
-	private final TensorSupport<V> tensoricFieldUsage;
-	private final QuantityTensorSupport<V> quantifiedTensoricFieldUsage;
-	private final QuantityTensorbackedSupport<V> quantifiedTensorbackedSupport;
-	private final TensorbackedSupport<V> tensorbackedSupport;
-	private final EnvironmentImpl<V> environment;
+    private final TensorSupport<V> tensoricFieldUsage;
+    private final QuantityTensorSupport<V> quantifiedTensoricFieldUsage;
+    private final QuantityTensorbackedSupport<V> quantifiedTensorbackedSupport;
+    private final TensorbackedSupport<V> tensorbackedSupport;
+    private final EnvironmentImpl<V> environment;
 
-	public TensoricSupport(EnvironmentImpl<V> environment) {
-		this.environment = environment;
-		this.tensoricFieldUsage = new TensorSupport<>(environment);
-		this.quantifiedTensoricFieldUsage = new QuantityTensorSupport<>(environment);
-		this.tensorbackedSupport = new TensorbackedSupport<>(environment);
-		this.quantifiedTensorbackedSupport = new QuantityTensorbackedSupport<>(environment);
-	}
+    public TensoricSupport(EnvironmentImpl<V> environment) {
+        this.environment = environment;
+        this.tensoricFieldUsage = new TensorSupport<>(environment);
+        this.quantifiedTensoricFieldUsage = new QuantityTensorSupport<>(environment);
+        this.tensorbackedSupport = new TensorbackedSupport<>(environment);
+        this.quantifiedTensorbackedSupport = new QuantityTensorbackedSupport<>(environment);
+    }
 
-	public OngoingBinaryOperation<V> calculate(V operand) {
-		return tensoricFieldUsage.calculate(operand);
-	}
+    public OngoingBinaryOperation<V> calculate(V operand) {
+        return tensoricFieldUsage.calculate(operand);
+    }
 
-	public final V avarageOf(Iterable<V> values) {
-		return tensoricFieldUsage.averageOf(values);
-	}
+    public final V avarageOf(Iterable<V> values) {
+        return tensoricFieldUsage.averageOf(values);
+    }
 
-	public final V negativeOf(V element) {
-		return tensoricFieldUsage.negativeOf(element);
-	}
+    public final V negativeOf(V element) {
+        return tensoricFieldUsage.negativeOf(element);
+    }
 
-	public final V inverseOf(V element) {
-		return tensoricFieldUsage.inverseOf(element);
-	}
+    public final V inverseOf(V element) {
+        return tensoricFieldUsage.inverseOf(element);
+    }
 
-	public final V sizeOf(Iterable<V> values) {
-		return tensoricFieldUsage.sizeOf(values);
-	}
+    public final V sizeOf(Iterable<V> values) {
+        return tensoricFieldUsage.sizeOf(values);
+    }
 
-	public final V zero() {
-		return tensoricFieldUsage.zero();
-	}
+    public final V zero() {
+        return tensoricFieldUsage.zero();
+    }
 
-	public final V two() {
-		return tensoricFieldUsage.two();
-	}
+    public final V two() {
+        return tensoricFieldUsage.two();
+    }
 
-	public final V one() {
-		return tensoricFieldUsage.one();
-	}
+    public final V one() {
+        return tensoricFieldUsage.one();
+    }
 
-	public V countOf(int number) {
-		return tensoricFieldUsage.countOf(number);
-	}
+    public V countOf(int number) {
+        return tensoricFieldUsage.countOf(number);
+    }
 
-	public final V sumOf(Iterable<V> values) {
-		return tensoricFieldUsage.sumOf(values);
-	}
+    public final V sumOf(Iterable<V> values) {
+        return tensoricFieldUsage.sumOf(values);
+    }
 
-	public V rmsOf(Iterable<V> values) {
-		return tensoricFieldUsage.rmsOf(values);
-	}
+    public V rmsOf(Iterable<V> values) {
+        return tensoricFieldUsage.rmsOf(values);
+    }
 
-	public V squareRootOf(V value) {
-		return tensoricFieldUsage.squareRootOf(value);
-	}
+    public V squareRootOf(V value) {
+        return tensoricFieldUsage.squareRootOf(value);
+    }
 
-	public V squareOf(V value) {
-		return tensoricFieldUsage.squareOf(value);
-	}
+    public V squareOf(V value) {
+        return tensoricFieldUsage.squareOf(value);
+    }
 
-	public final <C> OngoingTensorOperation<C, V> calculate(Tensor<V> tensoric) {
-		return tensoricFieldUsage.calculate(tensoric);
-	}
+    public final <C> OngoingTensorOperation<C, V> calculate(Tensor<V> tensoric) {
+        return tensoricFieldUsage.calculate(tensoric);
+    }
 
-	public V sumOfSquaresOf(Iterable<V> values) {
-		return tensoricFieldUsage.sumOfSquaresOf(values);
-	}
+    public V sumOfSquaresOf(Iterable<V> values) {
+        return tensoricFieldUsage.sumOfSquaresOf(values);
+    }
 
-	public <C> Tensor<V> zeros(Shape shape) {
-		return tensoricFieldUsage.zeros(shape);
-	}
+    public <C> Tensor<V> zeros(Shape shape) {
+        return tensoricFieldUsage.zeros(shape);
+    }
 
-	public <C> Tensor<V> ones(Shape shape) {
-		return tensoricFieldUsage.ones(shape);
-	}
+    public <C> Tensor<V> ones(Shape shape) {
+        return tensoricFieldUsage.ones(shape);
+    }
 
-	public <C> Tensor<V> elementInverseOf(Tensor<V> tensor) {
-		return tensoricFieldUsage.elementInverseOf(tensor);
-	}
+    public <C> Tensor<V> elementInverseOf(Tensor<V> tensor) {
+        return tensoricFieldUsage.elementInverseOf(tensor);
+    }
 
-	public <C> Tensor<V> negativeOf(Tensor<V> tensor) {
-		return tensoricFieldUsage.negativeOf(tensor);
-	}
+    public <C> Tensor<V> negativeOf(Tensor<V> tensor) {
+        return tensoricFieldUsage.negativeOf(tensor);
+    }
 
-	public final QuantifiedValue<V> averageOfQ(Iterable<QuantifiedValue<V>> values) {
-		return quantifiedTensoricFieldUsage.averageOf(values);
-	}
+    public final QuantifiedValue<V> averageOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.averageOf(values);
+    }
 
-	public final QuantifiedValue<V> rmsOfQ(Iterable<QuantifiedValue<V>> values) {
-		return quantifiedTensoricFieldUsage.rmsOf(values);
-	}
+    public final QuantifiedValue<V> rmsOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.rmsOf(values);
+    }
 
-	public final QuantifiedValue<V> varOfQ(Iterable<QuantifiedValue<V>> values) {
-		return quantifiedTensoricFieldUsage.varOf(values);
-	}
+    public final QuantifiedValue<V> varOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.varOf(values);
+    }
 
-	public final QuantifiedValue<V> stdOfQ(Iterable<QuantifiedValue<V>> values) {
-		return quantifiedTensoricFieldUsage.stdOf(values);
-	}
+    public final QuantifiedValue<V> stdOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.stdOf(values);
+    }
 
-	public OngoingQuantifiedTensorOperation<V> calculateQ(Tensor<QuantifiedValue<V>> left) {
-		return quantifiedTensoricFieldUsage.calculate(left);
-	}
+    public OngoingQuantifiedTensorOperation<V> calculateQ(Tensor<QuantifiedValue<V>> left) {
+        return quantifiedTensoricFieldUsage.calculate(left);
+    }
 
-	public QuantifiedValue<V> valueOf(V value, Unit unit) {
-		return quantifiedTensoricFieldUsage.valueOf(value, unit);
-	}
+    public QuantifiedValue<V> valueOf(V value, Unit unit) {
+        return quantifiedTensoricFieldUsage.valueOf(value, unit);
+    }
 
-	public OngoingQuantifiedScalarOperation<V> calculate(V value, javax.measure.unit.Unit<?> unit) {
-		return quantifiedTensoricFieldUsage.calculate(value, unit);
-	}
+    public OngoingQuantifiedScalarOperation<V> calculate(V value, javax.measure.unit.Unit<?> unit) {
+        return quantifiedTensoricFieldUsage.calculate(value, unit);
+    }
 
-	public OngoingQuantifiedScalarOperation<V> calculate(QuantifiedValue<V> scalar) {
-		return quantifiedTensoricFieldUsage.calculate(scalar);
-	}
+    public OngoingQuantifiedScalarOperation<V> calculate(QuantifiedValue<V> scalar) {
+        return quantifiedTensoricFieldUsage.calculate(scalar);
+    }
 
-	public QuantifiedValue<V> negativeOf(QuantifiedValue<V> element) {
-		return quantifiedTensoricFieldUsage.negativeOf(element);
-	}
+    public QuantifiedValue<V> negativeOf(QuantifiedValue<V> element) {
+        return quantifiedTensoricFieldUsage.negativeOf(element);
+    }
 
-	public QuantifiedValue<V> inverseOf(QuantifiedValue<V> element) {
-		return quantifiedTensoricFieldUsage.inverseOf(element);
-	}
+    public QuantifiedValue<V> inverseOf(QuantifiedValue<V> element) {
+        return quantifiedTensoricFieldUsage.inverseOf(element);
+    }
 
-	public QuantifiedValue<V> valueOf(V value, javax.measure.unit.Unit<?> unit) {
-		return quantifiedTensoricFieldUsage.valueOf(value, unit);
-	}
+    public QuantifiedValue<V> valueOf(V value, javax.measure.unit.Unit<?> unit) {
+        return quantifiedTensoricFieldUsage.valueOf(value, unit);
+    }
 
-	public <TB extends Tensorbacked<V>> TB negativeOf(TB tensorBacked) {
-		return tensorbackedSupport.negativeOf(tensorBacked);
-	}
+    public <TB extends Tensorbacked<V>> TB negativeOf(TB tensorBacked) {
+        return tensorbackedSupport.negativeOf(tensorBacked);
+    }
 
-	public final <TB extends Tensorbacked<V>> OngoingTensorBackedOperation<TB, V> calculate(TB tensorBacked) {
-		return tensorbackedSupport.calculate(tensorBacked);
-	}
+    public final <TB extends Tensorbacked<V>> OngoingTensorBackedOperation<TB, V> calculate(TB tensorBacked) {
+        return tensorbackedSupport.calculate(tensorBacked);
+    }
 
-	public <TB extends Tensorbacked<QuantifiedValue<V>>> TB negativeOfQ(TB tensorBacked) {
-		return quantifiedTensorbackedSupport.negativeOf(tensorBacked);
-	}
+    public <TB extends Tensorbacked<QuantifiedValue<V>>> TB negativeOfQ(TB tensorBacked) {
+        return quantifiedTensorbackedSupport.negativeOf(tensorBacked);
+    }
 
-	public <QTB extends Tensorbacked<QuantifiedValue<V>>> OngoingQuantifiedTensorBackedOperation<QTB, V> calculateQ(
-			QTB left) {
-		return quantifiedTensorbackedSupport.calculate(left);
-	}
+    public <QTB extends Tensorbacked<QuantifiedValue<V>>> OngoingQuantifiedTensorBackedOperation<QTB, V> calculateQ(
+            QTB left) {
+        return quantifiedTensorbackedSupport.calculate(left);
+    }
 
-	public OngoingScalarBinaryPredicate<V> testIf(V left) {
-		return tensoricFieldUsage.testIf(left);
-	}
+    public OngoingScalarBinaryPredicate<V> testIf(V left) {
+        return tensoricFieldUsage.testIf(left);
+    }
 
-	public OngoingQuantifiedScalarBinaryPredicate<V> testIf(QuantifiedValue<V> left) {
-		return quantifiedTensoricFieldUsage.testIf(left);
-	}
+    public OngoingQuantifiedScalarBinaryPredicate<V> testIf(QuantifiedValue<V> left) {
+        return quantifiedTensoricFieldUsage.testIf(left);
+    }
 
-	public V absoluteValueOf(V value) {
-		return tensoricFieldUsage.absoluteValueOf(value);
-	}
+    public V absoluteValueOf(V value) {
+        return tensoricFieldUsage.absoluteValueOf(value);
+    }
 
-	public QuantifiedValue<V> absoluteValueOf(QuantifiedValue<V> value) {
-		return quantifiedTensoricFieldUsage.absoluteValueOf(value);
-	}
+    public QuantifiedValue<V> absoluteValueOf(QuantifiedValue<V> value) {
+        return quantifiedTensoricFieldUsage.absoluteValueOf(value);
+    }
 
-	public <S, R> Tensor<R> elementwise(BinaryFunction<S, R> operation, Tensor<S> left, Tensor<S> right) {
-		return tensoricFieldUsage.elementwise(operation, left, right);
-	}
+    public <S, R> Tensor<R> elementwise(BinaryFunction<S, R> operation, Tensor<S> left, Tensor<S> right) {
+        return tensoricFieldUsage.elementwise(operation, left, right);
+    }
 
-	public Tensor<V> elementwise(BinaryOperation<V> operation, Tensor<V> left, Tensor<V> right) {
-		return tensoricFieldUsage.elementwise(operation, left, right);
-	}
+    public Tensor<V> elementwise(BinaryOperation<V> operation, Tensor<V> left, Tensor<V> right) {
+        return tensoricFieldUsage.elementwise(operation, left, right);
+    }
 
-	public OngoingQuantityValueExtraction<V> valueOf(QuantifiedValue<V> quantity) {
-		return quantifiedTensoricFieldUsage.valueOf(quantity);
-	}
+    public OngoingQuantityValueExtraction<V> valueOf(QuantifiedValue<V> quantity) {
+        return quantifiedTensoricFieldUsage.valueOf(quantity);
+    }
 
-	public final OngoingQuantityIterableValueExtraction<V> valuesOfI(Iterable<QuantifiedValue<V>> quantities) {
-		return quantifiedTensoricFieldUsage.valuesOf(quantities);
-	}
+    public final OngoingQuantityIterableValueExtraction<V> valuesOfI(Iterable<QuantifiedValue<V>> quantities) {
+        return quantifiedTensoricFieldUsage.valuesOf(quantities);
+    }
 
-	public final QuantifiedValue<V> sizeOfQ(Iterable<QuantifiedValue<V>> values) {
-		return quantifiedTensoricFieldUsage.sizeOf(values);
-	}
+    public final QuantifiedValue<V> sizeOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.sizeOf(values);
+    }
 
-	public final QuantifiedValue<V> sumOfQ(Iterable<QuantifiedValue<V>> values) {
-		return quantifiedTensoricFieldUsage.sumOf(values);
-	}
+    public final QuantifiedValue<V> sumOfQ(Iterable<QuantifiedValue<V>> values) {
+        return quantifiedTensoricFieldUsage.sumOf(values);
+    }
 
-	public final OngoingQuantityIterableValueExtraction<V> valuesOf(Iterable<QuantifiedValue<V>> quantities) {
-		return quantifiedTensoricFieldUsage.valuesOf(quantities);
-	}
+    public final OngoingQuantityIterableValueExtraction<V> valuesOf(Iterable<QuantifiedValue<V>> quantities) {
+        return quantifiedTensoricFieldUsage.valuesOf(quantities);
+    }
 
-	public OngoingQuantifiedScalarConversion<V> convert(QuantifiedValue<V> value) {
-		return quantifiedTensoricFieldUsage.convert(value);
-	}
+    public OngoingQuantifiedScalarConversion<V> convert(QuantifiedValue<V> value) {
+        return quantifiedTensoricFieldUsage.convert(value);
+    }
 
-	public TensoricSupport<V> with(ManipulationOption newOption) {
-		return new TensoricSupport<>(environment.with(newOption));
-	}
+    public TensoricSupport<V> with(ManipulationOption newOption) {
+        return new TensoricSupport<>(environment.with(newOption));
+    }
 
-	public ConfidenceLevel<V> confidenceLevelOf(V confidenceLevel) {
-		return new ImmutableConfidenceLevel<V>(confidenceLevel);
-	}
+    public ConfidenceLevel<V> confidenceLevelOf(V confidenceLevel) {
+        return new ImmutableConfidenceLevel<V>(confidenceLevel);
+    }
 
 }

@@ -6,5 +6,5 @@ package org.tensorics.core.commons.util;
 
 public interface Named {
 
-	String name();
+    String name();
 }

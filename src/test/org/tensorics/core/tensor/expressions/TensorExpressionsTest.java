@@ -28,9 +28,9 @@ import org.junit.Test;
 
 public class TensorExpressionsTest {
 
-	@Test
-	public void verifyUtilityClass() {
-		assertUtilityClass(TensorExpressions.class);
-	}
+    @Test
+    public void verifyUtilityClass() {
+        assertUtilityClass(TensorExpressions.class);
+    }
 
 }

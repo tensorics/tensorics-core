@@ -28,5 +28,5 @@ package org.tensorics.core.testing;
  * @author kfuchsbe
  */
 public class TensoricTests {
-	/* nothing yet */
+    /* nothing yet */
 }

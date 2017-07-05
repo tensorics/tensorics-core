@@ -7,10 +7,9 @@ package org.tensorics.core.functional;
 /**
  * Represents a vector-argument function.
  * 
- * @param <R>
- *            the result type
+ * @param <R> the result type
  */
 @FunctionalInterface
 public interface FuncN<R> {
-	R apply(Object... args);
+    R apply(Object... args);
 }

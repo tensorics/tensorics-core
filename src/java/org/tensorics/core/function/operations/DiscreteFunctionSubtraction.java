@@ -28,19 +28,15 @@ import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
 
 /**
- * The {@link AbstractDiscreteFunctionBinaryOperation} that describes the
- * subtraction of two {@link DiscreteFunction}s
+ * The {@link AbstractDiscreteFunctionBinaryOperation} that describes the subtraction of two {@link DiscreteFunction}s
  * 
  * @author caguiler
- * @param <X>
- *            the type of the independent variable in the
- *            {@link DiscreteFunction}.
- * @param <Y>
- *            the type of the dependent variable in the {@link DiscreteFunction}
+ * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
+ * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
 public class DiscreteFunctionSubtraction<X, Y> extends AbstractDiscreteFunctionBinaryOperation<X, Y> {
 
-	DiscreteFunctionSubtraction(Environment<Y> environment, Conversion<X, Y> conversion, Comparator<X> comparator) {
-		super(environment, conversion, environment.field().subtraction(), comparator);
-	}
+    DiscreteFunctionSubtraction(Environment<Y> environment, Conversion<X, Y> conversion, Comparator<X> comparator) {
+        super(environment, conversion, environment.field().subtraction(), comparator);
+    }
 }

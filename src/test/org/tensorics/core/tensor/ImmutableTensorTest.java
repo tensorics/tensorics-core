@@ -39,9 +39,8 @@ import com.google.common.collect.ImmutableSet;
 
 public class ImmutableTensorTest {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testMergingContextBackIntoShape() {
@@ -54,27 +53,26 @@ public class ImmutableTensorTest {
         assertEquals(tensor, Tensorics.from(tensorWithMergedContext).extract("TestContext"));
     }
 
-	@Test
-	public void testDoubleToDoubleTensor() {
-		Builder<Double> tensorBuilder = ImmutableTensor.builder(Collections.singleton(Double.class));
-		Tensor<Double> tensor = tensorBuilder.build();
-		assertEquals(1, tensor.shape().dimensionality());
-	}
+    @Test
+    public void testDoubleToDoubleTensor() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(Collections.singleton(Double.class));
+        Tensor<Double> tensor = tensorBuilder.build();
+        assertEquals(1, tensor.shape().dimensionality());
+    }
 
-	@Test
-	public void testNumber() {
-		Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
-		Tensor<Double> tensor = tensorBuilder.build();
-		assertEquals(2, tensor.shape().dimensionality());
-	}
+    @Test
+    public void testNumber() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
+        Tensor<Double> tensor = tensorBuilder.build();
+        assertEquals(2, tensor.shape().dimensionality());
+    }
 
-	@Test
-	public void testExtractionOfEmptyPosition() {
-		Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
-		Tensor<Double> tensor = tensorBuilder.build();
-		assertEquals(tensor, Tensorics.from(tensor).extract(Position.empty()));
-	}
-
+    @Test
+    public void testExtractionOfEmptyPosition() {
+        Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
+        Tensor<Double> tensor = tensorBuilder.build();
+        assertEquals(tensor, Tensorics.from(tensor).extract(Position.empty()));
+    }
 
     @Test
     public void testExtractionOfCompletePosition() {
@@ -85,59 +83,60 @@ public class ImmutableTensorTest {
         assertEquals(tensor.get(23.0, 42), Tensorics.from(tensor).extract(Position.of(23.0, 42)).get());
     }
 
-	@Test
-	public void testZeroDimensionTensor() {
-		Tensor<Double> asZeroDimension = Tensorics.scalarOf(2.4);
-		assertEquals(2.4, asZeroDimension.get(), 0.0);
-		assertEquals(0, asZeroDimension.shape().dimensionality());
-		assertEquals(1, asZeroDimension.shape().size());
-	}
+    @Test
+    public void testZeroDimensionTensor() {
+        Tensor<Double> asZeroDimension = Tensorics.scalarOf(2.4);
+        assertEquals(2.4, asZeroDimension.get(), 0.0);
+        assertEquals(0, asZeroDimension.shape().dimensionality());
+        assertEquals(1, asZeroDimension.shape().size());
+    }
 
-	@Test
-	public void sameDimensionTwiceThrowsImmediately() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("unique");
-		Tensorics.builder(Integer.class, Integer.class);
-	}
+    @Test
+    public void sameDimensionTwiceThrowsImmediately() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("unique");
+        Tensorics.builder(Integer.class, Integer.class);
+    }
 
-	@Test
-	public void fromMapWithOneEntry() {
-		Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0);
-		assertEquals(Tensorics.mapFrom(Tensorics.fromMap(ImmutableSet.of(Integer.class), map)), map);
-	}
+    @Test
+    public void fromMapWithOneEntry() {
+        Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0);
+        assertEquals(Tensorics.mapFrom(Tensorics.fromMap(ImmutableSet.of(Integer.class), map)), map);
+    }
 
-	@Test
-	public void fromEmptyMap() {
-		Map<Position, Integer> map = ImmutableMap.of();
-		assertEquals(Tensorics.mapFrom(Tensorics.fromMap(ImmutableSet.of(), map)), map);
-	}
+    @Test
+    public void fromEmptyMap() {
+        Map<Position, Integer> map = ImmutableMap.of();
+        assertEquals(Tensorics.mapFrom(Tensorics.fromMap(ImmutableSet.of(), map)), map);
+    }
 
-	@Test
-	public void fromMapThrowsOnInconsistentDimensions() {
-		Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0, Position.of("fail"), 1);
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("not assignable");
-		Tensorics.fromMap(ImmutableSet.of(Integer.class), map);
-	}
+    @Test
+    public void fromMapThrowsOnInconsistentDimensions() {
+        Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0, Position.of("fail"), 1);
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("not assignable");
+        Tensorics.fromMap(ImmutableSet.of(Integer.class), map);
+    }
 
-	@Test
-	public void getNonExistingElementUsingInheritanceThrowsANoSuchElementException() {
-		final Object value = new Object();
+    @Test
+    public void getNonExistingElementUsingInheritanceThrowsANoSuchElementException() {
+        final Object value = new Object();
 
         Builder<Object> builder = ImmutableTensor.builder(AnyInterface.class);
-		Object[] coordinates = { AnyClass.INSTANCE1 };
+        Object[] coordinates = { AnyClass.INSTANCE1 };
         builder.put(Position.of(coordinates), value);
         ImmutableTensor<Object> tensor = builder.build();
 
-		thrown.expect(NoSuchElementException.class);
-		assertEquals(tensor.get(AnyClass.INSTANCE2), value);
-	}
+        thrown.expect(NoSuchElementException.class);
+        assertEquals(tensor.get(AnyClass.INSTANCE2), value);
+    }
 
-	interface AnyInterface {
-		/* just an interface */
-	}
+    interface AnyInterface {
+        /* just an interface */
+    }
 
-	enum AnyClass implements AnyInterface {
-		INSTANCE1, INSTANCE2;
-	}
+    enum AnyClass implements AnyInterface {
+        INSTANCE1,
+        INSTANCE2;
+    }
 }

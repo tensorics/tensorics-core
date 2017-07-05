@@ -31,25 +31,24 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Bpm;
 import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 
 /**
- * Test case. Multibeam class supported with
- * TensorBacked(QuantifiedValue(Double))
+ * Test case. Multibeam class supported with TensorBacked(QuantifiedValue(Double))
  * 
  * @author agorzaws
  */
 @Dimensions({ Beam.class, Plane.class, Bpm.class })
 public class MultibeamQOrbit extends AbstractTensorbacked<QuantifiedValue<Double>> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param tensor
-	 */
-	public MultibeamQOrbit(Tensor<QuantifiedValue<Double>> tensor) {
-		super(tensor);
-	}
+    /**
+     * @param tensor
+     */
+    public MultibeamQOrbit(Tensor<QuantifiedValue<Double>> tensor) {
+        super(tensor);
+    }
 
-	public QuantifiedValue<Double> getValueAt(String string, Beam b, Plane p) {
-		return backingTensor.get(b, p, new Bpm(string));
-	}
+    public QuantifiedValue<Double> getValueAt(String string, Beam b, Plane p) {
+        return backingTensor.get(b, p, new Bpm(string));
+    }
 
 }

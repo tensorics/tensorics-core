@@ -29,28 +29,25 @@ import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.tensor.Position;
 
 /**
- * Performs an rms calculation over all in one direction of a tensor, if used
- * for tensor reduction.
+ * Performs an rms calculation over all in one direction of a tensor, if used for tensor reduction.
  * 
  * @author kfuchsbe
- * @param <S>
- *            the type of the scalars (field elements) on which all the
- *            operations are based on.
+ * @param <S> the type of the scalars (field elements) on which all the operations are based on.
  */
 public class RootMeanSquare<S> extends ScalarIterableSupport<S> implements ReductionStrategy<Object, S, S> {
 
-	public RootMeanSquare(ExtendedField<S> field) {
-		super(field);
-	}
+    public RootMeanSquare(ExtendedField<S> field) {
+        super(field);
+    }
 
-	@Override
-	public S reduce(Map<? extends Object, S> inputValues, Position position) {
-		return rmsOf(inputValues.values());
-	}
+    @Override
+    public S reduce(Map<? extends Object, S> inputValues, Position position) {
+        return rmsOf(inputValues.values());
+    }
 
-	@Override
-	public Position context(Position originalContext) {
-		return originalContext;
-	}
+    @Override
+    public Position context(Position originalContext) {
+        return originalContext;
+    }
 
 }

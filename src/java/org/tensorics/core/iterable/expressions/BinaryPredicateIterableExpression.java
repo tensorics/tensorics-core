@@ -31,43 +31,41 @@ import org.tensorics.core.tree.domain.Node;
 import com.google.common.collect.ImmutableList;
 
 /**
- * An unresolved expression which can be resolved by applying a binary predicate
- * on the results of the two operands (left, right). Any instance contains the
- * binary predicate itself as well as expressions for both operands.
+ * An unresolved expression which can be resolved by applying a binary predicate on the results of the two operands
+ * (left, right). Any instance contains the binary predicate itself as well as expressions for both operands.
  *
- * @param <T>
- *            the type of the results of the operands
+ * @param <T> the type of the results of the operands
  * @author caguiler
  */
 public class BinaryPredicateIterableExpression<T> extends AbstractDeferredExpression<Boolean> {
 
-	private final BinaryPredicate<T> predicate;
-	private final Expression<Iterable<T>> left;
-	private final Expression<T> right;
+    private final BinaryPredicate<T> predicate;
+    private final Expression<Iterable<T>> left;
+    private final Expression<T> right;
 
-	public BinaryPredicateIterableExpression(BinaryPredicate<T> predicate, Expression<Iterable<T>> left,
-			Expression<T> right) {
-		super();
-		this.predicate = checkNotNull(predicate, "Predicate must not be null!");
-		this.left = checkNotNull(left, "Left operand must not be null!");
-		this.right = checkNotNull(right, "Right operand must not be null!");
-	}
+    public BinaryPredicateIterableExpression(BinaryPredicate<T> predicate, Expression<Iterable<T>> left,
+            Expression<T> right) {
+        super();
+        this.predicate = checkNotNull(predicate, "Predicate must not be null!");
+        this.left = checkNotNull(left, "Left operand must not be null!");
+        this.right = checkNotNull(right, "Right operand must not be null!");
+    }
 
-	public BinaryPredicate<T> getPredicate() {
-		return predicate;
-	}
+    public BinaryPredicate<T> getPredicate() {
+        return predicate;
+    }
 
-	public Expression<Iterable<T>> getLeft() {
-		return left;
-	}
+    public Expression<Iterable<T>> getLeft() {
+        return left;
+    }
 
-	public Expression<T> getRight() {
-		return right;
-	}
+    public Expression<T> getRight() {
+        return right;
+    }
 
-	@Override
-	public List<Node> getChildren() {
-		return ImmutableList.of(left, right);
-	}
+    @Override
+    public List<Node> getChildren() {
+        return ImmutableList.of(left, right);
+    }
 
 }

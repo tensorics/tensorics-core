@@ -33,68 +33,61 @@ import org.tensorics.core.iterable.lang.ScalarIterableExpressionSupport;
 import org.tensorics.core.tree.domain.Expression;
 
 /**
- * Provides utility methods for acting on expressions of
- * {@link DiscreteFunction}s from X to Y.
+ * Provides utility methods for acting on expressions of {@link DiscreteFunction}s from X to Y.
  * <p>
- * The type of the values of the discrete function codomain is also the type of
- * the values of the field.
+ * The type of the values of the discrete function codomain is also the type of the values of the field.
  * 
  * @author caguiler
- * @param <X>
- *            the type of the independent variable (input) of the discrete
- *            function
- * @param <Y>
- *            the type of the dependent variable (output) of the discrete
- *            function and the type of the scalar values (elements of the field)
- *            on which to operate
+ * @param <X> the type of the independent variable (input) of the discrete function
+ * @param <Y> the type of the dependent variable (output) of the discrete function and the type of the scalar values
+ *            (elements of the field) on which to operate
  */
 public class FunctionExpressionSupportWithConversionAndComparator<X, Y> extends ScalarIterableExpressionSupport<Y> {
 
-	private final Environment<Y> environment;
-	private final CodomainExtraction<Y> codomainExtraction;
-	private final Conversion<X, Y> conversion;
-	private final Comparator<X> comparator;
+    private final Environment<Y> environment;
+    private final CodomainExtraction<Y> codomainExtraction;
+    private final Conversion<X, Y> conversion;
+    private final Comparator<X> comparator;
 
-	FunctionExpressionSupportWithConversionAndComparator(Environment<Y> environment, Conversion<X, Y> conversion,
-			Comparator<X> comparator) {
-		super(environment.field());
-		this.environment = environment;
-		this.conversion = conversion;
-		this.comparator = comparator;
-		codomainExtraction = new CodomainExtraction<>();
-	}
+    FunctionExpressionSupportWithConversionAndComparator(Environment<Y> environment, Conversion<X, Y> conversion,
+            Comparator<X> comparator) {
+        super(environment.field());
+        this.environment = environment;
+        this.conversion = conversion;
+        this.comparator = comparator;
+        codomainExtraction = new CodomainExtraction<>();
+    }
 
-	public final OngoingDeferredDiscreteFunctionBinaryOperation<X, Y> calculateF(
-			Expression<DiscreteFunction<X, Y>> expression) {
-		return new OngoingDeferredDiscreteFunctionBinaryOperation<>(environment, expression, conversion, comparator);
-	}
+    public final OngoingDeferredDiscreteFunctionBinaryOperation<X, Y> calculateF(
+            Expression<DiscreteFunction<X, Y>> expression) {
+        return new OngoingDeferredDiscreteFunctionBinaryOperation<>(environment, expression, conversion, comparator);
+    }
 
-	public final <Z> Expression<Y> averageOfF(Expression<DiscreteFunction<Z, Y>> function) {
-		return averageOf(yValuesAsIterableExpression(function));
-	}
+    public final <Z> Expression<Y> averageOfF(Expression<DiscreteFunction<Z, Y>> function) {
+        return averageOf(yValuesAsIterableExpression(function));
+    }
 
-	public final <Z> Expression<Y> rmsOfF(Expression<DiscreteFunction<Z, Y>> function) {
-		return rmsOf(yValuesAsIterableExpression(function));
-	}
+    public final <Z> Expression<Y> rmsOfF(Expression<DiscreteFunction<Z, Y>> function) {
+        return rmsOf(yValuesAsIterableExpression(function));
+    }
 
-	public final <Z> Expression<Y> stdOfF(Expression<DiscreteFunction<Z, Y>> function) {
-		return stdOf(yValuesAsIterableExpression(function));
-	}
+    public final <Z> Expression<Y> stdOfF(Expression<DiscreteFunction<Z, Y>> function) {
+        return stdOf(yValuesAsIterableExpression(function));
+    }
 
-	@SuppressWarnings("unchecked")
-	private <Z> Expression<Iterable<Y>> yValuesAsIterableExpression(
-			Expression<? super DiscreteFunction<Z, Y>> function) {
-		return new DiscreteFunctionToIterableExpression<>(codomainExtraction,
-				(Expression<DiscreteFunction<?, Y>>) function);
-	}
+    @SuppressWarnings("unchecked")
+    private <Z> Expression<Iterable<Y>> yValuesAsIterableExpression(
+            Expression<? super DiscreteFunction<Z, Y>> function) {
+        return new DiscreteFunctionToIterableExpression<>(codomainExtraction,
+                (Expression<DiscreteFunction<?, Y>>) function);
+    }
 
-	/**
-	 * Only used by subclasses
-	 * 
-	 * @return the {@link Environment} of this
-	 *         {@link FunctionSupportWithConversionAndComparator}
-	 */
-	protected Environment<Y> environment() {
-		return environment;
-	}
+    /**
+     * Only used by subclasses
+     * 
+     * @return the {@link Environment} of this {@link FunctionSupportWithConversionAndComparator}
+     */
+    protected Environment<Y> environment() {
+        return environment;
+    }
 }

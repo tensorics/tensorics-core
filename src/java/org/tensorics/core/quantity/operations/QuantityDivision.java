@@ -31,22 +31,20 @@ import org.tensorics.core.units.Unit;
  * The binary operation which describes the division of two quantities.
  * 
  * @author kfuchsbe
- * @param <S>
- *            the type of the scalar values (field elements) on which all the
- *            operations are based on
+ * @param <S> the type of the scalar values (field elements) on which all the operations are based on
  */
 public class QuantityDivision<S> extends QuantityBinaryOperation<S> {
 
-	public QuantityDivision(QuantityEnvironment<S> environment) {
-		super(environment, environment.field().division());
-	}
+    public QuantityDivision(QuantityEnvironment<S> environment) {
+        super(environment, environment.field().division());
+    }
 
-	@Override
-	public QuantifiedValue<S> perform(QuantifiedValue<S> left, QuantifiedValue<S> right) {
-		S value = operation().perform(left.value(), right.value());
-		Unit unit = environment().quantification().divide(left.unit(), right.unit());
-		return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right))
-				.withError(productError(left, right));
-	}
+    @Override
+    public QuantifiedValue<S> perform(QuantifiedValue<S> left, QuantifiedValue<S> right) {
+        S value = operation().perform(left.value(), right.value());
+        Unit unit = environment().quantification().divide(left.unit(), right.unit());
+        return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right))
+                .withError(productError(left, right));
+    }
 
 }

@@ -40,57 +40,57 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
  */
 public class BinaryPredicateExpressionTest {
 
-	private ResolvingEngine engine;
+    private ResolvingEngine engine;
 
-	@Before
-	public void setUp() {
-		engine = ResolvingEngines.defaultEngine();
-	}
+    @Before
+    public void setUp() {
+        engine = ResolvingEngines.defaultEngine();
+    }
 
-	@Test
-	public void testIsLessThanForScalarExpressions() throws Exception {
-		Boolean trueResult = engine.resolve(new DoubleScript<Boolean>() {
-			@Override
-			protected Expression<Boolean> describe() {
-				Expression<Double> sum = calculate(1.0).plus(0.5);
-				return testIf(sum).isLessThan(2.0);
-			}
-		});
+    @Test
+    public void testIsLessThanForScalarExpressions() throws Exception {
+        Boolean trueResult = engine.resolve(new DoubleScript<Boolean>() {
+            @Override
+            protected Expression<Boolean> describe() {
+                Expression<Double> sum = calculate(1.0).plus(0.5);
+                return testIf(sum).isLessThan(2.0);
+            }
+        });
 
-		assertTrue(trueResult);
+        assertTrue(trueResult);
 
-		Boolean falseResult = engine.resolve(new DoubleScript<Boolean>() {
-			@Override
-			protected Expression<Boolean> describe() {
-				Expression<Double> sum = calculate(1.0).plus(2.5);
-				return testIf(sum).isLessThan(2.0);
-			}
-		});
+        Boolean falseResult = engine.resolve(new DoubleScript<Boolean>() {
+            @Override
+            protected Expression<Boolean> describe() {
+                Expression<Double> sum = calculate(1.0).plus(2.5);
+                return testIf(sum).isLessThan(2.0);
+            }
+        });
 
-		assertFalse(falseResult);
-	}
+        assertFalse(falseResult);
+    }
 
-	@Test
-	public void testIsLessThanForIterableExpressions() throws Exception {
+    @Test
+    public void testIsLessThanForIterableExpressions() throws Exception {
 
-		Expression<Iterable<Double>> iterableExpression = ResolvedExpression.of(Arrays.asList(1D, 2D, 3D, 4D, 5D));
+        Expression<Iterable<Double>> iterableExpression = ResolvedExpression.of(Arrays.asList(1D, 2D, 3D, 4D, 5D));
 
-		Boolean trueResult = engine.resolve(new DoubleScript<Boolean>() {
-			@Override
-			protected Expression<Boolean> describe() {
-				return testIfIt(iterableExpression).isLessThan(10D);
-			}
-		});
+        Boolean trueResult = engine.resolve(new DoubleScript<Boolean>() {
+            @Override
+            protected Expression<Boolean> describe() {
+                return testIfIt(iterableExpression).isLessThan(10D);
+            }
+        });
 
-		assertTrue(trueResult);
+        assertTrue(trueResult);
 
-		Boolean falseResult = engine.resolve(new DoubleScript<Boolean>() {
-			@Override
-			protected Expression<Boolean> describe() {
-				return testIfIt(iterableExpression).isLessThan(2D);
-			}
-		});
+        Boolean falseResult = engine.resolve(new DoubleScript<Boolean>() {
+            @Override
+            protected Expression<Boolean> describe() {
+                return testIfIt(iterableExpression).isLessThan(2D);
+            }
+        });
 
-		assertFalse(falseResult);
-	}
+        assertFalse(falseResult);
+    }
 }

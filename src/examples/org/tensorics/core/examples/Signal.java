@@ -11,17 +11,17 @@ package org.tensorics.core.examples;
  */
 public final class Signal {
 
-	final String name;
+    final String name;
 
-	public static Signal of(String name) {
-		return new Signal(name);
-	}
+    public static Signal of(String name) {
+        return new Signal(name);
+    }
 
-	private Signal(String name) {
-		this.name = name;
-	}
+    private Signal(String name) {
+        this.name = name;
+    }
 
-	String getName() {
-		return name;
-	}
+    String getName() {
+        return name;
+    }
 }

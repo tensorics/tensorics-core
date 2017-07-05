@@ -45,13 +45,11 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 /**
- * Processes a tree of instruction nodes and tries to resolve the biggest
- * possible subtrees internally in the module.
+ * Processes a tree of instruction nodes and tries to resolve the biggest possible subtrees internally in the module.
  * <p>
  * The steps of the current algorithm are the following:
  * <ol>
- * <li>Check from top to bottom and find all nodes of the tree for which
- * external implementations exist.
+ * <li>Check from top to bottom and find all nodes of the tree for which external implementations exist.
  * <li>Execute all these nodes.
  * </ol>
  * 
@@ -59,124 +57,121 @@ import com.google.common.collect.ListMultimap;
  */
 public class BiggestSubTreeDispatcher implements Dispatcher {
 
-	private final ResolverRepository resolverRepository;
+    private final ResolverRepository resolverRepository;
 
-	/**
-	 * Constructor, which requires an Implementation module on which this
-	 * processor will act on.
-	 * 
-	 * @param resolverRepository
-	 *            the repository that shall contain all available resolvers.
-	 */
-	public BiggestSubTreeDispatcher(ResolverRepository resolverRepository) {
-		this.resolverRepository = resolverRepository;
-	}
+    /**
+     * Constructor, which requires an Implementation module on which this processor will act on.
+     * 
+     * @param resolverRepository the repository that shall contain all available resolvers.
+     */
+    public BiggestSubTreeDispatcher(ResolverRepository resolverRepository) {
+        this.resolverRepository = resolverRepository;
+    }
 
-	@Override
-	public ResolvingContext processTree(Node rootNode, ResolvingContext oldContext,
-			OptionRegistry<ResolvingOption> processingOptions) {
-		ResolverCandidateRepository executableNodes = findResolverCandidates(rootNode, oldContext);
-		return executableNodes.executeNodes(rootNode, processingOptions);
-	}
+    @Override
+    public ResolvingContext processTree(Node rootNode, ResolvingContext oldContext,
+            OptionRegistry<ResolvingOption> processingOptions) {
+        ResolverCandidateRepository executableNodes = findResolverCandidates(rootNode, oldContext);
+        return executableNodes.executeNodes(rootNode, processingOptions);
+    }
 
-	/**
-	 * Searches for nodes, that can be directly invoked.
-	 * 
-	 * @param startingNode
-	 * @param oldContext
-	 * @return an repository which will contain all the resolver candidates
-	 */
-	private ResolverCandidateRepository findResolverCandidates(Node startingNode, final ResolvingContext oldContext) {
+    /**
+     * Searches for nodes, that can be directly invoked.
+     * 
+     * @param startingNode
+     * @param oldContext
+     * @return an repository which will contain all the resolver candidates
+     */
+    private ResolverCandidateRepository findResolverCandidates(Node startingNode, final ResolvingContext oldContext) {
 
-		final ResolverCandidateRepository directlyExecutableNodes = new ResolverCandidateRepository(oldContext);
+        final ResolverCandidateRepository directlyExecutableNodes = new ResolverCandidateRepository(oldContext);
 
-		Trees.walkParentAfterChildren(startingNode, new SkipNodeAndSubTreesCallback() {
+        Trees.walkParentAfterChildren(startingNode, new SkipNodeAndSubTreesCallback() {
 
-			@Override
-			public boolean shallBeSkipped(Node node) {
-				if (!(node instanceof Expression<?>)) {
-					throw new IllegalStateException("Node '" + node + "' is not an expression!");
-				}
-				return process((Expression<?>) node);
-			}
+            @Override
+            public boolean shallBeSkipped(Node node) {
+                if (!(node instanceof Expression<?>)) {
+                    throw new IllegalStateException("Node '" + node + "' is not an expression!");
+                }
+                return process((Expression<?>) node);
+            }
 
-			private <R> boolean process(Expression<R> expression) {
-				boolean resolved = oldContext.resolves(expression);
-				if (resolved) {
-					return true;
-				}
-				List<Resolver<R, Expression<R>>> resolvers = resolverRepository.resolversFor(expression);
+            private <R> boolean process(Expression<R> expression) {
+                boolean resolved = oldContext.resolves(expression);
+                if (resolved) {
+                    return true;
+                }
+                List<Resolver<R, Expression<R>>> resolvers = resolverRepository.resolversFor(expression);
 
-				for (Resolver<R, Expression<R>> resolver : resolvers) {
-					if (resolver.canResolve(expression, oldContext)) {
-						directlyExecutableNodes.put(expression, resolver);
-					}
-				}
+                for (Resolver<R, Expression<R>> resolver : resolvers) {
+                    if (resolver.canResolve(expression, oldContext)) {
+                        directlyExecutableNodes.put(expression, resolver);
+                    }
+                }
 
-				return directlyExecutableNodes.containsKey(expression);
-			}
+                return directlyExecutableNodes.containsKey(expression);
+            }
 
-		});
-		return directlyExecutableNodes;
-	}
+        });
+        return directlyExecutableNodes;
+    }
 
-	static class ResolverCandidateRepository {
+    static class ResolverCandidateRepository {
 
-		private final ListMultimap<Expression<?>, Resolver<?, ?>> resolvers = ArrayListMultimap.create();
-		private final ResolvingContext oldContext;
+        private final ListMultimap<Expression<?>, Resolver<?, ?>> resolvers = ArrayListMultimap.create();
+        private final ResolvingContext oldContext;
 
-		ResolverCandidateRepository(ResolvingContext oldContext) {
-			this.oldContext = oldContext;
-		}
+        ResolverCandidateRepository(ResolvingContext oldContext) {
+            this.oldContext = oldContext;
+        }
 
-		private Set<Expression<?>> expressions() {
-			return resolvers.keySet();
-		}
+        private Set<Expression<?>> expressions() {
+            return resolvers.keySet();
+        }
 
-		private <R, E extends Expression<R>> List<Resolver<R, E>> resolversFor(E expression) {
-			List<Resolver<R, E>> castedResolvers = new ArrayList<>();
-			for (Resolver<?, ?> resolver : resolvers.get(expression)) {
-				/*
-				 * This cast is safe, since we took care when putting the
-				 * resolvers
-				 */
-				@SuppressWarnings("unchecked")
-				Resolver<R, E> castedResolver = (Resolver<R, E>) resolver;
-				castedResolvers.add(castedResolver);
-			}
-			return castedResolvers;
-		}
+        private <R, E extends Expression<R>> List<Resolver<R, E>> resolversFor(E expression) {
+            List<Resolver<R, E>> castedResolvers = new ArrayList<>();
+            for (Resolver<?, ?> resolver : resolvers.get(expression)) {
+                /*
+                 * This cast is safe, since we took care when putting the resolvers
+                 */
+                @SuppressWarnings("unchecked")
+                Resolver<R, E> castedResolver = (Resolver<R, E>) resolver;
+                castedResolvers.add(castedResolver);
+            }
+            return castedResolvers;
+        }
 
-		private <R, E extends Expression<R>> void put(E expression, Resolver<R, E> resolver) {
-			this.resolvers.put(expression, resolver);
-		}
+        private <R, E extends Expression<R>> void put(E expression, Resolver<R, E> resolver) {
+            this.resolvers.put(expression, resolver);
+        }
 
-		private boolean containsKey(Expression<?> expression) {
-			return this.resolvers.containsKey(expression);
-		}
+        private boolean containsKey(Expression<?> expression) {
+            return this.resolvers.containsKey(expression);
+        }
 
-		private <R, E extends Expression<R>> void resolveNode(E expression, EditableResolvingContext context,
-				ResolverSelectionStrategy resolverSelection) {
-			Resolver<R, E> resolver = resolverSelection.selectResolver(resolversFor(expression));
-			context.put(expression, resolver.resolve(expression, oldContext));
-		}
+        private <R, E extends Expression<R>> void resolveNode(E expression, EditableResolvingContext context,
+                ResolverSelectionStrategy resolverSelection) {
+            Resolver<R, E> resolver = resolverSelection.selectResolver(resolversFor(expression));
+            context.put(expression, resolver.resolve(expression, oldContext));
+        }
 
-		private ResolvingContext executeNodes(Node rootNode, OptionRegistry<ResolvingOption> options) {
-			EditableResolvingContext context = Contexts.newResolvingContext();
-			ExceptionHandlingStrategy exceptionHandling = options.get(ExceptionHandlingStrategy.class);
-			ResolverSelectionStrategy resolverSetlection = options.get(ResolverSelectionStrategy.class);
-			for (Expression<?> expression : expressions()) {
-				try {
-					resolveNode(expression, context, resolverSetlection);
-				} catch (final RuntimeException e) {
-					exceptionHandling.handleWithRootNodeFailingNodeException(
-							ExceptionHandlingRequest.builder().withRoot(rootNode).withThrowingNode(expression)
-									.withException(e).withContext(context).build());
-				}
-			}
-			return context;
-		}
+        private ResolvingContext executeNodes(Node rootNode, OptionRegistry<ResolvingOption> options) {
+            EditableResolvingContext context = Contexts.newResolvingContext();
+            ExceptionHandlingStrategy exceptionHandling = options.get(ExceptionHandlingStrategy.class);
+            ResolverSelectionStrategy resolverSetlection = options.get(ResolverSelectionStrategy.class);
+            for (Expression<?> expression : expressions()) {
+                try {
+                    resolveNode(expression, context, resolverSetlection);
+                } catch (final RuntimeException e) {
+                    exceptionHandling.handleWithRootNodeFailingNodeException(
+                            ExceptionHandlingRequest.builder().withRoot(rootNode).withThrowingNode(expression)
+                                    .withException(e).withContext(context).build());
+                }
+            }
+            return context;
+        }
 
-	}
+    }
 
 }

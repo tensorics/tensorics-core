@@ -29,24 +29,21 @@ import java.util.List;
  * THe following conditions are guaranteed:
  * <ul>
  * <li>The x-values are ordered by their natural ordering</li>
- * <li>the lists returned by {@link #getXs()} and {@link #getYs()} are of the
- * same length.</li>
+ * <li>the lists returned by {@link #getXs()} and {@link #getYs()} are of the same length.</li>
  * </ul>
  * <p>
  * 
  * @author agorzaws
- * @param <X>
- *            the type of the independent variable of the function
- * @param <Y>
- *            the type of the dependent variable of the function
+ * @param <X> the type of the independent variable of the function
+ * @param <Y> the type of the dependent variable of the function
  */
 public interface DiscreteFunction<X extends Comparable<? super X>, Y> extends KeyValueFunction<X, Y>, Serializable {
 
-	String getName();
+    String getName();
 
-	List<X> getXs();
+    List<X> getXs();
 
-	List<Y> getYs();
+    List<Y> getYs();
 
-	List<Y> getYsErr();
+    List<Y> getYsErr();
 }

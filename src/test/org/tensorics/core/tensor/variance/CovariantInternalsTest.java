@@ -31,62 +31,62 @@ import org.junit.Test;
 
 public class CovariantInternalsTest {
 
-	@Test
-	public void verifyUtilityClass() {
-		assertUtilityClass(Covariants.class);
-	}
+    @Test
+    public void verifyUtilityClass() {
+        assertUtilityClass(Covariants.class);
+    }
 
-	@Test
-	public void resolveCoordinateTypeFromClass() {
-		assertEquals(String.class, coordinateClassFor(CovariantString.class));
-	}
+    @Test
+    public void resolveCoordinateTypeFromClass() {
+        assertEquals(String.class, coordinateClassFor(CovariantString.class));
+    }
 
-	@Test
-	public void resolveCoordinateTypeFromDoubleInheritedClass() {
-		assertEquals(String.class, coordinateClassFor(CovariantStringDoubleInherited.class));
-	}
+    @Test
+    public void resolveCoordinateTypeFromDoubleInheritedClass() {
+        assertEquals(String.class, coordinateClassFor(CovariantStringDoubleInherited.class));
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void resolveCoordinateTypeFromGenericDoubleInheritedClass() {
-		assertEquals(String.class, coordinateClassFor(CovariantDoubleInheritedString.class));
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void resolveCoordinateTypeFromGenericDoubleInheritedClass() {
+        assertEquals(String.class, coordinateClassFor(CovariantDoubleInheritedString.class));
+    }
 
-	@Test
-	public void contravariantOfWorksForCovariant() {
-		assertEquals(String.class, contravariantOf(CovariantString.class));
-	}
+    @Test
+    public void contravariantOfWorksForCovariant() {
+        assertEquals(String.class, contravariantOf(CovariantString.class));
+    }
 
-	@Test
-	public void contravariantOfWorksForContravariant() {
-		assertEquals(String.class, contravariantOf(String.class));
-	}
+    @Test
+    public void contravariantOfWorksForContravariant() {
+        assertEquals(String.class, contravariantOf(String.class));
+    }
 
-	public class CovariantString extends Covariant<String> {
+    public class CovariantString extends Covariant<String> {
 
-		public CovariantString(String coordinate) {
-			super(coordinate);
-		}
-	}
+        public CovariantString(String coordinate) {
+            super(coordinate);
+        }
+    }
 
-	public class CovariantStringDoubleInherited extends CovariantString {
+    public class CovariantStringDoubleInherited extends CovariantString {
 
-		public CovariantStringDoubleInherited(String coordinate) {
-			super(coordinate);
-		}
-	}
+        public CovariantStringDoubleInherited(String coordinate) {
+            super(coordinate);
+        }
+    }
 
-	public class CovariantA<T> extends Covariant<T> {
+    public class CovariantA<T> extends Covariant<T> {
 
-		public CovariantA(T coordinate) {
-			super(coordinate);
-		}
-	}
+        public CovariantA(T coordinate) {
+            super(coordinate);
+        }
+    }
 
-	public class CovariantDoubleInheritedString extends CovariantA<String> {
+    public class CovariantDoubleInheritedString extends CovariantA<String> {
 
-		public CovariantDoubleInheritedString(String coordinate) {
-			super(coordinate);
-		}
-	}
+        public CovariantDoubleInheritedString(String coordinate) {
+            super(coordinate);
+        }
+    }
 
 }

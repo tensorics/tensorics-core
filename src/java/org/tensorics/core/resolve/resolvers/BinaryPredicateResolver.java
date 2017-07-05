@@ -24,24 +24,22 @@ import org.tensorics.core.expressions.BinaryPredicateExpression;
 import org.tensorics.core.tree.domain.ResolvingContext;
 
 /**
- * A resolver that takes a predicate whose two operands are resolved and
- * resolves it into a result.
+ * A resolver that takes a predicate whose two operands are resolved and resolves it into a result.
  *
- * @param <T>
- *            the input type of the expression
+ * @param <T> the input type of the expression
  * @author caguiler
  */
 public class BinaryPredicateResolver<T> extends AbstractResolver<Boolean, BinaryPredicateExpression<T>> {
 
-	@Override
-	public boolean canResolve(BinaryPredicateExpression<T> expression, ResolvingContext context) {
-		return context.resolves(expression.getLeft()) && context.resolves(expression.getRight());
-	}
+    @Override
+    public boolean canResolve(BinaryPredicateExpression<T> expression, ResolvingContext context) {
+        return context.resolves(expression.getLeft()) && context.resolves(expression.getRight());
+    }
 
-	@Override
-	public Boolean resolve(BinaryPredicateExpression<T> expression, ResolvingContext context) {
-		T left = context.resolvedValueOf(expression.getLeft());
-		T right = context.resolvedValueOf(expression.getRight());
-		return expression.getPredicate().test(left, right);
-	}
+    @Override
+    public Boolean resolve(BinaryPredicateExpression<T> expression, ResolvingContext context) {
+        T left = context.resolvedValueOf(expression.getLeft());
+        T right = context.resolvedValueOf(expression.getRight());
+        return expression.getPredicate().test(left, right);
+    }
 }

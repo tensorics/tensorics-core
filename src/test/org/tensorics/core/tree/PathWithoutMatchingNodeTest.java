@@ -48,140 +48,139 @@ import com.google.common.reflect.TypeToken;
 
 public class PathWithoutMatchingNodeTest {
 
-	private Node rootNode;
+    private Node rootNode;
 
-	private Node child1;
-	private Node child2;
+    private Node child1;
+    private Node child2;
 
-	private Node child11;
-	private Node child12;
-	private Node child21;
+    private Node child11;
+    private Node child12;
+    private Node child21;
 
-	private Node childCommon;
+    private Node childCommon;
 
-	private static interface ExceptionHandlingNodeWithChildren<R> extends ExceptionHandlingNode<R>, Node {
-		/* Nothing to do, but required for mocking */
-	}
+    private static interface ExceptionHandlingNodeWithChildren<R> extends ExceptionHandlingNode<R>, Node {
+        /* Nothing to do, but required for mocking */
+    }
 
-	/*
-	 * rootNode / \ / \ child1(EH) child2(EH) / \ \ / \ \ child11 child12
-	 * child21 \ / / \ / / childCommon
-	 */
-	@Before
-	public void setUp() throws Exception {
-		rootNode = mock(Node.class);
+    /*
+     * rootNode / \ / \ child1(EH) child2(EH) / \ \ / \ \ child11 child12 child21 \ / / \ / / childCommon
+     */
+    @Before
+    public void setUp() throws Exception {
+        rootNode = mock(Node.class);
 
-		child1 = mock(ExceptionHandlingNodeWithChildren.class);
-		child2 = mock(ExceptionHandlingNodeWithChildren.class);
-		child11 = mock(Node.class);
-		child12 = mock(Node.class);
-		child21 = mock(Node.class);
+        child1 = mock(ExceptionHandlingNodeWithChildren.class);
+        child2 = mock(ExceptionHandlingNodeWithChildren.class);
+        child11 = mock(Node.class);
+        child12 = mock(Node.class);
+        child21 = mock(Node.class);
 
-		childCommon = mock(Node.class);
+        childCommon = mock(Node.class);
 
-		when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child1, child2));
-		when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child11, child12));
-		when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child21));
+        when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child1, child2));
+        when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child11, child12));
+        when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child21));
 
-		when(child11.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(childCommon));
-		when(child12.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(childCommon));
-		when(child21.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(childCommon));
+        when(child11.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
+        when(child12.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
+        when(child21.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(childCommon));
 
-		when(rootNode.toString()).thenReturn("rootNode");
-		when(child1.toString()).thenReturn("child1");
-		when(child2.toString()).thenReturn("child2");
-		when(child12.toString()).thenReturn("child12");
-		when(child11.toString()).thenReturn("child11");
-		when(child21.toString()).thenReturn("child21");
-		when(childCommon.toString()).thenReturn("childCommon");
+        when(rootNode.toString()).thenReturn("rootNode");
+        when(child1.toString()).thenReturn("child1");
+        when(child2.toString()).thenReturn("child2");
+        when(child12.toString()).thenReturn("child12");
+        when(child11.toString()).thenReturn("child11");
+        when(child21.toString()).thenReturn("child21");
+        when(childCommon.toString()).thenReturn("childCommon");
 
-	}
+    }
 
-	@Test
-	public void testFindBottomNodes() {
-		Collection<Node> bottomNodes = Trees.findBottomNodes(rootNode);
-		List<Node> expectedNodes = ImmutableList.of(childCommon);
-		assertEquals(expectedNodes.size(), bottomNodes.size());
-		for (Node expectedNode : expectedNodes) {
-			assertTrue(bottomNodes.contains(expectedNode));
-		}
-	}
+    @Test
+    public void testFindBottomNodes() {
+        Collection<Node> bottomNodes = Trees.findBottomNodes(rootNode);
+        List<Node> expectedNodes = ImmutableList.of(childCommon);
+        assertEquals(expectedNodes.size(), bottomNodes.size());
+        for (Node expectedNode : expectedNodes) {
+            assertTrue(bottomNodes.contains(expectedNode));
+        }
+    }
 
-	@Test
-	public void testSubTreeContentFullTree() {
-		List<Node> allNodes = Trees.subTreeContent(rootNode);
-		assertEquals(ImmutableList.of(childCommon, child11, childCommon, child12, child1, childCommon, child21, child2,
-				rootNode), allNodes);
-	}
+    @Test
+    public void testSubTreeContentFullTree() {
+        List<Node> allNodes = Trees.subTreeContent(rootNode);
+        assertEquals(ImmutableList.of(childCommon, child11, childCommon, child12, child1, childCommon, child21, child2,
+                rootNode), allNodes);
+    }
 
-	@Test
-	public void testSubTreeContentOneNode() {
-		List<Node> content = Trees.subTreeContent(childCommon);
-		assertEquals(ImmutableList.of(childCommon), content);
-	}
+    @Test
+    public void testSubTreeContentOneNode() {
+        List<Node> content = Trees.subTreeContent(childCommon);
+        assertEquals(ImmutableList.of(childCommon), content);
+    }
 
-	@Test(expected = PathDoesNotExistException.class)
-	public void testPathRootTo22() {
-		assertNotNull(rootNode);
-		assertNotNull(child21);
-		Trees.getPathsFromChildToAncestor(rootNode, child21);
-	}
+    @Test(expected = PathDoesNotExistException.class)
+    public void testPathRootTo22() {
+        assertNotNull(rootNode);
+        assertNotNull(child21);
+        Trees.getPathsFromChildToAncestor(rootNode, child21);
+    }
 
-	@Test
-	public void testPathForNodeToItself() {
-		assertEquals(1, pathsFrom2To2().size());
-	}
+    @Test
+    public void testPathForNodeToItself() {
+        assertEquals(1, pathsFrom2To2().size());
+    }
 
-	@Test
-	public void testPathFromNodeToItselfContainsOneElement() {
-		assertEquals(child2, pathsFrom2To2().get(0).getPath().get(0));
-	}
+    @Test
+    public void testPathFromNodeToItselfContainsOneElement() {
+        assertEquals(child2, pathsFrom2To2().get(0).getPath().get(0));
+    }
 
-	@Test
-	public void testCollectPaths() {
-		final AtomicBoolean wasCalled = new AtomicBoolean(false);
-		Trees.walkParentAfterChildren(rootNode, new StepUpCallback() {
-			@Override
-			public void onStepUpFromChildToParent(Node children, Node parent) {
-				wasCalled.set(true);
-			}
-		});
-		assertTrue(wasCalled.get());
-	}
+    @Test
+    public void testCollectPaths() {
+        final AtomicBoolean wasCalled = new AtomicBoolean(false);
+        Trees.walkParentAfterChildren(rootNode, new StepUpCallback() {
+            @Override
+            public void onStepUpFromChildToParent(Node children, Node parent) {
+                wasCalled.set(true);
+            }
+        });
+        assertTrue(wasCalled.get());
+    }
 
-	@Test
-	public void testFindPathFromCommonChildToRoot() throws Exception {
-		List<Path> paths = Trees.getPathsFromChildToAncestor(childCommon, rootNode);
-		assertEquals(3, paths.size());
-		assertEquals(ImmutableList.of(childCommon, child11, child1, rootNode), paths.get(0).getPath());
-		assertEquals(ImmutableList.of(childCommon, child12, child1, rootNode), paths.get(1).getPath());
-		assertEquals(ImmutableList.of(childCommon, child21, child2, rootNode), paths.get(2).getPath());
-	}
+    @Test
+    public void testFindPathFromCommonChildToRoot() throws Exception {
+        List<Path> paths = Trees.getPathsFromChildToAncestor(childCommon, rootNode);
+        assertEquals(3, paths.size());
+        assertEquals(ImmutableList.of(childCommon, child11, child1, rootNode), paths.get(0).getPath());
+        assertEquals(ImmutableList.of(childCommon, child12, child1, rootNode), paths.get(1).getPath());
+        assertEquals(ImmutableList.of(childCommon, child21, child2, rootNode), paths.get(2).getPath());
+    }
 
-	@Test
-	public void testFindPathFrom21ToRootHas3Elements() {
-		assertEquals(3, Trees.getPathsFromChildToAncestor(child21, rootNode).get(0).getPath().size());
-	}
+    @Test
+    public void testFindPathFrom21ToRootHas3Elements() {
+        assertEquals(3, Trees.getPathsFromChildToAncestor(child21, rootNode).get(0).getPath().size());
+    }
 
-	@Test
-	public void testFindClosestHandlingNodeCommon() { // NOSONAR (No assert
-														// required)
-		assertFoundNodes(childCommon, child1, child2);
-	}
+    @Test
+    public void testFindClosestHandlingNodeCommon() { // NOSONAR (No assert
+                                                      // required)
+        assertFoundNodes(childCommon, child1, child2);
+    }
 
-	private List<Path> pathsFrom2To2() {
-		return Trees.getPathsFromChildToAncestor(child2, child2);
-	}
+    private List<Path> pathsFrom2To2() {
+        return Trees.getPathsFromChildToAncestor(child2, child2);
+    }
 
-	private void assertFoundNodes(Node childNode, Node... expectedNodes) {
-		Set<ExceptionHandlingNode<?>> nodes = Trees.findClosestAncestorNodeFromNodesToRootOfType(childNode, rootNode,
-				new TypeToken<ExceptionHandlingNode<?>>() {
-					private static final long serialVersionUID = 1L;
-				});
-		assertEquals(Arrays.asList(expectedNodes).size(), nodes.size());
-		for (Node node : expectedNodes) {
-			assertEquals(true, nodes.contains(node));
-		}
-	}
+    private void assertFoundNodes(Node childNode, Node... expectedNodes) {
+        Set<ExceptionHandlingNode<?>> nodes = Trees.findClosestAncestorNodeFromNodesToRootOfType(childNode, rootNode,
+                new TypeToken<ExceptionHandlingNode<?>>() {
+                    private static final long serialVersionUID = 1L;
+                });
+        assertEquals(Arrays.asList(expectedNodes).size(), nodes.size());
+        for (Node node : expectedNodes) {
+            assertEquals(true, nodes.contains(node));
+        }
+    }
 
 }

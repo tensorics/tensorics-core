@@ -29,53 +29,51 @@ import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.math.predicates.BinaryPredicate;
 
 /**
- * A more explicit view on the algebraic structure of a field. It provides more
- * dedicated operations.
+ * A more explicit view on the algebraic structure of a field. It provides more dedicated operations.
  * 
- * @param <T>
- *            the type of the elements of the field
+ * @param <T> the type of the elements of the field
  */
 public interface ExplicitField<T> {
 
-	/**
-	 * Has to return the '+' operation.
-	 * 
-	 * @return the operation which can perform a + b.
-	 */
-	BinaryOperation<T> addition();
+    /**
+     * Has to return the '+' operation.
+     * 
+     * @return the operation which can perform a + b.
+     */
+    BinaryOperation<T> addition();
 
-	UnaryOperation<T> additiveInversion();
+    UnaryOperation<T> additiveInversion();
 
-	BinaryOperation<T> subtraction();
+    BinaryOperation<T> subtraction();
 
-	T zero();
+    T zero();
 
-	UnaryOperation<T> absoluteValue();
+    UnaryOperation<T> absoluteValue();
 
-	/**
-	 * Has to return the '*' operation.
-	 * 
-	 * @return the operation which can perform a * b.
-	 */
-	BinaryOperation<T> multiplication();
+    /**
+     * Has to return the '*' operation.
+     * 
+     * @return the operation which can perform a * b.
+     */
+    BinaryOperation<T> multiplication();
 
-	BinaryOperation<T> division();
+    BinaryOperation<T> division();
 
-	UnaryOperation<T> multiplicativeInversion();
+    UnaryOperation<T> multiplicativeInversion();
 
-	T one();
+    T one();
 
-	T two();
+    T two();
 
-	BinaryPredicate<T> less();
+    BinaryPredicate<T> less();
 
-	BinaryPredicate<T> lessOrEqual();
+    BinaryPredicate<T> lessOrEqual();
 
-	BinaryPredicate<T> equal();
+    BinaryPredicate<T> equal();
 
-	BinaryPredicate<T> greaterOrEqual();
+    BinaryPredicate<T> greaterOrEqual();
 
-	BinaryPredicate<T> greater();
+    BinaryPredicate<T> greater();
 
-	Comparator<T> comparator();
+    Comparator<T> comparator();
 }

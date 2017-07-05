@@ -28,5 +28,5 @@ package org.tensorics.core.lang;
  * @author agorzaws
  */
 public interface TestCoordinate extends Comparable<TestCoordinate> {
-	/* marker for test coordiantes */
+    /* marker for test coordiantes */
 }

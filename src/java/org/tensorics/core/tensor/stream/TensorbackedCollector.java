@@ -31,30 +31,26 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 
 /**
- * An {@link AbstractTensoricCollector} implementation to collect to an
- * arbitrary {@link Tensorbacked} class.
+ * An {@link AbstractTensoricCollector} implementation to collect to an arbitrary {@link Tensorbacked} class.
  * 
  * @author mihostet
- * @param <V>
- *            steam elements
- * @param <T>
- *            elements of the tensor in the tensorbacked
- * @param <TB>
- *            tensorbacked class to produce, must extend {@code Tensorbacked<T>}
+ * @param <V> steam elements
+ * @param <T> elements of the tensor in the tensorbacked
+ * @param <TB> tensorbacked class to produce, must extend {@code Tensorbacked<T>}
  */
 public class TensorbackedCollector<V, T, TB extends Tensorbacked<T>> extends AbstractTensoricCollector<V, T, TB> {
 
-	private final Class<TB> tensorBackedClass;
+    private final Class<TB> tensorBackedClass;
 
-	public TensorbackedCollector(Class<TB> tensorBackedClass, Function<V, Position> positionMapper,
-			Function<V, T> valueMapper) {
-		super(positionMapper, valueMapper);
-		this.tensorBackedClass = tensorBackedClass;
-	}
+    public TensorbackedCollector(Class<TB> tensorBackedClass, Function<V, Position> positionMapper,
+            Function<V, T> valueMapper) {
+        super(positionMapper, valueMapper);
+        this.tensorBackedClass = tensorBackedClass;
+    }
 
-	@Override
-	public Function<Map<Position, T>, TB> finisher() {
-		return construct(tensorBackedClass)::fromMap;
-	}
+    @Override
+    public Function<Map<Position, T>, TB> finisher() {
+        return construct(tensorBackedClass)::fromMap;
+    }
 
 }

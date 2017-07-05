@@ -26,27 +26,25 @@ import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
 
 /**
- * A condition to test if a quantity is greater than another quantity. In case
- * at least one of the quantities has an error, a statistical z-test is done at
- * a given confidence level.
+ * A condition to test if a quantity is greater than another quantity. In case at least one of the quantities has an
+ * error, a statistical z-test is done at a given confidence level.
  * 
  * @author mihostet
- * @param <S>
- *            the value of the scalar (elements of the field)
+ * @param <S> the value of the scalar (elements of the field)
  */
 public class QuantityGreaterPredicate<S> extends AbstractQuantityStatisticPredicate<S> {
-	final S confidenceLimit;
+    final S confidenceLimit;
 
-	public QuantityGreaterPredicate(QuantityEnvironment<S> environment) {
-		super(environment);
-		confidenceLimit = inverseGaussianCumulativeDistributionFunction(environment.confidenceLevel());
-	}
+    public QuantityGreaterPredicate(QuantityEnvironment<S> environment) {
+        super(environment);
+        confidenceLimit = inverseGaussianCumulativeDistributionFunction(environment.confidenceLevel());
+    }
 
-	@Override
-	public boolean test(QuantifiedValue<S> left, QuantifiedValue<S> right) {
-		if (testIf(left.error().or(zero())).isEqualTo(zero()) && testIf(right.error().or(zero())).isEqualTo(zero())) {
-			return testIf(subtractQuantities(left, right).value()).isGreaterThan(zero());
-		}
-		return testIf(zTestValueForDifference(left, right)).isGreaterThan(confidenceLimit);
-	}
+    @Override
+    public boolean test(QuantifiedValue<S> left, QuantifiedValue<S> right) {
+        if (testIf(left.error().or(zero())).isEqualTo(zero()) && testIf(right.error().or(zero())).isEqualTo(zero())) {
+            return testIf(subtractQuantities(left, right).value()).isGreaterThan(zero());
+        }
+        return testIf(zTestValueForDifference(left, right)).isGreaterThan(confidenceLimit);
+    }
 }

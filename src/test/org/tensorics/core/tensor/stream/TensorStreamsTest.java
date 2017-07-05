@@ -49,24 +49,25 @@ import com.google.common.collect.ImmutableSet;
 
 public class TensorStreamsTest {
 
-	private enum TestCoordinate {
-		FIRST_VALUE, SECOND_VALUE, THIRD_VALUE
-	}
+    private enum TestCoordinate {
+        FIRST_VALUE,
+        SECOND_VALUE,
+        THIRD_VALUE
+    }
 
-	@Dimensions({ TestCoordinate.class, Double.class })
-	private static class SomeDomainObject extends AbstractTensorbacked<Double> {
-		private static final long serialVersionUID = 1L;
+    @Dimensions({ TestCoordinate.class, Double.class })
+    private static class SomeDomainObject extends AbstractTensorbacked<Double> {
+        private static final long serialVersionUID = 1L;
 
-		public SomeDomainObject(Tensor<Double> tensor) {
-			super(tensor);
-		}
-	}
+        public SomeDomainObject(Tensor<Double> tensor) {
+            super(tensor);
+        }
+    }
 
-	private Tensor<Double> tensor;
+    private Tensor<Double> tensor;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void prepareTensor() {
@@ -77,41 +78,41 @@ public class TensorStreamsTest {
         tensor = tensorBuilder.build();
     }
 
-	@Test
-	public void test() {
-		Tensor<Double> mapped = Tensorics.stream(tensor).map(values(e -> e + 1)).filter(byValue(e -> e > 5))
-				.collect(toTensor(ImmutableSet.of(Double.class, Integer.class)));
+    @Test
+    public void test() {
+        Tensor<Double> mapped = Tensorics.stream(tensor).map(values(e -> e + 1)).filter(byValue(e -> e > 5))
+                .collect(toTensor(ImmutableSet.of(Double.class, Integer.class)));
 
-		assertEquals(1, mapped.shape().size());
-		assertEquals(43.42, mapped.get(23.0, 1), 1e-6);
-	}
+        assertEquals(1, mapped.shape().size());
+        assertEquals(43.42, mapped.get(23.0, 1), 1e-6);
+    }
 
-	@Test
-	public void convertTensorToDomainObjectByStreams() {
-		SomeDomainObject domainObject = Tensorics.stream(tensor)
-				.map(coordinatesOfType(Integer.class, i -> TestCoordinate.values()[i]))
-				.collect(toTensorbacked(SomeDomainObject.class));
+    @Test
+    public void convertTensorToDomainObjectByStreams() {
+        SomeDomainObject domainObject = Tensorics.stream(tensor)
+                .map(coordinatesOfType(Integer.class, i -> TestCoordinate.values()[i]))
+                .collect(toTensorbacked(SomeDomainObject.class));
 
-		assertEquals(0.0, domainObject.tensor().get(0.0, TestCoordinate.FIRST_VALUE), 1e-6);
-		assertEquals(42.42, domainObject.tensor().get(23.0, TestCoordinate.SECOND_VALUE), 1e-6);
-		assertEquals(2.0, domainObject.tensor().get(23.0, TestCoordinate.THIRD_VALUE), 1e-6);
-	}
+        assertEquals(0.0, domainObject.tensor().get(0.0, TestCoordinate.FIRST_VALUE), 1e-6);
+        assertEquals(42.42, domainObject.tensor().get(23.0, TestCoordinate.SECOND_VALUE), 1e-6);
+        assertEquals(2.0, domainObject.tensor().get(23.0, TestCoordinate.THIRD_VALUE), 1e-6);
+    }
 
-	@Test
-	public void duplicatePositionThrows() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("duplicate entry");
+    @Test
+    public void duplicatePositionThrows() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("duplicate entry");
 
-		ImmutableList.of(1, 2, 3).stream().collect(toTensor(any -> Position.empty(), v -> v, emptySet()));
-	}
+        ImmutableList.of(1, 2, 3).stream().collect(toTensor(any -> Position.empty(), v -> v, emptySet()));
+    }
 
-	@Test
-	public void inconsistentPositionThrows() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("not assignable");
-		Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };
-		ImmutableList.of(0, 1, 2).stream()
-				.collect(toTensor(i -> positions[i], v -> v, Collections.singleton(Integer.class)));
-	}
+    @Test
+    public void inconsistentPositionThrows() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("not assignable");
+        Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };
+        ImmutableList.of(0, 1, 2).stream()
+                .collect(toTensor(i -> positions[i], v -> v, Collections.singleton(Integer.class)));
+    }
 
 }

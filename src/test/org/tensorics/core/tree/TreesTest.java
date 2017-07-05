@@ -41,97 +41,97 @@ import com.google.common.collect.ImmutableList;
 
 public class TreesTest {
 
-	private Node rootNode;
+    private Node rootNode;
 
-	private Node child1;
-	private Node child2;
+    private Node child1;
+    private Node child2;
 
-	private Node child11;
-	private Node child12;
-	private Node child21;
-	private Node child221;
-	private Node child22;
+    private Node child11;
+    private Node child12;
+    private Node child21;
+    private Node child221;
+    private Node child22;
 
-	@Before
-	public void setUp() throws Exception {
-		rootNode = mock(Node.class);
+    @Before
+    public void setUp() throws Exception {
+        rootNode = mock(Node.class);
 
-		child1 = mock(Node.class);
-		child2 = mock(Node.class);
-		child11 = mock(Node.class);
-		child12 = mock(Node.class);
-		child21 = mock(Node.class);
-		child22 = mock(Node.class);
-		child221 = mock(Node.class);
+        child1 = mock(Node.class);
+        child2 = mock(Node.class);
+        child11 = mock(Node.class);
+        child12 = mock(Node.class);
+        child21 = mock(Node.class);
+        child22 = mock(Node.class);
+        child221 = mock(Node.class);
 
-		when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child1, child2));
-		when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child11, child12));
-		when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child21, child22));
-		when(child22.getChildren()).thenAnswer((args) -> ImmutableList.<Node>of(child221));
-	}
+        when(rootNode.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child1, child2));
+        when(child1.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child11, child12));
+        when(child2.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child21, child22));
+        when(child22.getChildren()).thenAnswer((args) -> ImmutableList.<Node> of(child221));
+    }
 
-	@Test
-	public void testFindBottomNodes() {
-		Collection<Node> bottomNodes = Trees.findBottomNodes(rootNode);
-		List<Node> expectedNodes = ImmutableList.of(child11, child12, child21, child221);
-		assertEquals(expectedNodes.size(), bottomNodes.size());
-		for (Node expectedNode : expectedNodes) {
-			assertTrue(bottomNodes.contains(expectedNode));
-		}
-	}
+    @Test
+    public void testFindBottomNodes() {
+        Collection<Node> bottomNodes = Trees.findBottomNodes(rootNode);
+        List<Node> expectedNodes = ImmutableList.of(child11, child12, child21, child221);
+        assertEquals(expectedNodes.size(), bottomNodes.size());
+        for (Node expectedNode : expectedNodes) {
+            assertTrue(bottomNodes.contains(expectedNode));
+        }
+    }
 
-	@Test
-	public void testSubTreeContentFullTree() {
-		List<Node> allNodes = Trees.subTreeContent(rootNode);
-		assertEquals(ImmutableList.of(child11, child12, child1, child21, child221, child22, child2, rootNode),
-				allNodes);
-	}
+    @Test
+    public void testSubTreeContentFullTree() {
+        List<Node> allNodes = Trees.subTreeContent(rootNode);
+        assertEquals(ImmutableList.of(child11, child12, child1, child21, child221, child22, child2, rootNode),
+                allNodes);
+    }
 
-	@Test
-	public void testSubTreeContentOneNode() {
-		List<Node> content = Trees.subTreeContent(child11);
-		assertEquals(ImmutableList.of(child11), content);
-	}
+    @Test
+    public void testSubTreeContentOneNode() {
+        List<Node> content = Trees.subTreeContent(child11);
+        assertEquals(ImmutableList.of(child11), content);
+    }
 
-	@Test
-	public void testPathFrom21ToRoot() {
-		assertEquals(ImmutableList.of(child21, child2, rootNode).size(),
-				Trees.getPathsFromChildToAncestor(child21, rootNode).get(0).getPath().size());
-	}
+    @Test
+    public void testPathFrom21ToRoot() {
+        assertEquals(ImmutableList.of(child21, child2, rootNode).size(),
+                Trees.getPathsFromChildToAncestor(child21, rootNode).get(0).getPath().size());
+    }
 
-	@Test
-	public void testPathFrom22ToRoot() {
-		assertEquals(ImmutableList.of(child22, child2, rootNode).size(),
-				Trees.getPathsFromChildToAncestor(child22, rootNode).get(0).getPath().size());
-	}
+    @Test
+    public void testPathFrom22ToRoot() {
+        assertEquals(ImmutableList.of(child22, child2, rootNode).size(),
+                Trees.getPathsFromChildToAncestor(child22, rootNode).get(0).getPath().size());
+    }
 
-	@Test(expected = PathDoesNotExistException.class)
-	public void testPathRootTo22() {
-		Trees.getPathsFromChildToAncestor(rootNode, child22);
-	}
+    @Test(expected = PathDoesNotExistException.class)
+    public void testPathRootTo22() {
+        Trees.getPathsFromChildToAncestor(rootNode, child22);
+    }
 
-	@Test
-	public void testPathForNodeToItself() {
-		assertEquals(1, pathsFrom2To2().size());
-	}
+    @Test
+    public void testPathForNodeToItself() {
+        assertEquals(1, pathsFrom2To2().size());
+    }
 
-	@Test
-	public void testPathFromNodeToItselfContainsOneElement() {
-		assertEquals(child2, pathsFrom2To2().get(0).getPath().get(0));
-	}
+    @Test
+    public void testPathFromNodeToItselfContainsOneElement() {
+        assertEquals(child2, pathsFrom2To2().get(0).getPath().get(0));
+    }
 
-	@Test
-	public void testFindPathFrom221ToRoot() throws Exception {
-		assertEquals(1, Trees.getPathsFromChildToAncestor(child221, rootNode).size());
-	}
+    @Test
+    public void testFindPathFrom221ToRoot() throws Exception {
+        assertEquals(1, Trees.getPathsFromChildToAncestor(child221, rootNode).size());
+    }
 
-	@Test
-	public void testFindPathFrom221ToRootHas3Elements() {
-		assertEquals(4, Trees.getPathsFromChildToAncestor(child221, rootNode).get(0).getPath().size());
-	}
+    @Test
+    public void testFindPathFrom221ToRootHas3Elements() {
+        assertEquals(4, Trees.getPathsFromChildToAncestor(child221, rootNode).get(0).getPath().size());
+    }
 
-	private List<Path> pathsFrom2To2() {
-		return Trees.getPathsFromChildToAncestor(child2, child2);
-	}
+    private List<Path> pathsFrom2To2() {
+        return Trees.getPathsFromChildToAncestor(child2, child2);
+    }
 
 }

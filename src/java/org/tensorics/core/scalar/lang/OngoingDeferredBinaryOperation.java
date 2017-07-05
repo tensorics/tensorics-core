@@ -29,75 +29,73 @@ import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvedExpression;
 
 /**
- * Provides methods to describe the right hand part of a binary operations for
- * scalar expressions.
+ * Provides methods to describe the right hand part of a binary operations for scalar expressions.
  * <p>
  * This class is part of the tensorcs fluent API.
  *
- * @param <S>
- *            the type of the scalar values (elements of the field)
+ * @param <S> the type of the scalar values (elements of the field)
  * @author kfuchsbe
  */
 public class OngoingDeferredBinaryOperation<S> {
 
-	private final ExtendedField<S> field;
-	private final Expression<S> left;
+    private final ExtendedField<S> field;
+    private final Expression<S> left;
 
-	public OngoingDeferredBinaryOperation(ExtendedField<S> field, Expression<S> left) {
-		this.field = field;
-		this.left = left;
-	}
+    public OngoingDeferredBinaryOperation(ExtendedField<S> field, Expression<S> left) {
+        this.field = field;
+        this.left = left;
+    }
 
-	public Expression<S> plus(S right) {
-		return plus(ResolvedExpression.of(right));
-	}
+    public Expression<S> plus(S right) {
+        return plus(ResolvedExpression.of(right));
+    }
 
-	public Expression<S> plus(Expression<S> right) {
-		return new BinaryOperationExpression<>(field.addition(), left, right);
-	}
+    public Expression<S> plus(Expression<S> right) {
+        return new BinaryOperationExpression<>(field.addition(), left, right);
+    }
 
-	public Expression<S> minus(S right) {
-		return minus(ResolvedExpression.of(right));
-	}
+    public Expression<S> minus(S right) {
+        return minus(ResolvedExpression.of(right));
+    }
 
-	public Expression<S> minus(Expression<S> right) {
-		return new BinaryOperationExpression<>(field.subtraction(), left, right);
-	}
+    public Expression<S> minus(Expression<S> right) {
+        return new BinaryOperationExpression<>(field.subtraction(), left, right);
+    }
 
-	public Expression<S> times(S right) {
-		return times(ResolvedExpression.of(right));
-	}
+    public Expression<S> times(S right) {
+        return times(ResolvedExpression.of(right));
+    }
 
-	public Expression<S> times(Expression<S> right) {
-		return new BinaryOperationExpression<>(field.multiplication(), left, right);
-	}
+    public Expression<S> times(Expression<S> right) {
+        return new BinaryOperationExpression<>(field.multiplication(), left, right);
+    }
 
-	public Expression<S> dividedBy(S right) {
-		return dividedBy(ResolvedExpression.of(right));
-	}
+    public Expression<S> dividedBy(S right) {
+        return dividedBy(ResolvedExpression.of(right));
+    }
 
-	public Expression<S> dividedBy(Expression<S> right) {
-		return new BinaryOperationExpression<>(field.division(), left, right);
-	}
+    public Expression<S> dividedBy(Expression<S> right) {
+        return new BinaryOperationExpression<>(field.division(), left, right);
+    }
 
-	public Expression<S> toThePowerOf(S power) {
-		return toThePowerOf(ResolvedExpression.of(power));
-	}
+    public Expression<S> toThePowerOf(S power) {
+        return toThePowerOf(ResolvedExpression.of(power));
+    }
 
-	public Expression<S> toThePowerOf(Expression<S> power) {
-		return new BinaryOperationExpression<>(field.power(), left, power);
-	}
+    public Expression<S> toThePowerOf(Expression<S> power) {
+        return new BinaryOperationExpression<>(field.power(), left, power);
+    }
 
-	public Expression<S> root(S root) {
-		return root(ResolvedExpression.of(root));
-	}
+    public Expression<S> root(S root) {
+        return root(ResolvedExpression.of(root));
+    }
 
-	public Expression<S> root(Expression<S> root) {
-		return new BinaryOperationExpression<>(field.power(), left, inverseOf(root));
-	}
+    public Expression<S> root(Expression<S> root) {
+        return new BinaryOperationExpression<>(field.power(), left, inverseOf(root));
+    }
 
-	private UnaryOperationExpression<S> inverseOf(Expression<S> value) {
-		return new UnaryOperationExpression<S>(field.multiplicativeInversion(), value);
-	}
+    private UnaryOperationExpression<S> inverseOf(Expression<S> value) {
+        return new UnaryOperationExpression<S>(field.multiplicativeInversion(), value);
+    }
 
 }

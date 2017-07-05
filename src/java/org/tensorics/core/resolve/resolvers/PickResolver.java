@@ -13,23 +13,22 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  * 
  * @see PickExpression
  * @author acalia
- * @param <T>
- *            the type of the data to pick
+ * @param <T> the type of the data to pick
  */
 public class PickResolver<T> extends AbstractResolver<T, PickExpression<T>> {
 
-	@Override
-	public boolean canResolve(PickExpression<T> expression, ResolvingContext context) {
-		return context.resolves(expression.iterableExpression());
-	}
+    @Override
+    public boolean canResolve(PickExpression<T> expression, ResolvingContext context) {
+        return context.resolves(expression.iterableExpression());
+    }
 
-	@Override
-	public T resolve(PickExpression<T> expression, ResolvingContext context) {
-		Iterable<T> iterable = context.resolvedValueOf(expression.iterableExpression());
-		Mode mode = expression.mode();
-		int offset = expression.offset();
+    @Override
+    public T resolve(PickExpression<T> expression, ResolvingContext context) {
+        Iterable<T> iterable = context.resolvedValueOf(expression.iterableExpression());
+        Mode mode = expression.mode();
+        int offset = expression.offset();
 
-		return mode.pick(iterable, offset);
-	}
+        return mode.pick(iterable, offset);
+    }
 
 }

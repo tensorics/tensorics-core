@@ -28,28 +28,27 @@ import java.util.function.Predicate;
 import org.tensorics.core.tensor.Position;
 
 /**
- * Utility class to produce {@link Predicate}s to use in a stream of
- * {@code Entry<Position, T>}, in particular for the filter() method, in a
- * convenient way.
+ * Utility class to produce {@link Predicate}s to use in a stream of {@code Entry<Position, T>}, in particular for the
+ * filter() method, in a convenient way.
  * 
  * @author mihostet
  */
 public final class TensorStreamFilters {
 
-	private TensorStreamFilters() {
-		/* static only */
-	}
+    private TensorStreamFilters() {
+        /* static only */
+    }
 
-	public static <T, C> Predicate<Map.Entry<Position, T>> byCoordinateOfType(Class<C> dimension,
-			Predicate<C> positionPredicate) {
-		return entry -> positionPredicate.test(entry.getKey().coordinateFor(dimension));
-	}
+    public static <T, C> Predicate<Map.Entry<Position, T>> byCoordinateOfType(Class<C> dimension,
+            Predicate<C> positionPredicate) {
+        return entry -> positionPredicate.test(entry.getKey().coordinateFor(dimension));
+    }
 
-	public static <T> Predicate<Map.Entry<Position, T>> byPosition(Predicate<Position> positionPredicate) {
-		return entry -> positionPredicate.test(entry.getKey());
-	}
+    public static <T> Predicate<Map.Entry<Position, T>> byPosition(Predicate<Position> positionPredicate) {
+        return entry -> positionPredicate.test(entry.getKey());
+    }
 
-	public static <T> Predicate<Map.Entry<Position, T>> byValue(Predicate<T> valuePredicate) {
-		return entry -> valuePredicate.test(entry.getValue());
-	}
+    public static <T> Predicate<Map.Entry<Position, T>> byValue(Predicate<T> valuePredicate) {
+        return entry -> valuePredicate.test(entry.getValue());
+    }
 }

@@ -22,16 +22,13 @@
 package org.tensorics.core.function;
 
 /**
- * Represents a math function that has been constructed by interpolating a
- * discrete function so that it can return Y values for any X values. The
- * accuracy of the y values obtained is not defined by this contract.
+ * Represents a math function that has been constructed by interpolating a discrete function so that it can return Y
+ * values for any X values. The accuracy of the y values obtained is not defined by this contract.
  * 
  * @author kfuchsbe, caguiler
- * @param <X>
- *            the type of the values in x-direction (Independent variable)
- * @param <Y>
- *            the type of the values in y-direction (Dependent variable)
+ * @param <X> the type of the values in x-direction (Independent variable)
+ * @param <Y> the type of the values in y-direction (Dependent variable)
  */
 public interface InterpolatedFunction<X, Y> extends ContinuousFunction<X, Y>, DiscreteFunction<X, Y> {
-	/* Only marker at this point */
+    /* Only marker at this point */
 }

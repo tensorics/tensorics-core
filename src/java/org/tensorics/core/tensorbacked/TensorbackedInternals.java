@@ -39,74 +39,70 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Streams;
 
 /**
- * This class gives an access to the methods for {@link Tensorbacked} object
- * support.
+ * This class gives an access to the methods for {@link Tensorbacked} object support.
  * 
  * @author agorzaws, kfuchsbe
  */
 public final class TensorbackedInternals {
 
-	private TensorbackedInternals() {
-		/* Only static methods */
-	}
+    private TensorbackedInternals() {
+        /* Only static methods */
+    }
 
-	/**
-	 * Retrieves the dimensions from the given class inheriting from tensor
-	 * backed. This is done by inspecting the {@link Dimensions} annotation.
-	 * 
-	 * @param tensorBackedClass
-	 *            the class for which to determine the dimensions
-	 * @return the set of dimentions (classses of coordinates) which are
-	 *         required to create an instance of the given class.
-	 */
-	public static <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
-		Dimensions dimensionAnnotation = tensorBackedClass.getAnnotation(Dimensions.class);
-		if (dimensionAnnotation == null) {
-			throw new IllegalArgumentException(
-					"No annotation of type '" + Dimensions.class + "' is present on the class '" + tensorBackedClass
-							+ "'. Therefore, the dimensions of this tensorbacked type cannot be determined.");
-		}
-		return ImmutableSet.copyOf(dimensionAnnotation.value());
-	}
+    /**
+     * Retrieves the dimensions from the given class inheriting from tensor backed. This is done by inspecting the
+     * {@link Dimensions} annotation.
+     * 
+     * @param tensorBackedClass the class for which to determine the dimensions
+     * @return the set of dimentions (classses of coordinates) which are required to create an instance of the given
+     *         class.
+     */
+    public static <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
+        Dimensions dimensionAnnotation = tensorBackedClass.getAnnotation(Dimensions.class);
+        if (dimensionAnnotation == null) {
+            throw new IllegalArgumentException(
+                    "No annotation of type '" + Dimensions.class + "' is present on the class '" + tensorBackedClass
+                            + "'. Therefore, the dimensions of this tensorbacked type cannot be determined.");
+        }
+        return ImmutableSet.copyOf(dimensionAnnotation.value());
+    }
 
-	/**
-	 * Creates an instance of a class backed by a tensor.
-	 * 
-	 * @param tensorBackedClass
-	 *            the type of the class for which to create an instance.
-	 * @param tensor
-	 *            the tensor to back the instance
-	 * @return a new instance of the given class, backed by the given tensor
-	 */
-	public static <V, T extends Tensorbacked<V>> T createBackedByTensor(Class<T> tensorBackedClass, Tensor<V> tensor) {
-		return instantiatorFor(tensorBackedClass).ofType(CONSTRUCTOR).withArgumentType(Tensor.class).create(tensor);
-	}
+    /**
+     * Creates an instance of a class backed by a tensor.
+     * 
+     * @param tensorBackedClass the type of the class for which to create an instance.
+     * @param tensor the tensor to back the instance
+     * @return a new instance of the given class, backed by the given tensor
+     */
+    public static <V, T extends Tensorbacked<V>> T createBackedByTensor(Class<T> tensorBackedClass, Tensor<V> tensor) {
+        return instantiatorFor(tensorBackedClass).ofType(CONSTRUCTOR).withArgumentType(Tensor.class).create(tensor);
+    }
 
-	static <T extends Tensorbacked<V>, V> void verifyDimensions(Class<T> tensorBackedClass, Tensor<V> tensor) {
-		Set<Class<?>> targetDimensions = dimensionsOf(tensorBackedClass);
-		Set<Class<?>> tensorDimensions = tensor.shape().dimensionSet();
+    static <T extends Tensorbacked<V>, V> void verifyDimensions(Class<T> tensorBackedClass, Tensor<V> tensor) {
+        Set<Class<?>> targetDimensions = dimensionsOf(tensorBackedClass);
+        Set<Class<?>> tensorDimensions = tensor.shape().dimensionSet();
 
-		if (!Positions.areDimensionsConsistent(targetDimensions, tensorDimensions)) {
-			throw new IllegalArgumentException("Dimensions of target class (" + targetDimensions
-					+ ") do not match dimensions of given tensor (" + tensorDimensions + "). Cannot create object.");
-		}
-	}
+        if (!Positions.areDimensionsConsistent(targetDimensions, tensorDimensions)) {
+            throw new IllegalArgumentException("Dimensions of target class (" + targetDimensions
+                    + ") do not match dimensions of given tensor (" + tensorDimensions + "). Cannot create object.");
+        }
+    }
 
-	public static <S> Iterable<Tensor<S>> tensorsOf(Iterable<? extends Tensorbacked<S>> tensorbackeds) {
-		List<Tensor<S>> tensors = new ArrayList<>();
-		for (Tensorbacked<S> tensorbacked : tensorbackeds) {
-			tensors.add(tensorbacked.tensor());
-		}
-		return tensors;
-	}
+    public static <S> Iterable<Tensor<S>> tensorsOf(Iterable<? extends Tensorbacked<S>> tensorbackeds) {
+        List<Tensor<S>> tensors = new ArrayList<>();
+        for (Tensorbacked<S> tensorbacked : tensorbackeds) {
+            tensors.add(tensorbacked.tensor());
+        }
+        return tensors;
+    }
 
-	public static final <TB extends Tensorbacked<?>> Iterable<Shape> shapesOf(Iterable<TB> tensorbackeds) {
-		return Streams.stream(tensorbackeds).map(tb -> tb.tensor().shape()).collect(toList());
-	}
+    public static final <TB extends Tensorbacked<?>> Iterable<Shape> shapesOf(Iterable<TB> tensorbackeds) {
+        return Streams.stream(tensorbackeds).map(tb -> tb.tensor().shape()).collect(toList());
+    }
 
-	@SuppressWarnings("unchecked")
-	public static final <TB extends Tensorbacked<?>> Class<TB> classOf(TB tensorBacked) {
-		return (Class<TB>) tensorBacked.getClass();
-	}
+    @SuppressWarnings("unchecked")
+    public static final <TB extends Tensorbacked<?>> Class<TB> classOf(TB tensorBacked) {
+        return (Class<TB>) tensorBacked.getClass();
+    }
 
 }

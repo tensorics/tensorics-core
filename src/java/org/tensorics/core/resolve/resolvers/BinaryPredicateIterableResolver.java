@@ -27,27 +27,25 @@ import org.tensorics.core.math.predicates.BinaryPredicate;
 import org.tensorics.core.tree.domain.ResolvingContext;
 
 /**
- * A resolver that takes a predicate of Iterable whose two operands are resolved
- * and resolves it into a result.
+ * A resolver that takes a predicate of Iterable whose two operands are resolved and resolves it into a result.
  *
- * @param <T>
- *            the input type of the expression
+ * @param <T> the input type of the expression
  * @author caguiler
  */
 public class BinaryPredicateIterableResolver<T>
-		extends AbstractResolver<Boolean, BinaryPredicateIterableExpression<T>> {
+        extends AbstractResolver<Boolean, BinaryPredicateIterableExpression<T>> {
 
-	@Override
-	public boolean canResolve(BinaryPredicateIterableExpression<T> expression, ResolvingContext context) {
-		return context.resolves(expression.getLeft()) && context.resolves(expression.getRight());
-	}
+    @Override
+    public boolean canResolve(BinaryPredicateIterableExpression<T> expression, ResolvingContext context) {
+        return context.resolves(expression.getLeft()) && context.resolves(expression.getRight());
+    }
 
-	@Override
-	public Boolean resolve(BinaryPredicateIterableExpression<T> expression, ResolvingContext context) {
-		Iterable<T> left = context.resolvedValueOf(expression.getLeft());
-		T right = context.resolvedValueOf(expression.getRight());
-		BinaryPredicate<T> predicate = expression.getPredicate();
-		return StreamSupport.stream(left.spliterator(), true)
-				.allMatch(leftElement -> predicate.test(leftElement, right));
-	}
+    @Override
+    public Boolean resolve(BinaryPredicateIterableExpression<T> expression, ResolvingContext context) {
+        Iterable<T> left = context.resolvedValueOf(expression.getLeft());
+        T right = context.resolvedValueOf(expression.getRight());
+        BinaryPredicate<T> predicate = expression.getPredicate();
+        return StreamSupport.stream(left.spliterator(), true)
+                .allMatch(leftElement -> predicate.test(leftElement, right));
+    }
 }

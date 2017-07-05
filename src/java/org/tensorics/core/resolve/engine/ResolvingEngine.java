@@ -28,20 +28,19 @@ import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvingContext;
 
 /**
- * Can resolve deferred values. It has a very 'weak' interface, thus, basically
- * any deferred object can be passed in. This is useful for high level
- * interfaces.
+ * Can resolve deferred values. It has a very 'weak' interface, thus, basically any deferred object can be passed in.
+ * This is useful for high level interfaces.
  * 
  * @author kfuchsbe
  */
 public interface ResolvingEngine {
 
-	<R, E extends Expression<R>> R resolve(E deferred, ResolvingOption... options);
+    <R, E extends Expression<R>> R resolve(E deferred, ResolvingOption... options);
 
-	<R, E extends Expression<R>> R resolve(E deferred, ResolvingContext initialContext, ResolvingOption... options);
+    <R, E extends Expression<R>> R resolve(E deferred, ResolvingContext initialContext, ResolvingOption... options);
 
-	<R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode, ResolvingOption... options);
+    <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode, ResolvingOption... options);
 
-	<R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
-			ResolvingContext initialContext, ResolvingOption... options);
+    <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
+            ResolvingContext initialContext, ResolvingOption... options);
 }

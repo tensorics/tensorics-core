@@ -31,10 +31,10 @@ import org.tensorics.core.units.Unit;
  */
 public interface Quantified {
 
-	/**
-	 * Retrieves the unit of the entity
-	 * 
-	 * @return the unit of the quantified entity.
-	 */
-	Unit unit();
+    /**
+     * Retrieves the unit of the entity
+     * 
+     * @return the unit of the quantified entity.
+     */
+    Unit unit();
 }

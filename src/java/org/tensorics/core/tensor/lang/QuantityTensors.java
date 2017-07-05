@@ -40,13 +40,12 @@ import com.google.common.base.Optional;
  */
 public final class QuantityTensors {
 
-	/**
-	 * private constructor to avoid instantiation
-	 */
-	private QuantityTensors() {
-		/* only static methods */
-	}
-
+    /**
+     * private constructor to avoid instantiation
+     */
+    private QuantityTensors() {
+        /* only static methods */
+    }
 
     public static <S> Tensor<S> valuesOf(Tensor<QuantifiedValue<S>> tensor) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
@@ -92,11 +91,10 @@ public final class QuantityTensors {
         }
         return builder.build();
     }
-    
+
     public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
         /*
-         * XXX this is nasty! Even an empty tensor should have a correct unit
-         * ...probably?
+         * XXX this is nasty! Even an empty tensor should have a correct unit ...probably?
          */
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             return entry.getValue().unit();

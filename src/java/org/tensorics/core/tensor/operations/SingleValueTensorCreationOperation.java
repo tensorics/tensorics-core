@@ -24,17 +24,15 @@ package org.tensorics.core.tensor.operations;
 import org.tensorics.core.tensor.Shape;
 
 /**
- * Uses one value and a given shape to create a tensor, which has the same
- * values at all positions.
+ * Uses one value and a given shape to create a tensor, which has the same values at all positions.
  * 
  * @author kaifox
- * @param <V>
- *            the type of the elements of the tensor to be created
+ * @param <V> the type of the elements of the tensor to be created
  */
 public class SingleValueTensorCreationOperation<V> extends FunctionTensorCreationOperation<V> {
 
-	public SingleValueTensorCreationOperation(Shape shape, final V value) {
-		super(shape, PositionFunctions.constant(value));
-	}
+    public SingleValueTensorCreationOperation(Shape shape, final V value) {
+        super(shape, PositionFunctions.constant(value));
+    }
 
 }

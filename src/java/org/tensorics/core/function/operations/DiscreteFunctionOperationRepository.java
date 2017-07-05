@@ -28,49 +28,44 @@ import org.tensorics.core.commons.options.Environment;
 
 /**
  * <p>
- * Contains instances of operations on discrete functions, based on an
- * environment and with a conversion.
+ * Contains instances of operations on discrete functions, based on an environment and with a conversion.
  * <p>
- * The main purpose is to be able to re-use the instances of the operations, in
- * order to avoid to have to re-create them all the time.
+ * The main purpose is to be able to re-use the instances of the operations, in order to avoid to have to re-create them
+ * all the time.
  * 
  * @author caguiler
- * @param <X>
- *            the type of the independent variable (input) of the discrete
- *            function
- * @param <Y>
- *            the type of the dependent variable (output)of the discrete
- *            function and type of the elements of the environment on which the
- *            operations are based.
+ * @param <X> the type of the independent variable (input) of the discrete function
+ * @param <Y> the type of the dependent variable (output)of the discrete function and type of the elements of the
+ *            environment on which the operations are based.
  */
 public class DiscreteFunctionOperationRepository<X, Y> {
 
-	private final DiscreteFunctionAddition<X, Y> addition;
-	private final DiscreteFunctionSubtraction<X, Y> subtraction;
-	private final DiscreteFunctionMultiplication<X, Y> multiplication;
-	private final DiscreteFunctionDivision<X, Y> division;
+    private final DiscreteFunctionAddition<X, Y> addition;
+    private final DiscreteFunctionSubtraction<X, Y> subtraction;
+    private final DiscreteFunctionMultiplication<X, Y> multiplication;
+    private final DiscreteFunctionDivision<X, Y> division;
 
-	public DiscreteFunctionOperationRepository(Environment<Y> environment, Conversion<X, Y> conversion,
-			Comparator<X> comparator) {
-		addition = new DiscreteFunctionAddition<>(environment, conversion, comparator);
-		subtraction = new DiscreteFunctionSubtraction<>(environment, conversion, comparator);
-		multiplication = new DiscreteFunctionMultiplication<>(environment, conversion, comparator);
-		division = new DiscreteFunctionDivision<>(environment, conversion, comparator);
-	}
+    public DiscreteFunctionOperationRepository(Environment<Y> environment, Conversion<X, Y> conversion,
+            Comparator<X> comparator) {
+        addition = new DiscreteFunctionAddition<>(environment, conversion, comparator);
+        subtraction = new DiscreteFunctionSubtraction<>(environment, conversion, comparator);
+        multiplication = new DiscreteFunctionMultiplication<>(environment, conversion, comparator);
+        division = new DiscreteFunctionDivision<>(environment, conversion, comparator);
+    }
 
-	public DiscreteFunctionAddition<X, Y> addition() {
-		return addition;
-	}
+    public DiscreteFunctionAddition<X, Y> addition() {
+        return addition;
+    }
 
-	public DiscreteFunctionSubtraction<X, Y> subtraction() {
-		return subtraction;
-	}
+    public DiscreteFunctionSubtraction<X, Y> subtraction() {
+        return subtraction;
+    }
 
-	public DiscreteFunctionMultiplication<X, Y> multiplication() {
-		return multiplication;
-	}
+    public DiscreteFunctionMultiplication<X, Y> multiplication() {
+        return multiplication;
+    }
 
-	public DiscreteFunctionDivision<X, Y> division() {
-		return division;
-	}
+    public DiscreteFunctionDivision<X, Y> division() {
+        return division;
+    }
 }

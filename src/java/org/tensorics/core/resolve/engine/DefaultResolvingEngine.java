@@ -34,85 +34,83 @@ import org.tensorics.core.tree.domain.ResolvingContext;
 import com.google.common.base.Preconditions;
 
 /**
- * Processes the expression tree in a way, that it tries to give the biggest
- * possible chunks to a resolver.
+ * Processes the expression tree in a way, that it tries to give the biggest possible chunks to a resolver.
  *
  * @author kfuchsbe
  */
 public class DefaultResolvingEngine implements ResolvingEngine {
 
-	/**
-	 * Limits the main loop to a max number of iterations. This is to avoid
-	 * infinite loops. Infinite loops can happen, e.g. if some equals methods of
-	 * some classes are not well defined or if some nodes cannot be resolved.
-	 */
-	private static final int EMERGENCY_ABORT_LIMIT = 1000;
+    /**
+     * Limits the main loop to a max number of iterations. This is to avoid infinite loops. Infinite loops can happen,
+     * e.g. if some equals methods of some classes are not well defined or if some nodes cannot be resolved.
+     */
+    private static final int EMERGENCY_ABORT_LIMIT = 1000;
 
-	private ResolverRepository resolverRepository;
+    private ResolverRepository resolverRepository;
 
-	@Override
-	public <R, E extends Expression<R>> R resolve(E rootNode, ResolvingOption... options) {
-		return resolve(rootNode, Contexts.newResolvingContext(), options);
-	}
+    @Override
+    public <R, E extends Expression<R>> R resolve(E rootNode, ResolvingOption... options) {
+        return resolve(rootNode, Contexts.newResolvingContext(), options);
+    }
 
-	@Override
-	public <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
-			ResolvingOption... options) {
-		return resolveDetailed(rootNode, Contexts.newResolvingContext(), options);
-	}
+    @Override
+    public <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
+            ResolvingOption... options) {
+        return resolveDetailed(rootNode, Contexts.newResolvingContext(), options);
+    }
 
-	@Override
-	public <R, E extends Expression<R>> R resolve(E rootNode, ResolvingContext initialContext,
-			ResolvingOption... options) {
-		ResolvingContext fullContext = resolveToContext(rootNode, initialContext, options);
-		return fullContext.resolvedValueOf(rootNode);
-	}
+    @Override
+    public <R, E extends Expression<R>> R resolve(E rootNode, ResolvingContext initialContext,
+            ResolvingOption... options) {
+        ResolvingContext fullContext = resolveToContext(rootNode, initialContext, options);
+        return fullContext.resolvedValueOf(rootNode);
+    }
 
-	@Override
-	public <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
-			ResolvingContext initialContext, ResolvingOption... options) {
-		ResolvingContext fullContext = resolveToContext(rootNode, initialContext, options);
-		return DetailedExpressionResult.of(rootNode, fullContext.resolvedValueOf(rootNode), fullContext);
-	}
+    @Override
+    public <R, E extends Expression<R>> DetailedExpressionResult<R, E> resolveDetailed(E rootNode,
+            ResolvingContext initialContext, ResolvingOption... options) {
+        ResolvingContext fullContext = resolveToContext(rootNode, initialContext, options);
+        return DetailedExpressionResult.of(rootNode, fullContext.resolvedValueOf(rootNode), fullContext);
+    }
 
-	private <R> ResolvingContext resolveToContext(Expression<R> rootNode, ResolvingContext initialContext,
-			ResolvingOption... options) {
-		Preconditions.checkNotNull(resolverRepository, "resolverRepository must not be null.");
-		Preconditions.checkNotNull(initialContext, "initialContext must not be null.");
-		int count = 0;
-		EditableResolvingContext fullContext = Contexts.newResolvingContext();
-		fullContext.putAllNew(initialContext);
+    private <R> ResolvingContext resolveToContext(Expression<R> rootNode, ResolvingContext initialContext,
+            ResolvingOption... options) {
+        Preconditions.checkNotNull(resolverRepository, "resolverRepository must not be null.");
+        Preconditions.checkNotNull(initialContext, "initialContext must not be null.");
+        int count = 0;
+        EditableResolvingContext fullContext = Contexts.newResolvingContext();
+        fullContext.putAllNew(initialContext);
 
-		OptionRegistry<ResolvingOption> optionsRegistry = ResolvingOptions.createRegistryWithDefaultsExcept(options);
-		while (!(fullContext.resolves(rootNode))) {
-			throwIfLimitReached(count);
-			Dispatcher processor = new BiggestSubTreeDispatcher(resolverRepository);
-			ResolvingContext resolvedContext = processor.processTree(rootNode, fullContext, optionsRegistry);
-			throwIfNoContexts(resolvedContext);
+        OptionRegistry<ResolvingOption> optionsRegistry = ResolvingOptions.createRegistryWithDefaultsExcept(options);
+        while (!(fullContext.resolves(rootNode))) {
+            throwIfLimitReached(count);
+            Dispatcher processor = new BiggestSubTreeDispatcher(resolverRepository);
+            ResolvingContext resolvedContext = processor.processTree(rootNode, fullContext, optionsRegistry);
+            throwIfNoContexts(resolvedContext);
 
-			int oldContextCount = fullContext.size();
-			fullContext.putAllNew(resolvedContext);
-			if (!(fullContext.size() > oldContextCount)) {
-				throw new ResolvedContextDidNotGrowException();
-			}
-			count++;
-		}
-		return fullContext;
-	}
+            int oldContextCount = fullContext.size();
+            fullContext.putAllNew(resolvedContext);
+            if (!(fullContext.size() > oldContextCount)) {
+                throw new ResolvedContextDidNotGrowException();
+            }
+            count++;
+        }
+        return fullContext;
+    }
 
-	private void throwIfNoContexts(ResolvingContext resolvedContext) {
-		if (resolvedContext == null) {
-			throw new ResolvingException("No valid new context returned. Processing aborted.");
-		}
-	}
+    private void throwIfNoContexts(ResolvingContext resolvedContext) {
+        if (resolvedContext == null) {
+            throw new ResolvingException("No valid new context returned. Processing aborted.");
+        }
+    }
 
-	private void throwIfLimitReached(int count) {
-		if (count > EMERGENCY_ABORT_LIMIT) {
-			throw new EmergencyAbortLimitReachedException(EMERGENCY_ABORT_LIMIT);
-		}
-	}
+    private void throwIfLimitReached(int count) {
+        if (count > EMERGENCY_ABORT_LIMIT) {
+            throw new EmergencyAbortLimitReachedException(EMERGENCY_ABORT_LIMIT);
+        }
+    }
 
-	public void setResolverRepository(ResolverRepository resolverRepository) {
-		this.resolverRepository = resolverRepository;
-	}
+    public void setResolverRepository(ResolverRepository resolverRepository) {
+        this.resolverRepository = resolverRepository;
+    }
 }

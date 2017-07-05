@@ -31,81 +31,78 @@ import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
 /**
- * Provides starting methods for tensoric language expressions that operate on
- * quantities.
+ * Provides starting methods for tensoric language expressions that operate on quantities.
  * 
  * @author kfuchsbe
- * @param <V>
- *            the type of the scalar values (elements of the field which is used
- *            for the operations)
+ * @param <V> the type of the scalar values (elements of the field which is used for the operations)
  */
 public class QuantitySupport<V> {
 
-	private final QuantityOperationRepository<V> operationRepository;
-	private final QuantityPedicateRepository<V> predicateRepository;
+    private final QuantityOperationRepository<V> operationRepository;
+    private final QuantityPedicateRepository<V> predicateRepository;
 
-	protected QuantitySupport(QuantityEnvironment<V> environment) {
-		this.operationRepository = new QuantityOperationRepository<>(environment);
-		this.predicateRepository = new QuantityPedicateRepository<>(environment);
-	}
+    protected QuantitySupport(QuantityEnvironment<V> environment) {
+        this.operationRepository = new QuantityOperationRepository<>(environment);
+        this.predicateRepository = new QuantityPedicateRepository<>(environment);
+    }
 
-	public QuantifiedValue<V> valueOf(V value, Unit unit) {
-		return Tensorics.quantityOf(value, unit);
-	}
+    public QuantifiedValue<V> valueOf(V value, Unit unit) {
+        return Tensorics.quantityOf(value, unit);
+    }
 
-	public QuantifiedValue<V> valueOf(V value, javax.measure.unit.Unit<?> unit) {
-		return valueOf(value, JScienceUnit.of(unit));
-	}
+    public QuantifiedValue<V> valueOf(V value, javax.measure.unit.Unit<?> unit) {
+        return valueOf(value, JScienceUnit.of(unit));
+    }
 
-	public OngoingQuantifiedScalarOperation<V> calculate(V value, javax.measure.unit.Unit<?> unit) {
-		return calculate(valueOf(value, unit));
-	}
+    public OngoingQuantifiedScalarOperation<V> calculate(V value, javax.measure.unit.Unit<?> unit) {
+        return calculate(valueOf(value, unit));
+    }
 
-	public OngoingQuantifiedScalarOperation<V> calculate(QuantifiedValue<V> scalar) {
-		return new OngoingQuantifiedScalarOperation<>(scalar, operationRepository);
-	}
+    public OngoingQuantifiedScalarOperation<V> calculate(QuantifiedValue<V> scalar) {
+        return new OngoingQuantifiedScalarOperation<>(scalar, operationRepository);
+    }
 
-	public QuantifiedValue<V> negativeOf(QuantifiedValue<V> element) {
-		return operationRepository.additiveInversion().perform(element);
-	}
+    public QuantifiedValue<V> negativeOf(QuantifiedValue<V> element) {
+        return operationRepository.additiveInversion().perform(element);
+    }
 
-	public QuantifiedValue<V> inverseOf(QuantifiedValue<V> element) {
-		return operationRepository.multiplicativeInversion().perform(element);
-	}
+    public QuantifiedValue<V> inverseOf(QuantifiedValue<V> element) {
+        return operationRepository.multiplicativeInversion().perform(element);
+    }
 
-	public QuantifiedValue<V> absoluteValueOf(QuantifiedValue<V> element) {
-		return operationRepository.absoluteValue().perform(element);
-	}
+    public QuantifiedValue<V> absoluteValueOf(QuantifiedValue<V> element) {
+        return operationRepository.absoluteValue().perform(element);
+    }
 
-	public QuantifiedValue<V> one() {
-		return operationRepository.one();
-	}
+    public QuantifiedValue<V> one() {
+        return operationRepository.one();
+    }
 
-	public QuantifiedValue<V> zero() {
-		return operationRepository.zero();
-	}
+    public QuantifiedValue<V> zero() {
+        return operationRepository.zero();
+    }
 
-	public QuantifiedValue<V> two() {
-		return operationRepository.two();
-	}
+    public QuantifiedValue<V> two() {
+        return operationRepository.two();
+    }
 
-	public OngoingQuantifiedScalarConversion<V> convert(QuantifiedValue<V> value) {
-		return new OngoingQuantifiedScalarConversion<>(value, operationRepository.environment().quantification());
-	}
+    public OngoingQuantifiedScalarConversion<V> convert(QuantifiedValue<V> value) {
+        return new OngoingQuantifiedScalarConversion<>(value, operationRepository.environment().quantification());
+    }
 
-	public OngoingQuantityValueExtraction<V> valueOf(QuantifiedValue<V> quantity) {
-		return new OngoingQuantityValueExtraction<>(quantity, operationRepository);
-	}
+    public OngoingQuantityValueExtraction<V> valueOf(QuantifiedValue<V> quantity) {
+        return new OngoingQuantityValueExtraction<>(quantity, operationRepository);
+    }
 
-	protected QuantityOperationRepository<V> operationRepository() {
-		return operationRepository;
-	}
+    protected QuantityOperationRepository<V> operationRepository() {
+        return operationRepository;
+    }
 
-	protected QuantityPedicateRepository<V> predicateRepository() {
-		return predicateRepository;
-	}
+    protected QuantityPedicateRepository<V> predicateRepository() {
+        return predicateRepository;
+    }
 
-	public OngoingQuantifiedScalarBinaryPredicate<V> testIf(QuantifiedValue<V> left) {
-		return new OngoingQuantifiedScalarBinaryPredicate<>(predicateRepository, left);
-	}
+    public OngoingQuantifiedScalarBinaryPredicate<V> testIf(QuantifiedValue<V> left) {
+        return new OngoingQuantifiedScalarBinaryPredicate<>(predicateRepository, left);
+    }
 }

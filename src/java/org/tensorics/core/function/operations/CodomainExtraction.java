@@ -28,24 +28,21 @@ import org.tensorics.core.function.DiscreteFunction;
 import com.google.common.base.Preconditions;
 
 /**
- * A conversion that takes a {@link DiscreteFunction} and produces an iterable
- * that contains the values of its codomain. See
- * <a href="https://en.wikipedia.org/wiki/Codomain">Codomain</a>
+ * A conversion that takes a {@link DiscreteFunction} and produces an iterable that contains the values of its codomain.
+ * See <a href="https://en.wikipedia.org/wiki/Codomain">Codomain</a>
  *
- * @param <Y>
- *            the type of the dependent variable (output)of the discrete
- *            function
+ * @param <Y> the type of the dependent variable (output)of the discrete function
  * @author caguiler
  */
 public class CodomainExtraction<Y> implements Conversion<DiscreteFunction<?, Y>, Iterable<Y>> {
 
-	@Override
-	public Iterable<Y> apply(DiscreteFunction<?, Y> inputfunction) {
-		return yValuesOf(inputfunction);
-	}
+    @Override
+    public Iterable<Y> apply(DiscreteFunction<?, Y> inputfunction) {
+        return yValuesOf(inputfunction);
+    }
 
-	private static <X, Y> Collection<Y> yValuesOf(DiscreteFunction<X, Y> function) {
-		Preconditions.checkNotNull(function, "function cannot be null!");
-		return function.definedXValues().stream().map(function::apply).collect(Collectors.toList());
-	}
+    private static <X, Y> Collection<Y> yValuesOf(DiscreteFunction<X, Y> function) {
+        Preconditions.checkNotNull(function, "function cannot be null!");
+        return function.definedXValues().stream().map(function::apply).collect(Collectors.toList());
+    }
 }

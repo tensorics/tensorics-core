@@ -28,27 +28,27 @@ import org.tensorics.core.tensor.Position;
 
 public final class PositionFunctions {
 
-	private PositionFunctions() {
+    private PositionFunctions() {
 
-	}
+    }
 
-	public static final <V> Function<Position, V> constant(final V value) {
-		return new Function<Position, V>() {
+    public static final <V> Function<Position, V> constant(final V value) {
+        return new Function<Position, V>() {
 
-			@Override
-			public V apply(Position position) {
-				return value;
-			}
-		};
-	}
+            @Override
+            public V apply(Position position) {
+                return value;
+            }
+        };
+    }
 
-	public static final <V> Function<Position, V> forSupplier(final Supplier<V> supplier) {
-		return new Function<Position, V>() {
+    public static final <V> Function<Position, V> forSupplier(final Supplier<V> supplier) {
+        return new Function<Position, V>() {
 
-			@Override
-			public V apply(Position position) {
-				return supplier.get();
-			}
-		};
-	}
+            @Override
+            public V apply(Position position) {
+                return supplier.get();
+            }
+        };
+    }
 }

@@ -25,14 +25,13 @@ package org.tensorics.core.quantity.options;
 import org.tensorics.core.commons.options.ManipulationOption;
 
 /**
- * {@link ManipulationOption} to allow setting a confidence level for
- * statistical tests.
+ * {@link ManipulationOption} to allow setting a confidence level for statistical tests.
  * 
  * @author mihostet
  * @param <S>
  */
 public interface ConfidenceLevel<S> extends ManipulationOption {
 
-	S confidenceLevel();
+    S confidenceLevel();
 
 }

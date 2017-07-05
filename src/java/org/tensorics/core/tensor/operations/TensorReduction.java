@@ -36,36 +36,33 @@ import org.tensorics.core.tensor.Tensor;
  * The operation which describes the reduction of a tensor in one direction.
  * 
  * @author kfuchsbe
- * @param <C>
- *            the dimension (direction, type of coordinate) in which the tensor
- *            will be reduced
- * @param <E>
- *            the type of the elements of the tensor
+ * @param <C> the dimension (direction, type of coordinate) in which the tensor will be reduced
+ * @param <E> the type of the elements of the tensor
  */
 public class TensorReduction<C, E, R> implements Conversion<Tensor<E>, Tensor<R>> {
 
-	private final Class<? extends C> direction;
-	private final ReductionStrategy<? super C, E, R> reductionStrategy;
+    private final Class<? extends C> direction;
+    private final ReductionStrategy<? super C, E, R> reductionStrategy;
 
-	public TensorReduction(Class<? extends C> direction, ReductionStrategy<? super C, E, R> strategy) {
-		super();
-		this.direction = direction;
-		this.reductionStrategy = strategy;
-	}
+    public TensorReduction(Class<? extends C> direction, ReductionStrategy<? super C, E, R> strategy) {
+        super();
+        this.direction = direction;
+        this.reductionStrategy = strategy;
+    }
 
-	@Override
-	public Tensor<R> apply(Tensor<E> value) {
-		Tensor<Map<C, E>> mapped = TensorInternals.mapOut(value).inDirectionOf(direction);
+    @Override
+    public Tensor<R> apply(Tensor<E> value) {
+        Tensor<Map<C, E>> mapped = TensorInternals.mapOut(value).inDirectionOf(direction);
 
-		Builder<R> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());
-		builder.context(reductionStrategy.context(value.context()));
-		for (Entry<Position, Map<C, E>> entry : TensorInternals.mapFrom(mapped).entrySet()) {
-			R reducedValue = reductionStrategy.reduce(entry.getValue(), entry.getKey());
-			if (reducedValue != null) {
-				builder.put(entry.getKey(), reducedValue);
-			}
-		}
-		return builder.build();
-	}
+        Builder<R> builder = ImmutableTensor.builder(mapped.shape().dimensionSet());
+        builder.context(reductionStrategy.context(value.context()));
+        for (Entry<Position, Map<C, E>> entry : TensorInternals.mapFrom(mapped).entrySet()) {
+            R reducedValue = reductionStrategy.reduce(entry.getValue(), entry.getKey());
+            if (reducedValue != null) {
+                builder.put(entry.getKey(), reducedValue);
+            }
+        }
+        return builder.build();
+    }
 
 }

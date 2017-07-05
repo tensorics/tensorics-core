@@ -23,5 +23,6 @@
 package org.tensorics.core.tensorbacked.orbit.coordinates;
 
 public enum Beam implements OrbitCoordinate {
-	B1, B2;
+    B1,
+    B2;
 }

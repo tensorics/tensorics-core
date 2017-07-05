@@ -28,9 +28,9 @@ import org.junit.Test;
 
 public class ResolverRepositoriesTest {
 
-	@Test
-	public void verifyUtilityClass() {
-		assertUtilityClass(Resolvers.class);
-	}
+    @Test
+    public void verifyUtilityClass() {
+        assertUtilityClass(Resolvers.class);
+    }
 
 }

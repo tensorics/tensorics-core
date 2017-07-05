@@ -43,28 +43,28 @@ import org.tensorics.core.tree.domain.Expression;
  */
 public final class TensorExpressions {
 
-	/**
-	 * Private constructor to avoid instantiation
-	 */
-	private TensorExpressions() {
-		/* Only static methods */
-	}
+    /**
+     * Private constructor to avoid instantiation
+     */
+    private TensorExpressions() {
+        /* Only static methods */
+    }
 
-	public static <V> Expression<Tensor<V>> elementwise(UnaryOperation<V> operation, Expression<Tensor<V>> tensor) {
-		return new UnaryOperationExpression<>(new ElementUnaryOperation<V>(operation), tensor);
-	}
+    public static <V> Expression<Tensor<V>> elementwise(UnaryOperation<V> operation, Expression<Tensor<V>> tensor) {
+        return new UnaryOperationExpression<>(new ElementUnaryOperation<V>(operation), tensor);
+    }
 
-	public static <V> CreationOperationExpression<Tensor<V>> creationOfShapeValue(Shape shape, V value) {
-		return new CreationOperationExpression<>(new SingleValueTensorCreationOperation<>(shape, value));
-	}
+    public static <V> CreationOperationExpression<Tensor<V>> creationOfShapeValue(Shape shape, V value) {
+        return new CreationOperationExpression<>(new SingleValueTensorCreationOperation<>(shape, value));
+    }
 
-	/* Not nice too have four parameters here, could be refactored */
-	public static <V> Expression<Tensor<V>> elementwise(BinaryOperation<V> operation, // NOSONAR
-																						// (too
-																						// many
-																						// parameters)
-			Expression<Tensor<V>> leftTensor, Expression<Tensor<V>> right, OptionRegistry<ManipulationOption> options) {
-		ElementBinaryOperation<V> elementQuantifiedBinaryOperation = new ElementBinaryOperation<>(operation, options);
-		return new BinaryOperationExpression<>(elementQuantifiedBinaryOperation, leftTensor, right);
-	}
+    /* Not nice too have four parameters here, could be refactored */
+    public static <V> Expression<Tensor<V>> elementwise(BinaryOperation<V> operation, // NOSONAR
+                                                                                      // (too
+                                                                                      // many
+                                                                                      // parameters)
+            Expression<Tensor<V>> leftTensor, Expression<Tensor<V>> right, OptionRegistry<ManipulationOption> options) {
+        ElementBinaryOperation<V> elementQuantifiedBinaryOperation = new ElementBinaryOperation<>(operation, options);
+        return new BinaryOperationExpression<>(elementQuantifiedBinaryOperation, leftTensor, right);
+    }
 }

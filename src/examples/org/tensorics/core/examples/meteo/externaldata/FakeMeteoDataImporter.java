@@ -26,17 +26,17 @@ import com.google.common.collect.ImmutableSet;
  */
 public final class FakeMeteoDataImporter {
 
-	private FakeMeteoDataImporter() {
-		/* only static classes */
-	}
+    private FakeMeteoDataImporter() {
+        /* only static classes */
+    }
 
-	public static Tensor<QuantifiedValue<Double>> importFromNow() {
-		Set<Class<?>> dimensions = ImmutableSet.of(Longitude.class, Latitude.class);
-		Builder<QuantifiedValue<Double>> tensorBuilder = ImmutableTensor.<QuantifiedValue<Double>>builder(dimensions);
-		tensorBuilder.context(Position.of(ImmutableSet.<MeteoCoordinate>of(new Time())));
-		Random rand = new Random();
-		for (int x = 0; x < 10; x++) {
-			for (int y = 0; y < 10; y++) {
+    public static Tensor<QuantifiedValue<Double>> importFromNow() {
+        Set<Class<?>> dimensions = ImmutableSet.of(Longitude.class, Latitude.class);
+        Builder<QuantifiedValue<Double>> tensorBuilder = ImmutableTensor.<QuantifiedValue<Double>> builder(dimensions);
+        tensorBuilder.context(Position.of(ImmutableSet.<MeteoCoordinate> of(new Time())));
+        Random rand = new Random();
+        for (int x = 0; x < 10; x++) {
+            for (int y = 0; y < 10; y++) {
 
                 QuantifiedValue<Double> entryValue = ImmutableQuantifiedValue.<Double> of(rand.nextDouble(),
                         JScienceUnit.of(SI.CELSIUS));
@@ -62,10 +62,9 @@ public final class FakeMeteoDataImporter {
         return tensorBuilder.build();
     }
 
-	public static Tensor<QuantifiedValue<Double>> importFromPastCorrupted() {
-		Set<Class<?>> dimensions = ImmutableSet.of(Time.class, Longitude.class, Latitude.class);
-		Builder<QuantifiedValue<Double>> tensorBuilder = ImmutableTensor.<QuantifiedValue<Double>>builder(dimensions);
-
+    public static Tensor<QuantifiedValue<Double>> importFromPastCorrupted() {
+        Set<Class<?>> dimensions = ImmutableSet.of(Time.class, Longitude.class, Latitude.class);
+        Builder<QuantifiedValue<Double>> tensorBuilder = ImmutableTensor.<QuantifiedValue<Double>> builder(dimensions);
 
         Random rand = new Random();
         for (int x = 0; x < 10; x++) {
@@ -80,7 +79,7 @@ public final class FakeMeteoDataImporter {
             }
         }
 
-		return tensorBuilder.build();
-	}
+        return tensorBuilder.build();
+    }
 
 }

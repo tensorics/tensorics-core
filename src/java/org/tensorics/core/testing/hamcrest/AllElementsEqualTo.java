@@ -32,41 +32,39 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
 /**
- * This matcher checks, if all the values of the tensor are equal to one
- * specific value. This value might aswell be {@code null}, then then matcher
- * would return true, only if all the elements also would be {@code null}.
+ * This matcher checks, if all the values of the tensor are equal to one specific value. This value might aswell be
+ * {@code null}, then then matcher would return true, only if all the elements also would be {@code null}.
  * 
  * @author kfuchsbe
- * @param <V>
- *            the type of the values of the tensor
+ * @param <V> the type of the values of the tensor
  */
 public class AllElementsEqualTo<V> extends TypeSafeMatcher<Tensor<V>> {
 
-	private final V value;
+    private final V value;
 
-	AllElementsEqualTo(V value) {
-		this.value = value;
-	}
+    AllElementsEqualTo(V value) {
+        this.value = value;
+    }
 
-	@Factory
-	public static final <V> Matcher<Tensor<V>> allElementsEqualTo(V value) {
-		return new AllElementsEqualTo<>(value);
-	}
+    @Factory
+    public static final <V> Matcher<Tensor<V>> allElementsEqualTo(V value) {
+        return new AllElementsEqualTo<>(value);
+    }
 
-	@Override
-	public void describeTo(Description description) {
-		description.appendValue(value);
-		description.appendText(" for all tensor elements.");
-	}
+    @Override
+    public void describeTo(Description description) {
+        description.appendValue(value);
+        description.appendText(" for all tensor elements.");
+    }
 
-	@Override
-	protected boolean matchesSafely(Tensor<V> tensor) {
-		for (Position position : tensor.shape().positionSet()) {
-			if (!Objects.equals(value, tensor.get(position))) {
-				return false;
-			}
-		}
-		return true;
-	}
+    @Override
+    protected boolean matchesSafely(Tensor<V> tensor) {
+        for (Position position : tensor.shape().positionSet()) {
+            if (!Objects.equals(value, tensor.get(position))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

@@ -28,19 +28,15 @@ import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.function.DiscreteFunction;
 
 /**
- * The {@link AbstractDiscreteFunctionBinaryOperation} that describes the
- * addition of two {@link DiscreteFunction}s
+ * The {@link AbstractDiscreteFunctionBinaryOperation} that describes the addition of two {@link DiscreteFunction}s
  * 
  * @author caguiler
- * @param <X>
- *            the type of the independent variable in the
- *            {@link DiscreteFunction}.
- * @param <Y>
- *            the type of the dependent variable in the {@link DiscreteFunction}
+ * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
+ * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
 public class DiscreteFunctionAddition<X, Y> extends AbstractDiscreteFunctionBinaryOperation<X, Y> {
 
-	DiscreteFunctionAddition(Environment<Y> environment, Conversion<X, Y> conversion, Comparator<X> comparator) {
-		super(environment, conversion, environment.field().addition(), comparator);
-	}
+    DiscreteFunctionAddition(Environment<Y> environment, Conversion<X, Y> conversion, Comparator<X> comparator) {
+        super(environment, conversion, environment.field().addition(), comparator);
+    }
 }

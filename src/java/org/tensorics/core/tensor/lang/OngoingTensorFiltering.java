@@ -36,21 +36,20 @@ import com.google.common.collect.Range;
  * Part of a fluent clause to filter elements of a tensor.
  * 
  * @author kfuchsbe
- * @param <E>
- *            the type of the tensor elements
+ * @param <E> the type of the tensor elements
  */
 public class OngoingTensorFiltering<E> {
 
-	private final Tensor<E> tensor;
+    private final Tensor<E> tensor;
 
-	public OngoingTensorFiltering(Tensor<E> tensor) {
-		super();
-		this.tensor = tensor;
-	}
+    public OngoingTensorFiltering(Tensor<E> tensor) {
+        super();
+        this.tensor = tensor;
+    }
 
-	public <C extends Comparable<C>> Tensor<E> by(Class<C> coordinateClass, Range<C> coordinateRange) {
-		checkNotNull(coordinateClass, "coordinateClass must not be null");
-		checkNotNull(coordinateRange, "coordinateRange must not be null");
+    public <C extends Comparable<C>> Tensor<E> by(Class<C> coordinateClass, Range<C> coordinateRange) {
+        checkNotNull(coordinateClass, "coordinateClass must not be null");
+        checkNotNull(coordinateRange, "coordinateRange must not be null");
 
         ImmutableTensor.Builder<E> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());

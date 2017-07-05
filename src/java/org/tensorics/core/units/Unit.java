@@ -30,11 +30,9 @@ import java.io.Serializable;
  * @author kfuchsbe
  */
 public interface Unit extends Serializable {
-	/*
-	 * At the moment we do not expose anything here, since the only
-	 * implementation is backed by JScience and we anyway have to cast to the
-	 * implementation for unit-procesessing (which *should* be properly
-	 * encapsulated). At some point we will expose here useful methods (e.g. the
-	 * physical dimension?). Therefore this should stay.
-	 */
+    /*
+     * At the moment we do not expose anything here, since the only implementation is backed by JScience and we anyway
+     * have to cast to the implementation for unit-procesessing (which *should* be properly encapsulated). At some point
+     * we will expose here useful methods (e.g. the physical dimension?). Therefore this should stay.
+     */
 }

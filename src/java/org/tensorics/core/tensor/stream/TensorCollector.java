@@ -31,27 +31,24 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
 /**
- * An {@link AbstractTensoricCollector} implementation to produce a generic
- * tensor
+ * An {@link AbstractTensoricCollector} implementation to produce a generic tensor
  *
  * @author mihostet
- * @param <V>
- *            stream elements
- * @param <T>
- *            elements of the tensor (will build a {@code Tensor<T>})
+ * @param <V> stream elements
+ * @param <T> elements of the tensor (will build a {@code Tensor<T>})
  */
 public class TensorCollector<V, T> extends AbstractTensoricCollector<V, T, Tensor<T>> {
 
-	private final Set<Class<?>> dimensions;
+    private final Set<Class<?>> dimensions;
 
-	public TensorCollector(Set<Class<?>> dimensions, Function<V, Position> positionMapper, Function<V, T> valueMapper) {
-		super(positionMapper, valueMapper);
-		this.dimensions = dimensions;
-	}
+    public TensorCollector(Set<Class<?>> dimensions, Function<V, Position> positionMapper, Function<V, T> valueMapper) {
+        super(positionMapper, valueMapper);
+        this.dimensions = dimensions;
+    }
 
-	@Override
-	public Function<Map<Position, T>, Tensor<T>> finisher() {
-		return m -> Tensorics.fromMap(dimensions, m);
-	}
+    @Override
+    public Function<Map<Position, T>, Tensor<T>> finisher() {
+        return m -> Tensorics.fromMap(dimensions, m);
+    }
 
 }

@@ -46,57 +46,57 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
 
 public class DeferredTensorBackedCalculationTest {
 
-	private ResolvingEngine engine;
-	private MultibeamOrbit multibeamObject;
+    private ResolvingEngine engine;
+    private MultibeamOrbit multibeamObject;
 
-	@Before
-	public void setUp() {
-		engine = ResolvingEngines.defaultEngine();
-		multibeamObject = new MultibeamOrbit(prepareDoubleTensor(1.0));
-	}
+    @Before
+    public void setUp() {
+        engine = ResolvingEngines.defaultEngine();
+        multibeamObject = new MultibeamOrbit(prepareDoubleTensor(1.0));
+    }
 
-	@Test
-	public void testResolveResolvedExpression() {
-		assertEquals(multibeamObject, engine.resolve(ResolvedExpression.of(multibeamObject)));
-	}
+    @Test
+    public void testResolveResolvedExpression() {
+        assertEquals(multibeamObject, engine.resolve(ResolvedExpression.of(multibeamObject)));
+    }
 
-	@Ignore("TestForKajetan")
-	@Test
-	public void testMoreComplicatedScript() throws Exception {
-		MultibeamOrbit result = engine.resolve(new DoubleScript<MultibeamOrbit>() {
-			@Override
-			protected Expression<MultibeamOrbit> describe() {
-				// Expression<MultibeamOrbit> resolved =
-				// ResolvedExpression.of(multibeamObject);
-				// return calculateTB(resolved).elementDividedByT(resolved);
-				return null;
-			}
-		});
-		assertEquals(1, result.getValueAt("name 1", Beam.B1, Plane.H), 0.00001);
-	}
+    @Ignore("TestForKajetan")
+    @Test
+    public void testMoreComplicatedScript() throws Exception {
+        MultibeamOrbit result = engine.resolve(new DoubleScript<MultibeamOrbit>() {
+            @Override
+            protected Expression<MultibeamOrbit> describe() {
+                // Expression<MultibeamOrbit> resolved =
+                // ResolvedExpression.of(multibeamObject);
+                // return calculateTB(resolved).elementDividedByT(resolved);
+                return null;
+            }
+        });
+        assertEquals(1, result.getValueAt("name 1", Beam.B1, Plane.H), 0.00001);
+    }
 
-	private Tensor<Double> prepareDoubleTensor(double factor) {
-		Builder<Double> builder = ImmutableTensor.builder(getDimensions());
-		for (int i = 0; i < 10; i++) {
-			builder.put(at(createCoordinates(i) ), (factor * i));
-		}
-		return builder.build();
-	}
+    private Tensor<Double> prepareDoubleTensor(double factor) {
+        Builder<Double> builder = ImmutableTensor.builder(getDimensions());
+        for (int i = 0; i < 10; i++) {
+            builder.put(at(createCoordinates(i)), (factor * i));
+        }
+        return builder.build();
+    }
 
-	private Set<OrbitCoordinate> createCoordinates(int i) {
-		Set<OrbitCoordinate> coor = new HashSet<>();
-		coor.add(i % 2 == 0 ? Plane.V : Plane.H);
-		coor.add(i % 3 == 0 ? Beam.B1 : Beam.B2);
-		coor.add(new Bpm("name " + i));
-		return coor;
-	}
+    private Set<OrbitCoordinate> createCoordinates(int i) {
+        Set<OrbitCoordinate> coor = new HashSet<>();
+        coor.add(i % 2 == 0 ? Plane.V : Plane.H);
+        coor.add(i % 3 == 0 ? Beam.B1 : Beam.B2);
+        coor.add(new Bpm("name " + i));
+        return coor;
+    }
 
-	private Set<Class<?>> getDimensions() {
-		Set<Class<?>> dimensions = new HashSet<>();
-		dimensions.add(Bpm.class);
-		dimensions.add(Beam.class);
-		dimensions.add(Plane.class);
-		return dimensions;
-	}
+    private Set<Class<?>> getDimensions() {
+        Set<Class<?>> dimensions = new HashSet<>();
+        dimensions.add(Bpm.class);
+        dimensions.add(Beam.class);
+        dimensions.add(Plane.class);
+        return dimensions;
+    }
 
 }

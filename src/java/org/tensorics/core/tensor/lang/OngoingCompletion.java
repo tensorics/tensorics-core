@@ -30,18 +30,18 @@ import com.google.common.base.Preconditions;
 
 public class OngoingCompletion<S> {
 
-	private final Tensor<S> tensor;
+    private final Tensor<S> tensor;
 
-	OngoingCompletion(Tensor<S> tensor) {
-		this.tensor = Preconditions.checkNotNull(tensor, "tensor must not be null");
-	}
+    OngoingCompletion(Tensor<S> tensor) {
+        this.tensor = Preconditions.checkNotNull(tensor, "tensor must not be null");
+    }
 
-	public Tensor<S> with(Tensor<S> second) {
-		return TensorStructurals.completeWith(tensor, second);
-	}
+    public Tensor<S> with(Tensor<S> second) {
+        return TensorStructurals.completeWith(tensor, second);
+    }
 
-	public Tensor<S> with(Shape shape, S value) {
-		return with(TensorInternals.sameValues(shape, value));
-	}
+    public Tensor<S> with(Shape shape, S value) {
+        return with(TensorInternals.sameValues(shape, value));
+    }
 
 }

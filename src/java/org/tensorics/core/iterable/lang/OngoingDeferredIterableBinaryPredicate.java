@@ -27,30 +27,28 @@ import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvedExpression;
 
 /**
- * Provides methods to describe the right hand part of a binary predicate for
- * {@link Iterable} @{@link Expression}s
+ * Provides methods to describe the right hand part of a binary predicate for {@link Iterable} @{@link Expression}s
  * <p>
  * This class is part of the tensorics fluent API.
  *
- * @param <S>
- *            the type of the scalar values (elements of the field)
+ * @param <S> the type of the scalar values (elements of the field)
  * @author caguiler
  */
 public class OngoingDeferredIterableBinaryPredicate<S> {
 
-	private final ExtendedField<S> field;
-	private final Expression<Iterable<S>> left;
+    private final ExtendedField<S> field;
+    private final Expression<Iterable<S>> left;
 
-	public OngoingDeferredIterableBinaryPredicate(ExtendedField<S> field, Expression<Iterable<S>> left) {
-		this.field = field;
-		this.left = left;
-	}
+    public OngoingDeferredIterableBinaryPredicate(ExtendedField<S> field, Expression<Iterable<S>> left) {
+        this.field = field;
+        this.left = left;
+    }
 
-	public Expression<Boolean> isLessThan(S value) {
-		return isLessThan(ResolvedExpression.of(value));
-	}
+    public Expression<Boolean> isLessThan(S value) {
+        return isLessThan(ResolvedExpression.of(value));
+    }
 
-	public Expression<Boolean> isLessThan(Expression<S> expression) {
-		return new BinaryPredicateIterableExpression<>(field.less(), left, expression);
-	}
+    public Expression<Boolean> isLessThan(Expression<S> expression) {
+        return new BinaryPredicateIterableExpression<>(field.less(), left, expression);
+    }
 }

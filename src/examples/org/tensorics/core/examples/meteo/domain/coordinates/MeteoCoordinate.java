@@ -6,5 +6,5 @@ package org.tensorics.core.examples.meteo.domain.coordinates;
  * @author arek
  */
 public interface MeteoCoordinate {
-	/* marker interface for coordinate */
+    /* marker interface for coordinate */
 }

@@ -23,83 +23,83 @@ import com.google.common.collect.ImmutableSet;
 
 public class SprintExample extends TensoricDoubleSupport {
 
-	private static final Team TEAM_1 = new Team(1);
-	private static final Team TEAM_3 = new Team(3);
+    private static final Team TEAM_1 = new Team(1);
+    private static final Team TEAM_3 = new Team(3);
 
-	private Tensor<Double> velocity;
-	private Tensor<Double> focusFactor;
-	private Tensor<Double> team1Velocity;
-	private Tensor<Double> team3Velocity;
-	private Tensor<Double> mergedTensor;
+    private Tensor<Double> velocity;
+    private Tensor<Double> focusFactor;
+    private Tensor<Double> team1Velocity;
+    private Tensor<Double> team3Velocity;
+    private Tensor<Double> mergedTensor;
 
-	@Before
-	public void setUp() {
-		Tensorbuilder<Double> velocityBuilder = builder(Team.class, NumberOfDay.class);
-		Tensorbuilder<Double> focusFactorBuilder = Tensorics.builder(Team.class);
+    @Before
+    public void setUp() {
+        Tensorbuilder<Double> velocityBuilder = builder(Team.class, NumberOfDay.class);
+        Tensorbuilder<Double> focusFactorBuilder = Tensorics.builder(Team.class);
 
-		Random random = new Random();
+        Random random = new Random();
 
-		for (int teamId = 1; teamId <= 10; teamId++) {
-			Team team = new Team(teamId);
-			Object[] coordinates = { team };
-			focusFactorBuilder.put(at(coordinates), random.nextDouble());
-			for (int days = 1; days <= 20; days++) {
-				Object[] coordinates1 = { team, new NumberOfDay(days) };
-				velocityBuilder.put(at(coordinates1), (10 * random.nextDouble()));
-			}
-		}
-		velocity = velocityBuilder.build();
-		focusFactor = focusFactorBuilder.build();
+        for (int teamId = 1; teamId <= 10; teamId++) {
+            Team team = new Team(teamId);
+            Object[] coordinates = { team };
+            focusFactorBuilder.put(at(coordinates), random.nextDouble());
+            for (int days = 1; days <= 20; days++) {
+                Object[] coordinates1 = { team, new NumberOfDay(days) };
+                velocityBuilder.put(at(coordinates1), (10 * random.nextDouble()));
+            }
+        }
+        velocity = velocityBuilder.build();
+        focusFactor = focusFactorBuilder.build();
 
-		team1Velocity = from(velocity).extract(TEAM_1);
-		team3Velocity = from(velocity).extract(TEAM_3);
+        team1Velocity = from(velocity).extract(TEAM_1);
+        team3Velocity = from(velocity).extract(TEAM_3);
 
-		mergedTensor = Tensorics.merge(ImmutableSet.of(team1Velocity, team3Velocity));
-	}
+        mergedTensor = Tensorics.merge(ImmutableSet.of(team1Velocity, team3Velocity));
+    }
 
-	@Test
-	public void testApplyVelocity() {
-		Tensor<Double> alteredVelocity = calculate(velocity).elementTimes(focusFactor);
+    @Test
+    public void testApplyVelocity() {
+        Tensor<Double> alteredVelocity = calculate(velocity).elementTimes(focusFactor);
 
-		assertEquals(velocity.shape(), alteredVelocity.shape());
-		for (Position position : velocity.shape().positionSet()) {
-			Double velocityValue = velocity.get(position);
-			Double focusFactorValue = focusFactor.get(position.coordinateFor(Team.class));
-			Double alteredVelocityValue = alteredVelocity.get(position);
-			assertEquals(velocityValue * focusFactorValue, alteredVelocityValue, 0);
-		}
-	}
+        assertEquals(velocity.shape(), alteredVelocity.shape());
+        for (Position position : velocity.shape().positionSet()) {
+            Double velocityValue = velocity.get(position);
+            Double focusFactorValue = focusFactor.get(position.coordinateFor(Team.class));
+            Double alteredVelocityValue = alteredVelocity.get(position);
+            assertEquals(velocityValue * focusFactorValue, alteredVelocityValue, 0);
+        }
+    }
 
-	@Test
-	public void testMergeEqualsPutAll() {
-		Tensorbuilder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
-		Object[] coordinates = { TEAM_1 };
-		putAllTensorBuilder.putAll(at(coordinates), team1Velocity);
-		Object[] coordinates1 = { TEAM_3 };
-		putAllTensorBuilder.putAll(at(coordinates1), team3Velocity);
-		Tensor<Double> putAllTensor = putAllTensorBuilder.build();
+    @Test
+    public void testMergeEqualsPutAll() {
+        Tensorbuilder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
+        Object[] coordinates = { TEAM_1 };
+        putAllTensorBuilder.putAll(at(coordinates), team1Velocity);
+        Object[] coordinates1 = { TEAM_3 };
+        putAllTensorBuilder.putAll(at(coordinates1), team3Velocity);
+        Tensor<Double> putAllTensor = putAllTensorBuilder.build();
 
-		assertEquals(putAllTensor, mergedTensor);
-	}
+        assertEquals(putAllTensor, mergedTensor);
+    }
 
-	@Test
-	public void testIfMergedTensorHasCorrectSize() {
-		int differentNumberOfDays = velocity.shape().coordinatesOfType(NumberOfDay.class).size();
-		int numberOfTeams = mergedTensor.shape().coordinatesOfType(Team.class).size();
-		Tensor<Double> smallerTensor = calculate(velocity).times(mergedTensor);
-		int expectedSize = differentNumberOfDays * numberOfTeams;
-		assertEquals(expectedSize, mergedTensor.shape().size());
-		assertEquals(expectedSize, smallerTensor.shape().size());
-	}
+    @Test
+    public void testIfMergedTensorHasCorrectSize() {
+        int differentNumberOfDays = velocity.shape().coordinatesOfType(NumberOfDay.class).size();
+        int numberOfTeams = mergedTensor.shape().coordinatesOfType(Team.class).size();
+        Tensor<Double> smallerTensor = calculate(velocity).times(mergedTensor);
+        int expectedSize = differentNumberOfDays * numberOfTeams;
+        assertEquals(expectedSize, mergedTensor.shape().size());
+        assertEquals(expectedSize, smallerTensor.shape().size());
+    }
 
-	@Test
-	public void testContext() {
-		Position team1Context = team1Velocity.context();
-		assertEquals(1, team1Context.coordinates().size());
+    @Test
+    public void testContext() {
+        Position team1Context = team1Velocity.context();
+        assertEquals(1, team1Context.coordinates().size());
 
-		Tensor<Double> sliceAtOneDay = from(team1Velocity).extract(new NumberOfDay(1));
-		Position oneDayContext = sliceAtOneDay.context();
-		assertEquals(2, oneDayContext.coordinates().size());
-	}
+        Tensor<Double> sliceAtOneDay = from(team1Velocity).extract(new NumberOfDay(1));
+        Position oneDayContext = sliceAtOneDay.context();
+        assertEquals(2, oneDayContext.coordinates().size());
+    }
 
 }

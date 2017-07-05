@@ -43,52 +43,52 @@ import com.google.common.collect.Sets.SetView;
 
 public class OngoingOrderedFlattening<S, C extends Comparable<C>> {
 
-	private final Tensor<S> tensor;
-	private final Class<C> dimensionToFlatten;
+    private final Tensor<S> tensor;
+    private final Class<C> dimensionToFlatten;
 
-	public OngoingOrderedFlattening(Tensor<S> tensor, Class<C> dimension) {
-		super();
-		this.tensor = tensor;
-		this.dimensionToFlatten = dimension;
-	}
+    public OngoingOrderedFlattening(Tensor<S> tensor, Class<C> dimension) {
+        super();
+        this.tensor = tensor;
+        this.dimensionToFlatten = dimension;
+    }
 
-	public Tensor<List<S>> intoTensorOfLists() {
-		return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoListMultimap()));
-	}
+    public Tensor<List<S>> intoTensorOfLists() {
+        return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoListMultimap()));
+    }
 
-	private ListMultimap<Position, S> intoListMultimap() {
-		ImmutableListMultimap.Builder<Position, S> builder = ImmutableListMultimap.builder();
-		Tensor<Map<C, S>> maps = TensorInternals.mapOut(tensor).inDirectionOf(dimensionToFlatten);
-		for (Entry<Position, Map<C, S>> entry : entrySetOf(maps)) {
-			Position newPosition = entry.getKey();
-			Map<C, S> map = entry.getValue();
-			List<C> keys = new ArrayList<>(map.keySet());
-			Collections.sort(keys);
-			for (C key : keys) {
-				builder.put(newPosition, map.get(key));
-			}
-		}
-		return builder.build();
-	}
+    private ListMultimap<Position, S> intoListMultimap() {
+        ImmutableListMultimap.Builder<Position, S> builder = ImmutableListMultimap.builder();
+        Tensor<Map<C, S>> maps = TensorInternals.mapOut(tensor).inDirectionOf(dimensionToFlatten);
+        for (Entry<Position, Map<C, S>> entry : entrySetOf(maps)) {
+            Position newPosition = entry.getKey();
+            Map<C, S> map = entry.getValue();
+            List<C> keys = new ArrayList<>(map.keySet());
+            Collections.sort(keys);
+            for (C key : keys) {
+                builder.put(newPosition, map.get(key));
+            }
+        }
+        return builder.build();
+    }
 
-	public Tensor<List<C>> intoTensorOfKeyLists() {
-		return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoKeyListMultimap()));
-	}
+    public Tensor<List<C>> intoTensorOfKeyLists() {
+        return Tensorics.fromMap(remainingDimensions(), Multimaps.asMap(intoKeyListMultimap()));
+    }
 
-	private ListMultimap<Position, C> intoKeyListMultimap() {
-		ImmutableListMultimap.Builder<Position, C> builder = ImmutableListMultimap.builder();
-		Tensor<Map<C, S>> maps = TensorInternals.mapOut(tensor).inDirectionOf(dimensionToFlatten);
-		for (Entry<Position, Map<C, S>> entry : entrySetOf(maps)) {
-			Position newPosition = entry.getKey();
-			Map<C, S> map = entry.getValue();
-			List<C> keys = new ArrayList<>(map.keySet());
-			Collections.sort(keys);
-			builder.putAll(newPosition, keys);
-		}
-		return builder.build();
-	}
+    private ListMultimap<Position, C> intoKeyListMultimap() {
+        ImmutableListMultimap.Builder<Position, C> builder = ImmutableListMultimap.builder();
+        Tensor<Map<C, S>> maps = TensorInternals.mapOut(tensor).inDirectionOf(dimensionToFlatten);
+        for (Entry<Position, Map<C, S>> entry : entrySetOf(maps)) {
+            Position newPosition = entry.getKey();
+            Map<C, S> map = entry.getValue();
+            List<C> keys = new ArrayList<>(map.keySet());
+            Collections.sort(keys);
+            builder.putAll(newPosition, keys);
+        }
+        return builder.build();
+    }
 
-	private SetView<Class<?>> remainingDimensions() {
-		return Sets.difference(tensor.shape().dimensionSet(), singleton(dimensionToFlatten));
-	}
+    private SetView<Class<?>> remainingDimensions() {
+        return Sets.difference(tensor.shape().dimensionSet(), singleton(dimensionToFlatten));
+    }
 }

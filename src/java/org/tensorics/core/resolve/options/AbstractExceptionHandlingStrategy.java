@@ -27,9 +27,9 @@ package org.tensorics.core.resolve.options;
  */
 public abstract class AbstractExceptionHandlingStrategy implements ExceptionHandlingStrategy {
 
-	@Override
-	public Class<ExceptionHandlingStrategy> getMarkerInterface() {
-		return ExceptionHandlingStrategy.class;
-	}
+    @Override
+    public Class<ExceptionHandlingStrategy> getMarkerInterface() {
+        return ExceptionHandlingStrategy.class;
+    }
 
 }

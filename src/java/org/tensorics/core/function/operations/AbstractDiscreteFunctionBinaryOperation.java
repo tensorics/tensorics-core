@@ -36,53 +36,49 @@ import org.tensorics.core.math.operations.BinaryOperation;
 import com.google.common.collect.Sets;
 
 /**
- * A binary operation that takes two {@link DiscreteFunction}s and produces a
- * {@link DiscreteFunction}.
+ * A binary operation that takes two {@link DiscreteFunction}s and produces a {@link DiscreteFunction}.
  * 
  * @author caguiler
- * @param <X>
- *            the type of the independent variable in the
- *            {@link DiscreteFunction}.
- * @param <Y>
- *            the type of the dependent variable in the {@link DiscreteFunction}
+ * @param <X> the type of the independent variable in the {@link DiscreteFunction}.
+ * @param <Y> the type of the dependent variable in the {@link DiscreteFunction}
  */
 public abstract class AbstractDiscreteFunctionBinaryOperation<X, Y> implements BinaryOperation<DiscreteFunction<X, Y>> {
 
-	private final Conversion<X, Y> conversion;
-	private final Environment<Y> environment;
-	private final BinaryOperation<Y> operation;
-	private final Comparator<X> comparator;
+    private final Conversion<X, Y> conversion;
+    private final Environment<Y> environment;
+    private final BinaryOperation<Y> operation;
+    private final Comparator<X> comparator;
 
-	AbstractDiscreteFunctionBinaryOperation(Environment<Y> environment, Conversion<X, Y> conversion,
-			BinaryOperation<Y> operation, Comparator<X> comparator) {
-		this.environment = environment;
-		this.conversion = conversion;
-		this.operation = operation;
-		this.comparator = comparator;
-	}
+    AbstractDiscreteFunctionBinaryOperation(Environment<Y> environment, Conversion<X, Y> conversion,
+            BinaryOperation<Y> operation, Comparator<X> comparator) {
+        this.environment = environment;
+        this.conversion = conversion;
+        this.operation = operation;
+        this.comparator = comparator;
+    }
 
-	@Override
-	public DiscreteFunction<X, Y> perform(DiscreteFunction<X, Y> left, DiscreteFunction<X, Y> right) {
-		@SuppressWarnings("unchecked")
-		InterpolationStrategy<Y> strategy = environment.options().get(InterpolationStrategy.class);
+    @Override
+    public DiscreteFunction<X, Y> perform(DiscreteFunction<X, Y> left, DiscreteFunction<X, Y> right) {
+        @SuppressWarnings("unchecked")
+        InterpolationStrategy<Y> strategy = environment.options().get(InterpolationStrategy.class);
 
-		InterpolatedFunction<X, Y> rigthInterpolated = MathFunctions.interpolated(right, strategy, conversion,
-				comparator);
-		InterpolatedFunction<X, Y> leftInterpolated = MathFunctions.interpolated(left, strategy, conversion,
-				comparator);
+        InterpolatedFunction<X, Y> rigthInterpolated = MathFunctions.interpolated(right, strategy, conversion,
+                comparator);
+        InterpolatedFunction<X, Y> leftInterpolated = MathFunctions.interpolated(left, strategy, conversion,
+                comparator);
 
-		MapBackedDiscreteFunction.Builder<X, Y> builder = MapBackedDiscreteFunction.builder();
+        MapBackedDiscreteFunction.Builder<X, Y> builder = MapBackedDiscreteFunction.builder();
 
-		for (X x : Sets.union(left.definedXValues(), right.definedXValues())) {
+        for (X x : Sets.union(left.definedXValues(), right.definedXValues())) {
 
-			Y y1 = leftInterpolated.apply(x);
-			Y y2 = rigthInterpolated.apply(x);
+            Y y1 = leftInterpolated.apply(x);
+            Y y2 = rigthInterpolated.apply(x);
 
-			Y result = operation.perform(y1, y2);
+            Y result = operation.perform(y1, y2);
 
-			builder.put(x, result);
-		}
+            builder.put(x, result);
+        }
 
-		return builder.build();
-	}
+        return builder.build();
+    }
 }
