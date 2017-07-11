@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -25,6 +25,7 @@ package org.tensorics.core.resolve.engine;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.tensorics.core.commons.options.OptionRegistry;
 import org.tensorics.core.resolve.domain.ExceptionHandlingRequest;
@@ -52,7 +53,7 @@ import com.google.common.collect.ListMultimap;
  * <li>Check from top to bottom and find all nodes of the tree for which external implementations exist.
  * <li>Execute all these nodes.
  * </ol>
- * 
+ *
  * @author kfuchsbe
  */
 public class BiggestSubTreeDispatcher implements Dispatcher {
@@ -61,7 +62,7 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
 
     /**
      * Constructor, which requires an Implementation module on which this processor will act on.
-     * 
+     *
      * @param resolverRepository the repository that shall contain all available resolvers.
      */
     public BiggestSubTreeDispatcher(ResolverRepository resolverRepository) {
@@ -77,7 +78,7 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
 
     /**
      * Searches for nodes, that can be directly invoked.
-     * 
+     *
      * @param startingNode
      * @param oldContext
      * @return an repository which will contain all the resolver candidates
@@ -153,7 +154,14 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
         private <R, E extends Expression<R>> void resolveNode(E expression, EditableResolvingContext context,
                 ResolverSelectionStrategy resolverSelection) {
             Resolver<R, E> resolver = resolverSelection.selectResolver(resolversFor(expression));
-            context.put(expression, resolver.resolve(expression, oldContext));
+
+            Function<E, E> delegator = Function.identity();
+
+            E del = delegator.apply(expression);
+            
+            R resolved = resolver.resolve(del, oldContext);
+            context.put(expression, resolved);
+            context.put(del, resolved);
         }
 
         private ResolvingContext executeNodes(Node rootNode, OptionRegistry<ResolvingOption> options) {
