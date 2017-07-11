@@ -8,7 +8,7 @@ import static org.tensorics.core.lang.Tensorics.at;
 
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.options.IntersectionShapingStrategy;
 
 public abstract class AbstractBooleanTest extends BooleanSupport {
@@ -22,7 +22,7 @@ public abstract class AbstractBooleanTest extends BooleanSupport {
     }
 
     protected static Tensor<Boolean> createTensorOf(boolean b, int stringDimensionSize, int integerDimensionSize) {
-        Tensorbuilder<Boolean> builder = Tensorics.builder(String.class, Integer.class);
+        TensorBuilder<Boolean> builder = Tensorics.builder(String.class, Integer.class);
         for (int i = 0; i < integerDimensionSize; i++) {
             for (int j = 1; j < stringDimensionSize; j++) {
                 boolean toPut = (i > 5 ? b : !b);
@@ -37,7 +37,7 @@ public abstract class AbstractBooleanTest extends BooleanSupport {
         if (nbOfChanges > totalNbOfSamples) {
             throw new IllegalArgumentException("nb of changes cannot be larger than total samples");
         }
-        Tensorbuilder<Boolean> builder = Tensorics.builder(Integer.class);
+        TensorBuilder<Boolean> builder = Tensorics.builder(Integer.class);
         if (nbOfChanges < 2) {
             for (int i = 1; i < totalNbOfSamples; i++) {
                 boolean toPut = (i > (CHANGE_OF_THE_SIGNAL - 1) ? b : !b);

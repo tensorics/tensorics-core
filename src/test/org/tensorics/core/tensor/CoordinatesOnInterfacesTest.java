@@ -52,13 +52,13 @@ public class CoordinatesOnInterfacesTest {
      */
     @Test
     public void testBuilderPutValidInstancesWithFinalClasses() {
-        Tensorbuilder<Double> builder = Tensorics.builder(TestClassA.class, TestClassB.class, TestClassC.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestClassA.class, TestClassB.class, TestClassC.class);
         builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassC()), SAMPLE_VALUE);
     }
 
     @Test
     public void testBuilderPutValidInstances() {
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestC.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestC.class);
         builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassC()), SAMPLE_VALUE);
     }
 
@@ -66,7 +66,7 @@ public class CoordinatesOnInterfacesTest {
     public void testBuilderPutInvalidInstancesSingleLineInheritance() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("assignable");
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
         builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassD()), SAMPLE_VALUE);
     }
 
@@ -77,7 +77,7 @@ public class CoordinatesOnInterfacesTest {
     public void testBuilderPutInvalidInstancesMultipleInheritance() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("assignable");
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
         builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassWrongD()), SAMPLE_VALUE);
     }
 
@@ -86,7 +86,7 @@ public class CoordinatesOnInterfacesTest {
      */
     @Test
     public void testTensorGetFinalClasses() {
-        Tensorbuilder<Double> builder = Tensorics.builder(TestClassA.class, TestClassB.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestClassA.class, TestClassB.class);
         Position testPosition = Position.of(new TestClassA(1), new TestClassB(1));
         builder.put(testPosition, SAMPLE_VALUE);
         Tensor<Double> tensor = builder.build();
@@ -99,7 +99,7 @@ public class CoordinatesOnInterfacesTest {
      */
     @Test
     public void testTensorGetIndependentInterfaces() {
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
 
         Position testPosition = Position.of(new TestClassA(1), new TestClassB(2));
         Position testPosition2 = Position.of(new TestClassA(2), new TestClassB(1));
@@ -120,7 +120,7 @@ public class CoordinatesOnInterfacesTest {
     public void testTensorGetDependentInterfaces() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("assignable");
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestE.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestE.class);
         Tensor<Double> tensor = builder.build();
         tensor.get(Position.of(new TestClassA(1), new TestClassD()));
     }
@@ -129,7 +129,7 @@ public class CoordinatesOnInterfacesTest {
     public void testTensorNotEnoughCoordinatesInPosition() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("do not match");
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
         Tensor<Double> tensor = builder.build();
         tensor.get(Position.of(new TestClassA(1)));
     }
@@ -138,7 +138,7 @@ public class CoordinatesOnInterfacesTest {
     public void testTensorPositionWithDoubledCoordinates() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("unique");
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
         Tensor<Double> tensor = builder.build();
         tensor.get(Position.of(new TestClassA(1), new TestClassA(2)));
     }
@@ -147,7 +147,7 @@ public class CoordinatesOnInterfacesTest {
     public void testTensorWrongPosition() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("assignable");
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
         Tensor<Double> tensor = builder.build();
         tensor.get(Position.of(new TestClassC(), new TestClassE()));
     }
@@ -158,7 +158,7 @@ public class CoordinatesOnInterfacesTest {
      */
     @Test
     public void testTensorInGeneral() {
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
 
         Position testPosition = Position.of(new TestClassA(1), new TestClassB(2));
         Position testPosition2 = Position.of(new TestClassA(2), new TestClassB(1));
@@ -176,7 +176,7 @@ public class CoordinatesOnInterfacesTest {
 
     @Test
     public void testShapeForGivenInterface() {
-        Tensorbuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestC.class);
+        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestC.class);
         TestClassA testClassA = new TestClassA(1);
         builder.put(Position.of(testClassA, new TestClassB(1), new TestClassC()), SAMPLE_VALUE);
         Tensor<Double> tensor = builder.build();

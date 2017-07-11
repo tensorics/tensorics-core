@@ -24,10 +24,10 @@ package org.tensorics.core.tensor.specific;
 import java.util.Arrays;
 
 import org.tensorics.core.tensor.AbstractTensor;
-import org.tensorics.core.tensor.AbstractTensorbuilder;
+import org.tensorics.core.tensor.AbstractTensorBuilder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 
 /**
  * A specific implementation of a tensor, that contains double values. It is backed by a simple double array to minimize
@@ -76,7 +76,7 @@ public class ImmutableDoubleArrayBackedTensor extends AbstractTensor<Double> {
      *
      * @author kfuchsbe
      */
-    public static class Builder extends AbstractTensorbuilder<Double> {
+    public static class Builder extends AbstractTensorBuilder<Double> {
 
         private final PositionIndexer indexer;
         private final double[] values;
@@ -98,7 +98,7 @@ public class ImmutableDoubleArrayBackedTensor extends AbstractTensor<Double> {
         }
 
         @Override
-        public Tensorbuilder<Double> remove(Position position) {
+        public TensorBuilder<Double> remove(Position position) {
             throw new UnsupportedOperationException("Cannot remove a value");
         }
 

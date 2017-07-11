@@ -38,7 +38,7 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Scalar;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingTensorFiltering;
@@ -108,14 +108,14 @@ public final class Tensorics {
     /**
      * @see ImmutableTensor#builder(Iterable)
      */
-    public static <T> Tensorbuilder<T> builder(Iterable<Class<?>> dimensions) {
+    public static <T> TensorBuilder<T> builder(Iterable<Class<?>> dimensions) {
         return ImmutableTensor.builder(dimensions);
     }
 
     /**
      * @see ImmutableTensor#builder(Class...)
      */
-    public static <T> Tensorbuilder<T> builder(Class<?>... dimensions) {
+    public static <T> TensorBuilder<T> builder(Class<?>... dimensions) {
         return ImmutableTensor.builder(dimensions);
     }
 
@@ -136,7 +136,7 @@ public final class Tensorics {
     /**
      * @see ImmutableTensor#builderFrom(Tensor)
      */
-    public static <T> Tensorbuilder<T> builderFrom(Tensor<T> tensor) {
+    public static <T> TensorBuilder<T> builderFrom(Tensor<T> tensor) {
         return ImmutableTensor.builderFrom(tensor);
     }
 

@@ -190,7 +190,7 @@ public class ImmutableTensor<V> extends AbstractTensor<V> implements Mappable<V>
      * @author kfuchsbe
      * @param <V> the type of the values to be added
      */
-    public static final class Builder<V> extends AbstractTensorbuilder<V> {
+    public static final class Builder<V> extends AbstractTensorBuilder<V> {
 
         private final Map<Position, V> entries = new HashMap<>();
 
@@ -223,7 +223,7 @@ public class ImmutableTensor<V> extends AbstractTensor<V> implements Mappable<V>
         }
 
         @Override
-        public Tensorbuilder<V> remove(Position position) {
+        public TensorBuilder<V> remove(Position position) {
             entries.remove(position);
             return this;
         }

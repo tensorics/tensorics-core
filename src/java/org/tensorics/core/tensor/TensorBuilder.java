@@ -30,9 +30,9 @@ import java.util.Map.Entry;
  * @author kfuchsbe
  * @param <V> the type of the tensor values
  */
-public interface Tensorbuilder<V> {
+public interface TensorBuilder<V> {
 
-    Tensorbuilder<V> context(Position context);
+    TensorBuilder<V> context(Position context);
 
     /**
      * Puts all the values of the given tensor into the new tensor, at the given position. The positions in the new
@@ -42,19 +42,19 @@ public interface Tensorbuilder<V> {
      * 
      * @param tensor the tensor, whose values to add to the tensor under construction
      */
-    Tensorbuilder<V> putAll(Tensor<V> tensor);
+    TensorBuilder<V> putAll(Tensor<V> tensor);
 
-    Tensorbuilder<V> putAll(Position position, Tensor<V> tensor);
+    TensorBuilder<V> putAll(Position position, Tensor<V> tensor);
 
-    Tensorbuilder<V> put(Position position, V value);
+    TensorBuilder<V> put(Position position, V value);
 
-    Tensorbuilder<V> put(Entry<Position, V> entry);
+    TensorBuilder<V> put(Entry<Position, V> entry);
 
-    Tensorbuilder<V> remove(Position position);
+    TensorBuilder<V> remove(Position position);
 
-    Tensorbuilder<V> putAll(Map<Position, V> newEntries);
+    TensorBuilder<V> putAll(Map<Position, V> newEntries);
 
-    Tensorbuilder<V> putAll(Position position, Map<Position, V> map);
+    TensorBuilder<V> putAll(Position position, Map<Position, V> map);
 
     Tensor<V> build();
 

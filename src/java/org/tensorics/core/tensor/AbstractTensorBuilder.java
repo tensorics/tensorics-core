@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -37,13 +37,13 @@ import com.google.common.collect.ImmutableSet;
  * @author kfuchsbe
  * @param <V> the type of the elements of the tensor to build
  */
-public abstract class AbstractTensorbuilder<V> implements Tensorbuilder<V> {
+public abstract class AbstractTensorBuilder<V> implements TensorBuilder<V> {
 
     private final Set<Class<?>> dimensions;
     private final VerificationCallback<V> callback;
     private Position context = Position.empty();
 
-    public AbstractTensorbuilder(Set<Class<?>> dimensions, VerificationCallback<V> callback) {
+    public AbstractTensorBuilder(Set<Class<?>> dimensions, VerificationCallback<V> callback) {
         Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
         Preconditions.checkArgument(callback != null, "Argument '" + "callback" + "' must not be null!");
         Coordinates.checkClassesRelations(dimensions);
@@ -51,7 +51,7 @@ public abstract class AbstractTensorbuilder<V> implements Tensorbuilder<V> {
         this.callback = callback;
     }
 
-    public AbstractTensorbuilder(Set<Class<?>> dimensions) {
+    public AbstractTensorBuilder(Set<Class<?>> dimensions) {
         this(dimensions, new VerificationCallback<V>() {
 
             @Override
@@ -62,7 +62,7 @@ public abstract class AbstractTensorbuilder<V> implements Tensorbuilder<V> {
     }
 
     @Override
-    public final Tensorbuilder<V> put(Position position, V value) {
+    public final TensorBuilder<V> put(Position position, V value) {
         Preconditions.checkNotNull(value, "value must not be null!");
         Preconditions.checkNotNull(position, "position must not be null");
         Positions.assertConsistentDimensions(position, this.dimensions);
@@ -74,7 +74,7 @@ public abstract class AbstractTensorbuilder<V> implements Tensorbuilder<V> {
     protected abstract void putIt(Position position, V value);
 
     @Override
-    public Tensorbuilder<V> context(Position newContext) {
+    public TensorBuilder<V> context(Position newContext) {
         Preconditions.checkNotNull(newContext, "context must not be null");
         checkIfContextValid(newContext);
         this.context = newContext;
@@ -91,26 +91,26 @@ public abstract class AbstractTensorbuilder<V> implements Tensorbuilder<V> {
     }
 
     @Override
-    public Tensorbuilder<V> putAll(Tensor<V> tensor) {
+    public TensorBuilder<V> putAll(Tensor<V> tensor) {
         this.putAll(Position.empty(), tensor);
         return this;
     }
 
     @Override
-    public final Tensorbuilder<V> putAll(Position position, Tensor<V> tensor) {
+    public final TensorBuilder<V> putAll(Position position, Tensor<V> tensor) {
         checkNotNull(tensor, "The tensor must not be null!");
         putAll(position, TensorInternals.mapFrom(tensor));
         return this;
     }
 
     @Override
-    public Tensorbuilder<V> putAll(Map<Position, V> newEntries) {
+    public TensorBuilder<V> putAll(Map<Position, V> newEntries) {
         putAll(Position.empty(), newEntries);
         return this;
     }
 
     @Override
-    public Tensorbuilder<V> putAll(Position position, Map<Position, V> map) {
+    public TensorBuilder<V> putAll(Position position, Map<Position, V> map) {
         checkNotNull(map, "The map must not be null!");
         checkNotNull(position, "The position must not be null!");
         for (Entry<Position, V> entry : map.entrySet()) {
@@ -120,7 +120,7 @@ public abstract class AbstractTensorbuilder<V> implements Tensorbuilder<V> {
     }
 
     @Override
-    public Tensorbuilder<V> put(java.util.Map.Entry<Position, V> entry) {
+    public TensorBuilder<V> put(java.util.Map.Entry<Position, V> entry) {
         this.put(entry.getKey(), entry.getValue());
         return this;
     }

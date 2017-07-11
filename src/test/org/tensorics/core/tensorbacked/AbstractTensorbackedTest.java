@@ -17,7 +17,7 @@ import org.tensorics.core.lang.DoubleTensorics;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.operations.TensorInternals;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
 
@@ -56,7 +56,7 @@ public class AbstractTensorbackedTest {
     }
 
     private Tensor<Double> buildTensorFor(Class<?>... dimensions) {
-        Tensorbuilder<Double> builder = Tensorics.builder(dimensions);
+        TensorBuilder<Double> builder = Tensorics.builder(dimensions);
         Object[] coordinates = { FirstCoordinate.FIRST_1, SecondCoordinate.SECOND_1 };
         builder.put(Position.of(coordinates), 11.0);
         Object[] coordinates1 = { FirstCoordinate.FIRST_1, SecondCoordinate.SECOND_2 };

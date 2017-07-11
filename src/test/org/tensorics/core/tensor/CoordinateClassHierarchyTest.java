@@ -35,7 +35,7 @@ public class CoordinateClassHierarchyTest {
 
     private static Tensor<Double> buildTensorFor(Class<? extends Enum<?>> first, Class<? extends Enum<?>> second,
             Class<?>... dimensions) {
-        Tensorbuilder<Double> builder = Tensorics.builder(dimensions);
+        TensorBuilder<Double> builder = Tensorics.builder(dimensions);
         for (Object firstCoordinate : first.getEnumConstants()) {
             for (Object secondCoordinate : second.getEnumConstants()) {
                 Object[] coordinates = { firstCoordinate, secondCoordinate };

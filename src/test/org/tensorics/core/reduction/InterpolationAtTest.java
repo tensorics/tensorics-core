@@ -12,7 +12,7 @@ import java.util.Comparator;
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 
 public class InterpolationAtTest {
 
@@ -136,7 +136,7 @@ public class InterpolationAtTest {
     }
 
     private Tensor<Double> getTensorTwoCoordinates() {
-        Tensorbuilder<Double> builder = Tensorics.builder(ComparableCoordinate.class, TestNameCoordinate.class);
+        TensorBuilder<Double> builder = Tensorics.builder(ComparableCoordinate.class, TestNameCoordinate.class);
         Object[] coordinates = { new ComparableCoordinate(1), new TestNameCoordinate("TEST1") };
 
         builder.put(at(coordinates), 1.0);
@@ -153,7 +153,7 @@ public class InterpolationAtTest {
     }
 
     private Tensor<Double> getTensorThreeCoordinates() {
-        Tensorbuilder<Double> builder = Tensorics.builder(ComparableCoordinate.class, TestNameCoordinate.class,
+        TensorBuilder<Double> builder = Tensorics.builder(ComparableCoordinate.class, TestNameCoordinate.class,
                 TestEnum.class);
         Object[] coordinates = { new ComparableCoordinate(1), new TestNameCoordinate("TEST1"), TestEnum.ENUM1 };
 

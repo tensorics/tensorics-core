@@ -43,7 +43,7 @@ import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Positions.DimensionStripper;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorPair;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.options.BroadcastingStrategy;
 import org.tensorics.core.tensor.options.ContextPropagationStrategy;
 import org.tensorics.core.tensor.variance.CoContraDimensionPair;
@@ -168,7 +168,7 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
         ContextPropagationStrategy cps = optionRegistry.get(ContextPropagationStrategy.class);
         Position resultingContext = cps.contextForLeftRight(left.context(), right.context());
 
-        Tensorbuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
+        TensorBuilder<V> finalBuilder = Tensorics.builder(targetDimensions);
         finalBuilder.putAll(result);
         finalBuilder.context(resultingContext);
         return finalBuilder.build();
