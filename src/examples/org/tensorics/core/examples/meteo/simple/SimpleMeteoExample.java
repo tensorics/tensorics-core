@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 
 public class SimpleMeteoExample {
 
@@ -59,7 +59,7 @@ public class SimpleMeteoExample {
 
     private Tensor<Double> createTemperatures() {
         // tag::createTensor[]
-        Tensorbuilder<Double> builder = Tensorics.builder(City.class, Day.class); // <1>
+        TensorBuilder<Double> builder = Tensorics.builder(City.class, Day.class); // <1>
 
         builder.put(at(City.NEW_YORK, Day.APRIL_1_2014), 18.5); // <2>
         builder.put(at(City.GENEVA, Day.APRIL_1_2014), 19.8);
