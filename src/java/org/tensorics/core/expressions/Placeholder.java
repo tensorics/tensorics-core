@@ -10,16 +10,17 @@ import org.tensorics.core.tree.domain.Node;
 
 /**
  * Represents and unresolved expression which is simply identified by its name.
- * 
+ *
  * @author kaifox
  * @param <R> the type of the result of the expression
  */
 public class Placeholder<R> extends AbstractDeferredExpression<R> {
+    private static final long serialVersionUID = 1L;
 
     private final String name;
 
     public static <R> Placeholder<R> ofName(String name) {
-        return new Placeholder<R>(name);
+        return new Placeholder<>(name);
     }
 
     private Placeholder(String name) {
