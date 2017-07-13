@@ -15,7 +15,7 @@ import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 
 public class BooleanStepFunctionExample {
@@ -48,7 +48,7 @@ public class BooleanStepFunctionExample {
         assertFalse(slicedTensor.get(ORIGIN));
         assertEquals(Position.of(AMPLIFIER), slicedTensor.context());
 
-        Tensorbuilder<Boolean> builder = Tensorics.builderFrom(tensor);
+        TensorBuilder<Boolean> builder = Tensorics.builderFrom(tensor);
         builder.put(Position.of(new Date(5L), AMPLIFIER), false);
         builder.put(Position.of(new Date(6L), AMPLIFIER), true);
 
@@ -62,7 +62,7 @@ public class BooleanStepFunctionExample {
     }
 
     private Tensor<Boolean> createStepFunction() {
-        Tensorbuilder<Boolean> stepFunctionBuilder = Tensorics.builder(Date.class, Signal.class);
+        TensorBuilder<Boolean> stepFunctionBuilder = Tensorics.builder(Date.class, Signal.class);
         Object[] coordinates = { ORIGIN, AMPLIFIER };
         stepFunctionBuilder.put(Tensorics.at(coordinates), false);
         stepFunctionBuilder.put(Position.of(PIXEL1, ORIGIN), false);

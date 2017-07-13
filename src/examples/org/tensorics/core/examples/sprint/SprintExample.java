@@ -17,7 +17,7 @@ import org.tensorics.core.lang.TensoricDoubleSupport;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.Tensorbuilder;
+import org.tensorics.core.tensor.TensorBuilder;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -34,8 +34,8 @@ public class SprintExample extends TensoricDoubleSupport {
 
     @Before
     public void setUp() {
-        Tensorbuilder<Double> velocityBuilder = builder(Team.class, NumberOfDay.class);
-        Tensorbuilder<Double> focusFactorBuilder = Tensorics.builder(Team.class);
+        TensorBuilder<Double> velocityBuilder = builder(Team.class, NumberOfDay.class);
+        TensorBuilder<Double> focusFactorBuilder = Tensorics.builder(Team.class);
 
         Random random = new Random();
 
@@ -72,7 +72,7 @@ public class SprintExample extends TensoricDoubleSupport {
 
     @Test
     public void testMergeEqualsPutAll() {
-        Tensorbuilder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
+        TensorBuilder<Double> putAllTensorBuilder = builder(Team.class, NumberOfDay.class);
         Object[] coordinates = { TEAM_1 };
         putAllTensorBuilder.putAll(at(coordinates), team1Velocity);
         Object[] coordinates1 = { TEAM_3 };
