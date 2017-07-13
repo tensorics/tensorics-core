@@ -22,11 +22,11 @@ import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.units.JScienceUnit;
 
 /**
- * Unit tests for {@link DoubleTensorics}
+ * Unit tests for {@link TensoricDoubles}
  * 
  * @author caguiler
  */
-public class DoubleTensoricsTest {
+public class TensoricDoublesTest {
 
     private static final double DELTA = 10e-5;
     private List<QuantifiedValue<Double>> iterableSample;
@@ -47,30 +47,30 @@ public class DoubleTensoricsTest {
          */
         iterableSample = new ArrayList<>();
         for (int i = 1; i <= 10; ++i) {
-            QuantifiedValue<Double> value = DoubleTensorics.valueOf((double) i, JScienceUnit.of(AMPERE));
+            QuantifiedValue<Double> value = TensoricDoubles.valueOf((double) i, JScienceUnit.of(AMPERE));
             iterableSample.add(value);
         }
     }
 
     @Test
     public void testRmsOfIterableOfQuantifiedDouble() {
-        verifyQuantifiedIterableOperationResult(DoubleTensorics::rmsOfQ, 6.204836823, AMPERE);
+        verifyQuantifiedIterableOperationResult(TensoricDoubles::rmsOfQ, 6.204836823, AMPERE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testRmsOfEmptyIterableOfQuantifiedDouble() {
         iterableSample = Collections.emptyList();
-        verifyQuantifiedIterableOperationResult(DoubleTensorics::rmsOfQ, 0.0, Unit.ONE);
+        verifyQuantifiedIterableOperationResult(TensoricDoubles::rmsOfQ, 0.0, Unit.ONE);
     }
 
     @Test
     public void testStdOfIterableOfQuantifiedDouble() {
-        verifyQuantifiedIterableOperationResult(DoubleTensorics::stdOfQ, 2.87228, AMPERE);
+        verifyQuantifiedIterableOperationResult(TensoricDoubles::stdOfQ, 2.87228, AMPERE);
     }
 
     @Test
     public void testVarOfIterableOfQuantifiedDouble() {
-        verifyQuantifiedIterableOperationResult(DoubleTensorics::varOfQ, 8.25, AMPERE.pow(2));
+        verifyQuantifiedIterableOperationResult(TensoricDoubles::varOfQ, 8.25, AMPERE.pow(2));
     }
 
     private void verifyQuantifiedIterableOperationResult(

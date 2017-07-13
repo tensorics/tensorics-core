@@ -7,6 +7,7 @@ package org.tensorics.core.iterable.expressions;
 import static org.tensorics.core.iterable.expressions.PickExpression.Mode.FROM_END;
 import static org.tensorics.core.iterable.expressions.PickExpression.Mode.FROM_START;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.tensorics.core.resolve.resolvers.PickResolver;
@@ -20,12 +21,13 @@ import com.google.common.collect.Iterables;
 /**
  * Deferred expression that can pick an element of an, {@link Expression} of, {@link Iterable}. The {@link Mode} and the
  * offset define the resulting element.
- * 
+ *
  * @see PickResolver
  * @author kfuchsbe, acalia
  * @param <T> the type of the data to pick
  */
-public class PickExpression<T> extends AbstractDeferredExpression<T> {
+public class PickExpression<T> extends AbstractDeferredExpression<T> implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final Expression<? extends Iterable<T>> iterable;
     private final int offset;
@@ -118,6 +120,11 @@ public class PickExpression<T> extends AbstractDeferredExpression<T> {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "PickExpression [iterable=" + iterable + ", offset=" + offset + ", mode=" + mode + "]";
     }
 
 }

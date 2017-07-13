@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
 package org.tensorics.core.quantity.options;
+
+import java.io.Serializable;
 
 import javax.measure.converter.UnitConverter;
 
@@ -35,18 +37,18 @@ import org.tensorics.core.units.Unit;
  * Encapsulates all the calculations and transformations of units that are based on the jscience unit system. Currently,
  * this is the only implemented way of dealing with units in tensorics. However, later on it is planned that all the
  * unit calculations could be based on the field structure, so that this class would get obsolete.
- * 
+ *
  * @author kfuchsbe
  * @param <T> the type of the field elements, on which the calculations are based on
  */
-public class JScienceQuantificationStrategy<T> implements QuantificationStrategy<T> {
+public class JScienceQuantificationStrategy<T> implements QuantificationStrategy<T>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private static final Unit UNIT_ONE = JScienceUnit.of(javax.measure.unit.Unit.ONE);
 
     private final Cheating<T> cheating;
 
     public JScienceQuantificationStrategy(Cheating<T> cheating) {
-        super();
         this.cheating = cheating;
     }
 
@@ -143,6 +145,41 @@ public class JScienceQuantificationStrategy<T> implements QuantificationStrategy
     public Unit power(Unit left, T rigth) {
         throwIfNotJScience(left);
         return JScienceUnit.of(extract(left).pow((int) cheating.toDouble(rigth)));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cheating == null) ? 0 : cheating.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        JScienceQuantificationStrategy other = (JScienceQuantificationStrategy) obj;
+        if (cheating == null) {
+            if (other.cheating != null) {
+                return false;
+            }
+        } else if (!cheating.equals(other.cheating)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "JScienceQuantificationStrategy [cheating=" + cheating + "]";
     }
 
 }

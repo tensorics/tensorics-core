@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.tensor.operations;
+
+import java.io.Serializable;
 
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -31,11 +33,12 @@ import org.tensorics.core.tensor.Tensor;
 /**
  * Operates on one tensor and produces a new tensor of the same shape by applying a unary operation on each value of the
  * tensor. Thus it is uniquely defined by the operation on the elements.
- * 
+ *
  * @author kfuchsbe
  * @param <V> the type of the value of the tensor
  */
-public class ElementUnaryOperation<V> implements UnaryOperation<Tensor<V>> {
+public class ElementUnaryOperation<V> implements UnaryOperation<Tensor<V>>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final UnaryOperation<V> elementOperation;
 
@@ -52,6 +55,41 @@ public class ElementUnaryOperation<V> implements UnaryOperation<Tensor<V>> {
             builder.put(position, elementOperation.perform(tensor.get(position)));
         }
         return builder.build();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((elementOperation == null) ? 0 : elementOperation.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        ElementUnaryOperation other = (ElementUnaryOperation) obj;
+        if (elementOperation == null) {
+            if (other.elementOperation != null) {
+                return false;
+            }
+        } else if (!elementOperation.equals(other.elementOperation)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ElementUnaryOperation [elementOperation=" + elementOperation + "]";
     }
 
 }

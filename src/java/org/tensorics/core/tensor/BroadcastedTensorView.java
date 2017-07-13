@@ -91,4 +91,10 @@ public final class BroadcastedTensorView<V> extends AbstractTensor<V> {
         return originalTensor.context();
     }
 
+    @Override
+    public String toString() {
+        return "BroadcastedTensorView [originalTensor=" + originalTensor + ", broadcastedShape=" + broadcastedShape
+                + ", dimensionStripper=" + dimensionStripper + "]";
+    }
+
 }

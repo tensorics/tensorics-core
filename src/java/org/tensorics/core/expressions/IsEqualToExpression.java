@@ -10,6 +10,7 @@ import org.tensorics.core.math.predicates.IsEqualTo;
 import org.tensorics.core.tree.domain.Expression;
 
 public class IsEqualToExpression<T> extends BinaryPredicateExpression<T> {
+    private static final long serialVersionUID = 1L;
 
     public IsEqualToExpression(Expression<T> left, Expression<T> right) {
         super(new IsEqualTo<T>(), left, right);

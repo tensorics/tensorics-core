@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -30,11 +30,12 @@ import org.tensorics.core.tree.domain.Expression;
  * An unresolved expression which uses an operation on iterables to produce one value of the same type. An instance will
  * contain the operation to act on the iterable as well as an expression for the iterable on which the operation will
  * have to be performed.
- * 
+ *
  * @author kfuchsbe
  * @param <T> the type of the elements of the iterable and the result of this expression.
  */
 public class IterableOperationExpression<T> extends ConversionOperationExpression<Iterable<T>, T> {
+    private static final long serialVersionUID = 1L;
 
     public IterableOperationExpression(Conversion<Iterable<T>, T> operation, Expression<Iterable<T>> iterable) {
         super(operation, iterable);

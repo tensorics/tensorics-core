@@ -34,7 +34,7 @@ import javax.measure.unit.SI;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tensorics.core.lang.DoubleTensorics;
+import org.tensorics.core.lang.TensoricDoubles;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.units.JScienceUnit;
 
@@ -63,10 +63,10 @@ public class ImmutableQuantifiedScalarTest {
 
     @Test
     public void testAbsolute() {
-        assertEquals(zero, DoubleTensorics.absoluteValueOf(zero));
-        assertEquals(0.0, DoubleTensorics.absoluteValueOf(zero).value(), 0.000001);
-        assertEquals(10.5, DoubleTensorics.absoluteValueOf(scalar).value(), 0.000001);
-        assertEquals(42.5, DoubleTensorics.absoluteValueOf(negativeScalar).value(), 0.000001);
+        assertEquals(zero, TensoricDoubles.absoluteValueOf(zero));
+        assertEquals(0.0, TensoricDoubles.absoluteValueOf(zero).value(), 0.000001);
+        assertEquals(10.5, TensoricDoubles.absoluteValueOf(scalar).value(), 0.000001);
+        assertEquals(42.5, TensoricDoubles.absoluteValueOf(negativeScalar).value(), 0.000001);
     }
 
     @Test

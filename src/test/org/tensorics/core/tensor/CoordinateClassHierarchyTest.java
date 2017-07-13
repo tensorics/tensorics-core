@@ -7,7 +7,7 @@ package org.tensorics.core.tensor;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.tensorics.core.lang.DoubleTensorics;
+import org.tensorics.core.lang.TensoricDoubles;
 import org.tensorics.core.lang.Tensorics;
 
 import com.google.common.collect.ImmutableSet;
@@ -56,37 +56,37 @@ public class CoordinateClassHierarchyTest {
 
     @Test
     public void shapeIsConservedInCalculation() {
-        Tensor<Double> leafResult = DoubleTensorics.calculate(leafClassTensor).plus(leafClassTensor);
+        Tensor<Double> leafResult = TensoricDoubles.calculate(leafClassTensor).plus(leafClassTensor);
         assertEquals(leafClassTensor.shape(), leafResult.shape());
-        Tensor<Double> interfaceResult = DoubleTensorics.calculate(compatibleInterfaceTensor)
+        Tensor<Double> interfaceResult = TensoricDoubles.calculate(compatibleInterfaceTensor)
                 .plus(compatibleInterfaceTensor);
         assertEquals(compatibleInterfaceTensor.shape(), interfaceResult.shape());
     }
 
     @Test
     public void canBroadcastForTensorsWithIncompatibleDimensions() {
-        Tensor<Double> result = DoubleTensorics.calculate(leafClassTensor).plus(incompatibleLeafTensor);
+        Tensor<Double> result = TensoricDoubles.calculate(leafClassTensor).plus(incompatibleLeafTensor);
         assertEquals(ImmutableSet.of(FirstCoordinate.class, SecondCoordinate.class, IncompatibleFirstCoordinate.class),
                 result.shape().dimensionSet());
     }
 
     @Test
     public void canAddTensorsWithCompatibleDimensionsAndCompatibleLeafCoordinates() {
-        Tensor<Double> result = DoubleTensorics.calculate(leafClassTensor).plus(compatibleInterfaceTensor);
+        Tensor<Double> result = TensoricDoubles.calculate(leafClassTensor).plus(compatibleInterfaceTensor);
         assertEquals(compatibleInterfaceTensor.shape(), result.shape());
     }
 
     @Test
     public void canAddTensorsWithCompatibleDimensionsAndIncompatibleLeafCoordinates() {
-        Tensor<Double> result = DoubleTensorics.calculate(leafClassTensor).plus(incompatibleInterfaceTensor);
+        Tensor<Double> result = TensoricDoubles.calculate(leafClassTensor).plus(incompatibleInterfaceTensor);
         assertEquals(incompatibleInterfaceTensor.shape().dimensionSet(), result.shape().dimensionSet());
-        result = DoubleTensorics.calculate(incompatibleInterfaceTensor).plus(leafClassTensor);
+        result = TensoricDoubles.calculate(incompatibleInterfaceTensor).plus(leafClassTensor);
         assertEquals(incompatibleInterfaceTensor.shape().dimensionSet(), result.shape().dimensionSet());
     }
 
     @Test
     public void canAddTensorsWithEqualDimensionsAndIncompatibleLeafCoordinates() {
-        Tensor<Double> result = DoubleTensorics.calculate(compatibleInterfaceTensor).plus(incompatibleInterfaceTensor);
+        Tensor<Double> result = TensoricDoubles.calculate(compatibleInterfaceTensor).plus(incompatibleInterfaceTensor);
         assertEquals(compatibleInterfaceTensor.shape().dimensionSet(), result.shape().dimensionSet());
         assertEquals(0, result.shape().size());
     }
@@ -105,7 +105,7 @@ public class CoordinateClassHierarchyTest {
     public void canAddTensorsWithEqualDimensionsAndPartiallyIncompatibleLeafCoordinates() {
         Tensor<Double> mixedInterfaceTensor = Tensorics.complete(compatibleInterfaceTensor)
                 .with(incompatibleInterfaceTensor);
-        Tensor<Double> result = DoubleTensorics.calculate(compatibleInterfaceTensor).plus(mixedInterfaceTensor);
+        Tensor<Double> result = TensoricDoubles.calculate(compatibleInterfaceTensor).plus(mixedInterfaceTensor);
         assertEquals(compatibleInterfaceTensor.shape().dimensionSet(), result.shape().dimensionSet());
         assertEquals(6, result.shape().size());
     }

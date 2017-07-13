@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -29,11 +29,12 @@ import org.tensorics.core.quantity.options.QuantityEnvironment;
 /**
  * The unary operation which which calculates the additive inversion of a quantity (aka 'the negative'). Error, validity
  * and the unit of the result are the same as the input quantity, only the value itself will be inverted.
- * 
+ *
  * @author kfuchsbe
  * @param <S> the type of scalars on which all the operations are based (elements of a field)
  */
 public class QuantityAdditiveInversion<S> extends QuantityUnaryOperation<S> {
+    private static final long serialVersionUID = 1L;
 
     public QuantityAdditiveInversion(QuantityEnvironment<S> environment) {
         super(environment);

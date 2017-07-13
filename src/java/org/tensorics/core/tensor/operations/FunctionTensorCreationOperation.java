@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.tensor.operations;
 
+import java.io.Serializable;
 import java.util.function.Function;
 
 import org.tensorics.core.math.operations.CreationOperation;
@@ -32,11 +33,12 @@ import org.tensorics.core.tensor.Tensor;
 
 /**
  * Uses the given function from a position to the tensor to create the values of the tensor.
- * 
+ *
  * @author kaifox
  * @param <V> the type of the elements of the tensor to be created
  */
-public class FunctionTensorCreationOperation<V> implements CreationOperation<Tensor<V>> {
+public class FunctionTensorCreationOperation<V> implements CreationOperation<Tensor<V>>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final Shape shape;
     private final Function<Position, V> function;
@@ -54,6 +56,49 @@ public class FunctionTensorCreationOperation<V> implements CreationOperation<Ten
             builder.put(position, function.apply(position));
         }
         return builder.build();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((function == null) ? 0 : function.hashCode());
+        result = prime * result + ((shape == null) ? 0 : shape.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        FunctionTensorCreationOperation other = (FunctionTensorCreationOperation) obj;
+        if (function == null) {
+            if (other.function != null) {
+                return false;
+            }
+        } else if (!function.equals(other.function)) {
+            return false;
+        }
+        if (shape == null) {
+            if (other.shape != null) {
+                return false;
+            }
+        } else if (!shape.equals(other.shape)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "FunctionTensorCreationOperation [shape=" + shape + ", function=" + function + "]";
     }
 
 }

@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.tree.domain;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -30,11 +31,12 @@ import org.tensorics.core.commons.util.Named;
 /**
  * An expression that needs no further processing. It contains already its own result, which can be simply retrieved by
  * the {@link #get()} method.
- * 
+ *
  * @author kfuchsbe
  * @param <R> the type of the resulting value of the expression
  */
-public final class ResolvedExpression<R> implements Expression<R>, Named {
+public final class ResolvedExpression<R> implements Expression<R>, Named, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final R value;
 

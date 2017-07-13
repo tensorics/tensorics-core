@@ -4,6 +4,7 @@
 
 package org.tensorics.core.expressions;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.tensorics.core.resolve.resolvers.IterableResolvingExpressionResolver;
@@ -16,12 +17,13 @@ import com.google.common.collect.ImmutableList;
 /**
  * Expression that given an {@link Iterable} of {@link Expression} of T, resolves to an {@link Iterable} of T. In other
  * words, it resolves the inner {@link Expression} of the {@link Iterable}.
- * 
+ *
  * @see IterableResolvingExpressionResolver
  * @author acalia, caguiler, kfuchsberger
  * @param <T> type of the elements of the iterable
  */
-public class IterableResolvingExpression<T> extends AbstractDeferredExpression<Iterable<T>> {
+public class IterableResolvingExpression<T> extends AbstractDeferredExpression<Iterable<T>>implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final List<Expression<T>> expressions;
 

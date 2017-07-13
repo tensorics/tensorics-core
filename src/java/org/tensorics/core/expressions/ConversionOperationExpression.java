@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
 package org.tensorics.core.expressions;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.tensorics.core.commons.operations.Conversion;
@@ -33,12 +34,13 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Represents an expression, which takes takes (expressions of) objects of one type and converts them into others.
- * 
+ *
  * @author kfuchsbe
  * @param <T> the type of the values of the tensor
  * @param <R> the type of the tensorbacked object
  */
-public class ConversionOperationExpression<T, R> extends AbstractDeferredExpression<R> {
+public class ConversionOperationExpression<T, R> extends AbstractDeferredExpression<R> implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final Expression<T> sourceObject;
     private final Conversion<T, R> operation;

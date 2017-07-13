@@ -80,7 +80,7 @@ public class DoubleFieldTest {
         return field().multiplicationStructure();
     }
 
-    private DoubleField field() {
+    private AbstractOrderedField field() {
         return new DoubleField();
     }
 

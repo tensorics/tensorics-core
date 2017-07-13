@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.lang;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,12 +39,13 @@ import org.tensorics.core.tree.domain.Node;
  * <p>
  * The script logic itself has to be implemented in the {@link #describe()} method. To resolve a script, a
  * {@link org.tensorics.core.resolve.engine.ResolvingEngine} has to be used.
- * 
+ *
  * @author kfuchsbe
  * @param <E> the type of the elements of the field on which all the calculations are based on.
  * @param <T> the type which shall be returned by the script, after it is executed (resolved)
  */
-public abstract class TensoricScript<E, T> extends TensoricExpressionSupport<E> implements Expression<T> {
+public abstract class TensoricScript<E, T> extends TensoricExpressionSupport<E> implements Expression<T>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private static final boolean RESOLVED = false;
     private final Expression<T> internalExpression;
@@ -72,6 +74,41 @@ public abstract class TensoricScript<E, T> extends TensoricExpressionSupport<E> 
 
     public Expression<T> getInternalExpression() {
         return internalExpression;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((internalExpression == null) ? 0 : internalExpression.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        TensoricScript<?,?> other = (TensoricScript<?,?>) obj;
+        if (internalExpression == null) {
+            if (other.internalExpression != null) {
+                return false;
+            }
+        } else if (!internalExpression.equals(other.internalExpression)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "TensoricScript [internalExpression=" + internalExpression + "]";
     }
 
 }

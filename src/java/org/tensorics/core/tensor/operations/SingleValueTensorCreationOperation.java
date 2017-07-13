@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.tensor.operations;
@@ -25,11 +25,12 @@ import org.tensorics.core.tensor.Shape;
 
 /**
  * Uses one value and a given shape to create a tensor, which has the same values at all positions.
- * 
+ *
  * @author kaifox
  * @param <V> the type of the elements of the tensor to be created
  */
 public class SingleValueTensorCreationOperation<V> extends FunctionTensorCreationOperation<V> {
+    private static final long serialVersionUID = 1L;
 
     public SingleValueTensorCreationOperation(Shape shape, final V value) {
         super(shape, PositionFunctions.constant(value));

@@ -9,6 +9,7 @@ import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.options.QuantityEnvironment;
 
 public class QuantityAbsoluteValue<S> extends QuantityUnaryOperation<S> {
+    private static final long serialVersionUID = 1L;
 
     public QuantityAbsoluteValue(QuantityEnvironment<S> environment) {
         super(environment);

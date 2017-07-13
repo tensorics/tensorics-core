@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
 package org.tensorics.core.quantity.conditions;
+
+import java.io.Serializable;
 
 import org.tensorics.core.fields.doubles.DoubleStatistics;
 import org.tensorics.core.math.Cheating;
@@ -34,12 +36,13 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
 /**
  * Base class for quantity conditions based on statistical tests. This class provides utility methods to implementations
  * for doing calculations and statistics based on the values (mean) and the errors of quantities.
- * 
+ *
  * @author mihostet
  * @param <S> the value type
  */
 public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSupport<S>
-        implements BinaryPredicate<QuantifiedValue<S>> {
+        implements BinaryPredicate<QuantifiedValue<S>>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected final QuantityEnvironment<S> mathsEnvironment;
 
@@ -51,7 +54,7 @@ public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSuppor
     /**
      * Evaluate the inverse Gaussian Cumulative Distribution Function and return the result as an element of the backing
      * field. This method uses {@link Cheating} for the time being.
-     * 
+     *
      * @param value
      * @return
      */
@@ -64,7 +67,7 @@ public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSuppor
 
     /**
      * Calculates the difference of two quantities (including error propagation)
-     * 
+     *
      * @param left left operand
      * @param right right operand
      * @return the difference as a quantity
@@ -76,7 +79,7 @@ public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSuppor
     /**
      * Calculate the z-test z value for the difference of the two values (number of sigmas the difference of the mean
      * values is away from zero)
-     * 
+     *
      * @param left the left operand
      * @param right the right operand
      * @return the z value
@@ -89,6 +92,41 @@ public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSuppor
         final QuantifiedValue<S> difference = subtractQuantities(leftWithError, rightWithError);
 
         return calculate(difference.value()).dividedBy(difference.error().get());
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((mathsEnvironment == null) ? 0 : mathsEnvironment.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        AbstractQuantityStatisticPredicate other = (AbstractQuantityStatisticPredicate) obj;
+        if (mathsEnvironment == null) {
+            if (other.mathsEnvironment != null) {
+                return false;
+            }
+        } else if (!mathsEnvironment.equals(other.mathsEnvironment)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractQuantityStatisticPredicate [mathsEnvironment=" + mathsEnvironment + "]";
     }
 
 }

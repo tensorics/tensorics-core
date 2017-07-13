@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -33,7 +33,7 @@ import org.tensorics.core.units.Unit;
 
 /**
  * A repository for operations on quantified values. This way, one instance of each can be re-used all the times.
- * 
+ *
  * @author kfuchsbe
  * @param <S> the type of the scalar values (elements of the field)
  */
@@ -104,16 +104,7 @@ public class QuantityOperationRepository<S> {
 
     private BinaryOperation<QuantifiedValue<S>> quantifiedBinaryOperationFrom(BinaryOperation<S> operation,
             BiFunction<Unit, S, Unit> unitOperation) {
-        return new QuantityBinaryOperation<S>(mathsEnvironment, operation) {
-
-            @Override
-            public QuantifiedValue<S> perform(QuantifiedValue<S> left, QuantifiedValue<S> right) {
-                S value = operation().perform(left.value(), right.value());
-                Unit unit = unitOperation.apply(left.unit(), right.value());
-                // FIXME: For the moment I am disregarding error propagation...
-                return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right));
-            }
-        };
+        return new QuantityBinaryOperationImpl<>(mathsEnvironment, operation, unitOperation);
     }
 
     public BinaryOperation<QuantifiedValue<S>> division() {
@@ -135,5 +126,60 @@ public class QuantityOperationRepository<S> {
     public QuantityEnvironment<S> environment() {
         return mathsEnvironment;
     }
+
+    private static final class QuantityBinaryOperationImpl<S> extends QuantityBinaryOperation<S> {
+        private static final long serialVersionUID = 1L;
+
+        private final BiFunction<Unit, S, Unit> unitOperation;
+
+        protected QuantityBinaryOperationImpl(QuantityEnvironment<S> environment,
+                BinaryOperation<S> scalarBinaryOperation, BiFunction<Unit, S, Unit> unitOperation) {
+            super(environment, scalarBinaryOperation);
+            this.unitOperation = unitOperation;
+        }
+
+        @Override
+        public QuantifiedValue<S> perform(QuantifiedValue<S> left, QuantifiedValue<S> right) {
+            S value = operation().perform(left.value(), right.value());
+            Unit unit = unitOperation.apply(left.unit(), right.value());
+            // FIXME: For the moment I am disregarding error propagation...
+            return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right));
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = super.hashCode();
+            result = prime * result + ((unitOperation == null) ? 0 : unitOperation.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!super.equals(obj)) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            QuantityBinaryOperationImpl other = (QuantityBinaryOperationImpl) obj;
+            if (unitOperation == null) {
+                if (other.unitOperation != null) {
+                    return false;
+                }
+            } else if (!unitOperation.equals(other.unitOperation)) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return "QuantityBinaryOperationImpl [unitOperation=" + unitOperation + "]";
+        }
+    };
 
 }

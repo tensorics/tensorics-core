@@ -4,6 +4,7 @@
 
 package org.tensorics.core.expressions;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -12,7 +13,8 @@ import org.tensorics.core.tree.domain.Expression;
 
 import com.google.common.collect.ImmutableList;
 
-public class PredicateExpression<T> extends AbstractDeferredExpression<Boolean> {
+public class PredicateExpression<T> extends AbstractDeferredExpression<Boolean> implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final Expression<T> source;
     private final Expression<Predicate<T>> predicate;

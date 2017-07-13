@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.lang;
@@ -25,11 +25,12 @@ import org.tensorics.core.fields.doubles.Structures;
 
 /**
  * A convenience class designed for inheritance, already providing the doubles field in the constructor.
- * 
+ *
  * @author kaifox
  * @param <R> the type of the return value of the script
  */
 public abstract class DoubleScript<R> extends TensoricScript<Double, R> {
+    private static final long serialVersionUID = 1L;
 
     public DoubleScript() {
         super(EnvironmentImpl.of(Structures.doubles(), ManipulationOptions.defaultOptions(Structures.doubles())));

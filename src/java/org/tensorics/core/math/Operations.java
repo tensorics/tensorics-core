@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
 package org.tensorics.core.math;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -37,7 +38,7 @@ import com.google.common.collect.Multimap;
 
 /**
  * Contains utility methods for operations.
- * 
+ *
  * @author kfuchsbe
  */
 public final class Operations {
@@ -47,7 +48,7 @@ public final class Operations {
     }
 
     public static <T> BinaryOperation<T> inverseBinaryFor(Group<T> group) {
-        return new InverseOperationView<T>(group);
+        return new InverseOperationView<>(group);
     }
 
     public static <V> List<V> performOnAll(Iterable<ValuePair<V>> valuePairs, BinaryOperation<V> operation) {
@@ -66,7 +67,9 @@ public final class Operations {
         return builder.build();
     }
 
-    private static final class InverseOperationView<T> implements BinaryOperation<T> {
+    private static final class InverseOperationView<T> implements BinaryOperation<T>, Serializable {
+        private static final long serialVersionUID = 1L;
+
         private final Group<T> group;
 
         InverseOperationView(Group<T> group) {
@@ -77,6 +80,41 @@ public final class Operations {
         @Override
         public T perform(T left, T right) {
             return group.operation().perform(left, group.inversion().perform(right));
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((group == null) ? 0 : group.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            InverseOperationView other = (InverseOperationView) obj;
+            if (group == null) {
+                if (other.group != null) {
+                    return false;
+                }
+            } else if (!group.equals(other.group)) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return "InverseOperationView [group=" + group + "]";
         }
 
     }

@@ -51,6 +51,8 @@ public class DeferredTensoricCalculationTest {
     @Test
     public void testSimpleResolvedExpressionScript() {
         Double result = engine.resolve(new DoubleScript<Double>() {
+            private static final long serialVersionUID = 1L;
+
             @Override
             protected Expression<Double> describe() {
                 return ResolvedExpression.of(0.15);
@@ -62,6 +64,8 @@ public class DeferredTensoricCalculationTest {
     @Test
     public void testMoreComplicatedScript() throws Exception {
         Double result = engine.resolve(new DoubleScript<Double>() {
+            private static final long serialVersionUID = 1L;
+
             @Override
             protected Expression<Double> describe() {
                 Expression<Double> sum = calculate(0.1).plus(0.2);

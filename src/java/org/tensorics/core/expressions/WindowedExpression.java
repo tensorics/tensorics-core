@@ -4,6 +4,7 @@
 
 package org.tensorics.core.expressions;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,12 +16,14 @@ import org.tensorics.core.tree.domain.Expression;
  * Expression that evaluates the targetExpression given the result of the enabling expression. The enabling expression
  * is an {@link Expression} of {@link Boolean} that decides if the targetExpression is resolved or not. This expression
  * resolves into an {@link EvaluationStatus}.
- * 
+ *
  * @see WindowedExpressionResolver
  * @param T the type of the target expression
  * @author acalia, caguiler
  */
-public class WindowedExpression<T extends Expression<?>> extends AbstractDeferredExpression<EvaluationStatus> {
+public class WindowedExpression<T extends Expression<?>> extends AbstractDeferredExpression<EvaluationStatus>
+        implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final T targetExpression;
     private final Expression<Boolean> enablingExpression;

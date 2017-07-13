@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -29,11 +29,12 @@ import org.tensorics.core.units.Unit;
 
 /**
  * The binary operation which describes the division of two quantities.
- * 
+ *
  * @author kfuchsbe
  * @param <S> the type of the scalar values (field elements) on which all the operations are based on
  */
 public class QuantityDivision<S> extends QuantityBinaryOperation<S> {
+    private static final long serialVersionUID = 1L;
 
     public QuantityDivision(QuantityEnvironment<S> environment) {
         super(environment, environment.field().division());

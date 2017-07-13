@@ -13,7 +13,7 @@ import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.SecondCoo
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.tensorics.core.lang.DoubleTensorics;
+import org.tensorics.core.lang.TensoricDoubles;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
@@ -100,7 +100,7 @@ public class AbstractTensorbackedTest {
     @Test
     public void interfaceTensorbackedCalculationTest() {
         InterfaceTensorbacked tb = new InterfaceTensorbacked(interfaceTensor);
-        InterfaceTensorbacked result = DoubleTensorics.calculate(tb).plus(tb);
+        InterfaceTensorbacked result = TensoricDoubles.calculate(tb).plus(tb);
 
         assertResultOfCalculation(result);
     }
@@ -108,7 +108,7 @@ public class AbstractTensorbackedTest {
     @Test
     public void leafClassTensorbackedCalculationTest() {
         LeafClassTensorbacked tb = new LeafClassTensorbacked(leafClassTensor);
-        LeafClassTensorbacked result = DoubleTensorics.calculate(tb).plus(tb);
+        LeafClassTensorbacked result = TensoricDoubles.calculate(tb).plus(tb);
 
         assertResultOfCalculation(result);
     }

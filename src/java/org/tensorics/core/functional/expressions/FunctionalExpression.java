@@ -4,6 +4,7 @@
 
 package org.tensorics.core.functional.expressions;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.tensorics.core.functional.FiniteArgumentFunction;
@@ -15,11 +16,12 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Expression that evaluates using a {@link FuncN} function. This is a lambda-like expression.
- * 
+ *
  * @see FiniteArgumentFunction
  * @param <R> the type of the result of the expression
  */
-public class FunctionalExpression<R> extends AbstractDeferredExpression<R> {
+public class FunctionalExpression<R> extends AbstractDeferredExpression<R>implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final List<Expression<?>> children;
     private final FuncN<R> func;
@@ -67,6 +69,11 @@ public class FunctionalExpression<R> extends AbstractDeferredExpression<R> {
         } else if (!func.equals(other.func))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "FunctionalExpression [children=" + children + ", func=" + func + "]";
     }
 
 }

@@ -21,6 +21,7 @@ package org.tensorics.core.iterable.expressions;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.tensorics.core.math.predicates.BinaryPredicate;
@@ -37,7 +38,8 @@ import com.google.common.collect.ImmutableList;
  * @param <T> the type of the results of the operands
  * @author caguiler
  */
-public class BinaryPredicateIterableExpression<T> extends AbstractDeferredExpression<Boolean> {
+public class BinaryPredicateIterableExpression<T> extends AbstractDeferredExpression<Boolean> implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final BinaryPredicate<T> predicate;
     private final Expression<Iterable<T>> left;
@@ -66,6 +68,58 @@ public class BinaryPredicateIterableExpression<T> extends AbstractDeferredExpres
     @Override
     public List<Node> getChildren() {
         return ImmutableList.of(left, right);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((left == null) ? 0 : left.hashCode());
+        result = prime * result + ((predicate == null) ? 0 : predicate.hashCode());
+        result = prime * result + ((right == null) ? 0 : right.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        BinaryPredicateIterableExpression other = (BinaryPredicateIterableExpression) obj;
+        if (left == null) {
+            if (other.left != null) {
+                return false;
+            }
+        } else if (!left.equals(other.left)) {
+            return false;
+        }
+        if (predicate == null) {
+            if (other.predicate != null) {
+                return false;
+            }
+        } else if (!predicate.equals(other.predicate)) {
+            return false;
+        }
+        if (right == null) {
+            if (other.right != null) {
+                return false;
+            }
+        } else if (!right.equals(other.right)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "BinaryPredicateIterableExpression [predicate=" + predicate + ", left=" + left + ", right=" + right
+                + "]";
     }
 
 }

@@ -50,6 +50,8 @@ public class BinaryPredicateExpressionTest {
     @Test
     public void testIsLessThanForScalarExpressions() throws Exception {
         Boolean trueResult = engine.resolve(new DoubleScript<Boolean>() {
+            private static final long serialVersionUID = 1L;
+
             @Override
             protected Expression<Boolean> describe() {
                 Expression<Double> sum = calculate(1.0).plus(0.5);
@@ -60,6 +62,8 @@ public class BinaryPredicateExpressionTest {
         assertTrue(trueResult);
 
         Boolean falseResult = engine.resolve(new DoubleScript<Boolean>() {
+            private static final long serialVersionUID = 1L;
+
             @Override
             protected Expression<Boolean> describe() {
                 Expression<Double> sum = calculate(1.0).plus(2.5);
@@ -76,6 +80,8 @@ public class BinaryPredicateExpressionTest {
         Expression<Iterable<Double>> iterableExpression = ResolvedExpression.of(Arrays.asList(1D, 2D, 3D, 4D, 5D));
 
         Boolean trueResult = engine.resolve(new DoubleScript<Boolean>() {
+            private static final long serialVersionUID = 1L;
+
             @Override
             protected Expression<Boolean> describe() {
                 return testIfIt(iterableExpression).isLessThan(10D);
@@ -85,6 +91,8 @@ public class BinaryPredicateExpressionTest {
         assertTrue(trueResult);
 
         Boolean falseResult = engine.resolve(new DoubleScript<Boolean>() {
+            private static final long serialVersionUID = 1L;
+
             @Override
             protected Expression<Boolean> describe() {
                 return testIfIt(iterableExpression).isLessThan(2D);

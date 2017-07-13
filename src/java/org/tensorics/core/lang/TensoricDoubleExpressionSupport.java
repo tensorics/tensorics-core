@@ -6,9 +6,9 @@ package org.tensorics.core.lang;
 
 import org.tensorics.core.fields.doubles.Structures;
 
-public class TensoricsDoubleExpressionSupport extends TensoricExpressionSupport<Double> {
+public class TensoricDoubleExpressionSupport extends TensoricExpressionSupport<Double> {
 
-    public TensoricsDoubleExpressionSupport() {
+    public TensoricDoubleExpressionSupport() {
         super(EnvironmentImpl.of(Structures.doubles(), ManipulationOptions.defaultOptions(Structures.doubles())));
     }
 

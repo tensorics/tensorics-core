@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -24,6 +24,7 @@ package org.tensorics.core.tensor.operations;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -86,13 +87,14 @@ import com.google.common.collect.Sets;
  * matrix multiplication.
  * <li>The result will always be contravariant
  * </ol>
- * 
+ *
  * @author kfuchsbe
  * @param <V>
  * @see org.tensorics.core.tensor.variance.Covariant
  * @see org.tensorics.core.tensor.variance.Covariants
  */
-public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
+public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final BinaryOperation<V> elementOperation;
     private final IterableOperation<V> reductionOperation;
@@ -177,6 +179,58 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>> {
     private TensorPair<V> broadcast(Tensor<V> left, Tensor<V> right, Set<Class<?>> dimensionsNotToBroadcast) {
         BroadcastingStrategy broadcasting = optionRegistry.get(BroadcastingStrategy.class);
         return broadcasting.broadcast(left, right, dimensionsNotToBroadcast);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((elementOperation == null) ? 0 : elementOperation.hashCode());
+        result = prime * result + ((optionRegistry == null) ? 0 : optionRegistry.hashCode());
+        result = prime * result + ((reductionOperation == null) ? 0 : reductionOperation.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        InnerTensorOperation other = (InnerTensorOperation) obj;
+        if (elementOperation == null) {
+            if (other.elementOperation != null) {
+                return false;
+            }
+        } else if (!elementOperation.equals(other.elementOperation)) {
+            return false;
+        }
+        if (optionRegistry == null) {
+            if (other.optionRegistry != null) {
+                return false;
+            }
+        } else if (!optionRegistry.equals(other.optionRegistry)) {
+            return false;
+        }
+        if (reductionOperation == null) {
+            if (other.reductionOperation != null) {
+                return false;
+            }
+        } else if (!reductionOperation.equals(other.reductionOperation)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "InnerTensorOperation [elementOperation=" + elementOperation + ", reductionOperation="
+                + reductionOperation + ", optionRegistry=" + optionRegistry + "]";
     }
 
 }

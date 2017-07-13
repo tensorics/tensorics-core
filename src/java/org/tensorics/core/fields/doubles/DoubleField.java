@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -25,7 +25,7 @@ package org.tensorics.core.fields.doubles;
 import org.tensorics.core.math.operations.CommutativeAssociativeOperation;
 import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.math.predicates.BinaryPredicate;
-import org.tensorics.core.math.structures.grouplike.AbelianGroup;
+import org.tensorics.core.math.structures.grouplike.AbstractAbelianGroup;
 import org.tensorics.core.math.structures.ringlike.OrderedField;
 
 /**
@@ -33,109 +33,75 @@ import org.tensorics.core.math.structures.ringlike.OrderedField;
  * of this class manually, but use the convenience methods from the {@link Structures} class. The reason is that
  * instances of this class are per se of limited use. They only become useful, if they are extended by additional
  * functionality.
- * 
+ *
  * @author kfuchsbe
  * @see Structures
  */
-public final class DoubleField implements OrderedField<Double> {
+public final class DoubleField extends AbstractOrderedField<Double>implements OrderedField<Double> {
+    private static final long serialVersionUID = 1L;
 
     private static final double ZERO = 0.0;
     private static final double ONE = 1.0;
-
-    private final CommutativeAssociativeOperation<Double> additionOperation //
-            = new CommutativeAssociativeOperation<Double>() {
-                @Override
-                public Double perform(Double left, Double right) {
-                    return left + right;
-                }
-            };
-
-    private final CommutativeAssociativeOperation<Double> multiplicationOperation //
-            = new CommutativeAssociativeOperation<Double>() {
-                @Override
-                public Double perform(Double left, Double right) {
-                    return left * right;
-                }
-            };
-
-    private final UnaryOperation<Double> additiveInverseOperation = new UnaryOperation<Double>() {
-        @Override
-        public Double perform(Double value) {
-            return -value;
-        }
-    };
-
-    private final UnaryOperation<Double> multiplicativeInverseOperation = new UnaryOperation<Double>() {
-        @Override
-        public Double perform(Double value) {
-            return 1 / value;
-        }
-    };
-
-    private final AbelianGroup<Double> additionGroup = new AbelianGroup<Double>() {
-        @Override
-        public CommutativeAssociativeOperation<Double> operation() {
-            return additionOperation;
-        }
-
-        @Override
-        public Double identity() {
-            return ZERO;
-        }
-
-        @Override
-        public UnaryOperation<Double> inversion() {
-            return additiveInverseOperation;
-        }
-    };
-
-    private final AbelianGroup<Double> multiplicationGroup = new AbelianGroup<Double>() {
-
-        @Override
-        public CommutativeAssociativeOperation<Double> operation() {
-            return multiplicationOperation;
-        }
-
-        @Override
-        public Double identity() {
-            return ONE;
-        }
-
-        @Override
-        public UnaryOperation<Double> inversion() {
-            return multiplicativeInverseOperation;
-        }
-    };
-
-    private final BinaryPredicate<Double> lessOrEqual = new BinaryPredicate<Double>() {
-
-        @Override
-        public boolean test(Double left, Double right) {
-            return left <= right;
-        }
-    };
 
     /**
      * Package visible constructor to allow the structures class to instantiate the class. Use the lookup methods in the
      * {@link Structures} class to retrieve an instance of the field.
      */
     DoubleField() {
-        /* Use Factory methods */
+        super(new DoubleAdditionGroup(), new DoubleMultiplicationGroup(), new DoubleLessOrEqual());
     }
 
-    @Override
-    public AbelianGroup<Double> additionStructure() {
-        return additionGroup;
+    static class DoubleLessOrEqual implements BinaryPredicate<Double> {
+        @Override
+        public boolean test(Double left, Double right) {
+            return left <= right;
+        }
     }
 
-    @Override
-    public AbelianGroup<Double> multiplicationStructure() {
-        return multiplicationGroup;
+    private static class DoubleAddition implements CommutativeAssociativeOperation<Double> {
+        @Override
+        public Double perform(Double left, Double right) {
+            return left + right;
+        }
     }
 
-    @Override
-    public BinaryPredicate<Double> lessOrEqualPredicate() {
-        return lessOrEqual;
+    private static class DoubleMultiplication implements CommutativeAssociativeOperation<Double> {
+        @Override
+        public Double perform(Double left, Double right) {
+            return left * right;
+        }
+    }
+
+    private static class DoubleAdditiveInversion implements UnaryOperation<Double> {
+        @Override
+        public Double perform(Double value) {
+            return -value;
+        }
+    }
+
+    private static class DoubleMultiplicativeInversion implements UnaryOperation<Double> {
+        @Override
+        public Double perform(Double value) {
+            return 1 / value;
+        }
+    }
+
+    static class DoubleAdditionGroup extends AbstractAbelianGroup<Double> {
+        private static final long serialVersionUID = 1L;
+
+        public DoubleAdditionGroup() {
+            super(new DoubleAddition(), ZERO, new DoubleAdditiveInversion());
+        }
+
+    }
+
+    static class DoubleMultiplicationGroup extends AbstractAbelianGroup<Double> {
+        private static final long serialVersionUID = 1L;
+
+        public DoubleMultiplicationGroup() {
+            super(new DoubleMultiplication(), ONE, new DoubleMultiplicativeInversion());
+        }
+
     }
 
 }
