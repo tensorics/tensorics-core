@@ -21,39 +21,25 @@
 // @formatter:on
 package org.tensorics.core.lang;
 
-import java.util.Comparator;
-
 import org.tensorics.core.commons.lang.OngoingBinaryOperation;
-import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.options.ManipulationOption;
-import org.tensorics.core.function.DiscreteFunction;
-import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversionAndComparator;
-import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
 import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
 import org.tensorics.core.math.operations.BinaryFunction;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
-import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarBinaryPredicate;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarConversion;
 import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
 import org.tensorics.core.quantity.lang.OngoingQuantityValueExtraction;
 import org.tensorics.core.quantity.options.ConfidenceLevel;
-import org.tensorics.core.scalar.lang.OngoingDeferredBinaryOperation;
-import org.tensorics.core.scalar.lang.OngoingDeferredBinaryPredicate;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.lang.OngoingDeferredQuantifiedTensorOperation;
-import org.tensorics.core.tensor.lang.OngoingDeferredTensorOperation;
 import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
 import org.tensorics.core.tensor.lang.OngoingTensorOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
-import org.tensorics.core.tensorbacked.lang.OngoingDeferredQuantifiedTensorBackedOperation;
-import org.tensorics.core.tensorbacked.lang.OngoingDeferredTensorBackedOperation;
 import org.tensorics.core.tensorbacked.lang.OngoingQuantifiedTensorBackedOperation;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorBackedOperation;
-import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.units.Unit;
 
 /**

@@ -1,3 +1,5 @@
+package org.tensorics.core.tree.domain;
+
 // @formatter:off
  /*******************************************************************************
  *
@@ -19,9 +21,6 @@
  *
  ******************************************************************************/
 // @formatter:on
-package org.tensorics.core.tree.domain;
-
-import java.io.Serializable;
 
 /**
  * A base class for all kind of deferred (unresolved) expressions. All the methods of the expression interface are
