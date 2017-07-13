@@ -22,6 +22,10 @@ public class Placeholder<R> extends AbstractDeferredExpression<R> {
     public static <R> Placeholder<R> ofName(String name) {
         return new Placeholder<>(name);
     }
+    
+    public static <R> Placeholder<R> ofClass(Class<R> clazz) {
+        return new Placeholder<>(clazz.getName());
+    }
 
     private Placeholder(String name) {
         this.name = requireNonNull(name, "name must not be null.");

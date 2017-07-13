@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.Node;
 import org.tensorics.core.tree.domain.ResolvingContext;
 
 /**
@@ -75,5 +76,11 @@ public final class Resolvers {
     public static final boolean contextResolvesAll(List<? extends Expression<?>> expressions,
             ResolvingContext context) {
         return expressions.stream().allMatch(context::resolves);
+    }
+    
+    public static final boolean contextResolvesAllNodes(List<? extends Node> expressions,
+            ResolvingContext context) {
+        /*XXX ugly cast */
+        return expressions.stream().map(n -> (Expression<?>) n).allMatch(context::resolves);
     }
 }

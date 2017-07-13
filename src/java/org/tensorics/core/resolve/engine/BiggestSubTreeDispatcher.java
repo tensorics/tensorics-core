@@ -33,6 +33,7 @@ import org.tensorics.core.resolve.options.ResolverSelectionStrategy;
 import org.tensorics.core.resolve.options.ResolvingOption;
 import org.tensorics.core.resolve.resolvers.Resolver;
 import org.tensorics.core.resolve.resolvers.ResolverRepository;
+import org.tensorics.core.resolve.resolvers.Resolvers;
 import org.tensorics.core.tree.domain.Contexts;
 import org.tensorics.core.tree.domain.EditableResolvingContext;
 import org.tensorics.core.tree.domain.Expression;
@@ -84,7 +85,7 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
      */
     private ResolverCandidateRepository findResolverCandidates(Node startingNode, final ResolvingContext oldContext) {
 
-        final ResolverCandidateRepository directlyExecutableNodes = new ResolverCandidateRepository(oldContext);
+        final ResolverCandidateRepository repository = new ResolverCandidateRepository(oldContext);
 
         Trees.walkParentAfterChildren(startingNode, new SkipNodeAndSubTreesCallback() {
 
@@ -105,15 +106,20 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
 
                 for (Resolver<R, Expression<R>> resolver : resolvers) {
                     if (resolver.canResolve(expression, oldContext)) {
-                        directlyExecutableNodes.put(expression, resolver);
+                        repository.put(expression, resolver);
                     }
                 }
 
-                return directlyExecutableNodes.containsKey(expression);
+                if (repository.resolversFor(expression).isEmpty() && Resolvers.contextResolvesAllNodes(expression.getChildren(), oldContext)) {
+                    throw new IllegalStateException("No resolvers could be found for node " + expression
+                            + ", while all children are already resolved.");
+                }
+                
+                return repository.containsKey(expression);
             }
 
         });
-        return directlyExecutableNodes;
+        return repository;
     }
 
     static class ResolverCandidateRepository {
@@ -152,7 +158,8 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
 
         private <R, E extends Expression<R>> void resolveNode(E expression, EditableResolvingContext context,
                 ResolverSelectionStrategy resolverSelection) {
-            Resolver<R, E> resolver = resolverSelection.selectResolver(resolversFor(expression));
+            List<Resolver<R, E>> resolverCandidates = resolversFor(expression);
+            Resolver<R, E> resolver = resolverSelection.selectResolver(resolverCandidates);
             context.put(expression, resolver.resolve(expression, oldContext));
         }
 
