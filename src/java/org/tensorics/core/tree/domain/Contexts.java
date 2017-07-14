@@ -57,6 +57,19 @@ public final class Contexts {
     }
 
     /**
+     * Merges the contexts of the iterable in the order they appear. Being a context a map-like object the order of
+     * insertion matters.
+     * 
+     * @param contexts the given contexts to merge
+     * @return the context with all the values of the given contexts
+     */
+    public static EditableResolvingContext mergeContextsOrdered(Iterable<ResolvingContext> contexts) {
+        EditableResolvingContext newCtx = newResolvingContext();
+        contexts.forEach(newCtx::putAllNew);
+        return newCtx;
+    }
+
+    /**
      * creates a new rebuilding-context which allows the rebuilding of model nodes
      * 
      * @return a new instance of a rebuilding context.
