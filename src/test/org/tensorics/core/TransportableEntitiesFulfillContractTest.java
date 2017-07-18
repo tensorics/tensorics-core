@@ -12,11 +12,11 @@ import org.tensorics.core.math.operations.UnaryOperation;
 import org.tensorics.core.math.structures.Structure;
 import org.tensorics.core.quantity.operations.AbstractQuantityOperation;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.testing.TransportableEntityFulfilled;
 import org.tensorics.core.tree.domain.Node;
 
-import com.sun.javafx.geom.Shape;
 
 public class TransportableEntitiesFulfillContractTest extends TransportableEntityFulfilled {
 
