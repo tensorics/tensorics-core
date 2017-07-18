@@ -107,7 +107,7 @@ public final class EnvironmentImpl<V> implements QuantityEnvironment<V>, Seriali
         if (getClass() != obj.getClass()) {
             return false;
         }
-        EnvironmentImpl other = (EnvironmentImpl) obj;
+        EnvironmentImpl<?> other = (EnvironmentImpl<?>) obj;
         if (extendedField == null) {
             if (other.extendedField != null) {
                 return false;

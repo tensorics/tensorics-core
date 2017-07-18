@@ -76,7 +76,7 @@ public class ElementUnaryOperation<V> implements UnaryOperation<Tensor<V>>, Seri
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ElementUnaryOperation other = (ElementUnaryOperation) obj;
+        ElementUnaryOperation<?> other = (ElementUnaryOperation<?>) obj;
         if (elementOperation == null) {
             if (other.elementOperation != null) {
                 return false;

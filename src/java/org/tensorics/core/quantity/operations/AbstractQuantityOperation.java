@@ -76,7 +76,7 @@ public class AbstractQuantityOperation<V> implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        AbstractQuantityOperation other = (AbstractQuantityOperation) obj;
+        AbstractQuantityOperation<?> other = (AbstractQuantityOperation<?>) obj;
         if (mathsEnvironment == null) {
             if (other.mathsEnvironment != null) {
                 return false;

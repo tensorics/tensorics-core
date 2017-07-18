@@ -166,7 +166,7 @@ public class JScienceQuantificationStrategy<T> implements QuantificationStrategy
         if (getClass() != obj.getClass()) {
             return false;
         }
-        JScienceQuantificationStrategy other = (JScienceQuantificationStrategy) obj;
+        JScienceQuantificationStrategy<?> other = (JScienceQuantificationStrategy<?>) obj;
         if (cheating == null) {
             if (other.cheating != null) {
                 return false;

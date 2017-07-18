@@ -165,7 +165,7 @@ public class QuantityOperationRepository<S> {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            QuantityBinaryOperationImpl other = (QuantityBinaryOperationImpl) obj;
+            QuantityBinaryOperationImpl<?> other = (QuantityBinaryOperationImpl<?>) obj;
             if (unitOperation == null) {
                 if (other.unitOperation != null) {
                     return false;
@@ -180,6 +180,6 @@ public class QuantityOperationRepository<S> {
         public String toString() {
             return "QuantityBinaryOperationImpl [unitOperation=" + unitOperation + "]";
         }
-    };
+    }
 
 }

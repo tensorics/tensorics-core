@@ -101,7 +101,7 @@ public final class Operations {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            InverseOperationView other = (InverseOperationView) obj;
+            InverseOperationView<?> other = (InverseOperationView<?>) obj;
             if (group == null) {
                 if (other.group != null) {
                     return false;

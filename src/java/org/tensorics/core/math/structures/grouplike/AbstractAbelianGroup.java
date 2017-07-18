@@ -58,7 +58,7 @@ public class AbstractAbelianGroup<E> implements AbelianGroup<E>, Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        AbstractAbelianGroup other = (AbstractAbelianGroup) obj;
+        AbstractAbelianGroup<?> other = (AbstractAbelianGroup<?>) obj;
         if (identity == null) {
             if (other.identity != null) {
                 return false;

@@ -108,7 +108,7 @@ public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T>implements Extende
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            PowerOperation other = (PowerOperation) obj;
+            PowerOperation<?> other = (PowerOperation<?>) obj;
             if (math == null) {
                 if (other.math != null) {
                     return false;

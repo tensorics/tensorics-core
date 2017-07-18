@@ -72,7 +72,7 @@ public class ImmutableConfidenceLevel<S> implements ConfidenceLevel<S>, Serializ
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ImmutableConfidenceLevel other = (ImmutableConfidenceLevel) obj;
+        ImmutableConfidenceLevel<?> other = (ImmutableConfidenceLevel<?>) obj;
         if (confidenceLevel == null) {
             if (other.confidenceLevel != null) {
                 return false;

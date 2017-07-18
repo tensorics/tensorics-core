@@ -78,7 +78,7 @@ public class FunctionTensorCreationOperation<V> implements CreationOperation<Ten
         if (getClass() != obj.getClass()) {
             return false;
         }
-        FunctionTensorCreationOperation other = (FunctionTensorCreationOperation) obj;
+        FunctionTensorCreationOperation<?> other = (FunctionTensorCreationOperation<?>) obj;
         if (function == null) {
             if (other.function != null) {
                 return false;

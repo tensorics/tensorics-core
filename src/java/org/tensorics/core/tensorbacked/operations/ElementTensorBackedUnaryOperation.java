@@ -76,7 +76,7 @@ public class ElementTensorBackedUnaryOperation<V, TB extends Tensorbacked<V>>
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ElementTensorBackedUnaryOperation other = (ElementTensorBackedUnaryOperation) obj;
+        ElementTensorBackedUnaryOperation<?, ?> other = (ElementTensorBackedUnaryOperation<?, ?>) obj;
         if (elementOperation == null) {
             if (other.elementOperation != null) {
                 return false;

@@ -71,7 +71,7 @@ public class QuantityLessPredicate<S> extends AbstractQuantityStatisticPredicate
         if (getClass() != obj.getClass()) {
             return false;
         }
-        QuantityLessPredicate other = (QuantityLessPredicate) obj;
+        QuantityLessPredicate<?> other = (QuantityLessPredicate<?>) obj;
         if (confidenceLimit == null) {
             if (other.confidenceLimit != null) {
                 return false;

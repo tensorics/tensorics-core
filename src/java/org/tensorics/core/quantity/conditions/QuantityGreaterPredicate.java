@@ -71,7 +71,7 @@ public class QuantityGreaterPredicate<S> extends AbstractQuantityStatisticPredic
         if (getClass() != obj.getClass()) {
             return false;
         }
-        QuantityGreaterPredicate other = (QuantityGreaterPredicate) obj;
+        QuantityGreaterPredicate<?> other = (QuantityGreaterPredicate<?>) obj;
         if (confidenceLimit == null) {
             if (other.confidenceLimit != null) {
                 return false;

@@ -79,6 +79,8 @@ public class DeferredTensoricCalculationTest {
     public void testTensorScript() throws Exception {
         Tensor<Double> result = engine.resolve(new DoubleScript<Tensor<Double>>() {
 
+            private static final long serialVersionUID = 1L;
+
             @Override
             protected Expression<Tensor<Double>> describe() {
                 return ResolvedExpression.of(Tensorics.scalarOf(0.4));

@@ -113,7 +113,7 @@ public abstract class AbstractQuantityStatisticPredicate<S> extends ScalarSuppor
         if (getClass() != obj.getClass()) {
             return false;
         }
-        AbstractQuantityStatisticPredicate other = (AbstractQuantityStatisticPredicate) obj;
+        AbstractQuantityStatisticPredicate<?> other = (AbstractQuantityStatisticPredicate<?>) obj;
         if (mathsEnvironment == null) {
             if (other.mathsEnvironment != null) {
                 return false;

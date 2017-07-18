@@ -91,7 +91,7 @@ public class BinaryPredicateIterableExpression<T> extends AbstractDeferredExpres
         if (getClass() != obj.getClass()) {
             return false;
         }
-        BinaryPredicateIterableExpression other = (BinaryPredicateIterableExpression) obj;
+        BinaryPredicateIterableExpression<?> other = (BinaryPredicateIterableExpression<?>) obj;
         if (left == null) {
             if (other.left != null) {
                 return false;

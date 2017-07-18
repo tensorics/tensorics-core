@@ -69,7 +69,7 @@ public abstract class QuantityBinaryOperation<V> extends AbstractQuantityOperati
         if (getClass() != obj.getClass()) {
             return false;
         }
-        QuantityBinaryOperation other = (QuantityBinaryOperation) obj;
+        QuantityBinaryOperation<?> other = (QuantityBinaryOperation<?>) obj;
         if (scalarBinaryOeration == null) {
             if (other.scalarBinaryOeration != null) {
                 return false;

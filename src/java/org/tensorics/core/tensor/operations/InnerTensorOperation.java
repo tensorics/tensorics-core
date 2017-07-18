@@ -202,7 +202,7 @@ public class InnerTensorOperation<V> implements BinaryOperation<Tensor<V>>, Seri
         if (getClass() != obj.getClass()) {
             return false;
         }
-        InnerTensorOperation other = (InnerTensorOperation) obj;
+        InnerTensorOperation<?> other = (InnerTensorOperation<?>) obj;
         if (elementOperation == null) {
             if (other.elementOperation != null) {
                 return false;
