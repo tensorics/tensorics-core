@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -32,7 +32,7 @@ import org.tensorics.core.tensor.TensorBuilder;
 /**
  * An abstract class for classes that are backed by a tensor. The purpose of such classes is that they can be used for
  * calculations just in the same way (or at least in a similar way) as tensors themselves.
- * 
+ *
  * @author kfuchsbe
  * @param <E> the type of the elements of the tensor, which backs this class
  * @see Tensorbacked
@@ -67,7 +67,7 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serial
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((backingTensor == null) ? 0 : backingTensor.hashCode());
@@ -75,7 +75,7 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serial
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }

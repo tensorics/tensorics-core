@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -21,6 +22,7 @@ import com.google.common.collect.ImmutableSet;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import nl.jqno.equalsverifier.EqualsVerifier;
 
 /**
  * This is a very basic test for all instruction nodes: It simply checks that all implementations declare the hash-code
@@ -55,6 +57,14 @@ public abstract class TransportableEntityFulfilled {
     public void equalsMethodIsDeclared(Class<?> classToCheck) throws NoSuchMethodException, SecurityException {
         assertNotNull(classToCheck.getDeclaredMethod("equals", Object.class));
     }
+
+    @Test
+    @Ignore("Damn this is difficult! ;-) To be worked on!")
+    @Parameters(method = "getParameters")
+    public void equalsMethodIsValid(Class<?> classToCheck)  {
+        EqualsVerifier.forClass(classToCheck).verify();
+    }
+
 
     @Test
     @Parameters(method = "getParameters")

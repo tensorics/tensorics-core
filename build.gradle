@@ -96,6 +96,7 @@ dependencies {
     testCompile 'org.objenesis:objenesis:2.4'
     testCompile 'com.openpojo:openpojo:0.8.4'
     testCompile 'org.assertj:assertj-core:3.6.1'
+    testCompile 'nl.jqno.equalsverifier:equalsverifier:2.3.1'
 }
 
 sourceSets {
