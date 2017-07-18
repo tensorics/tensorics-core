@@ -223,6 +223,6 @@ public final class PojoClassFilters {
         private boolean isJaCoCoAddedField(PojoField pojoField) {
             return "$jacocoData".equals(pojoField.getName());
         }
-    };
+    }
 
 }

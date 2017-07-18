@@ -42,6 +42,8 @@ public class TreesFindNodeOfClassTest {
     }
 
     private class AnyExpression extends AbstractDeferredExpression<Void> {
+        private static final long serialVersionUID = 1L;
+
         @Override
         public List<? extends Node> getChildren() {
             return Collections.emptyList();
@@ -49,6 +51,8 @@ public class TreesFindNodeOfClassTest {
     }
 
     private class AnyMarkedExpression extends AbstractDeferredExpression<Void> implements Marker {
+        private static final long serialVersionUID = 1L;
+
         @Override
         public List<? extends Node> getChildren() {
             return Collections.emptyList();
@@ -56,6 +60,7 @@ public class TreesFindNodeOfClassTest {
     }
 
     private class GroupExpression extends AbstractDeferredExpression<Void> {
+        private static final long serialVersionUID = 1L;
         private final List<? extends Node> children;
 
         public GroupExpression(List<? extends Node> children) {
