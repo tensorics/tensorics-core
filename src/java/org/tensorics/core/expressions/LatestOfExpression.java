@@ -6,27 +6,26 @@ package org.tensorics.core.expressions;
 
 import java.util.List;
 
+import org.tensorics.core.iterable.expressions.PickExpression;
 import org.tensorics.core.tree.domain.Expression;
-
-import com.google.common.collect.Iterables;
 
 /**
  * Expression that given an {@link Expression} of {@link List} of T, it gets the latest. Especially usefull for buffers.
  * 
  * @param <T>
  */
-public class LatestOfExpression<T> extends ConversionOperationExpression<Iterable<T>, T> {
+public class LatestOfExpression<T> extends PickExpression<T> {
 
     private static final long serialVersionUID = 6562010523280754793L;
 
-    private final Expression<Iterable<T>> bufferExpression;
+    private final Expression<? extends Iterable<T>> bufferExpression;
 
-    private LatestOfExpression(Expression<Iterable<T>> source) {
-        super(Iterables::getLast, source);
+    private LatestOfExpression(Expression<? extends Iterable<T>> source) {
+        super(source, 0, Mode.FROM_END);
         bufferExpression = source;
     }
 
-    public static <T> LatestOfExpression<T> latestOf(Expression<Iterable<T>> source) {
+    public static <T> LatestOfExpression<T> latestOf(Expression<? extends Iterable<T>> source) {
         return new LatestOfExpression<>(source);
     }
 

@@ -33,7 +33,7 @@ public class PickExpression<T> extends AbstractDeferredExpression<T> implements 
     private final int offset;
     private final Mode mode;
 
-    private PickExpression(Expression<? extends Iterable<T>> iterable, int offset, Mode mode) {
+    protected PickExpression(Expression<? extends Iterable<T>> iterable, int offset, Mode mode) {
         super();
         this.iterable = iterable;
         this.offset = offset;

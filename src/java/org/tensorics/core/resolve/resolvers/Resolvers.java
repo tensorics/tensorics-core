@@ -49,7 +49,6 @@ public final class Resolvers {
     public static ResolverRepository defaultRepositoryWithAdditional(Resolver<?, ?>... resolvers) {
         List<Resolver<?, ?>> allResolvers = createDefaultResolvers();
         allResolvers.addAll(Arrays.asList(resolvers));
-        System.err.println("Resolvers: " + allResolvers);
         return repositoryWithResolvers(allResolvers);
     }
 
@@ -70,6 +69,7 @@ public final class Resolvers {
         resolvers.add(new BinaryPredicateIterableResolver<>());
         resolvers.add(new FunctionalExpressionResolver<>());
         resolvers.add(new IterableExpressionToIterableResolver<>());
+        resolvers.add(new PickResolver<>());
         return resolvers;
     }
 

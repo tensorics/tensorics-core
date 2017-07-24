@@ -15,7 +15,7 @@ public class DetailedExpressionResult<R, E extends Expression<R>> {
     private final R value;
     private final ResolvingContext context;
 
-    private DetailedExpressionResult(E rootExpression, R value, ResolvingContext context) {
+    protected DetailedExpressionResult(E rootExpression, R value, ResolvingContext context) {
         super();
         this.rootExpression = requireNonNull(rootExpression, "rootExpression must not be null");
         this.value = requireNonNull(value, "value must not be null");
