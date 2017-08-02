@@ -45,8 +45,9 @@ buildscript {
 
     repositories {
         if (CERN_VM) {
-            maven { url 'http://artifactory.cern.ch/repo' }
-            maven { url 'http://artifactory.cern.ch/jcenter' }
+            maven { url 'http://artifactory.cern.ch/gradle-plugins' }
+            maven { url 'http://artifactory.cern.ch/ds-jcenter' }
+            maven { url 'http://artifactory.cern.ch/development' }
         } else {
             mavenCentral()
             jcenter()
@@ -67,8 +68,8 @@ apply plugin: 'com.jfrog.bintray'
 
 repositories {
     if (CERN_VM) {
-        maven { url 'http://artifactory.cern.ch/repo' }
-        maven { url 'http://artifactory.cern.ch/jcenter' }
+            maven { url 'http://artifactory.cern.ch/ds-jcenter' }
+            maven { url 'http://artifactory.cern.ch/development' }
     } else {
         mavenCentral()
         jcenter()
