@@ -28,11 +28,10 @@ import com.google.common.annotations.Beta;
  * Indicates a repository of names for any object
  */
 @Beta
-@FunctionalInterface
 public interface NameRepository {
 
     /**
-     * Returns for the specified object.
+     * Returns the name for the specified object or {@code null} in case the repository does not know about the object.
      *
      * @param object the object for which to retrieve the nam
      * @return a proper name for the given object, or {@code null} if the object is not known by the repository.

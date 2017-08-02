@@ -4,7 +4,7 @@
 
 package org.tensorics.core.util.chains;
 
-public class BranchChainBuilder<T, R> extends AbstractChainBuilder<T, R, Branch<T, R>, BranchChainBuilder<T, R>> {
+final class BranchChainBuilder<T, R> extends AbstractChainBuilder<T, R, Branch<T, R>, BranchChainBuilder<T, R>> {
 
     @Override
     Branch<T, R> build() {

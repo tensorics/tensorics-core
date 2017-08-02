@@ -8,7 +8,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-public class MainChainBuilder<R> extends AbstractChainBuilder<Object, R, Chain<R>, MainChainBuilder<R>> {
+final class MainChainBuilder<R> extends AbstractChainBuilder<Object, R, Chain<R>, MainChainBuilder<R>> {
 
     private Function<Object, R> endRecursionFunction = o -> null;
     private int defaultEndRecursionDepth = 6;
