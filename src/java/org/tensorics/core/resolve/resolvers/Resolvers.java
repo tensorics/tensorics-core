@@ -69,7 +69,10 @@ public final class Resolvers {
         resolvers.add(new BinaryPredicateIterableResolver<>());
         resolvers.add(new FunctionalExpressionResolver<>());
         resolvers.add(new IterableExpressionToIterableResolver<>());
+        resolvers.add(new IterableResolvingExpressionResolver<>());
         resolvers.add(new PickResolver<>());
+        resolvers.add(new WindowedExpressionResolver());
+        resolvers.add(new PredicateConditionResolver<>());
         return resolvers;
     }
 
