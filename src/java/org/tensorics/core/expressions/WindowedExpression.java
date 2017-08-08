@@ -21,6 +21,7 @@ import org.tensorics.core.tree.domain.Expression;
  * @param T the type of the target expression
  * @author acalia, caguiler
  */
+@Deprecated
 public class WindowedExpression<T extends Expression<?>> extends AbstractDeferredExpression<EvaluationStatus>
         implements Serializable {
     private static final long serialVersionUID = 1L;
