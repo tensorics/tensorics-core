@@ -8,7 +8,7 @@ Tensorics is a java framework which uses a tensor as a central object. A tensor 
 
 = Links
 * http://tensorics.org
-* http://tensorics.github.io/tensorics-core/javadoc
+* https://tensorics.github.io/projects/tensorics-core/javadoc/
 
 = Getting started
 
