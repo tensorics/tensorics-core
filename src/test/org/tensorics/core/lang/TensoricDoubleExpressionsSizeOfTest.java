@@ -2,7 +2,6 @@ package org.tensorics.core.lang;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
-import static org.junit.Assert.*;
 import static org.tensorics.core.lang.TensoricDoubleExpressions.averageOf;
 import static org.tensorics.core.lang.TensoricDoubleExpressions.rmsOf;
 import static org.tensorics.core.lang.TensoricDoubleExpressions.sizeOf;

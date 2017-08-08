@@ -48,8 +48,6 @@ import org.tensorics.core.tensorbacked.lang.TensorbackedExpressionSupport;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.units.Unit;
 
-import com.google.common.annotations.Beta;
-
 /**
  * Mixes together the quantified versions of the operations and the basic tensor operations. Contains delegation methods
  * only!
