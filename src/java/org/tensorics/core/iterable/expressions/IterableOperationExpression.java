@@ -37,7 +37,7 @@ import org.tensorics.core.tree.domain.Expression;
 public class IterableOperationExpression<T> extends ConversionOperationExpression<Iterable<T>, T> {
     private static final long serialVersionUID = 1L;
 
-    public IterableOperationExpression(Conversion<Iterable<T>, T> operation, Expression<Iterable<T>> iterable) {
+    public IterableOperationExpression(Conversion<Iterable<T>, T> operation, Expression<? extends Iterable<T>> iterable) {
         super(operation, iterable);
     }
 

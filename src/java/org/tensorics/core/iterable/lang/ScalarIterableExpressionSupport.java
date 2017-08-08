@@ -22,6 +22,7 @@
 
 package org.tensorics.core.iterable.lang;
 
+import org.tensorics.core.iterable.expressions.AnyIterableConversionExpression;
 import org.tensorics.core.iterable.expressions.IterableOperationExpression;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.scalar.lang.ScalarExpressionSupport;
@@ -47,7 +48,7 @@ public class ScalarIterableExpressionSupport<V> extends ScalarExpressionSupport<
         return averageOf(ResolvedExpression.of(iterable));
     }
 
-    public final Expression<V> averageOf(Expression<Iterable<V>> iterableExpression) {
+    public final Expression<V> averageOf(Expression<? extends Iterable<V>> iterableExpression) {
         return calculate(sumOf(iterableExpression)).dividedBy(sizeOf(iterableExpression));
     }
 
@@ -55,15 +56,15 @@ public class ScalarIterableExpressionSupport<V> extends ScalarExpressionSupport<
         return sizeOf(ResolvedExpression.of(iterable));
     }
 
-    public final Expression<V> sizeOf(Expression<Iterable<V>> iterableExpression) {
-        return new IterableOperationExpression<V>(repository.size(), iterableExpression);
+    public final Expression<V> sizeOf(Expression<? extends Iterable<?>> iterableExpression) {
+        return new AnyIterableConversionExpression<>(repository.size(), iterableExpression);
     }
 
     public final Expression<V> sumOf(Iterable<V> iterable) {
         return sumOf(ResolvedExpression.of(iterable));
     }
 
-    public final Expression<V> sumOf(Expression<Iterable<V>> iterableExpression) {
+    public final Expression<V> sumOf(Expression<? extends Iterable<V>> iterableExpression) {
         return new IterableOperationExpression<>(repository.sum(), iterableExpression);
     }
 
@@ -71,7 +72,7 @@ public class ScalarIterableExpressionSupport<V> extends ScalarExpressionSupport<
         return rmsOf(ResolvedExpression.of(iterable));
     }
 
-    public Expression<V> rmsOf(Expression<Iterable<V>> iterableExpression) {
+    public Expression<V> rmsOf(Expression<? extends Iterable<V>> iterableExpression) {
         return new IterableOperationExpression<V>(repository.rms(), iterableExpression);
     }
 
@@ -79,7 +80,7 @@ public class ScalarIterableExpressionSupport<V> extends ScalarExpressionSupport<
         return stdOf(ResolvedExpression.of(iterable));
     }
 
-    public Expression<V> stdOf(Expression<Iterable<V>> iterableExpression) {
+    public Expression<V> stdOf(Expression<? extends Iterable<V>> iterableExpression) {
         return new IterableOperationExpression<V>(repository.std(), iterableExpression);
     }
 
@@ -87,7 +88,7 @@ public class ScalarIterableExpressionSupport<V> extends ScalarExpressionSupport<
         return sumOfSquaresOf(ResolvedExpression.of(iterable));
     }
 
-    public Expression<V> sumOfSquaresOf(Expression<Iterable<V>> iterableExpression) {
+    public Expression<V> sumOfSquaresOf(Expression<? extends Iterable<V>> iterableExpression) {
         return new IterableOperationExpression<>(repository.sumOfSquares(), iterableExpression);
     }
 

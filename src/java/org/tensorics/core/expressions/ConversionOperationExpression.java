@@ -42,10 +42,10 @@ import com.google.common.collect.ImmutableList;
 public class ConversionOperationExpression<T, R> extends AbstractDeferredExpression<R> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final Expression<T> sourceObject;
+    private final Expression<? extends T> sourceObject;
     private final Conversion<T, R> operation;
 
-    public ConversionOperationExpression(Conversion<T, R> operation, Expression<T> source) {
+    public ConversionOperationExpression(Conversion<T, R> operation, Expression<? extends T> source) {
         super();
         this.operation = operation;
         this.sourceObject = source;
@@ -56,7 +56,7 @@ public class ConversionOperationExpression<T, R> extends AbstractDeferredExpress
         return ImmutableList.<Node> of(sourceObject);
     }
 
-    public Expression<T> getSource() {
+    public Expression<? extends T> getSource() {
         return sourceObject;
     }
 

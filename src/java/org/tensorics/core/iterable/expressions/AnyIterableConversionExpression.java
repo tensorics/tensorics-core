@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,37 +16,29 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
-package org.tensorics.core.iterable.operations;
+package org.tensorics.core.iterable.expressions;
 
 import org.tensorics.core.commons.operations.Conversion;
-import org.tensorics.core.math.ExtendedField;
-import org.tensorics.core.scalar.lang.ScalarSupport;
+import org.tensorics.core.expressions.ConversionOperationExpression;
+import org.tensorics.core.tree.domain.Expression;
 
 /**
- * An operation which counts the number of entries in an iterable and returns a scalar, corresponding to the count.
- * 
+ * An unresolved expression which uses an operation on iterables to produce one value of the same type. An instance will
+ * contain the operation to act on the iterable as well as an expression for the iterable on which the operation will
+ * have to be performed.
+ *
  * @author kfuchsbe
- * @param <V> the type of the elements of the field.
+ * @param <T> the type of the elements of the iterable and the result of this expression.
  */
-public class IterableSize<V> extends ScalarSupport<V> implements Conversion<Iterable<?>, V> {
+public class AnyIterableConversionExpression<T> extends ConversionOperationExpression<Iterable<?>, T> {
+    private static final long serialVersionUID = 1L;
 
-    public IterableSize(ExtendedField<V> field) {
-        super(field);
-    }
-
-    @Override
-    public V apply(Iterable<?> iterable) {
-        V one = one();
-        V count = zero();
-        for (@SuppressWarnings("unused")
-        Object value : iterable) {
-            count = calculate(count).plus(one);
-        }
-        return count;
+    public AnyIterableConversionExpression(Conversion<Iterable<?>, T> operation, Expression<? extends Iterable<?>> iterable) {
+        super(operation, iterable);
     }
 
 }

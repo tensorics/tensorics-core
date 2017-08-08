@@ -38,11 +38,11 @@ public class TensoricDoubleExpressions {
         return EXPRESSION_SUPPORT.inverseOf(element);
     }
 
-    public static final Expression<Double> averageOf(Expression<Iterable<Double>> iterableExpression) {
+    public static final Expression<Double> averageOf(Expression<? extends Iterable<Double>> iterableExpression) {
         return EXPRESSION_SUPPORT.averageOf(iterableExpression);
     }
 
-    public static final Expression<Double> sizeOf(Expression<Iterable<Double>> iterableExpression) {
+    public static final Expression<Double> sizeOf(Expression<? extends Iterable<?>> iterableExpression) {
         return EXPRESSION_SUPPORT.sizeOf(iterableExpression);
     }
 
@@ -50,7 +50,7 @@ public class TensoricDoubleExpressions {
         return EXPRESSION_SUPPORT.squareRootOf(value);
     }
 
-    public static final Expression<Double> sumOf(Expression<Iterable<Double>> iterableExpression) {
+    public static final Expression<Double> sumOf(Expression<? extends Iterable<Double>> iterableExpression) {
         return EXPRESSION_SUPPORT.sumOf(iterableExpression);
     }
 
@@ -62,7 +62,7 @@ public class TensoricDoubleExpressions {
         return EXPRESSION_SUPPORT.calculateT(tensoric);
     }
 
-    public static final Expression<Double> rmsOf(Expression<Iterable<Double>> iterableExpression) {
+    public static final Expression<Double> rmsOf(Expression<? extends Iterable<Double>> iterableExpression) {
         return EXPRESSION_SUPPORT.rmsOf(iterableExpression);
     }
 
@@ -70,7 +70,7 @@ public class TensoricDoubleExpressions {
         return EXPRESSION_SUPPORT.calculate(left);
     }
 
-    public static final Expression<Double> sumOfSquaresOf(Expression<Iterable<Double>> iterableExpression) {
+    public static final Expression<Double> sumOfSquaresOf(Expression<? extends Iterable<Double>> iterableExpression) {
         return EXPRESSION_SUPPORT.sumOfSquaresOf(iterableExpression);
     }
 
