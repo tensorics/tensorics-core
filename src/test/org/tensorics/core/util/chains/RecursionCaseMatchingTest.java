@@ -87,7 +87,6 @@ public class RecursionCaseMatchingTest {
 
     public static class IntRepresenter extends AbstractRecursiveRepresenter<String> {
 
-        @SuppressWarnings("unused")
         public Integer repr(ObjectA a) {
             return null;
         }
@@ -96,7 +95,6 @@ public class RecursionCaseMatchingTest {
 
     public static class TwoParameterRepresenter extends AbstractRecursiveRepresenter<String> {
 
-        @SuppressWarnings("unused")
         public String repr(ObjectA a, Object ab) {
             return null;
         }
@@ -105,7 +103,6 @@ public class RecursionCaseMatchingTest {
 
     public static class WrongMethodNameRepresenter extends AbstractRecursiveRepresenter<String> {
 
-        @SuppressWarnings("unused")
         public String illegalMethodName(ObjectA a) {
             return null;
         }
