@@ -2,9 +2,10 @@ package org.tensorics.incubate.spaces;
 
 /**
  * Defines a (positive) distance between two points (within a space).
- * {@link https://en.wikipedia.org/wiki/Metric_(mathematics)}
  * 
  * @author kaifox
+ * @see <a href="https://en.wikipedia.org/wiki/Metric_(mathematics)">https://en.wikipedia.org/wiki/Metric_(mathematics)
+ *      </a>
  */
 public interface Metric<T, V> {
 
