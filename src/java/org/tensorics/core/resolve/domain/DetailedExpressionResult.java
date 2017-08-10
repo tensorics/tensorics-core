@@ -6,6 +6,8 @@ package org.tensorics.core.resolve.domain;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
+
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvingContext;
 
@@ -31,8 +33,12 @@ public class DetailedExpressionResult<R, E extends Expression<R>> {
         return value;
     }
 
-    public ResolvingContext context() {
-        return context;
+    public <T> Optional<T> resolvedValueOf(Expression<T> expression) {
+        requireNonNull(expression, "expression must not be null.");
+        if (context.resolves(expression)) {
+            return Optional.of(context.resolvedValueOf(expression));
+        }
+        return Optional.empty();
     }
 
     public E rootExpression() {
