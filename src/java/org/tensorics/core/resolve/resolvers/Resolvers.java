@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.tensorics.core.analysis.resolver.AnalysisResolver;
+import org.tensorics.core.analysis.resolver.AssertionResolver;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.Node;
 import org.tensorics.core.tree.domain.ResolvingContext;
@@ -72,6 +74,8 @@ public final class Resolvers {
         resolvers.add(new IterableResolvingExpressionResolver<>());
         resolvers.add(new PickResolver<>());
         resolvers.add(new PredicateConditionResolver<>());
+        resolvers.add(new AnalysisResolver());
+        resolvers.add(new AssertionResolver());
         return resolvers;
     }
 
