@@ -22,6 +22,7 @@
 
 package org.tensorics.core.tree.domain;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -67,6 +68,10 @@ public final class Contexts {
         EditableResolvingContext newCtx = newResolvingContext();
         contexts.forEach(newCtx::putAllNew);
         return newCtx;
+    }
+    
+    public static EditableResolvingContext mergeContextsOrdered(ResolvingContext... contexts) {
+        return mergeContextsOrdered(Arrays.asList(contexts));
     }
 
     /**
