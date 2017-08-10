@@ -22,15 +22,17 @@
 
 package org.tensorics.core.analysis;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.tensorics.core.analysis.expression.AnalysisExpression;
+import org.tensorics.core.analysis.expression.AssertionExpression;
 import org.tensorics.core.analysis.lang.OngoingAllBooleanCondition;
 import org.tensorics.core.analysis.lang.OngoingAllBooleanExcludableCondition;
-import org.tensorics.core.analysis.lang.OngoingAnalysisEnabler;
 import org.tensorics.core.analysis.lang.OngoingAnyBooleanCondition;
 import org.tensorics.core.analysis.lang.OngoingBooleanCondition;
 import org.tensorics.core.analysis.lang.OngoingCondition;
@@ -52,15 +54,6 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
 public abstract class AnalysisModule {
 
     private final List<AssertionBuilder> assertionBuilders = new ArrayList<>();
-
-    private final AtomicBoolean enablingSpecified = new AtomicBoolean(false);
-    private EnablingConditionBuilder enablerBuilder;
-
-    protected final OngoingAnalysisEnabler enabled() {
-        throwIfEnablingSpecifiedTwice();
-        newEnablerBuilder();
-        return new OngoingAnalysisEnabler(enablerBuilder);
-    }
 
     protected final <T1> OngoingCondition<T1> assertThat(Expression<T1> thatSource) {
         return new OngoingCondition<>(newAssertionBuilder(), thatSource);
@@ -128,27 +121,13 @@ public abstract class AnalysisModule {
         return builder;
     }
 
-    private void newEnablerBuilder() {
-        this.enablerBuilder = new EnablingConditionBuilder();
-    }
-
     public List<AssertionBuilder> assertionBuilders() {
         return assertionBuilders;
     }
 
-    public EnablingConditionBuilder enablingBuilder() {
-        return Optional.ofNullable(enablerBuilder).orElse(defaultEnablingConditionBuilder());
-    }
-
-    protected void throwIfEnablingSpecifiedTwice() {
-        if (enablingSpecified.getAndSet(true)) {
-            throw new IllegalStateException("Only one fluent clause specifying the enabling condition is allowed. "
-                    + "Seems you tried to call evaluated() twice.");
-        }
-    }
-
-    private static final EnablingConditionBuilder defaultEnablingConditionBuilder() {
-        return new EnablingConditionBuilder().withCondition(ResolvedExpression.of(true));
+    public AnalysisExpression buildExpression() {
+        return assertionBuilders().stream().map(AssertionExpression::new)
+                .collect(collectingAndThen(toList(), AnalysisExpression::new));
     }
 
 }
