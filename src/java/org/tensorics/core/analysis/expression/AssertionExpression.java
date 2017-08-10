@@ -23,6 +23,7 @@
 package org.tensorics.core.analysis.expression;
 
 import static java.util.Objects.requireNonNull;
+import static org.tensorics.core.analysis.AssertionStatus.ERROR;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -31,7 +32,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tensorics.core.analysis.AssertionBuilder;
+import org.tensorics.core.analysis.AssertionResult;
 import org.tensorics.core.analysis.AssertionStatus;
+import org.tensorics.core.analysis.resolver.AssertionResolver;
 import org.tensorics.core.expressions.IterableResolvingExpression;
 import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 import org.tensorics.core.tree.domain.ExceptionHandlingNode;
@@ -48,8 +51,8 @@ import com.google.common.collect.ImmutableList;
  * @see AssertionResolver
  * @author acalia, caguiler, kfuchsbe
  */
-public class AssertionExpression extends AbstractDeferredExpression<AssertionStatus>
-        implements ExceptionHandlingNode<AssertionStatus> {
+public class AssertionExpression extends AbstractDeferredExpression<AssertionResult>
+        implements ExceptionHandlingNode<AssertionResult> {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(AssertionExpression.class);
     private static final Expression<Boolean> DEFAULT_TRUE_PRECONDITION = ResolvedExpression.of(true);
@@ -88,9 +91,9 @@ public class AssertionExpression extends AbstractDeferredExpression<AssertionSta
     }
 
     @Override
-    public AssertionStatus handle(Exception exception) {
+    public AssertionResult handle(Exception exception) {
         LOGGER.error("Exception evaluating expression {} [{}]", name, key, exception);
-        return AssertionStatus.ERROR;
+        return AssertionResult.of(ERROR);
     }
 
     @Override

@@ -13,13 +13,14 @@ import java.util.stream.Collectors;
 
 import org.tensorics.core.analysis.expression.AssertionExpression;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 public class AnalysisResult implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final List<AssertionResult> assertionResults;
+    /* We on purpose we use a guava immutable map here, because it preserves insertion order */
+    private final ImmutableMap<AssertionExpression, AssertionResult> assertionResults;
     private final AssertionStatus overallStatus;
 
     public AnalysisResult(Builder builder) {
@@ -34,15 +35,17 @@ public class AnalysisResult implements Serializable {
     public static final class Builder {
 
         private final AssertionStatus overallStatus;
-        private final ImmutableList.Builder<AssertionResult> resultsBuilder = ImmutableList.builder();
+        private final ImmutableMap.Builder<AssertionExpression, AssertionResult> resultsBuilder = ImmutableMap
+                .builder();
 
         Builder(AssertionStatus overallStatus) {
             this.overallStatus = requireNonNull(overallStatus, "overallStatus must not be null.");
         }
 
-        public Builder add(AssertionResult result) {
+        public Builder put(AssertionExpression expression, AssertionResult result) {
+            requireNonNull(expression, "expression to add must not be null.");
             requireNonNull(result, "result to add must not be null.");
-            resultsBuilder.add(result);
+            resultsBuilder.put(expression, result);
             return this;
         }
 
@@ -90,21 +93,20 @@ public class AnalysisResult implements Serializable {
         return true;
     }
 
-    public List<AssertionResult> assertionResults() {
-        return this.assertionResults;
-    }
-
     public List<AssertionExpression> assertions() {
-        return this.assertionResults.stream().map(a -> a.assertion()).collect(Collectors.toList());
+        return this.assertionResults.keySet().stream().collect(Collectors.toList());
     }
 
     public AssertionStatus statusFor(AssertionExpression assertion) {
-        for (AssertionResult assertionResult : this.assertionResults) {
-            if (assertion.equals(assertionResult.assertion())) {
-                return assertionResult.status();
-            }
+        return resultFor(assertion).status();
+
+    }
+
+    public AssertionResult resultFor(AssertionExpression assertion) {
+        if (!assertionResults.containsKey(assertion)) {
+            throw new NoSuchElementException("No result available for assertion'" + assertion + "'.");
         }
-        throw new NoSuchElementException("No result available for assertion'" + assertion + "'.");
+        return assertionResults.get(assertion);
     }
 
     public AssertionStatus overallStatus() {

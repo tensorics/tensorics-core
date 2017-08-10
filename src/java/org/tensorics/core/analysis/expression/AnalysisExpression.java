@@ -26,14 +26,15 @@ import java.util.Collection;
 import java.util.List;
 
 import org.tensorics.core.analysis.AnalysisResult;
+import org.tensorics.core.analysis.resolver.AnalysisResolver;
 import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 
 import com.google.common.collect.ImmutableList;
 
 /**
- * A group of assertions that are evaluated altogether. The strategy is defined in the {@link AssertionGroupResolver}.
+ * A group of assertions that are evaluated altogether. The strategy is defined in the {@link AnalysisResolver}.
  *
- * @see AssertionGroupResolver
+ * @see AnalysisResolver
  * @author acalia, caguiler, kfuchsberger
  */
 public class AnalysisExpression extends AbstractDeferredExpression<AnalysisResult> {

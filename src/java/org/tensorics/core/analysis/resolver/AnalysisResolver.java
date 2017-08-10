@@ -46,7 +46,7 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  * @see AnalysisExpression
  * @author acalia, caguiler, kfuchsberger
  */
-public class AssertionGroupResolver extends AbstractResolver<AnalysisResult, AnalysisExpression> {
+public class AnalysisResolver extends AbstractResolver<AnalysisResult, AnalysisExpression> {
 
     @Override
     public boolean canResolve(AnalysisExpression assertionSet, ResolvingContext context) {
@@ -58,15 +58,15 @@ public class AssertionGroupResolver extends AbstractResolver<AnalysisResult, Ana
         AssertionStatus overallStatus = overallStatus(assertionSet, context);
         Builder builder = AnalysisResult.builder(overallStatus);
         for (AssertionExpression assertion : assertionSet.getChildren()) {
-            AssertionResult assertionResult = AssertionResult.of(assertion, context.resolvedValueOf(assertion));
-            builder.add(assertionResult);
+            AssertionResult assertionResult = context.resolvedValueOf(assertion);
+            builder.put(assertion, assertionResult);
         }
         return builder.build();
     }
 
     private AssertionStatus overallStatus(AnalysisExpression assertionSet, ResolvingContext context) {
         return fromBooleanSuccessful(assertionSet.getChildren().stream().map(context::resolvedValueOf)
-                .filter(not(NONAPPLICABLE::equals)).allMatch(SUCCESSFUL::equals));
+                .map(AssertionResult::status).filter(not(NONAPPLICABLE::equals)).allMatch(SUCCESSFUL::equals));
     }
 
 }

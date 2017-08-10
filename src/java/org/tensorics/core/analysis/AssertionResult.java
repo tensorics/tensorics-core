@@ -24,40 +24,27 @@ package org.tensorics.core.analysis;
 
 import java.io.Serializable;
 
-import org.tensorics.core.analysis.expression.AssertionExpression;
-
 public class AssertionResult implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private final AssertionExpression assertion;
     private final AssertionStatus status;
 
-    private AssertionResult(AssertionExpression assertion, AssertionStatus status) {
-        this.assertion = assertion;
+    private AssertionResult(AssertionStatus status) {
         this.status = status;
     }
 
-    public static AssertionResult of(AssertionExpression assertion, AssertionStatus status) {
-        return new AssertionResult(assertion, status);
-    }
-
-    public String condition() {
-        return assertion.name();
+    public static AssertionResult of(AssertionStatus status) {
+        return new AssertionResult(status);
     }
 
     public AssertionStatus status() {
         return status;
     }
 
-    public AssertionExpression assertion() {
-        return this.assertion;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((assertion == null) ? 0 : assertion.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         return result;
     }
@@ -74,13 +61,6 @@ public class AssertionResult implements Serializable {
             return false;
         }
         AssertionResult other = (AssertionResult) obj;
-        if (assertion == null) {
-            if (other.assertion != null) {
-                return false;
-            }
-        } else if (!assertion.equals(other.assertion)) {
-            return false;
-        }
         if (status != other.status) {
             return false;
         }
@@ -89,7 +69,8 @@ public class AssertionResult implements Serializable {
 
     @Override
     public String toString() {
-        return "AssertionResult [assertion=" + assertion + ", status=" + status + "]";
+        return "AssertionResult [status=" + status + "]";
     }
 
+    
 }

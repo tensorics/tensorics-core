@@ -25,6 +25,7 @@ package org.tensorics.core.analysis.resolver;
 import static org.tensorics.core.analysis.AssertionStatus.NONAPPLICABLE;
 import static org.tensorics.core.analysis.AssertionStatus.fromBooleanSuccessful;
 
+import org.tensorics.core.analysis.AssertionResult;
 import org.tensorics.core.analysis.AssertionStatus;
 import org.tensorics.core.analysis.expression.AssertionExpression;
 import org.tensorics.core.resolve.resolvers.AbstractResolver;
@@ -37,7 +38,7 @@ import org.tensorics.core.tree.domain.ResolvingContext;
  * @see AssertionExpression
  * @author acalia, caguiler, kfuchsberger
  */
-public class AssertionResolver extends AbstractResolver<AssertionStatus, AssertionExpression> {
+public class AssertionResolver extends AbstractResolver<AssertionResult, AssertionExpression> {
 
     @Override
     public boolean canResolve(AssertionExpression expression, ResolvingContext context) {
@@ -45,12 +46,12 @@ public class AssertionResolver extends AbstractResolver<AssertionStatus, Asserti
     }
 
     @Override
-    public AssertionStatus resolve(AssertionExpression assertion, ResolvingContext context) {
+    public AssertionResult resolve(AssertionExpression assertion, ResolvingContext context) {
         if (!context.resolvedValueOf(assertion.preConditionsExpression())) {
-            return NONAPPLICABLE;
+            return AssertionResult.of(NONAPPLICABLE);
         }
 
-        return fromBooleanSuccessful(context.resolvedValueOf(assertion.condition()));
+        return AssertionResult.of(fromBooleanSuccessful(context.resolvedValueOf(assertion.condition())));
     }
 
 }
