@@ -2,7 +2,7 @@
 /**
 *
 * This file is part of streaming pool (http://www.streamingpool.org).
-* 
+*
 * Copyright (c) 2017-present, CERN. All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-* 
+*
 */
 // @formatter:on
 
@@ -48,7 +48,7 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
  * Abstract base class for analysis modules. Provides fluent API methods to specify assertions.
  * <p>
  * This class is not threadsafe!
- * 
+ *
  * @author acalia, caguiler, kfuchsbe, mhruska
  */
 public abstract class AnalysisModule {
@@ -85,7 +85,7 @@ public abstract class AnalysisModule {
         return new OngoingAnyBooleanCondition(newAssertionBuilder(), thatSource);
     }
 
-    protected OngoingBooleanCondition assertLatestBooleanOf(Expression<Iterable<Boolean>> buffered) {
+    protected OngoingBooleanCondition assertLatestBooleanOf(Expression<? extends Iterable<Boolean>> buffered) {
         return new OngoingBooleanCondition(newAssertionBuilder(), LatestOfExpression.latestOf(buffered));
     }
 

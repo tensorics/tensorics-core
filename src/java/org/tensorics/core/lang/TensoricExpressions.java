@@ -8,6 +8,7 @@ import static java.lang.String.format;
 
 import java.util.List;
 
+import org.tensorics.core.expressions.LatestOfExpression;
 import org.tensorics.core.functional.FiniteArgumentFunction;
 import org.tensorics.core.functional.Func1;
 import org.tensorics.core.functional.Func2;
@@ -100,4 +101,9 @@ public final class TensoricExpressions {
         }
 
     }
+
+    public static <T> Expression<T> lastOf(Expression<? extends Iterable<T>> source) {
+        return LatestOfExpression.latestOf(source);
+    }
+
 }
