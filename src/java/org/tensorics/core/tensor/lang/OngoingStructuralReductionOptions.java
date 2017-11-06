@@ -15,6 +15,7 @@ import org.tensorics.core.tensor.operations.TensorReduction;
  * @param <E>
  * @param <C>
  */
+@Deprecated
 public class OngoingStructuralReductionOptions<E, C> {
 
     private final Tensor<E> tensor;
@@ -30,7 +31,7 @@ public class OngoingStructuralReductionOptions<E, C> {
     /**
      * Defines the interpolation strategy. <br>
      * See {@link AbstractInterpolationStrategy} and its extension.
-     * 
+     *
      * @param strategy to use
      * @return slicing result with interpolation between the missing comparable coordinates.
      */

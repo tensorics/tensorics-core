@@ -22,6 +22,7 @@ import org.tensorics.core.functional.Func9;
 import org.tensorics.core.functional.FuncN;
 import org.tensorics.core.functional.expressions.FunctionalExpression;
 import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvedExpression;
 
 import com.google.common.collect.ImmutableList;
 
@@ -104,6 +105,14 @@ public final class TensoricExpressions {
 
     public static <T> Expression<T> lastOf(Expression<? extends Iterable<T>> source) {
         return LatestOfExpression.latestOf(source);
+    }
+
+    public static <T> OngoingBasicDeferredBinaryPredicate<T> testIf(Expression<T> left) {
+        return new OngoingBasicDeferredBinaryPredicate<>(left);
+    }
+
+    public static <T> OngoingBasicDeferredBinaryPredicate<T> testIf(T left) {
+        return testIf(ResolvedExpression.of(left));
     }
 
 }

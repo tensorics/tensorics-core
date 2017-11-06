@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -38,7 +38,7 @@ import org.tensorics.core.tensor.operations.TensorInternals;
 
 /**
  * Part of the tensoric fluent API which provides methods to describe misc manipulations on a given tensor.
- * 
+ *
  * @author kfuchsbe
  * @param <V> the type of the values of the tensor
  */
@@ -55,7 +55,7 @@ public class OngoingTensorManipulation<V> {
      * Extracts from the tensor only those elements where the values in the given mask is {@code true}. The resulting
      * tensors will then have the same dimensionality as the original tensor, but will only have that many elements as
      * there are {@code true} elements in the mask tensor.
-     * 
+     *
      * @param mask the mask which determines which elements shall be present in the new tensor.
      * @return A tensor which will contain only those elements which have {@code true} flags in the mask
      */
@@ -71,7 +71,7 @@ public class OngoingTensorManipulation<V> {
 
     /**
      * Retrieves all the unique coordinates of the given type.
-     * 
+     *
      * @param coordinateType the type of the coordinate to extract
      * @return a set of extracted coordinates
      */
@@ -130,6 +130,7 @@ public class OngoingTensorManipulation<V> {
         return TensorStructurals.from(tensor).reduce(correctDimension).bySlicingAt(coordinate);
     }
 
+    @Deprecated
     public <C> OngoingDimensionReduction<C, V> reduce(Class<C> dimension) {
         return new OngoingDimensionReduction<>(tensor, dimension);
     }

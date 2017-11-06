@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -30,12 +30,13 @@ import org.tensorics.core.tensor.operations.TensorReduction;
 /**
  * Part of the tensoric fluent API, which provides methods to specify concretely how a given dimension should be
  * reduced.
- * 
+ *
  * @author kfuchsbe
  * @param <C> the type of coordinate (aka 'the dimension') which is going to be reduced (by calling methods of this
  *            class)
  * @param <E> the type of the elements of the tensor to be reduced.
  */
+@Deprecated
 public class OngoingStructuralReduction<C, E> {
 
     private final Tensor<E> tensor;
