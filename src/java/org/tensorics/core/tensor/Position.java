@@ -77,7 +77,6 @@ public final class Position implements Serializable {
      * @throws NullPointerException if the given coordinates are {@code null}
      */
     public static Position of(Iterable<?> coordinates) {
-
         requireNonNull(coordinates, "coordinates must not be null");
         return createFrom(requireValidCoordinates(coordinates));
     }

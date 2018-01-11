@@ -41,6 +41,7 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
+import org.tensorics.core.tensor.lang.OngoingResampling;
 import org.tensorics.core.tensor.lang.OngoingTensorFiltering;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
@@ -61,15 +62,10 @@ import com.google.common.base.Optional;
 /**
  * The main entry point for constructing and structural manipulation of tensorics. If mathematical operations are
  * required, then you should either inherit from {@link TensoricSupport} (or one of its convenience implementations) or
- * use the {@link #using(ExtendedField)} method (only recommended for one-liners).
- * <p>
- * Additional utilities for supporting classes can be found in the corresponding utility classes. E.g.
- * <ul>
- * <li>{@link org.tensorics.core.tensor.Positions}
- * <li>{@link org.tensorics.core.tensor.Shapes}
- * <li>{@link QuantityTensors}
- * <li>{@link Tensorbackeds}
- * </ul>
+ * use the {@link #using(ExtendedField)} method (only recommended for one-liners). <p> Additional utilities for
+ * supporting classes can be found in the corresponding utility classes. E.g. <ul>
+ * <li>{@link org.tensorics.core.tensor.Positions} <li>{@link org.tensorics.core.tensor.Shapes}
+ * <li>{@link QuantityTensors} <li>{@link Tensorbackeds} </ul>
  *
  * @author kfuchsbe, agorzaws, mihostet
  */
@@ -438,6 +434,13 @@ public final class Tensorics {
      */
     public static Position at(Object... coordinates) {
         return Position.of(coordinates);
+    }
+
+    /**
+     * @see TensorStructurals#resample(Tensor)
+     */
+    public static <V> OngoingResampling<V> resample(Tensor<V> tensor) {
+        return TensorStructurals.resample(tensor);
     }
 
 }
