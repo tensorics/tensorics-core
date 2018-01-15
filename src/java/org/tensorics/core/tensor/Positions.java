@@ -180,8 +180,11 @@ public final class Positions {
 
     /**
      * Combines the both positions of the pair in such a way, that for each coordinate of the types given in the given
-     * set of dimensions have to be <ul> <li>either present in both positions of the pair, and then have to be the same
-     * <li>or be present in only one of the both positions </ul>
+     * set of dimensions have to be
+     * <ul>
+     * <li>either present in both positions of the pair, and then have to be the same
+     * <li>or be present in only one of the both positions
+     * </ul>
      * 
      * @param pair the pair, whose dimensions should be united
      * @param targetDimensions the dimension in which the positions shall be united
@@ -196,8 +199,11 @@ public final class Positions {
 
     /**
      * Combines the both positions in such a way, that for each coordinate of the types given in the given set of
-     * dimensions have to be <ul> <li>either present in both positions of the pair, and then have to be the same <li>or
-     * be present in only one of the both positions </ul>
+     * dimensions have to be
+     * <ul>
+     * <li>either present in both positions of the pair, and then have to be the same
+     * <li>or be present in only one of the both positions
+     * </ul>
      * 
      * @param left the first of the two positions, whose dimensions should be united
      * @param right the second of the two positions whose dimensions should be combined
@@ -342,20 +348,6 @@ public final class Positions {
     private static Iterable<Position> cartesianProduct(List<Set<?>> coordinateSets) {
         Set<List<Object>> cartesianProduct = Sets.cartesianProduct(ImmutableList.copyOf(coordinateSets));
         return cartesianProduct.stream().map(l -> Position.of(new HashSet<>(l))).collect(toSet());
-    }
-
-    /**
-     * Returns a position which contains the coordinates which are contained in the left position but not in the right
-     * position. The right position might also contain coordinates not contained in the left position, which are simply
-     * ignored.
-     * 
-     * @param left the position from which the coordinates of the right position shall be substracted
-     * @param right the position whose coordinates shall be substracted from the left position
-     * @return a position containing all coordinates from the left position, which are not present in the right position
-     */
-    public static final Position difference(Position left, Position right) {
-        SetView<?> diffCoordinates = Sets.difference(left.coordinates(), right.coordinates());
-        return Position.of(diffCoordinates);
     }
 
 }
