@@ -6,7 +6,6 @@ package org.tensorics.core.tensor.lang;
 
 import org.tensorics.core.reduction.ReductionStrategy;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.operations.TensorReduction;
 
 public class OngoingTensorReduction<V> {
 
