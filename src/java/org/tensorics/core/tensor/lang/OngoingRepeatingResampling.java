@@ -20,11 +20,15 @@ public class OngoingRepeatingResampling<V> {
     }
 
     public final <T> OngoingRepeatingResampling<V> thenAlong(Class<T> dimension, Comparator<T> dimensionComparator) {
-        return new OngoingRepeatingResampling<>(tensor, ordering.then(dimension, dimensionComparator));
+        return along(ordering.then(dimension, dimensionComparator));
     }
 
     public final <T extends Comparable<T>> OngoingRepeatingResampling<V> thenAlong(Class<T> dimension) {
-        return new OngoingRepeatingResampling<>(tensor, ordering.then(dimension));
+        return along(ordering.then(dimension));
+    }
+
+    private OngoingRepeatingResampling<V> along(PositionOrdering then) {
+        return new OngoingRepeatingResampling<>(tensor, then);
     }
 
     public final V get(Position position) {
