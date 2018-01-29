@@ -1,0 +1,190 @@
+---
+layout: default
+title: Tensorics Manual
+permalink: /projects/tensorics-core/manual/
+project: "Tensorics Core"
+---
+= Tensorics Manual
+Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
+:icons: font
+:sectanchors:
+:page-liquid:
+:source-highlighter: highlightjs
+:examplesource: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples
+:sourcecodedir: {{ site.tensorics-core-dir }}/src/java/org/tensorics/core
+:javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics/core/tensor
+
+Tensorics is a java framework for data processing of multidimensional data.
+The core object is a Tensor which represents a collection of values of arbitrary
+types, which are addressed by coordinates in an N-dimensional space. The framework
+provides several core features, which make it easy to work with big amounts of
+numerical data and drastically simplify repetitive tasks:
+
+---
+* Tensors of arbitrary dimensionality as central object.
+* Tensors can have elements of any (java) type.
+* Structural and numerical operations on tensors.
+* Java internal DSL (fluent API) for all operations on scalars and tensors.
+* Quantities (value - unit pair).
+* Full support for Tensors of quantities.
+* Error and Validity propagation for quantities and tensors of quantities.
+* Scripting of all functionality with deferred execution, which opens the
+possibilities for parallel processing and massive distribution of calculations.
+
+---
+
+IMPORTANT: Both, the current implementation as well as this document, are work in progress.
+The main purpose of the actual version is provide some functionality of every of the above
+mentioned categories and proofing the concepts of their interplay. Still, already the available
+subset of features should have useful applications in many contexts. Almost no effort put on
+profiling and performance optimization. Therefore, it might well be that some operations are
+quite inefficient and/or memory consuming for big objects. Such improvements are definitely planned
+for later iterations. Any contributions are welcome.
+
+== Getting Started
+
+=== Tensors
+The core object of tensorics is a Tensor.
+Therefore, lets start and create one. The simplest Tensor is a tensor of zero dimensions and
+exactly one element. This can be created in the simplest
+case by
+
+[source,java]
+----
+include::{examplesource}/TensorCreationExamples.java[tags=zerodimensionalString]
+----
+
+More complicated tensors can be created using a builder:
+[source,java]
+----
+Builder<Double> builder = ImmutableTensor.builder(X.class, Y.class); # <1>
+
+builder.at(new X(1.0), new Y(0.0)).put(5.0); # <2>
+builder.at(new X(1.0), new Y(1.0)).put(6.0);
+
+Tensor<Double> tensor = builder.build(); # <3>
+----
+<1> Creating the builder. The dimensions have to be given here. Dimensions are the classes of the coordinates.
+<2> Putting values to the builder. For each class, given as dimension, exactly one instance has to be given in the ++at()++ clause.
+<3> Creates the real tensor.
+
+=== Coordinates and Dimensions
+The above example illustrates already the most important concept of tensorics: Values of a tensor are addressed by
+coordinates in an arbitrary N-dimensional space. Each dimension of this space is uniquely coupled to a type of
+coordinate (The X and Y classes in the previous example). This might look a bit awkward at a first glance, because
+one has to define a class for each dimension. Further, many users might wonder, why we are not using indizes,
+like you would expect for a tensor (as in mathematics). This design choice has the following advantages:
+
+* This approach can be considered as a natural generalization of a java map.
+* Having a class for each dimension, maps nicely to the way of speaking about multidimensional objects. Thing e.g. of
+'At this point, the Y-value is ...' or 'In direction of X ...'.
+* While addressing values by indizes might be ok for a small amount of dimensions, it becomes a hassle for many dimensions.
+Simply think about multidimensional arrays: How often did you mix up the order of indizes? Having a class per dimension
+clearly reveals its purpose.
+* This approach makes a tensor much more flexible. Consider the following example: If you would address elements of
+a matrix by row/column indizes, you would be forced to have the same number of columns in all the rows. While this
+might be preferrable for many applications, sometimes it is simply a too strict constraint for data in real live.
+Using a two-dimensional tensor is more flexible in this case - and you can still perform all the mathematical
+operations, as you will see later ;-)
+
+=== Working with Tensors
+
+The {javadoc-baseurl}/Tensor.html[Tensor] is the base interface.
+
+== Structural Operations
+
+== Mathematical Operations
+
+== Fields
+
+
+=== Tensorbackeds
+
+== Tensor manipulations
+
+=== Operation
+
+++Tensorics++ framework gives you an easy access to the most common calculations and operations you need such as:
+
+* adding, subtracting, multiplying and dividing;
+* relevant inversion calculation: like negative and 1 over;
+* performing a reduction of a tensors with provided behavior:
+** we can ++slice++ an input ++tensor++ at given ++coordinate(s)++
+** we can ++average++ an input ++tensor++ over specified ++coordinate++
+
+
+In order to have an operation completed a definition of the ++Shape++ has to be introduced - it is a 'raw' view on the coordinates (keys) in the tensor.
+An introduction to basic behaviours can be found in following class.
+[source,java]
+----
+include::{sourcecodedir}/lang/ManipulationOptions.java[tags=classdef]
+----
+
+Knowing about ++shapes++ it is possible to set/update a ++strategy++ in the framework such that any of the mentioned above operations can
+be performed on a possibly differently shaped tensors for this one has to set proper ++BroadcastingStrategy++. For performing multiplication
+a separate strategy ++filTheNameOfTheStrategy++ is foreseen since 2d tensors might be considered as a matrices for which this operation
+looks different.
+
+=== Reduction & Merge
+Result of such operation  will again be a ++tensor++ but with a simplified/improved set of
+dimensions (accordingly to provided input). Simple, isn't it?
+
+Going further (we still stay in an example of temperature and pressure) one could imagine a situation when several cities
+are sending the data built on a base of ++tensor++ with one ++dimension++ (Time) but containing a special ++context++ field
+informing about 'higher order' dimensions it can belongs to (ie. Latitude and Longitude of the city).
+A ++Tensorics++ framework gives you and access to ++merge++ utility that will combine all provided tensors into one containing all data.
+This all will of course be only done if all provided inputs will be marked with the same 'higher order' dimensions.
+
+Let's consider simple example of three ++dimension++ tensor of temperature and another one (same dimensionality) of an
+ atmospheric pressure. Let's define those three dimensions as following:
+
+ * Time
+ * Latitude
+ * Longitude
+
+Let's fill it later with some real data from two decades, with a day sampling for a few European cities.
+
+[source,java]
+----
+include::{examplesource}/meteo/history/AbstractWeatherHistory.java[tags=import]
+----
+
+And let's try to calculate some average temperature at some given latitude. With ++Tensorics++ framework it's easier than you think:
+
+[source,java]
+----
+include::{examplesource}/meteo/history/WeatherHistoryInEurope.java[tags=import]
+----
+
+
+
+== Backing up your objects.
+
+Very often there is a need to access the data in unique, special way. You can use ++Tensor<V>++ objects to hold data and expose it in
+the way you like and need. The thing you need is called ++TensorBacked<V>++ interface that your class has to implement.
+
+TIP: It is good practice to have only one constructor of you domain object that accepts only ++Tensor<V>++ as an argument.
+A special ++@Dimensions++ annotation gives the meta data for the framework to know, what dimensions are held inside.
+
+=== Full support for ++TensorBacked<V>++ objects
+
+The framework gives you a full support to perform all calculations (in direct and deferred way) directly with your customized objects.
+The return type of the calculation is always the same as the input type.
+
+Let's again start with instantiation of the framework.
+[source,java]
+----
+fullTensoricSupport = Tensors.using(Structures.doubles());
+----
+
+Then let's consider an object for our objects that is ++TensorBacked<Double>++ object and simplifies the access to the data.
+It's simple definition looks like the following:
+
+[source,java]
+----
+include::{examplesource}/MultibeamOrbit.java[tags=classdef]
+----
+
+TIP: The ++ Beam.class, Plane.class, Bpm.class++ are the coordinate classes that are declared to be used by ++@Dimensions++ annotation.
+
+Last build:		{localdatetime}
