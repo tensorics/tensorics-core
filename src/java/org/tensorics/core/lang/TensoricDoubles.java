@@ -36,6 +36,7 @@ import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
+import org.tensorics.core.tensor.lang.OngoingQuantityTensorValueExtraction;
 import org.tensorics.core.tensor.lang.OngoingTensorOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.tensorbacked.lang.OngoingQuantifiedTensorBackedOperation;
@@ -52,7 +53,8 @@ import org.tensorics.core.units.Unit;
 public final class TensoricDoubles {
 
     private static final TensoricDoubleSupport SUPPORT = new TensoricDoubleSupport();
-    //private static final TensoricsDoubleExpressionSupport EXPRESSION_SUPPORT = new TensoricsDoubleExpressionSupport();
+    // private static final TensoricsDoubleExpressionSupport EXPRESSION_SUPPORT = new
+    // TensoricsDoubleExpressionSupport();
 
     private TensoricDoubles() {
         /* only static methods */
@@ -256,5 +258,8 @@ public final class TensoricDoubles {
         return SUPPORT.convert(value);
     }
 
+    public static final OngoingQuantityTensorValueExtraction<Double> valuesOf(Tensor<QuantifiedValue<Double>> tensor) {
+        return SUPPORT.valuesOf(tensor);
+    }
 
 }
