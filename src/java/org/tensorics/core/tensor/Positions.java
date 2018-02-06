@@ -288,7 +288,7 @@ public final class Positions {
 
     /**
      * Returns one position for each value of the given enum. Functionally, this is equivalent to
-     * {@link #cartesianProduct(enumClass)}.
+     * {@link #cartesianProduct(Class...)} with only one class given.
      *
      * @param enumClass the class of the enum from which to take the values as coordinates
      * @return an iterable of positions, containing the values oif the given enum class as (one-dimensional) positions.
