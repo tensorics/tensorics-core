@@ -15,7 +15,7 @@ public class OngoingResampling<V> {
         this.tensor = requireNonNull(tensor, "tensor must not be null");
     }
 
-    public <T> OngoingRepeatingResampling<V> byRepeating(Class<T> dimension, Comparator<T> dimensionComparator) {
+    public <T> OngoingRepeatingResampling<V> byRepeatingAlong(Class<T> dimension, Comparator<T> dimensionComparator) {
         return new OngoingRepeatingResampling<>(tensor, PositionOrdering.of(dimension, dimensionComparator));
     }
 

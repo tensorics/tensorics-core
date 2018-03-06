@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.tensorics.core.tensor.Coordinates;
 import org.tensorics.core.tensor.Position;
@@ -64,7 +65,7 @@ public class PositionOrdering {
         return then(dimension, Comparator.naturalOrder());
     }
 
-    public Iterable<Class<?>> dimensions() {
+    public List<Class<?>> dimensions() {
         return ImmutableList.copyOf(this.dimensionComparators.keySet());
     }
 
