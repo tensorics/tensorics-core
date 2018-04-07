@@ -25,6 +25,7 @@ package org.tensorics.core.lang;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -194,6 +195,14 @@ public final class Tensorics {
         return Tensorbackeds.empty(tensorbackedClass);
     }
 
+    public static <V> Tensor<V> empty(Iterable<Class<?>> dimensions) {
+        return ImmutableTensor.<V> builder(dimensions).build();
+    }
+
+    public static <V> Tensor<V> empty(Class<?> ... dimensions) {
+        return ImmutableTensor.<V> builder(dimensions).build();
+    }
+
     /**
      * @see Tensorbackeds#validitiesOf(Tensorbacked)
      */
@@ -235,6 +244,13 @@ public final class Tensorics {
      */
     public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
         return QuantityTensors.quantityTensorOf(tensor, unit);
+    }
+
+    /**
+     * @see QuantityTensors#quantityTensorOf(Tensor, javax.measure.unit.Unit)
+     */
+    public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, javax.measure.unit.Unit<?> unit) {
+        return QuantityTensors.quantityTensorOf(tensor, JScienceUnit.of(unit));
     }
 
     /**
@@ -309,11 +325,27 @@ public final class Tensorics {
         return TensorInternals.sameValues(shape, value);
     }
 
+    /**
+     * @deprecated use {@link #tensor(Shape, Supplier)}
+     */
+    @Deprecated
     public static <S> Tensor<S> createFrom(Shape shape, Supplier<S> supplier) {
+        return tensor(shape, supplier);
+    }
+
+    public static <S> Tensor<S> tensor(Shape shape, Supplier<S> supplier) {
         return TensorInternals.createFrom(shape, supplier);
     }
 
+    /**
+     * @deprecated use {@link #tensor(Shape, Function)}
+     */
+    @Deprecated
     public static <S> Tensor<S> createFrom(Shape shape, Function<Position, S> function) {
+        return tensor(shape, function);
+    }
+
+    public static <S> Tensor<S> tensor(Shape shape, Function<Position, S> function) {
         return TensorInternals.createFrom(shape, function);
     }
 
@@ -321,11 +353,19 @@ public final class Tensorics {
         return TensorStructurals.complete(tensor);
     }
 
+    /**
+     * @deprecated use {@link #map(Tensor, BiFunction)} instead
+     */
+    @Deprecated
     public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {
         return TensorStructurals.transformEntries(tensor, function);
     }
 
     public static <S, T> Tensor<T> map(Tensor<S> tensor, Function<S, T> function) {
+        return TensorStructurals.transformScalars(tensor, function);
+    }
+
+    public static <S, T> Tensor<T> map(Tensor<S> tensor, BiFunction<Position, S, T> function) {
         return TensorStructurals.transformScalars(tensor, function);
     }
 

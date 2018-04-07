@@ -27,6 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -137,6 +138,15 @@ public final class TensorStructurals {
         builder.context(tensor.context());
         for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             builder.put(entry.getKey(), function.apply(entry.getValue()));
+        }
+        return builder.build();
+    }
+
+    public static <S, T> Tensor<T> transformScalars(Tensor<S> tensor, BiFunction<Position, S, T> function) {
+        Builder<T> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
+        builder.context(tensor.context());
+        for (Entry<Position, S> entry : TensorInternals.mapFrom(tensor).entrySet()) {
+            builder.put(entry.getKey(), function.apply(entry.getKey(), entry.getValue()));
         }
         return builder.build();
     }
