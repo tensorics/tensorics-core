@@ -44,20 +44,19 @@ public class MixedResampling implements ResamplingStrategy {
         Position resamplingPosition = difference(position, forcedMatchingPosition);
         Tensor<V> resamplingTensor = from(originalTensor).extract(forcedMatchingPosition);
 
-
         Function<?, V> valueFunction = (o) -> {
-            Position combined =Positions.union(forcedMatchingPosition, Position.of(o));
+            Position combined = Positions.union(forcedMatchingPosition, Position.of(o));
             return null;
         };
 
         for (Class<?> dim : positionOrdering.dimensions()) {
-            /* Not yet complete (comparator) */
-            SingleDimensionRepeatingResamplingStrategy<?, V> repeating = new SingleDimensionRepeatingResamplingStrategy<>();
+            /* All repeated for the moment. Has to become an input */
+            SingleDimensionRepeatingResamplingStrategy<?, V> repeating = new SingleDimensionRepeatingResamplingStrategy<>(
+                    positionOrdering.comparatorFor(dim));
+
+            /* TODO continue here */
 
         }
-
-
-
 
         SortedSet<Position> orderedPositions = ImmutableSortedSet.copyOf(positionOrdering.positionComparator(),
                 resamplingTensor.shape().positionSet());

@@ -74,7 +74,7 @@ public class PositionOrdering {
                 .reduce((l, r) -> l.thenComparing(r)).get();
     }
 
-    private <T> Comparator<T> comparatorFor(Class<T> dimension) {
+    public <T> Comparator<T> comparatorFor(Class<T> dimension) {
         /* This cast is safe, as we ensure the correct type when putting the comparator into the map */
         @SuppressWarnings("unchecked")
         Comparator<T> comparator = (Comparator<T>) this.dimensionComparators.get(dimension);

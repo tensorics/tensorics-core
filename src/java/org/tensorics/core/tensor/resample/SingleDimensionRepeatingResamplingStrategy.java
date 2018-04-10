@@ -1,18 +1,21 @@
 package org.tensorics.core.tensor.resample;
 
-import com.google.common.collect.ImmutableSortedSet;
-import org.tensorics.core.tensor.Position;
-
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableSortedSet;
+
 public class SingleDimensionRepeatingResamplingStrategy<C, V> implements SingleDimensionResamplingStrategy<C, V> {
 
-    private Class<C> dimension;
-    private Comparator<C> comparator;
+    private final Comparator<C> comparator;
+
+    public SingleDimensionRepeatingResamplingStrategy(Comparator<C> comparator) {
+        this.comparator = Objects.requireNonNull(comparator);
+    }
 
     @Override
     public V resample(Collection<C> coordinates, Function<C, V> valuesCallback, C coordinate) {
@@ -32,8 +35,6 @@ public class SingleDimensionRepeatingResamplingStrategy<C, V> implements SingleD
             return valuesCallback.apply(after.first());
         }
 
-        throw new NoSuchElementException("Tensor cannot be resampled at '" + coordinate + "'");
+        throw new NoSuchElementException("Tensor cannot be resampled at coordinate '" + coordinate + "'");
     }
 }
-
-
