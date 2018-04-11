@@ -25,9 +25,7 @@ package org.tensorics.core.lang;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 import org.tensorics.core.math.ExtendedField;
@@ -369,6 +367,13 @@ public final class Tensorics {
         return TensorStructurals.transformScalars(tensor, function);
     }
 
+    public static <S> void forEach(Tensor<S> tensor, Consumer<S> consumer) {
+        TensorStructurals.consumeScalars(tensor, consumer);
+    }
+
+    public static <S> void forEach(Tensor<S> tensor, BiConsumer<Position, S> consumer) {
+        TensorStructurals.consumeScalars(tensor, consumer);
+    }
     public static final Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value,
             javax.measure.unit.Unit<?> unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);

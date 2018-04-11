@@ -25,11 +25,15 @@ package org.tensorics.core.tensor.lang;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -149,6 +153,14 @@ public final class TensorStructurals {
             builder.put(entry.getKey(), function.apply(entry.getKey(), entry.getValue()));
         }
         return builder.build();
+    }
+
+    public static <S> void consumeScalars(Tensor<S> tensor, Consumer<S> consumer) {
+        Tensorics.stream(tensor).map(Map.Entry::getValue).forEach(consumer);
+    }
+
+    public static <S> void consumeScalars(Tensor<S> tensor, BiConsumer<Position, S> consumer) {
+        Tensorics.stream(tensor).forEach(e -> consumer.accept(e.getKey(), e.getValue()));
     }
 
     public static final <S> Tensor<S> stripContext(Tensor<S> tensor) {
