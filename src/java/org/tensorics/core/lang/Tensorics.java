@@ -367,6 +367,14 @@ public final class Tensorics {
         return TensorStructurals.transformScalars(tensor, function);
     }
 
+    public static <S> void forEach(Tensorbacked<S> tensorBacked, Consumer<S> consumer) {
+        forEach(tensorBacked.tensor(), consumer);
+    }
+
+    public static <S> void forEach(Tensorbacked<S> tensorBacked, BiConsumer<Position, S> consumer) {
+        forEach(tensorBacked.tensor(), consumer);
+    }
+
     public static <S> void forEach(Tensor<S> tensor, Consumer<S> consumer) {
         TensorStructurals.consumeScalars(tensor, consumer);
     }
@@ -374,6 +382,7 @@ public final class Tensorics {
     public static <S> void forEach(Tensor<S> tensor, BiConsumer<Position, S> consumer) {
         TensorStructurals.consumeScalars(tensor, consumer);
     }
+
     public static final Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value,
             javax.measure.unit.Unit<?> unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
