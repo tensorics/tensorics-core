@@ -21,7 +21,10 @@ import org.tensorics.core.tensor.Tensor;
  * 
  * @author agorzaws
  * @param <C> type of the coordinate, must be the {@link Comparable}
+ * 
+ * @deprecated use {@link LinearInterpolation}
  */
+@Deprecated
 public abstract class AbstractLinearDoubleInterpolationStrategy<C> extends AbstractInterpolationStrategy<C, Double> {
 
     public AbstractLinearDoubleInterpolationStrategy(Comparator<C> comparator) {

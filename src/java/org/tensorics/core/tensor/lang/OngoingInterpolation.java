@@ -4,9 +4,13 @@
 
 package org.tensorics.core.tensor.lang;
 
+import java.util.function.Function;
+
+import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.reduction.AbstractInterpolationStrategy;
 import org.tensorics.core.reduction.InterpolatedSlicing;
 import org.tensorics.core.reduction.InterpolationStrategy;
+import org.tensorics.core.reduction.LinearInterpolation;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.TensorReduction;
 
@@ -15,14 +19,13 @@ import org.tensorics.core.tensor.operations.TensorReduction;
  * @param <E>
  * @param <C>
  */
-@Deprecated
-public class OngoingStructuralReductionOptions<E, C> {
+public class OngoingInterpolation<E, C> {
 
     private final Tensor<E> tensor;
     private final C slicePosition;
     private final Class<C> dimension;
 
-    public OngoingStructuralReductionOptions(C slicePosition, Tensor<E> tensor, Class<C> dimension) {
+    public OngoingInterpolation(C slicePosition, Tensor<E> tensor, Class<C> dimension) {
         this.tensor = tensor;
         this.slicePosition = slicePosition;
         this.dimension = dimension;
@@ -38,6 +41,16 @@ public class OngoingStructuralReductionOptions<E, C> {
     public Tensor<E> interpolatingWith(InterpolationStrategy<C, E> strategy) {
         return new TensorReduction<>(dimension, new InterpolatedSlicing<>(slicePosition, strategy, tensor))
                 .apply(tensor);
+    }
+    
+    /**
+     * Uses a linear interpolation
+     * @param field the field to interpolate in (values of the tensor)
+     * @param fieldMapper a mapper from coordinates to field elements
+     * @return
+     */
+    public Tensor<E> withLinearInterpolation(ExtendedField<E> field, Function<C,E> fieldMapper) {
+    	return interpolatingWith(new LinearInterpolation<>(field, fieldMapper));
     }
 
 }
