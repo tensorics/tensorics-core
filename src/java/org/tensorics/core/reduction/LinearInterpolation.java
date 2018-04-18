@@ -28,18 +28,18 @@ public class LinearInterpolation<C, V> extends AbstractInterpolationStrategy<C, 
 	}
 
 	@Override
-	public V getInterpolatedValue(Tensor<V> tensorWithTheOnlyOneCoordinateOfC, C coordineteToInterpolate) {
+	public V getInterpolatedValue(Tensor<V> tensorWithTheOnlyOneCoordinateOfC, C coordinateToInterpolate) {
 
-		List<C> orderedList = getOrderedListOfComparableCoodrinate(tensorWithTheOnlyOneCoordinateOfC,
-				coordineteToInterpolate);
-		C thePreviousComparable = findIndex(orderedList, coordineteToInterpolate, 0);
-		C theNextComparable = findIndex(orderedList, coordineteToInterpolate, 1);
+		List<C> orderedList = getOrderedListOfComparableCoordinate(tensorWithTheOnlyOneCoordinateOfC,
+				coordinateToInterpolate);
+		C thePreviousComparable = findIndex(orderedList, coordinateToInterpolate, 0);
+		C theNextComparable = findIndex(orderedList, coordinateToInterpolate, 1);
 
 		V previousPoint = tensorWithTheOnlyOneCoordinateOfC.get(thePreviousComparable);
 		V nextPoint = tensorWithTheOnlyOneCoordinateOfC.get(theNextComparable);
 
 		V previousCoordinate = fieldMapper.apply(thePreviousComparable);
-		V actualCoordinate = fieldMapper.apply(coordineteToInterpolate);
+		V actualCoordinate = fieldMapper.apply(coordinateToInterpolate);
 		V nextCoordinate = fieldMapper.apply(theNextComparable);
 
 		V ratio = support.calculate(support.calculate(actualCoordinate).minus(previousCoordinate))
