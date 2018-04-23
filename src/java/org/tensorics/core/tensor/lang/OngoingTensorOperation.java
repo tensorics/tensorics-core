@@ -64,7 +64,8 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
         return evaluate(right, environment.field().addition());
     }
 
-    public Tensor<V> plus(V right) {
+    @Override
+    public Tensor<V> plusV(V right) {
         return plus(ImmutableScalar.of(right));
     }
 
@@ -73,7 +74,8 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
         return evaluate(right, environment.field().subtraction());
     }
 
-    public Tensor<V> minus(V right) {
+    @Override
+    public Tensor<V> minusV(V right) {
         return minus(ImmutableScalar.of(right));
     }
 

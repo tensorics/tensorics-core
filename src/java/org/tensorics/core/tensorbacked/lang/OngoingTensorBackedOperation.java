@@ -28,6 +28,7 @@ import org.tensorics.core.commons.lang.OngoingOperation;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
@@ -63,12 +64,20 @@ public class OngoingTensorBackedOperation<TB extends Tensorbacked<V>, V> impleme
 
     @Override
     public TB plus(TB right) {
-        return evaluate(right.tensor(), environment.field().addition());
+        return plusT(right.tensor());
+    }
+
+    public TB plusT(Tensor<V> tensor) {
+        return evaluate(tensor, environment.field().addition());
     }
 
     @Override
     public TB minus(TB right) {
-        return evaluate(right.tensor(), environment.field().subtraction());
+        return minusT(right.tensor());
+    }
+
+    public TB minusT(Tensor<V> tensor) {
+        return evaluate(tensor, environment.field().subtraction());
     }
 
     /**
@@ -125,6 +134,16 @@ public class OngoingTensorBackedOperation<TB extends Tensorbacked<V>, V> impleme
         Tensor<V> result = new ElementBinaryOperation<V>(operation, environment.options()).perform(left.tensor(),
                 right);
         return createBackedByTensor(TensorbackedInternals.classOf(left), result);
+    }
+
+    @Override
+    public TB plusV(V right) {
+        return plusT(ImmutableScalar.of(right));
+    }
+
+    @Override
+    public TB minusV(V right) {
+        return minusT(ImmutableScalar.of(right));
     }
 
 }
