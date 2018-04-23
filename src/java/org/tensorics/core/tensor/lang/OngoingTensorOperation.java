@@ -27,6 +27,7 @@ import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.iterable.operations.IterableSum;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensor.operations.InnerTensorOperation;
@@ -63,9 +64,17 @@ public class OngoingTensorOperation<C, V> implements OngoingOperation<Tensor<V>,
         return evaluate(right, environment.field().addition());
     }
 
+    public Tensor<V> plus(V right) {
+        return plus(ImmutableScalar.of(right));
+    }
+
     @Override
     public Tensor<V> minus(Tensor<V> right) {
         return evaluate(right, environment.field().subtraction());
+    }
+
+    public Tensor<V> minus(V right) {
+        return minus(ImmutableScalar.of(right));
     }
 
     /**
