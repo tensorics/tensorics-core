@@ -38,6 +38,7 @@ import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
+import org.tensorics.core.tensor.lang.OngoingQuantityTensorValueExtraction;
 import org.tensorics.core.tensor.lang.OngoingTensorOperation;
 import org.tensorics.core.tensor.lang.QuantityTensorSupport;
 import org.tensorics.core.tensor.lang.TensorSupport;
@@ -240,6 +241,10 @@ public class TensoricSupport<V> {
 
     public final OngoingQuantityIterableValueExtraction<V> valuesOfI(Iterable<QuantifiedValue<V>> quantities) {
         return quantifiedTensoricFieldUsage.valuesOf(quantities);
+    }
+
+    public final OngoingQuantityTensorValueExtraction<V> valuesOf(Tensor<QuantifiedValue<V>> tensor) {
+        return quantifiedTensoricFieldUsage.valuesOf(tensor);
     }
 
     public final QuantifiedValue<V> sizeOfQ(Iterable<QuantifiedValue<V>> values) {

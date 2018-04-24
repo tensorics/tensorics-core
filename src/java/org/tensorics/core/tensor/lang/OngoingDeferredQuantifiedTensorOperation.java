@@ -28,6 +28,7 @@ import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
+import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tree.domain.Expression;
@@ -61,6 +62,11 @@ public class OngoingDeferredQuantifiedTensorOperation<S>
         return evaluate(right, pseudoField.addition());
     }
 
+    @Override
+    public Expression<Tensor<QuantifiedValue<S>>> plusV(QuantifiedValue<S> right) {
+        return plus(ResolvedExpression.of(ImmutableScalar.of(right)));
+    }
+
     public Expression<Tensor<QuantifiedValue<S>>> minus(Tensor<QuantifiedValue<S>> right) {
         return minus(ResolvedExpression.of(right));
     }
@@ -68,6 +74,11 @@ public class OngoingDeferredQuantifiedTensorOperation<S>
     @Override
     public Expression<Tensor<QuantifiedValue<S>>> minus(Expression<Tensor<QuantifiedValue<S>>> right) {
         return evaluate(right, pseudoField.subtraction());
+    }
+
+    @Override
+    public Expression<Tensor<QuantifiedValue<S>>> minusV(QuantifiedValue<S> right) {
+        return minus(ResolvedExpression.of(ImmutableScalar.of(right)));
     }
 
     @Override

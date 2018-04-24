@@ -22,6 +22,7 @@ package org.tensorics.core.tensor.stream;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -102,6 +103,32 @@ public final class TensorStreams {
     public static <V, T, TB extends Tensorbacked<T>> TensorbackedCollector<V, T, TB> toTensorbacked(
             Class<TB> tensorBackedClass, Function<V, Position> positionMapper, Function<V, T> valueMapper) {
         return new TensorbackedCollector<>(tensorBackedClass, positionMapper, valueMapper);
+    }
+
+    /* Delegation methods to stream mappers. Names to be reviewed */
+
+    public static <T, CI, CO> Function<Map.Entry<Position, T>, Map.Entry<Position, T>> coordinatesOfType(
+            Class<CI> dimension, Function<CI, CO> coordinateMapper) {
+        return TensorStreamMappers.coordinatesOfType(dimension, coordinateMapper);
+    }
+
+    public static <T> Function<Map.Entry<Position, T>, Map.Entry<Position, T>> positions(
+            Function<Position, Position> positionMapper) {
+        return TensorStreamMappers.positions(positionMapper);
+    }
+
+    public static <I, O> Function<Map.Entry<Position, I>, Map.Entry<Position, O>> values(Function<I, O> valueMapper) {
+        return TensorStreamMappers.values(valueMapper);
+    }
+
+    public static <T> Function<Map.Entry<Position, T>, Map.Entry<Position, T>> positions(
+            BiFunction<Position, T, Position> positionMapper) {
+        return TensorStreamMappers.positions(positionMapper);
+    }
+
+    public static <I, O> Function<Map.Entry<Position, I>, Map.Entry<Position, O>> values(
+            BiFunction<Position, I, O> valueMapper) {
+        return TensorStreamMappers.values(valueMapper);
     }
 
 }

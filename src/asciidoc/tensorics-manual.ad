@@ -7,6 +7,7 @@ project: "Tensorics Core"
 = Tensorics Manual
 Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
 :icons: font
+:stem:
 :sectanchors:
 :page-liquid:
 :source-highlighter: highlightjs
@@ -41,150 +42,320 @@ profiling and performance optimization. Therefore, it might well be that some op
 quite inefficient and/or memory consuming for big objects. Such improvements are definitely planned
 for later iterations. Any contributions are welcome.
 
-== Getting Started
+== Introduction
+A common need in applications that manipulate numerical data is to organize them in data structures which allow easy transformations and calculations. This paper describes the ensorics library for the Java programming language which provides several, complementary concepts to ease such tasks. Despite the libraries name is derived from "tensor", it contains several additional concepts which complement each other. 
+The features are designed to work smoothly together, but each of them can of course also be used stand-alone. In the following sections, we give a short overview on the different concepts, together with some explanatory code examples.
 
 === Tensors
-The core object of tensorics is a Tensor.
-Therefore, lets start and create one. The simplest Tensor is a tensor of zero dimensions and
-exactly one element. This can be created in the simplest
-case by
+The name "Tensorics" is derived from "Tensor". 
+Loosely speaking, a tensor in mathematics is a multidimensional data structure, 
+whose dimensionality is given by the number of indices. 
+A tensor of dimensionality N contains a value for each N-tuple of index values. 
+Tensors in mathematics are usually denoted by noting their elements with a full set of indices. 
+E.g. an element of a 3-dimensional tensor \tens{A} would be denoted as \tensel{a_{ijk}}. Each index ($i,j,k$) can potentially have its own range (e.g. $1 <= i <=  M_i$, $1 <= j <=  M_j$, $1 <= k <=  M_k$).
+
+
+Another way to see this is that a tensor has a value for each point in an N-dimensional integer space. In the above notation a dimension is identified by the position of the respective index, and the coordinate in that dimension is given by the value of the index.
+These mathematical concepts are extremely useful, especially when it comes to operations on such tensors (as we see in later sections). Therefore, \tensorics{} borrows many concepts from mathematics. At the same time it translates them into the  programming language in a way that is aimed to form a powerful data structures which encourages readable code as much as possible and helps avoiding confusion and mistakes. For this reason, we use the word "Tensor" in an even sloppier manner. 
+
+The main particularity of a tensorics tensor is that a dimension is not identified by the position of the index, but by a java type (class). Instances of the respective type we denote as \emph{coordinates}. A point within the N-dimensional coordinate space is then defined by a set of objects (instances of coordinate classes), of which each type must be exactly once.  This key concept allows easier and less error-prone usage (because the order of the coordinates/indices is not relevant) and still leads to readable code.
+
+A \tensorics{} tensor has one type parameter, the type of the values it contains, usually denoted as \code{<V>}. Therefore, the tensor data structure can be used as container for any Java type. However, some operations on the tensors will be only possible for certain value types (e.g. mathematical operations).
+
+=== An Example
+
+Since tensorics concepts and syntax are best explained in a practical walk-through, we will use the following example throughout the subsequent sections: 
+
+Consider weather analysis: A data set consists of weather data from different cities and times. The class City and Time are defined and some constants are instantiated.  Temperature values are stored in a tensor of doubles, for example:
 
 [source,java]
 ----
-include::{examplesource}/TensorCreationExamples.java[tags=zerodimensionalString]
+City SF = City.ofName("San Francisco");
+City LA = City.ofName("Los Angeles");
+
+Time T1 = Time.of("2017-01-01 15:00");
+Time T2 = Time.of("2017-01-02 15:00");
+
+Tensor<Double> degrees; 
+/* creation omitted */
 ----
 
-More complicated tensors can be created using a builder:
+=== Accessing Values
+
+Assuming the above constants, we can then simply get temperature values from the tensor:
 [source,java]
 ----
-Builder<Double> builder = ImmutableTensor.builder(X.class, Y.class); # <1>
-
-builder.at(new X(1.0), new Y(0.0)).put(5.0); # <2>
-builder.at(new X(1.0), new Y(1.0)).put(6.0);
-
-Tensor<Double> tensor = builder.build(); # <3>
+Double t = degrees.get(T1, SF);
 ----
-<1> Creating the builder. The dimensions have to be given here. Dimensions are the classes of the coordinates.
-<2> Putting values to the builder. For each class, given as dimension, exactly one instance has to be given in the ++at()++ clause.
-<3> Creates the real tensor.
 
-=== Coordinates and Dimensions
-The above example illustrates already the most important concept of tensorics: Values of a tensor are addressed by
-coordinates in an arbitrary N-dimensional space. Each dimension of this space is uniquely coupled to a type of
-coordinate (The X and Y classes in the previous example). This might look a bit awkward at a first glance, because
-one has to define a class for each dimension. Further, many users might wonder, why we are not using indizes,
-like you would expect for a tensor (as in mathematics). This design choice has the following advantages:
+As visible here, this looks very similar to getting values from a map, with the following important differences:
 
-* This approach can be considered as a natural generalization of a java map.
-* Having a class for each dimension, maps nicely to the way of speaking about multidimensional objects. Thing e.g. of
-'At this point, the Y-value is ...' or 'In direction of X ...'.
-* While addressing values by indizes might be ok for a small amount of dimensions, it becomes a hassle for many dimensions.
-Simply think about multidimensional arrays: How often did you mix up the order of indizes? Having a class per dimension
-clearly reveals its purpose.
-* This approach makes a tensor much more flexible. Consider the following example: If you would address elements of
-a matrix by row/column indizes, you would be forced to have the same number of columns in all the rows. While this
-might be preferrable for many applications, sometimes it is simply a too strict constraint for data in real live.
-Using a two-dimensional tensor is more flexible in this case - and you can still perform all the mathematical
-operations, as you will see later ;-)
+* The get method of a tensor accepts N arguments, one for each dimension.
+* The get method of a tensor never returns `null`. It will throw an appropriate exception in case there is no value available in the tensor for the given set of coordinates. 
 
-=== Working with Tensors
+In general, it shall be noted that all methods within the tensorics library are designed to fail fast. This is particularly important because \tensorics{}, due to its flexible API, cannot rely on compile-time checks in many cases and thus some errors only appear at runtime.
 
-The {javadoc-baseurl}/Tensor.html[Tensor] is the base interface.
+The set of N coordinates is called a _position_ in tensorics. Thus, the code from the above listing is equivalent to
+[source,java]
+----
+Position position = Position.of(T1, SF);
+Double t = degrees.get(position);
+----
+
+=== Main Entry Point
+The interfaces of tensorics objects are kept very slim and usually only provide the absolutely necessary methods. All the other operations on these objects is based on static methods operating on them. The main entry point for these methods (containing all the methods which are not specific to certain value types) is the class \code{Tensorics}. This class contains also, for example, a delegation method to the \code{Position.of()} method:
+
+[source,java]
+----
+Position position = Tensorics.at(T1, SF);
+/* with static import: */
+Position position = at(T1, SF); 
+----
+
+Using a static import for this, allows concise code which will be particularly important when creating tensors. 
+
+NOTE: In all the following code examples, we assume that, whenever there is a plain method call, then it is a static method from the ``Tensorics`` class (or in other words that `Tensorics.` is imported statically).
+
+=== Creating Tensors
+All currently available implementations of tensors are immutable. The usual way to create them is through builders. For example, to create our temperature tensor and put 4 values into it, we would have to do something like:
+
+[source,java]
+----
+Tensor<Double> degrees = 
+    builder(City.class, Time.class)
+         .put(at(SF, T1), 12.5)
+         .put(at(SF, T2), 14.2)
+         .put(at(LA, T1), 17.5)
+         .put(at(LA, T2), 19.2)
+         .build();
+----
+Again, the syntax is very similar to building an immutable map. And indeed this is another way how a \tensorics{} tensor can be seen: As a map from position to a value - and it can be transformed into one:
+[source,java]
+----
+Map<Position, Double> degreesMap = 	mapFrom(degrees);
+----
+
+=== Scalar
+A tensor can have zero dimensions. This particular tensor we denote as _scalar_ in \tensorics{}. It has exactly one value at the position ``Position.empty()``. A scalar can simply be created using the static factory method 
+[source,java]
+----
+Scalar<Double> scalar = scalarOf(2.5);
+----
 
 == Structural Operations
+Up to now, we were simply using a tensor as a kind-of map with combined keys. However, the real power is unleashed only when it comes to transformations. For this it is useful to understand on additional concept:
+
+=== Shape
+Just like a map has its set of keys, a tensorics tensor has a shape. It basically describes the structure of the tensor, without its values. Basically it contains the following information:
+- The dimensions of the tensor (e.g. ``Time.class`` and ``City.class`` in the above example) and
+- The available positions in the tensor.
+
+The shape can be retrieved from the tensor and used for our example like the following:
+[source,java]
+----
+Shape shape = degrees.shape();
+
+Set<Class<?>> dims = shape.dimensionSet();
+/* Contains Time.class and City.class */
+
+int dim = shape.dimensionality();
+/* Will be 2 */
+
+Set<Position> poss = shape.positionSet();
+/* contains the 4 positions */
+
+int size = shape.size(); 
+/* Will be 4 */
+----
+
+=== Extracting Subtensors
+One very common structural operation is extracting sub-tensors from a tensor:
+[source,java]
+----
+Tensor<Double> sfDegrees = from(degrees).extract(SF);
+----
+This will result in a 1-dimensional tensor, only containing coordinates of type ``Time``. The complementary operation to this is called _merging_ tensors.
+
+\textbf{Note:} while in the ``get`` method, the number of coordinates always has to exactly match the dimensionality of the tensor (otherwise the method will throw), the \code{extract} method takes any subset of the dimensions as argument; the \code{get} method returns the values of the tensor, while the \code{extract} method returns again a tensor. This implies that if coordinates for all dimensions are provided as arguments for the extract method, then a zero-dimensional tensor is returned. The returned tensor can be empty in case no elements exist at the extracted coordinates.
 
 == Mathematical Operations
+One important motivation to use tensors is of course to have simple and intuitive ways to perform mathematical operations on them. While the structural operations - as described up to now - can be performed on tensors of any value types, it is clear that mathematical operations can be only done with tensor values of particular types. 
 
-== Fields
+=== Mathematical Structures
+Tensorics does not strictly restrict the types on which mathematical operations can be performed, but provides an extension mechanism through which - in principle - the mathematical capabilities can be added for any value type. In practice this makes only sense (and is only necessary) for a limited number of value types. The extension mechanism requires to provide (with $a,b,c$ being tensor values):
 
+---
+* Two binary operations, addition ( + ) and multiplication ( * ) with the following properties:
+* both, + and * are associative: $a + (b + c) = (a + b) + c$; $a * (b * c) = (a * b) * c$.
+* both, + and * have an identity element (Called '0' for +, '1' for * ): $a + 0 = a$; $a * 1 = a$.
+* both, + and * have an inverse element (Called '-a' for +, '1/a' for * ): $a + (-a) = 0$; $a * 1/a = 1$.
+* both, + and * are commutative: $a + b = b + a$; $a * b = b * a$.
+* * is distributive over +: $a * (b + c) = a * b + a * c$. 
 
-=== Tensorbackeds
+---
 
-== Tensor manipulations
+Mathematically speaking, the two operations form the algebraic structure of a _field_ \cite{wikipedia-field} over the tensor values ``<V>``:
+---
+* Two additional binary operations: Power ($a^b$) and Root ($\sqrt[b]{a}$).
+* A conversion function of the tensor values to and from doubles.
+---
+If these operations are provided to generic support classes of \tensorics{}, then all the manipulations based in the following will be available by inheriting from these support classes. The biggest advantage of the approach used in tensorics for defining a field (and using external methods for calculations - not methods of the field elements) is that it (technically) does not impose any constraints on the value type and thus avoids e.g. wrapper objects as necessary in the field-implementations of other math libraries (e.g. Apache Commons Math \cite{apache-commons-math}).
 
-=== Operation
+Out of the box, tensorics currently provides an implementation of these requirements for doubles. To simplify these very frequently required operations, it provides also a convenience class (\code{TensoricsDoubles}) with static delegation methods to the support classes. Such convenience will not be available out of the box for custom value types, but can be easily added in a similar way. Whenever there is trailing method call in the following examples, we will assume that it is a static method from the class \code{TensoricDoubles}.
 
-++Tensorics++ framework gives you an easy access to the most common calculations and operations you need such as:
-
-* adding, subtracting, multiplying and dividing;
-* relevant inversion calculation: like negative and 1 over;
-* performing a reduction of a tensors with provided behavior:
-** we can ++slice++ an input ++tensor++ at given ++coordinate(s)++
-** we can ++average++ an input ++tensor++ over specified ++coordinate++
-
-
-In order to have an operation completed a definition of the ++Shape++ has to be introduced - it is a 'raw' view on the coordinates (keys) in the tensor.
-An introduction to basic behaviours can be found in following class.
+==== Unary Operations
+Next to operations on tensors, the support classes also provide convenience operations for iterables. For example:
 [source,java]
 ----
-include::{sourcecodedir}/lang/ManipulationOptions.java[tags=classdef]
+Iterable<Double> v = Arrays.asList(1.0, 2.0);
+Iterable<Double> negv = negativeOf(v);
+Double vsize = sizeOf(v);
+
+Tensor<Double> t; /* creation omitted */
+Tensor<Double> negt = negativeOf(t);
+Double tsize = sizeOf(t);
 ----
 
-Knowing about ++shapes++ it is possible to set/update a ++strategy++ in the framework such that any of the mentioned above operations can
-be performed on a possibly differently shaped tensors for this one has to set proper ++BroadcastingStrategy++. For performing multiplication
-a separate strategy ++filTheNameOfTheStrategy++ is foreseen since 2d tensors might be considered as a matrices for which this operation
-looks different.
-
-=== Reduction & Merge
-Result of such operation  will again be a ++tensor++ but with a simplified/improved set of
-dimensions (accordingly to provided input). Simple, isn't it?
-
-Going further (we still stay in an example of temperature and pressure) one could imagine a situation when several cities
-are sending the data built on a base of ++tensor++ with one ++dimension++ (Time) but containing a special ++context++ field
-informing about 'higher order' dimensions it can belongs to (ie. Latitude and Longitude of the city).
-A ++Tensorics++ framework gives you and access to ++merge++ utility that will combine all provided tensors into one containing all data.
-This all will of course be only done if all provided inputs will be marked with the same 'higher order' dimensions.
-
-Let's consider simple example of three ++dimension++ tensor of temperature and another one (same dimensionality) of an
- atmospheric pressure. Let's define those three dimensions as following:
-
- * Time
- * Latitude
- * Longitude
-
-Let's fill it later with some real data from two decades, with a day sampling for a few European cities.
-
+==== Basic Statistics
+Some very simple statistical methods are provided out of the box. For iterables, the results are simply of type of the elements of the iterable:
 [source,java]
 ----
-include::{examplesource}/meteo/history/AbstractWeatherHistory.java[tags=import]
+Iterable<Double> v = Arrays.asList(1.0, 2.0);
+Double avg = averageOf(v);
+Double sum = sumOf(v);
+Double rms = rmsOf(v);
 ----
 
-And let's try to calculate some average temperature at some given latitude. With ++Tensorics++ framework it's easier than you think:
-
+On the other hand, for tensors the application of statistical operations is usually done only in one dimension. This corresponds to a reduction of the tensor by one dimension. The provided fluent API reflects this (continuing our example from before):
 [source,java]
 ----
-include::{examplesource}/meteo/history/WeatherHistoryInEurope.java[tags=import]
+/* All these return Tensor<Double>: */
+reduce(degrees).byAveragingOver(Time.class);
+reduce(degrees).byRmsOver(Time.class);
+reduce(degrees).bySummingOver(Time.class);
 ----
 
-
-
-== Backing up your objects.
-
-Very often there is a need to access the data in unique, special way. You can use ++Tensor<V>++ objects to hold data and expose it in
-the way you like and need. The thing you need is called ++TensorBacked<V>++ interface that your class has to implement.
-
-TIP: It is good practice to have only one constructor of you domain object that accepts only ++Tensor<V>++ as an argument.
-A special ++@Dimensions++ annotation gives the meta data for the framework to know, what dimensions are held inside.
-
-=== Full support for ++TensorBacked<V>++ objects
-
-The framework gives you a full support to perform all calculations (in direct and deferred way) directly with your customized objects.
-The return type of the calculation is always the same as the input type.
-
-Let's again start with instantiation of the framework.
+==== Binary Operations
+Calculating of operations between two tensors, finally makes the most use. These operations all start using the \code{TensoricDoubles.calculate(...)} method:
 [source,java]
 ----
-fullTensoricSupport = Tensors.using(Structures.doubles());
+/* degrees and offset are Tensor<Double> */
+
+calculate(degrees).plus(offset);
+calculate(degrees).minus(offset);
+calculate(degrees).elementTimes(other);
+calculate(degrees).elementDividedBy(other);
+
+/* All these return Tensor<Double> */
 ----
+Here both, the left and right operands are assumed to be tensors. However, bare values are also supported on both sides and will be implicitly be converted to scalars. The four above-mentioned operations are the simplest ones, as they are based on element wise operations: Each element in the left tensor only requires the corresponding element in the right tensor to produce the corresponding element in the resulting tensor. However, this needs some other considerations: What happens if the two operands have different shapes? This problem can be treated in two stages, which are called \emph{broadcasting} and \emph{reshaping} in \tensorics{}. They are explained in the following two sections. \Tensorics{} has a very modular way to treat such cases: Different strategies can be used (and even implemented) by the user in special cases. If nothing is specified, a sensitive default will be used. 
 
-Then let's consider an object for our objects that is ++TensorBacked<Double>++ object and simplifies the access to the data.
-It's simple definition looks like the following:
+==== Reshaping
+This is the simpler of the two possible shape-inconsistencies: It means that both tensors in question have the same dimensions, but they have values for different positions (e.g. one has less entries than the other).
+The default behaviour for this case is, that the resulting tensor will have only values for the positions, which are contained in each of the tensor (The intersection of the position set).
 
+==== Broadcasting
+The term \emph{broadcasting} is borrowed from the python library \emph{numpy} \cite{numpy-github}. While the underlaying principle is very similar to the numpy one, there are several essential difference which comes from the fact that numpy uses multi-dimensional arrays with integer indices, while tensorics identifies its dimensions by classes: The default broadcasting strategy in \tensorics{} broadcasts all dimensions which are \emph{not} available in one tensor to the shape of the second tensor. In other words, a dimension which is not present in one, will be added to the other tensor and all coordinate values of the respective dimension will potentially be combined with all the positions of the other tensor. For example:
 [source,java]
 ----
-include::{examplesource}/MultibeamOrbit.java[tags=classdef]
+Tensor<Double> temps = 
+  builder(Time.class)
+    .put(at(T1), 10.5)
+    .put(at(T2), 12.2)
+    .build();
+
+Tensor<Double> offsets = 
+  builder(City.class)
+    .put(at(SF), 2.0)
+    .put(at(LA), 7.0)
+    .build();
+
+Tensor<Double> result = calculate(temps).elementTimes(factors);
+/* Will contain 4 positions: (SF, T1), (SF, T2), (LA, T1), (LA, T2) */
+----
+The result will be exactly the same tensor as constructed in \lstref{buildingATensor}. When performing binary operations, the two operands are first both broadcasted and then reshaped. This ensures that the dimensions are correct and then that all the relevant elements operate on their corresponding partners.
+
+==== Inner Product
+This very particular multiplication of two tensors is basically the generalization of the matrix multiplication. The syntax is as simple as it can be:
+[source,java]
+----
+calculate(degrees).times(other);
+----
+To have this yield the expected results, co- and contra-variant dimensions have to be distinguished. In \tensorics{}, this distinction is achieved by the following mechanism: By default, coordinates are assumed to be contravariant. Covariant coordinates are forced to inherit from the class \code{Covariant<C>}, where the generic parameter \code{<C>} is the type of the corresponding contravariant coordinate. Detailed information about this can be found in the tensorics source code documentation \cite{tensorics-javadoc}.
+
+=== Physical Quantities and Units
+Another very common problem in scientific applications is the proper treatment of units. At the current stage, \tensorics{} currently uses internally an external library for this purpose (JScience \cite{jscience}). However, as this library is not actively maintained anymore, it is foreseen to replace this implementation either by a different library or an internal implementation of physical quantities. 
+
+For this reason, \tensorics{} already provides its own abstraction of units. A physical unit is represented by the class \code{Unit} and a value-unit pair is represented by the class \code{QuantifiedValue}. Factory methods for quantified values are available in the \code{Tensorics} class. Convenience overrides are provided which support both \tensorics{} internal unit objects and JScience instances of units. Operations are available in the support classes for the corresponding value types, like for doubles e.g. in the class \code{TensoricDoubles}. With this, operations like the following are possible:
+[source,java]
+----
+QuantifiedValue<Double> distance = Tensorics.quantityOf(10.0, SI.METER);
+    
+QuantifiedValue<Double> time = Tensorics.quantityOf(5.0, SI.SECOND);
+    
+QuantifiedValue<Double> speed = calculate(distance).dividedBy(time);
+/* results in 2 m/s */
+
+Double value = speed.value(); // 2.0
+Unit unit = speed.unit(); // m/s
 ----
 
-TIP: The ++ Beam.class, Plane.class, Bpm.class++ are the coordinate classes that are declared to be used by ++@Dimensions++ annotation.
+Also support methods to work with tensors of quantified values are provided, e.g.: 
+[source,java]
+----
+Tensor<QuantifiedValue<Double>> measurement;
+Tensor<QuantifiedValue<Double>> reference;
+/* construction omitted */
+
+Tensor<QuantifiedValue<Double>> difference = calculate(measurement).minus(reference);
+----
+
+=== Error and Validity Propagation
+Especially when using tensors for measured values, it is important to understand the errors after a series of calculations. Further, it is can be that individual points in a tensor contain invalid data. It then makes no sense to do calculations with them. \Tensorics{} provides dedicated mechanisms for this cases. The \code{QuantifiedValue}s contain two additional fields: a (boolean) validity flag and an optional value for an error (uncertainty). All the operations on quantified values (and on tensors of quantified values) take this fields into account. The exact behavior can again be configured by the use of explicit strategies. The defaults are:
+---
+* If an invalid value is used in a calculation, then the resulting value will be invalid.
+* The values involved in the calculations will be treated as independent variables and the error is propagated to the resulting value accordingly \cite{error-propagation-wikipedia}.
+---
+
+Comparisons between quantities take into account their associated errors assuming Gaussian statistics. The confidence level is 95\% unless specified otherwise. This allows to conveniently check if a quantity is significantly less, equal, or greater than another. For example, $90 \pm 1 \mathrm{m}$ is significantly less than $100 \pm 10  \mathrm{m}$ at a confidence level of 68\% but not at 95\%.
+[source,java]
+----
+QuantifiedValue<Double> q90pm1 = quantityOf(90.0, METER).withError(1.0);
+QuantifiedValue<Double> q100pm10 = quantityOf(100.0, METER).withError(10.0);
+
+/* false at 95% confidence (default): */
+testIf(q90pm1).isLessThan(q100pm10);
+
+/* true at 68% confidence: */
+with(confidenceLevelOf(0.68)).testIf(q90pm1).isLessThan(q100pm10);
+----
+
+=== Tensorbacked Domain Objects
+While working with tensors gives all the flexibility of transformations and calculations, very often it is desirable to give more meaning to objects. Usually one would create dedicated domain objects in these cases. However, this would mean giving up all the convenient support methods. To combine the best of both approaches, \tensorics{} provides a built-in mechanism for creating domain objects which wrap tensors inside and allow almost the same calculations and transformations as plain tensors. These objects are called \code{Tensorbacked}s and can be defined by the user as required. The simplest way to do so is to inherit from \code{AbstractTensorbacked}. An important property of tensorbacked objects is that each of them has a fixed set of dimensions, which are defined through the dedicated annotation \code{@Dimensions}. For example, if one would like to define some domain object that contains temperatures, one could do so by
+[source,java]
+----
+@Dimensions({Time.class, City.class})
+public class TemperatureMap 
+    extends AbstractTensorbacked<Double> {
+    /* empty (except a constructor) */
+}
+----
+Instances of these classes can then be created using simply an existing tensor or a builder. Calculations can be performed like with bare tensors.
+[source,java]
+----
+TemperatureMap measured = Tensorics.construct(TemperatureMap.class).from(degrees);
+
+TemperatureMap reference = Tensorics
+    .builderFor(TemperatureMap.class)
+      .put(at(SF, T1), 10.0)
+      .build();
+
+TemperatureMap diff = DoubleTensorics.calculate(measured).minus(reference);
+----
+When using a builder, the dimensions do not have to be given explicitly, as they are already defined through the annotation.
+
+=== Expression Language
+All the examples in the previous sections described directly Java executable code. In addition to this, \tensorics{} provides a Java internal domain specific language (DSL) to only describe calculation steps using the same operations as described before. This DSL does not directly execute the calculations, but instead creates an expression tree, which can be evaluated (resolved) in a separate step. Since these expressions can be resolved in different contexts, this can e.g. be used for subscription based online evaluation (e.g. processing data from devices) or processing logged data. This expression language is one of the cornerstones of a recently developed online analysis framework. More details can be found in the corresponding publication \cite{analysis-framework}.
+
 
 Last build:		{localdatetime}

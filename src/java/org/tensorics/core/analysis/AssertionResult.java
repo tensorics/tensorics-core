@@ -25,7 +25,7 @@ package org.tensorics.core.analysis;
 import java.io.Serializable;
 
 public class AssertionResult implements Serializable {
-
+ 
     private static final long serialVersionUID = 1L;
     private final AssertionStatus status;
 
