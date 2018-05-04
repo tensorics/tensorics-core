@@ -23,6 +23,7 @@
 package org.tensorics.core.tensor.stream;
 
 import java.util.Map;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import org.tensorics.core.tensor.Position;
@@ -50,5 +51,9 @@ public final class TensorStreamFilters {
 
     public static <T> Predicate<Map.Entry<Position, T>> byValue(Predicate<T> valuePredicate) {
         return entry -> valuePredicate.test(entry.getValue());
+    }
+
+    public static <T> Predicate<Map.Entry<Position, T>> byPositionValue(BiPredicate<Position, T> valuePredicate) {
+        return entry -> valuePredicate.test(entry.getKey(), entry.getValue());
     }
 }
