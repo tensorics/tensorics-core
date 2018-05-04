@@ -5,9 +5,8 @@
 package org.tensorics.core.reduction;
 
 import static org.junit.Assert.assertEquals;
+import static org.tensorics.core.fields.doubles.Structures.doubles;
 import static org.tensorics.core.lang.Tensorics.at;
-
-import java.util.Comparator;
 
 import org.junit.Test;
 import org.tensorics.core.lang.Tensorics;
@@ -43,7 +42,7 @@ public class InterpolationAtTest {
 
         Tensor<Double> byInterpolatedSlicingAt = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
                 .byInterpolatedSlicingAt(NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE)
-                .interpolatingWith(new TestInterpolation());
+                .withLinearInterpolation(doubles(), ComparableCoordinate::getDouble);
         assertEquals(SIMPLE_TENSOR_PROPER_SLICE_SIZE, byInterpolatedSlicingAt.shape().positionSet().size());
     }
 
@@ -70,7 +69,7 @@ public class InterpolationAtTest {
 
         Tensor<Double> interpolated = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
                 .byInterpolatedSlicingAt(NOT_COMPLETE_COMPARABLE_COORDINATE_IN_THE_MIDDLE)
-                .interpolatingWith(new TestInterpolation());
+                .withLinearInterpolation(doubles(), ComparableCoordinate::getDouble);
 
         assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
 
@@ -90,7 +89,8 @@ public class InterpolationAtTest {
         testTenosor = getTensorThreeCoordinates();
 
         Tensor<Double> interpolated = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
-                .byInterpolatedSlicingAt(COORDINATE_BEFORE_THE_FIRST).interpolatingWith(new TestInterpolation());
+                .byInterpolatedSlicingAt(COORDINATE_BEFORE_THE_FIRST)
+                .withLinearInterpolation(doubles(), ComparableCoordinate::getDouble);
 
         assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
 
@@ -109,7 +109,8 @@ public class InterpolationAtTest {
         testTenosor = getTensorThreeCoordinates();
 
         Tensor<Double> interpolated = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
-                .byInterpolatedSlicingAt(COORDINATE_AFTER_THE_LAST).interpolatingWith(new TestInterpolation());
+                .byInterpolatedSlicingAt(COORDINATE_AFTER_THE_LAST)
+                .withLinearInterpolation(doubles(), ComparableCoordinate::getDouble);
 
         assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, interpolated.shape().positionSet().size());
 
@@ -129,7 +130,7 @@ public class InterpolationAtTest {
 
         Tensor<Double> byInterpolatedSlicingAt = Tensorics.from(testTenosor).reduce(ComparableCoordinate.class)
                 .byInterpolatedSlicingAt(NOT_COMPLETE_COMPARABLE_COORDINATE_AT_THE_END)
-                .interpolatingWith(new TestInterpolation());
+                .withLinearInterpolation(doubles(), ComparableCoordinate::getDouble);
 
         assertEquals(BIG_TENSOR_PROPER_SLICE_SIZE, byInterpolatedSlicingAt.shape().positionSet().size());
 
@@ -195,21 +196,6 @@ public class InterpolationAtTest {
                 TestEnum.ENUM2 };
         builder.put(at(coordinates14), 3.0);
         return builder.build();
-    }
-
-    private class TestInterpolation extends AbstractLinearDoubleInterpolationStrategy<ComparableCoordinate> {
-
-        public TestInterpolation() {
-            super(Comparator.naturalOrder());
-        }
-
-        @Override
-        public double ratio(ComparableCoordinate previousComparable, ComparableCoordinate nextComparable,
-                ComparableCoordinate value) {
-            return (value.getDouble() - previousComparable.getDouble())
-                    / (nextComparable.getDouble() - previousComparable.getDouble());
-        }
-
     }
 
     private class ComparableCoordinate implements Comparable<ComparableCoordinate> {

@@ -21,7 +21,10 @@ import org.tensorics.core.tensor.Tensor;
  * 
  * @author agorzaws
  * @param <C> type of the coordinate, must be the {@link Comparable}
+ * 
+ * @deprecated use {@link LinearInterpolation}
  */
+@Deprecated
 public abstract class AbstractLinearDoubleInterpolationStrategy<C> extends AbstractInterpolationStrategy<C, Double> {
 
     public AbstractLinearDoubleInterpolationStrategy(Comparator<C> comparator) {
@@ -31,7 +34,7 @@ public abstract class AbstractLinearDoubleInterpolationStrategy<C> extends Abstr
     @Override
     public Double getInterpolatedValue(Tensor<Double> tensorWithTheOnlyOneCoordinateOfC, C coordineteToInterpolate) {
 
-        List<C> orderedList = getOrderedListOfComparableCoodrinate(tensorWithTheOnlyOneCoordinateOfC,
+        List<C> orderedList = getOrderedListOfComparableCoordinate(tensorWithTheOnlyOneCoordinateOfC,
                 coordineteToInterpolate);
         C thePreviousComparable = findIndex(orderedList, coordineteToInterpolate, 0);
         C theNextComparable = findIndex(orderedList, coordineteToInterpolate, 1);
