@@ -23,7 +23,7 @@
 package org.tensorics.core.units;
 
 /**
- * Encapsulates the implementation of unit by the use of units of the jscience library (V 4.3)
+ * Encapsulates the implementation of base by the use of units of the jscience library (V 4.3)
  * 
  * @author kfuchsbe
  */

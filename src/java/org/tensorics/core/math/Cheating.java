@@ -24,11 +24,11 @@ package org.tensorics.core.math;
 
 /**
  * This interface provides methods for field elements, whose usage is highly discouraged and should be avoided.
- * Currently, they are necessary, mainly because no unit-treatment implementation is available, which is purely baes on
+ * Currently, they are necessary, mainly because no base-treatment implementation is available, which is purely baes on
  * fields. We hope to get rid of this at some point, therefore clients should NOT use these methods.
  * <p>
  * Currently, this interface provides conversion methods from/to double. This is required for the current implementation
- * of unit conversions. The general plan for the future is to also base the unit conversions fully on the field
+ * of base conversions. The general plan for the future is to also base the base conversions fully on the field
  * structure, therefore, these two methods are marked as deprecated, to avoid that clients start rely on them and abuse
  * them.
  *

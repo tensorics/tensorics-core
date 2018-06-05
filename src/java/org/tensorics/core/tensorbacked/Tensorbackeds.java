@@ -167,11 +167,11 @@ public final class Tensorbackeds {
     }
 
     /**
-     * Retrieves the unit of a tensorbacked object by looking at the underlaying tensor.
+     * Retrieves the base of a tensorbacked object by looking at the underlaying tensor.
      *
-     * @param tensorbacked the tensorbacked object from which to retrieve the unit
-     * @return the unit
-     * @throws IllegalArgumentException if the unit cannot be determined
+     * @param tensorbacked the tensorbacked object from which to retrieve the base
+     * @return the base
+     * @throws IllegalArgumentException if the base cannot be determined
      */
     public static <S> Unit unitOf(Tensorbacked<QuantifiedValue<S>> tensorbacked) {
         return QuantityTensors.unitOf(tensorbacked.tensor());

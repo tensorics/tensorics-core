@@ -33,7 +33,7 @@ import com.google.common.base.Optional;
 
 /**
  * Base class for operations on physical quantities, that can perform sum or difference, depending on the scalar
- * operation that is passed into the constructor. The left and right operand will be converted to the same unit (if they
+ * operation that is passed into the constructor. The left and right operand will be converted to the same base (if they
  * are not provided like this). The errors and validity flags will be propagated according to corresponding strategies
  * given in the environment.
  *

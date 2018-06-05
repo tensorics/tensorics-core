@@ -150,10 +150,10 @@ public final class Tensorics {
     }
 
     /**
-     * Convenience method to create a quantity directly from a jscience unit.
+     * Convenience method to create a quantity directly from a jscience base.
      *
      * @param value the of the quantity
-     * @param unit the unit of the quantity
+     * @param unit the base of the quantity
      * @return a new instance of the quantity
      * @see Tensorics#quantityOf(Object, Unit)
      */

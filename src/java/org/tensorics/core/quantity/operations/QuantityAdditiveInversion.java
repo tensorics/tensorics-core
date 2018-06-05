@@ -28,7 +28,7 @@ import org.tensorics.core.quantity.options.QuantityEnvironment;
 
 /**
  * The unary operation which which calculates the additive inversion of a quantity (aka 'the negative'). Error, validity
- * and the unit of the result are the same as the input quantity, only the value itself will be inverted.
+ * and the base of the result are the same as the input quantity, only the value itself will be inverted.
  *
  * @author kfuchsbe
  * @param <S> the type of scalars on which all the operations are based (elements of a field)

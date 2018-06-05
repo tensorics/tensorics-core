@@ -71,7 +71,7 @@ public class QuantifiedFieldUsageTest extends QuantitySupport<Double> {
     public void testDifferentScaleWithNonStandardUnit() {
         QuantifiedValue<Double> result = calculate(2000.0, MICRO(VOLT)).plus(12.0, MILLI(VOLT));
         /*
-         * If the units are not the same, then the result is always in the standard unit ...
+         * If the units are not the same, then the result is always in the standard base ...
          */
         assertEquals(valueOf(0.014, VOLT), result);
     }
@@ -79,7 +79,7 @@ public class QuantifiedFieldUsageTest extends QuantitySupport<Double> {
     @Test
     public void testEqualDifferentMagnitudes() throws Exception {
         /*
-         * XXX Is this ok? Should this be equal? (would need implicit unit conversion)
+         * XXX Is this ok? Should this be equal? (would need implicit base conversion)
          */
         assertFalse(valueOf(1.0, VOLT).equals(valueOf(1000.0, MILLI(VOLT))));
     }

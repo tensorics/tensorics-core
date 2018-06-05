@@ -30,7 +30,7 @@ import java.io.Serializable;
  * <li>the value itself
  * <li>the error of the value (optional)
  * <li>a validity flag
- * <li>the unit of the quantity
+ * <li>the base of the quantity
  * </ul>
  * 
  * @author kfuchsbe

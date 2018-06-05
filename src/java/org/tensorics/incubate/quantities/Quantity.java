@@ -23,7 +23,7 @@
 package org.tensorics.incubate.quantities;
 
 /**
- * Represents a physical quantity, which is basically a pair of a value + unit. However, the unit itself is a quantity.
+ * Represents a physical quantity, which is basically a pair of a value + base. However, the base itself is a quantity.
  * 
  * @author kaifox
  * @param <V> the type of the value of the quantity.

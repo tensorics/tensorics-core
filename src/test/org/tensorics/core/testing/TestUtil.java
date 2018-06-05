@@ -51,7 +51,7 @@ public class TestUtil {
      * 
      * @param clazz the utility class to verify.
      * @return {@code true} if everything is fine. Actually, it will never return anything else. This return value is
-     *         mainly there to put an 'innocent' assert to the unit test where this method is used, to satisfy sonar.
+     *         mainly there to put an 'innocent' assert to the base test where this method is used, to satisfy sonar.
      */
     public static boolean assertUtilityClass(final Class<?> clazz) {
         try {

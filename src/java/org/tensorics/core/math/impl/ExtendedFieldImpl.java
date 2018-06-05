@@ -61,7 +61,7 @@ public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T>implements Extende
 
     /**
      * Returns the instance which provides methods to convert field elements from and to double values. It is intended
-     * that this mechanism can be replaced later by a re implementation of the unit-calculations which are fully based
+     * that this mechanism can be replaced later by a re implementation of the base-calculations which are fully based
      * on field elements. To avoid heavy usage until then, this method is marked as deprecated.
      *
      * @return an object providing conversion methods from/to double values

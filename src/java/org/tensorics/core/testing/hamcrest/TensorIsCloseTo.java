@@ -36,7 +36,7 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.lang.TensorSupport;
 
 /**
- * A hamcrest matcher for unit tests, that matches a values of a tensor to be within a certain tolerance compared to the
+ * A hamcrest matcher for base tests, that matches a values of a tensor to be within a certain tolerance compared to the
  * values of a reference (expected) tensor. Further, the shapes of the two tensors have to be equal (conform with the
  * {@link org.tensorics.core.tensor.Shape#equals(Object)} method).
  * 

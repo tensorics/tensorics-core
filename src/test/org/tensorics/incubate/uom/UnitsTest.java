@@ -17,7 +17,7 @@ public class UnitsTest {
 
     @Test
     public void returnedQuantityIsAUnit() {
-        Length<Any> anyLength = Units.unit(Length.class, ANY_SYMBOL);
+        Length<Any> anyLength = Units.base(Length.class, ANY_SYMBOL);
         Assertions.assertThat(anyLength).isInstanceOf(Unit.class);
 
         @SuppressWarnings("unchecked")

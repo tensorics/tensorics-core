@@ -6,6 +6,6 @@ package org.tensorics.incubate.quantities;
 
 public class SiUnits {
 
-    public static Length<Any> METER = Units.unit(Length.class, "m");
-    public static Duration<Any> SECOND = Units.unit(Duration.class, "s");
+    public static Length<Any> METER = Units.base(Length.class, "m");
+    public static Duration<Any> SECOND = Units.base(Duration.class, "s");
 }

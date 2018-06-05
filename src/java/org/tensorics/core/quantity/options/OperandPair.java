@@ -28,12 +28,12 @@ import org.tensorics.core.quantity.ErronousValue;
 import org.tensorics.core.units.Unit;
 
 /**
- * Represents a pair of values which have a common unit. This is mainly used as internal container for further
+ * Represents a pair of values which have a common base. This is mainly used as internal container for further
  * calculations.
  * 
  * @author kfuchsbe
  * @param <V> the type of the numerical scalar values
- * @param <U> the type of the unit
+ * @param <U> the type of the base
  */
 public final class OperandPair<V, U extends Unit> implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -29,7 +29,7 @@ import org.tensorics.core.units.Unit;
 import com.google.common.base.Optional;
 
 /**
- * Groups a value together with its unit. Additionally an error and a validity flag can be provided. If the latter two
+ * Groups a value together with its base. Additionally an error and a validity flag can be provided. If the latter two
  * are not present explicitely given, then the validity will be {@code true} and the (optional) error will not be
  * present.
  * 
@@ -57,7 +57,7 @@ public final class ImmutableQuantifiedValue<V> implements QuantifiedValue<V> {
 
     public static <V> ImmutableQuantifiedValue<V> of(V value, Unit unit) {
         checkArgument(value != null, "Argument 'value' must not be null!");
-        checkArgument(unit != null, "Argument 'unit' must not be null!");
+        checkArgument(unit != null, "Argument 'base' must not be null!");
         return new ImmutableQuantifiedValue<>(value, unit);
     }
 

@@ -34,9 +34,9 @@ import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
 /**
- * Encapsulates all the calculations and transformations of units that are based on the jscience unit system. Currently,
+ * Encapsulates all the calculations and transformations of units that are based on the jscience base system. Currently,
  * this is the only implemented way of dealing with units in tensorics. However, later on it is planned that all the
- * unit calculations could be based on the field structure, so that this class would get obsolete.
+ * base calculations could be based on the field structure, so that this class would get obsolete.
  *
  * @author kfuchsbe
  * @param <T> the type of the field elements, on which the calculations are based on

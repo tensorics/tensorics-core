@@ -37,7 +37,7 @@ public class DoubleCheating implements Cheating<Double> {
     /**
      * Converts a double value to a field element (double).
      * 
-     * @deprecated the whole class should not be necessary in the future, if the unit-conversions are based fully on
+     * @deprecated the whole class should not be necessary in the future, if the base-conversions are based fully on
      *             field operations.
      */
     @Deprecated
@@ -49,7 +49,7 @@ public class DoubleCheating implements Cheating<Double> {
     /**
      * Converts field element (double) to a double value.
      * 
-     * @deprecated the whole class should not be necessary in the future, if the unit-conversions are based fully on
+     * @deprecated the whole class should not be necessary in the future, if the base-conversions are based fully on
      *             field operations.
      */
     @Deprecated
