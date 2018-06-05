@@ -130,7 +130,6 @@ public class OngoingTensorManipulation<V> {
         return TensorStructurals.from(tensor).reduce(correctDimension).bySlicingAt(coordinate);
     }
 
-    @Deprecated
     public <C> OngoingDimensionReduction<C, V> reduce(Class<C> dimension) {
         return new OngoingDimensionReduction<>(tensor, dimension);
     }

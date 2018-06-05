@@ -29,6 +29,7 @@ import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
+import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
@@ -55,12 +56,30 @@ public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<Qua
 
     @Override
     public QTB plus(QTB right) {
-        return evaluate(right.tensor(), pseudoField.addition());
+        return plusQT(right.tensor());
+    }
+
+    public QTB plusQT(Tensor<QuantifiedValue<S>> tensor) {
+        return evaluate(tensor, pseudoField.addition());
+    }
+
+    @Override
+    public QTB plusV(QuantifiedValue<S> right) {
+        return plusQT(ImmutableScalar.of(right));
     }
 
     @Override
     public QTB minus(QTB right) {
-        return evaluate(right.tensor(), pseudoField.subtraction());
+        return minusQT(right.tensor());
+    }
+
+    public QTB minusQT(Tensor<QuantifiedValue<S>> tensor) {
+        return evaluate(tensor, pseudoField.subtraction());
+    }
+
+    @Override
+    public QTB minusV(QuantifiedValue<S> right) {
+        return minusQT(ImmutableScalar.of(right));
     }
 
     @Override

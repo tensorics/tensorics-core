@@ -29,6 +29,7 @@ import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.TensorInternals;
+import org.tensorics.core.units.JScienceUnit;
 import org.tensorics.core.units.Unit;
 
 import com.google.common.base.Optional;
@@ -83,6 +84,10 @@ public final class QuantityTensors {
         return builder.build();
     }
 
+    public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, javax.measure.unit.Unit<?> unit) {
+        return quantityTensorOf(tensor, JScienceUnit.of(unit));
+    }
+    
     public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
         Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());

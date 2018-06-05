@@ -27,6 +27,7 @@ import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
+import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 
@@ -56,10 +57,22 @@ public class OngoingQuantifiedTensorOperation<S>
     }
 
     @Override
+    public Tensor<QuantifiedValue<S>> plusV(QuantifiedValue<S> right) {
+        return plus(ImmutableScalar.of(right));
+    }
+
+    
+    @Override
     public Tensor<QuantifiedValue<S>> minus(Tensor<QuantifiedValue<S>> right) {
         return evaluate(right, operationRepository.subtraction());
     }
 
+    @Override
+    public Tensor<QuantifiedValue<S>> minusV(QuantifiedValue<S> right) {
+        return minus(ImmutableScalar.of(right));
+    }
+    
+    
     @Override
     public Tensor<QuantifiedValue<S>> elementTimes(Tensor<QuantifiedValue<S>> right) {
         return evaluate(right, operationRepository.multiplication());
@@ -86,4 +99,6 @@ public class OngoingQuantifiedTensorOperation<S>
         return new ElementBinaryOperation<>(operation, operationRepository.environment().options()).perform(left,
                 right);
     }
+
+   
 }

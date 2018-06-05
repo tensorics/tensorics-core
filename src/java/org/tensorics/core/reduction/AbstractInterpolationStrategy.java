@@ -34,18 +34,18 @@ public abstract class AbstractInterpolationStrategy<C, V> implements Interpolati
      * Extracts the ordered list of the comparable coordinate along which the interpolation will be done
      * 
      * @param tensorWithTheOnlyOneCoordinateOfC tensor with only ONE coordinate
-     * @param coordineteToInterpolate the coordinate to extract
+     * @param coordinateToInterpolate the coordinate to extract
      * @return an ordered (ascending) list of the comparable coordinates
      */
-    protected List<C> getOrderedListOfComparableCoodrinate(Tensor<V> tensorWithTheOnlyOneCoordinateOfC,
-            C coordineteToInterpolate) {
+    protected List<C> getOrderedListOfComparableCoordinate(Tensor<V> tensorWithTheOnlyOneCoordinateOfC,
+                                                           C coordinateToInterpolate) {
 
-        checkIfOnlyCoordinatesOfTypeCAreIn(tensorWithTheOnlyOneCoordinateOfC, coordineteToInterpolate);
+        checkIfOnlyCoordinatesOfTypeCAreIn(tensorWithTheOnlyOneCoordinateOfC, coordinateToInterpolate);
 
         /* we know that slice is the class of C */
         @SuppressWarnings("unchecked")
         Set<C> coordinatesOfType = (Set<C>) tensorWithTheOnlyOneCoordinateOfC.shape()
-                .coordinatesOfType(coordineteToInterpolate.getClass());
+                .coordinatesOfType(coordinateToInterpolate.getClass());
 
         List<C> orderedList = new ArrayList<C>(coordinatesOfType);
         Collections.sort(orderedList, this.comparator);

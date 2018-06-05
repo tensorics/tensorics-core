@@ -35,7 +35,6 @@ import org.tensorics.core.tensor.Tensor;
  * @param <C> the type of the dimension in which the tensor shall be reduced
  * @param <S> the type of the scalars (elements of the field on which all the operations are based on)
  */
-@Deprecated
 public final class OngoingDimensionReduction<C, S> extends OngoingStructuralReduction<C, S> {
 
     public OngoingDimensionReduction(Tensor<S> tensor, Class<C> dimension) {

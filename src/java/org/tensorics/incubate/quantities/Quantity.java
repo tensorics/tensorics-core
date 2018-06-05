@@ -1,3 +1,4 @@
+
 // @formatter:off
  /*******************************************************************************
  *
@@ -19,7 +20,7 @@
  * 
  ******************************************************************************/
 // @formatter:on
-package org.tensorics.incubate.uom;
+package org.tensorics.incubate.quantities;
 
 /**
  * Represents a physical quantity, which is basically a pair of a value + unit. However, the unit itself is a quantity.
@@ -28,5 +29,6 @@ package org.tensorics.incubate.uom;
  * @param <V> the type of the value of the quantity.
  */
 public interface Quantity<V> {
-    /* nothing for the moment */
+
+
 }

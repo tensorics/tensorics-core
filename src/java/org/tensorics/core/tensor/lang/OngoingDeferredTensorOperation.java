@@ -29,6 +29,7 @@ import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.math.ExplicitField;
 import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tree.domain.Expression;
@@ -73,8 +74,18 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
     }
 
     @Override
+    public Expression<Tensor<V>> plusV(V right) {
+        return plus(ResolvedExpression.of(ImmutableScalar.of(right)));
+    }
+
+    @Override
     public Expression<Tensor<V>> minus(Expression<Tensor<V>> right) {
         return evaluate(right, field.subtraction());
+    }
+
+    @Override
+    public Expression<Tensor<V>> minusV(V right) {
+        return minus(ResolvedExpression.of(ImmutableScalar.of(right)));
     }
 
     @Override
@@ -90,39 +101,13 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
 
     @Override
     public Expression<Tensor<V>> elementTimesV(V value) {
-        Tensor<V> right = Tensorics.scalarOf(value);
-        return elementTimes(ResolvedExpression.of(right));
+        return elementTimes(ResolvedExpression.of(ImmutableScalar.of(value)));
     }
 
     @Override
     public Expression<Tensor<V>> elementDividedBy(Expression<Tensor<V>> right) {
         return evaluate(right, field.division());
     }
-
-    // /**
-    // * Calls multiplication operation with question for outupt's {@link
-    // ShapingStrategy}
-    // *
-    // * @param right second tensoric to use
-    // * @return Possibility to choose {@link ShapingStrategy}s
-    // */
-    // public Expression<Tensor<V>> elementTimes(Expression<Tensor<V>> right) {
-    //
-    // }
-
-    // public Expression<Tensor<V>> elementDividedBy(Expression<Tensor<V>>
-    // right) {
-    //
-    // }
-    // /**
-    // * Calls multiplication for single value operation.
-    // *
-    // * @param value to be multiplied in first Tensoric
-    // * @return multiplied tensoric result.
-    // */
-    // public Expression<Tensor<V>> elementTimes(V value) {
-    //
-    // }
 
     private Expression<Tensor<V>> evaluate(Expression<Tensor<V>> right, BinaryOperation<V> operation) {
         return new BinaryOperationExpression<>(new ElementBinaryOperation<V>(operation, optionRegistry), left, right);
