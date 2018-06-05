@@ -4,8 +4,6 @@
 
 package org.tensorics.incubate.quantities;
 
-import org.assertj.core.internal.cglib.proxy.Proxy;
-
 public class SiUnits {
 
     public static Length<Any> METER = Units.unit(Length.class, "m");

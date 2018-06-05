@@ -1,6 +1,8 @@
 product.xml
 deployment.key
 build/
+out/
+.idea/
 .gradle/
 /bin/
 .classpath
