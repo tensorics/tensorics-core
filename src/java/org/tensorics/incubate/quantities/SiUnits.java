@@ -4,6 +4,9 @@
 
 package org.tensorics.incubate.quantities;
 
+import org.tensorics.incubate.quantities.base.Duration;
+import org.tensorics.incubate.quantities.base.Length;
+
 public class SiUnits {
 
     public static Length<Any> METER = Units.base(Length.class, "m");
