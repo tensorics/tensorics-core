@@ -9,7 +9,7 @@ import org.tensorics.incubate.quantities.base.Length;
 
 public class SiUnits {
 
-    public static Length<Any> METER = Units.base(Length.class, "m");
-    public static Duration<Any> SECOND = Units.base(Duration.class, "s");
+    public static final Length<Any> METER = Units.base(Length.class, "m");
+    public static final Duration<Any> SECOND = Units.base(Duration.class, "s");
 
 }
