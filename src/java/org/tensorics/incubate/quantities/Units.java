@@ -4,6 +4,8 @@
 
 package org.tensorics.incubate.quantities;
 
+import org.tensorics.core.tree.domain.Expression;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -31,4 +33,9 @@ public final class Units {
         return unit;
     }
 
-}
+    public static <Q extends Quantity<Any>> Q derived(Class<? super Q> quantityClass, String symbol, Expression<Quantity<Any>> expression) {
+        return null;
+
+    }
+
+    }

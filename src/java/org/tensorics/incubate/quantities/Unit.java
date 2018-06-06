@@ -4,7 +4,7 @@
 
 package org.tensorics.incubate.quantities;
 
-public interface Unit<V> extends Quantity<V> {
+public interface Unit {
 
     String symbol();
 

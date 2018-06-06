@@ -6,6 +6,7 @@ package org.tensorics.incubate.quantities;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.tensorics.incubate.quantities.base.Length;
 
 public class UnitsTest {
 
@@ -17,7 +18,7 @@ public class UnitsTest {
         Assertions.assertThat(anyLength).isInstanceOf(Unit.class);
 
         @SuppressWarnings("unchecked")
-        Unit<Any> unit = (Unit<Any>) anyLength;
+        Unit unit = (Unit) anyLength;
         Assertions.assertThat(unit.symbol()).isEqualTo(ANY_SYMBOL);
     }
 
