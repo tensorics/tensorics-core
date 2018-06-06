@@ -25,7 +25,11 @@ package org.tensorics.core.lang;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.*;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.tensorics.core.math.ExtendedField;

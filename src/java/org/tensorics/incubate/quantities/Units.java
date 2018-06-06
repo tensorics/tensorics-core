@@ -4,11 +4,11 @@
 
 package org.tensorics.incubate.quantities;
 
-import org.tensorics.core.tree.domain.Expression;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+
+import org.tensorics.core.tree.domain.Expression;
 
 public final class Units {
 
