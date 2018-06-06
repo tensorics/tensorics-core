@@ -22,9 +22,11 @@
 
 package org.tensorics.core.fields.doubles;
 
-import org.tensorics.core.math.operations.CommutativeAssociativeOperation;
-import org.tensorics.core.math.operations.UnaryOperation;
-import org.tensorics.core.math.predicates.BinaryPredicate;
+import org.tensorics.core.math.operations.specific.Addition;
+import org.tensorics.core.math.operations.specific.AdditiveInversion;
+import org.tensorics.core.math.operations.specific.Multiplication;
+import org.tensorics.core.math.operations.specific.MultiplicativeInversion;
+import org.tensorics.core.math.predicates.specific.IsLessOrEqualPredicate;
 import org.tensorics.core.math.structures.grouplike.AbstractAbelianGroup;
 import org.tensorics.core.math.structures.ringlike.OrderedField;
 
@@ -37,7 +39,7 @@ import org.tensorics.core.math.structures.ringlike.OrderedField;
  * @author kfuchsbe
  * @see Structures
  */
-public final class DoubleField extends AbstractOrderedField<Double>implements OrderedField<Double> {
+public final class DoubleField extends AbstractOrderedField<Double> implements OrderedField<Double> {
     private static final long serialVersionUID = 1L;
 
     private static final double ZERO = 0.0;
@@ -51,35 +53,35 @@ public final class DoubleField extends AbstractOrderedField<Double>implements Or
         super(new DoubleAdditionGroup(), new DoubleMultiplicationGroup(), new DoubleLessOrEqual());
     }
 
-    static class DoubleLessOrEqual implements BinaryPredicate<Double> {
+    static class DoubleLessOrEqual implements IsLessOrEqualPredicate<Double> {
         @Override
         public boolean test(Double left, Double right) {
             return left <= right;
         }
     }
 
-    private static class DoubleAddition implements CommutativeAssociativeOperation<Double> {
+    private static class DoubleAddition implements Addition<Double> {
         @Override
         public Double perform(Double left, Double right) {
             return left + right;
         }
     }
 
-    private static class DoubleMultiplication implements CommutativeAssociativeOperation<Double> {
+    private static class DoubleMultiplication implements Multiplication<Double> {
         @Override
         public Double perform(Double left, Double right) {
             return left * right;
         }
     }
 
-    private static class DoubleAdditiveInversion implements UnaryOperation<Double> {
+    private static class DoubleAdditiveInversion implements AdditiveInversion<Double> {
         @Override
         public Double perform(Double value) {
             return -value;
         }
     }
 
-    private static class DoubleMultiplicativeInversion implements UnaryOperation<Double> {
+    private static class DoubleMultiplicativeInversion implements MultiplicativeInversion<Double> {
         @Override
         public Double perform(Double value) {
             return 1 / value;

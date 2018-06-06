@@ -22,7 +22,8 @@
 
 package org.tensorics.core.math;
 
-import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.math.operations.specific.PowerOperation;
+import org.tensorics.core.math.operations.specific.RootOperation;
 
 /**
  * Exposes possibilities for field calculations in more explicit ways. This can be used once for convenience reasons,
@@ -40,9 +41,14 @@ public interface ExtendedField<T> extends ExplicitField<T> {
      * 
      * @return the operation for a^b.
      */
-    BinaryOperation<T> power();
+    PowerOperation<T> power();
 
-    BinaryOperation<T> root();
+    /**
+     * Has to return an operation for the bth root of a, for a being the left operator, b being the right one.
+     * 
+     * @return the root operation
+     */
+    RootOperation<T> root();
 
     /**
      * Returns an object that provides methods for cheating. The usage of these methods is highly discouraged for

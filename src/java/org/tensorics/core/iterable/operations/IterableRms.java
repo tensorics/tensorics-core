@@ -29,7 +29,7 @@ import org.tensorics.core.scalar.lang.ScalarSupport;
 
 /**
  * An operation that takes and iterable of a certain type of values (for which a field has to be provided) and
- * calculates the rms (Root mean square) out of it.
+ * calculates the rms (RootOperation mean square) out of it.
  * <p>
  * For the definition of the root mean square, have a look at
  * <a href="http://en.wikipedia.org/wiki/Root_mean_square">wikipedia</a>.

@@ -4,7 +4,9 @@
 
 package org.tensorics.core.math.predicates;
 
-public class IsNotEqualTo<T> implements BinaryPredicate<T> {
+import org.tensorics.core.math.predicates.specific.IsNotEqualPredicate;
+
+public class IsNotEqualTo<T> implements IsNotEqualPredicate<T> {
 
     private static final IsNotEqualTo<?> INSTANCE = new IsNotEqualTo<>();
 

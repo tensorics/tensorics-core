@@ -27,7 +27,8 @@ import java.io.Serializable;
 import org.tensorics.core.math.Cheating;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.math.Math;
-import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.math.operations.specific.PowerOperation;
+import org.tensorics.core.math.operations.specific.RootOperation;
 import org.tensorics.core.math.structures.ringlike.OrderedField;
 
 /**
@@ -36,27 +37,27 @@ import org.tensorics.core.math.structures.ringlike.OrderedField;
  * @author kfuchsbe
  * @param <T> the type of elements of the field
  */
-public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T>implements ExtendedField<T> {
+public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T> implements ExtendedField<T> {
 
-    private final org.tensorics.core.math.Math<T> math;
     private final Cheating<T> cheatingInstance;
-    private final BinaryOperation<T> powerOperation;
+    private final PowerOperation<T> powerOperation;
+    private final RootOperation<T> rootOperation;
 
     public ExtendedFieldImpl(OrderedField<T> field, org.tensorics.core.math.Math<T> math, Cheating<T> cheating) {
         super(field);
-        this.math = math;
         this.cheatingInstance = cheating;
-        this.powerOperation = new PowerOperation<>(math);
+        this.powerOperation = new PowerOperationImpl<>(math);
+        this.rootOperation = new RootOperationImpl<>(math);
     }
 
     @Override
-    public BinaryOperation<T> power() {
+    public PowerOperation<T> power() {
         return powerOperation;
     }
 
     @Override
-    public BinaryOperation<T> root() {
-        return (T left, T right) -> math.root(left, right);
+    public RootOperation<T> root() {
+        return rootOperation;
     }
 
     /**
@@ -74,13 +75,12 @@ public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T>implements Extende
         return cheatingInstance;
     }
 
-    private static final class PowerOperation<T> implements BinaryOperation<T>, Serializable {
+    private static final class PowerOperationImpl<T> implements PowerOperation<T>, Serializable {
         private static final long serialVersionUID = 1L;
 
         private final org.tensorics.core.math.Math<T> math;
 
-        public PowerOperation(Math<T> math) {
-            super();
+        PowerOperationImpl(Math<T> math) {
             this.math = math;
         }
 
@@ -108,7 +108,7 @@ public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T>implements Extende
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            PowerOperation<?> other = (PowerOperation<?>) obj;
+            PowerOperationImpl<?> other = (PowerOperationImpl<?>) obj;
             if (math == null) {
                 if (other.math != null) {
                     return false;
@@ -121,7 +121,59 @@ public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T>implements Extende
 
         @Override
         public String toString() {
-            return "PowerOperation [math=" + math + "]";
+            return "PowerOperationImpl [math=" + math + "]";
         }
+    }
+
+    private static final class RootOperationImpl<T> implements RootOperation<T>, Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        private final org.tensorics.core.math.Math<T> math;
+
+        RootOperationImpl(Math<T> math) {
+            this.math = math;
+        }
+
+        @Override
+        public T perform(T left, T right) {
+            return math.root(left, right);
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((math == null) ? 0 : math.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            RootOperationImpl<?> other = (RootOperationImpl<?>) obj;
+            if (math == null) {
+                if (other.math != null) {
+                    return false;
+                }
+            } else if (!math.equals(other.math)) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return "RootOperationImpl [math=" + math + "]";
+        }
+
     }
 }
