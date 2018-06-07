@@ -9,11 +9,11 @@ import java.util.function.Function;
 
 import com.google.common.collect.ImmutableSortedSet;
 
-public class SingleDimensionRepeatingResamplingStrategy<C, V> implements SingleDimensionResamplingStrategy<C, V> {
+public class SingleDimensionRepeatingResampler<C, V> implements SingleDimensionResampler<C, V> {
 
     private final Comparator<C> comparator;
 
-    public SingleDimensionRepeatingResamplingStrategy(Comparator<C> comparator) {
+    public SingleDimensionRepeatingResampler(Comparator<C> comparator) {
         this.comparator = Objects.requireNonNull(comparator);
     }
 

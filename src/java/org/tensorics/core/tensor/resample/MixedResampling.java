@@ -1,5 +1,6 @@
 package org.tensorics.core.tensor.resample;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;
 import org.tensorics.core.tensor.Position;
@@ -9,7 +10,9 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.coordinates.PositionOrdering;
 
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
@@ -42,36 +45,44 @@ public class MixedResampling implements ResamplingStrategy {
 
         Position forcedMatchingPosition = stripping(ImmutableSet.copyOf(positionOrdering.dimensions())).apply(position);
         Position resamplingPosition = difference(position, forcedMatchingPosition);
+
         Tensor<V> resamplingTensor = from(originalTensor).extract(forcedMatchingPosition);
 
-        Function<?, V> valueFunction = (o) -> {
-            Position combined = Positions.union(forcedMatchingPosition, Position.of(o));
-            return null;
+        Function<Position, V> valueFunction = (c) -> {
+            return originalTensor.get(c);
         };
+        Position pos = resamplingPosition;
+        
 
         for (Class<?> dim : positionOrdering.dimensions()) {
+
             /* All repeated for the moment. Has to become an input */
-            SingleDimensionRepeatingResamplingStrategy<?, V> repeating = new SingleDimensionRepeatingResamplingStrategy<>(
+            SingleDimensionRepeatingResampler<?, V> repeating = new SingleDimensionRepeatingResampler<>(
                     positionOrdering.comparatorFor(dim));
+
+            Object coordinate = resamplingPosition.coordinateFor(dim);
+
+            Set<?> coordinates = resamplingTensor.shape().coordinatesOfType(dim);
+
+            // repeating.resample(coordinates, valuesCallback, coordinate)
 
             /* TODO continue here */
 
         }
 
-        SortedSet<Position> orderedPositions = ImmutableSortedSet.copyOf(positionOrdering.positionComparator(),
-                resamplingTensor.shape().positionSet());
-
-        SortedSet<Position> before = orderedPositions.headSet(resamplingPosition);
-        if (!before.isEmpty()) {
-            return resamplingTensor.get(before.last());
-        }
-
-        SortedSet<Position> after = orderedPositions.tailSet(resamplingPosition);
-        if (!after.isEmpty()) {
-            return resamplingTensor.get(after.first());
-        }
-
         throw new NoSuchElementException("Tensor cannot be resampled at '" + position + "'");
+    }
+
+    private static <C, V> Function<C, V> resample(SingleDimensionResampler<C, V> resampler,
+            Function<Position, V> prevValuesCallback, Set<C> coordinates, Position pos) {
+        return c -> {
+            Function<C, V> callback = c1 -> {
+                Position combined = Positions.union(pos, Position.of(c1));
+                return prevValuesCallback.apply(combined);
+            };
+
+            return resampler.resample(coordinates, callback, c);
+        };
     }
 
     @Override
