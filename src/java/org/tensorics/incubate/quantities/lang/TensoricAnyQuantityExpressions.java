@@ -17,16 +17,16 @@ public class TensoricAnyQuantityExpressions {
         return SUPPORT._q(left);
     }
 
-    public static final OngoingValueBinaryOperationExpression<Any> __(Any left) {
-        return SUPPORT.__(left);
+    public static final OngoingValueBinaryOperationExpression<Any> _v(Any left) {
+        return SUPPORT._v(left);
     }
 
-    public static final OngoingValueBinaryOperationExpression<Any> __(Expression<Any> left) {
-        return SUPPORT.__(left);
+    public static final OngoingValueBinaryOperationExpression<Any> _v(Expression<Any> left) {
+        return SUPPORT._v(left);
     }
 
-    public static final OngoingValueBinaryOperationExpression<Any> __(String left) {
-        return SUPPORT.__(Any.any(left));
+    public static final OngoingValueBinaryOperationExpression<Any> _v(String left) {
+        return SUPPORT._v(Any.any(left));
     }
 
 }

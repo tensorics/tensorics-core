@@ -5,9 +5,9 @@ import org.tensorics.incubate.quantities.Quantity;
 
 public interface TensoricsQuantityExpressionSupport<T> {
 
-    OngoingValueBinaryOperationExpression<T> __(T left);
+    OngoingValueBinaryOperationExpression<T> _v(T left);
 
-    OngoingValueBinaryOperationExpression<T> __(Expression<T> left);
+    OngoingValueBinaryOperationExpression<T> _v(Expression<T> left);
 
     <L extends Quantity<T>> OngoingQuantityBinaryOperationExpression<T, L> _q(L left);
 
