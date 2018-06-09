@@ -69,7 +69,7 @@ public class BinaryOperationExpression<T> extends AbstractDeferredExpression<T> 
 
     @Override
     public List<Node> getChildren() {
-        return ImmutableList.<Node> of(left, right);
+        return ImmutableList.<Node> of(operation, left, right);
     }
 
     @Override
