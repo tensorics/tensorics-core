@@ -35,6 +35,7 @@ import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensor.operations.ElementUnaryOperation;
 import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
 import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvedExpression;
 
 /**
  * Provides factory methods for tensor expressions
@@ -58,13 +59,10 @@ public final class TensorExpressions {
         return new CreationOperationExpression<>(new SingleValueTensorCreationOperation<>(shape, value));
     }
 
-    /* Not nice too have four parameters here, could be refactored */
-    public static <V> Expression<Tensor<V>> elementwise(BinaryOperation<V> operation, // NOSONAR
-                                                                                      // (too
-                                                                                      // many
-                                                                                      // parameters)
-            Expression<Tensor<V>> leftTensor, Expression<Tensor<V>> right, OptionRegistry<ManipulationOption> options) {
+    public static <V> Expression<Tensor<V>> elementwise(BinaryOperation<V> operation, Expression<Tensor<V>> leftTensor,
+            Expression<Tensor<V>> right, OptionRegistry<ManipulationOption> options) {
         ElementBinaryOperation<V> elementQuantifiedBinaryOperation = new ElementBinaryOperation<>(operation, options);
-        return new BinaryOperationExpression<>(elementQuantifiedBinaryOperation, leftTensor, right);
+        return new BinaryOperationExpression<>(ResolvedExpression.of(elementQuantifiedBinaryOperation), leftTensor,
+                right);
     }
 }

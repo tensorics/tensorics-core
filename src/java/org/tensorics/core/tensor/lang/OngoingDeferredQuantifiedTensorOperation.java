@@ -109,8 +109,7 @@ public class OngoingDeferredQuantifiedTensorOperation<S>
             BinaryOperation<QuantifiedValue<S>> operation) {
         ElementBinaryOperation<QuantifiedValue<S>> elementQuantifiedBinaryOperation = new ElementBinaryOperation<>(
                 operation, pseudoField.environment().options());
-
-        return new BinaryOperationExpression<>(elementQuantifiedBinaryOperation, left, right);
+        return new BinaryOperationExpression<>(ResolvedExpression.of(elementQuantifiedBinaryOperation), left, right);
     }
 
 }

@@ -10,8 +10,6 @@ import java.lang.reflect.Proxy;
 
 import org.tensorics.core.tree.domain.Expression;
 
-import com.google.common.reflect.TypeToken;
-
 public final class Units {
 
     private static final ClassLoader CLASS_LOADER = Units.class.getClassLoader();

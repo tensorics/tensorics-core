@@ -23,6 +23,7 @@
 package org.tensorics.core.resolve.resolvers;
 
 import org.tensorics.core.expressions.BinaryOperationExpression;
+import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.tree.domain.ResolvingContext;
 
 /**
@@ -43,7 +44,8 @@ public class BinaryOperationResolver<R> extends AbstractResolver<R, BinaryOperat
     public R resolve(BinaryOperationExpression<R> expression, ResolvingContext context) {
         R left = context.resolvedValueOf(expression.getLeft());
         R right = context.resolvedValueOf(expression.getRight());
-        return expression.getOperation().perform(left, right);
+        BinaryOperation<R> operation = context.resolvedValueOf(expression.getOperation());
+        return operation.perform(left, right);
     }
 
 }

@@ -43,18 +43,19 @@ import com.google.common.collect.ImmutableList;
 public class BinaryOperationExpression<T> extends AbstractDeferredExpression<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final BinaryOperation<T> operation;
+    private final Expression<BinaryOperation<T>> operation;
     private final Expression<T> left;
     private final Expression<T> right;
 
-    public BinaryOperationExpression(BinaryOperation<T> operation, Expression<T> left, Expression<T> right) {
+    public BinaryOperationExpression(Expression<BinaryOperation<T>> operation, Expression<T> left,
+            Expression<T> right) {
         super();
         this.operation = checkNotNull(operation, "Operation must not be null!");
         this.left = checkNotNull(left, "Left operand must not be null!");
         this.right = checkNotNull(right, "Right operand must not be null!");
     }
 
-    public BinaryOperation<T> getOperation() {
+    public Expression<BinaryOperation<T>> getOperation() {
         return operation;
     }
 

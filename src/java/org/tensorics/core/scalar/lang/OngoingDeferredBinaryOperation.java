@@ -25,6 +25,7 @@ package org.tensorics.core.scalar.lang;
 import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.expressions.UnaryOperationExpression;
 import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvedExpression;
 
@@ -51,7 +52,7 @@ public class OngoingDeferredBinaryOperation<S> {
     }
 
     public Expression<S> plus(Expression<S> right) {
-        return new BinaryOperationExpression<>(field.addition(), left, right);
+        return binaryOpExpression(field.addition(), right);
     }
 
     public Expression<S> minus(S right) {
@@ -59,7 +60,7 @@ public class OngoingDeferredBinaryOperation<S> {
     }
 
     public Expression<S> minus(Expression<S> right) {
-        return new BinaryOperationExpression<>(field.subtraction(), left, right);
+        return binaryOpExpression(field.subtraction(), right);
     }
 
     public Expression<S> times(S right) {
@@ -67,7 +68,7 @@ public class OngoingDeferredBinaryOperation<S> {
     }
 
     public Expression<S> times(Expression<S> right) {
-        return new BinaryOperationExpression<>(field.multiplication(), left, right);
+        return binaryOpExpression(field.multiplication(), right);
     }
 
     public Expression<S> dividedBy(S right) {
@@ -75,7 +76,7 @@ public class OngoingDeferredBinaryOperation<S> {
     }
 
     public Expression<S> dividedBy(Expression<S> right) {
-        return new BinaryOperationExpression<>(field.division(), left, right);
+        return binaryOpExpression(field.division(), right);
     }
 
     public Expression<S> toThePowerOf(S power) {
@@ -83,7 +84,7 @@ public class OngoingDeferredBinaryOperation<S> {
     }
 
     public Expression<S> toThePowerOf(Expression<S> power) {
-        return new BinaryOperationExpression<>(field.power(), left, power);
+        return binaryOpExpression(field.power(), power);
     }
 
     public Expression<S> root(S root) {
@@ -91,11 +92,15 @@ public class OngoingDeferredBinaryOperation<S> {
     }
 
     public Expression<S> root(Expression<S> root) {
-        return new BinaryOperationExpression<>(field.power(), left, inverseOf(root));
+        return binaryOpExpression(field.power(), inverseOf(root));
     }
 
     private UnaryOperationExpression<S> inverseOf(Expression<S> value) {
         return new UnaryOperationExpression<S>(field.multiplicativeInversion(), value);
+    }
+
+    private BinaryOperationExpression<S> binaryOpExpression(BinaryOperation<S> operation, Expression<S> right) {
+        return new BinaryOperationExpression<>(ResolvedExpression.of(operation), left, right);
     }
 
 }

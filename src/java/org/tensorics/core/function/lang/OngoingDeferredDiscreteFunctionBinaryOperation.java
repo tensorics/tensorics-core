@@ -31,6 +31,7 @@ import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.operations.AbstractDiscreteFunctionBinaryOperation;
 import org.tensorics.core.function.operations.DiscreteFunctionOperationRepository;
 import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvedExpression;
 
 /**
  * Provides methods to describe the right hand part of a binary operation for {@link DiscreteFunction} @
@@ -71,6 +72,6 @@ public class OngoingDeferredDiscreteFunctionBinaryOperation<X, Y> {
     private static <X, Y> Expression<DiscreteFunction<X, Y>> binaryExpressionOf(
             AbstractDiscreteFunctionBinaryOperation<X, Y> operation, Expression<DiscreteFunction<X, Y>> left,
             Expression<DiscreteFunction<X, Y>> right) {
-        return new BinaryOperationExpression<>(operation, left, right);
+        return new BinaryOperationExpression<>(ResolvedExpression.of(operation), left, right);
     }
 }

@@ -24,6 +24,7 @@ package org.tensorics.core.quantity.lang;
 
 import org.tensorics.core.expressions.BinaryOperationExpression;
 import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.operations.QuantityOperationRepository;
 import org.tensorics.core.tree.domain.Expression;
@@ -74,7 +75,7 @@ public class OngoingDeferredQuantifiedScalarOperation<S> {
     }
 
     public Expression<QuantifiedValue<S>> plus(Expression<QuantifiedValue<S>> right) {
-        return new BinaryOperationExpression<>(pseudoField.addition(), left, right);
+        return operationExpression(pseudoField.addition(), right);
     }
 
     public Expression<QuantifiedValue<S>> minus(QuantifiedValue<S> right) {
@@ -82,7 +83,7 @@ public class OngoingDeferredQuantifiedScalarOperation<S> {
     }
 
     public Expression<QuantifiedValue<S>> minus(Expression<QuantifiedValue<S>> right) {
-        return new BinaryOperationExpression<>(pseudoField.subtraction(), left, right);
+        return operationExpression(pseudoField.subtraction(), right);
     }
 
     public Expression<QuantifiedValue<S>> times(S rightValue, javax.measure.unit.Unit<?> unit) {
@@ -98,7 +99,7 @@ public class OngoingDeferredQuantifiedScalarOperation<S> {
     }
 
     public Expression<QuantifiedValue<S>> times(Expression<QuantifiedValue<S>> right) {
-        return new BinaryOperationExpression<>(pseudoField.multiplication(), left, right);
+        return operationExpression(pseudoField.multiplication(), right);
     }
 
     public Expression<QuantifiedValue<S>> dividedBy(QuantifiedValue<S> right) {
@@ -106,7 +107,12 @@ public class OngoingDeferredQuantifiedScalarOperation<S> {
     }
 
     public Expression<QuantifiedValue<S>> dividedBy(Expression<QuantifiedValue<S>> right) {
-        return new BinaryOperationExpression<>(pseudoField.division(), left, right);
+        return operationExpression(pseudoField.division(), right);
+    }
+
+    private BinaryOperationExpression<QuantifiedValue<S>> operationExpression(
+            BinaryOperation<QuantifiedValue<S>> operation, Expression<QuantifiedValue<S>> right) {
+        return new BinaryOperationExpression<>(ResolvedExpression.of(operation), left, right);
     }
 
 }

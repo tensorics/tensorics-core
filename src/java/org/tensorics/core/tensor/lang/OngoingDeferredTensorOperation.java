@@ -110,7 +110,8 @@ public class OngoingDeferredTensorOperation<V> implements OngoingOperation<Expre
     }
 
     private Expression<Tensor<V>> evaluate(Expression<Tensor<V>> right, BinaryOperation<V> operation) {
-        return new BinaryOperationExpression<>(new ElementBinaryOperation<V>(operation, optionRegistry), left, right);
+        return new BinaryOperationExpression<>(
+                ResolvedExpression.of(new ElementBinaryOperation<V>(operation, optionRegistry)), left, right);
     }
 
 }
