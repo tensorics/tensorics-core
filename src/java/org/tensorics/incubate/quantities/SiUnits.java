@@ -22,7 +22,7 @@ import org.tensorics.incubate.quantities.derived.Frequency;
 import org.tensorics.incubate.quantities.derived.Power;
 
 @SuppressWarnings("unchecked")
-public class SiUnits {
+public final class SiUnits {
 
     public static final Length<Any> METER = base(Length.class, "m");
     public static final Duration<Any> SECOND = base(Duration.class, "s");
@@ -38,5 +38,9 @@ public class SiUnits {
     /* This is still ugly ... should rather be factor times factor or so... */
     public static final Power<Any> WATT = derived(Power.class, "W",
             _q(_q(KILOGRAM).timesQ(_q(METER).toThePowerOf(any("2")))).timesQ(_q(SECOND).toThePowerOf(any("-2"))));
+
+    private SiUnits() {
+        /* only static constants */
+    }
 
 }
