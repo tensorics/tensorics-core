@@ -17,11 +17,6 @@ public class TensoricAnyQuantityExpressions {
         return SUPPORT._q(left);
     }
 
-    public static final <R extends Quantity<Any>> OngoingTypedReturn<Any, R> calc(Class<? super R> left) {
-        return SUPPORT.calc(left);
-    };
-    
-    
     public static final OngoingValueBinaryOperationExpression<Any> __(Any left) {
         return SUPPORT.__(left);
     }

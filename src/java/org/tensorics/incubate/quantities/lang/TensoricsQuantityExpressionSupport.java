@@ -13,6 +13,5 @@ public interface TensoricsQuantityExpressionSupport<T> {
 
     <L extends Quantity<T>> OngoingQuantityBinaryOperationExpression<T, L> _q(Expression<L> left);
 
-    <R extends Quantity<T>> OngoingTypedReturn<T, R> calc(Class<? super R> left);
 
 }
