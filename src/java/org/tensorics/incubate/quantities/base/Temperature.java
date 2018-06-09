@@ -6,5 +6,5 @@ import org.tensorics.incubate.quantities.Quantity;
 import org.tensorics.incubate.quantities.annotations.Symbol;
 
 @Symbol(THETA_CAPITAL)
-public interface Temperature<V> extends Quantity<V> {
+public interface Temperature<V> extends BaseQuantity<V> {
 }

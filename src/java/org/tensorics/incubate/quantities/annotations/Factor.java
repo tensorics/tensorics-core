@@ -11,12 +11,15 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import org.tensorics.incubate.quantities.Quantity;
+
 @Retention(RUNTIME)
 @Target(TYPE)
 @Repeatable(Factors.class)
 public @interface Factor {
 
-    Class<?> value();
+    @SuppressWarnings("rawtypes")
+    Class<? extends Quantity> value();
 
     String exponent() default "1";
 

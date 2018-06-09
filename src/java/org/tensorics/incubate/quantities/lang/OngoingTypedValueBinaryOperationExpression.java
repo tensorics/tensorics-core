@@ -5,43 +5,43 @@ import org.tensorics.incubate.quantities.Quantity;
 
 public class OngoingTypedValueBinaryOperationExpression<T, R extends Quantity<T>> {
 
-    Expression<R> times(R right) {
+    public Expression<R> times(R right) {
         return null;
     }
 
-    Expression<R> times(Expression<R> right) {
+    public Expression<R> times(Expression<R> right) {
         return null;
     }
 
-    Expression<R> __(R right) {
+    public Expression<R> __(R right) {
         return times(right);
     }
 
-    Expression<R> __(Expression<R> right) {
+    public Expression<R> __(Expression<R> right) {
         return times(right);
     }
 
-    Expression<R> dividedBy(Quantity<T> right) {
+    public Expression<R> dividedBy(Quantity<T> right) {
         return null;
     }
 
-    Expression<R> dividedBy(Expression<Quantity<T>> right) {
+    public Expression<R> dividedBy(Expression<Quantity<T>> right) {
         return null;
     }
 
-    Expression<R> per(Quantity<T> right) {
+    public Expression<R> per(Quantity<T> right) {
         return dividedBy(right);
     }
 
-    Expression<R> per(Expression<Quantity<T>> right) {
+    public Expression<R> per(Expression<Quantity<T>> right) {
         return dividedBy(right);
     }
 
-    Expression<R> over(Quantity<T> right) {
+    public Expression<R> over(Quantity<T> right) {
         return dividedBy(right);
     }
 
-    Expression<R> over(Expression<Quantity<T>> right) {
+    public Expression<R> over(Expression<Quantity<T>> right) {
         return dividedBy(right);
     }
 

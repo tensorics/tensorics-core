@@ -4,5 +4,5 @@ import org.tensorics.incubate.quantities.Quantity;
 import org.tensorics.incubate.quantities.annotations.Symbol;
 
 @Symbol("M")
-public interface Mass<V> extends Quantity<V> {
+public interface Mass<V> extends BaseQuantity<V> {
 }

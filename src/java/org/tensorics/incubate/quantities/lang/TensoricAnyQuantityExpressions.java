@@ -17,7 +17,7 @@ public class TensoricAnyQuantityExpressions {
         return SUPPORT._q(left);
     }
 
-    public static final <R extends Quantity<Any>> OngoingTypedReturn<Any, R> calc(Class<R> left) {
+    public static final <R extends Quantity<Any>> OngoingTypedReturn<Any, R> calc(Class<? super R> left) {
         return SUPPORT.calc(left);
     };
     

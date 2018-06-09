@@ -4,5 +4,5 @@ import org.tensorics.incubate.quantities.Quantity;
 import org.tensorics.incubate.quantities.annotations.Symbol;
 
 @Symbol("J")
-public interface LuminousIntensity<V> extends Quantity<V> {
+public interface LuminousIntensity<V> extends BaseQuantity<V> {
 }

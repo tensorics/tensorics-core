@@ -5,59 +5,59 @@ import org.tensorics.incubate.quantities.Quantity;
 
 public class OngoingTypedQuantityBinaryOperationExpression<T, R extends Quantity<T>> {
 
-    Expression<R> times(Quantity<T> right) {
+    public Expression<R> times(Quantity<T> right) {
         return null;
     }
 
-    Expression<R> times(Expression<Quantity<T>> right) {
+    public Expression<R> times(Expression<Quantity<T>> right) {
         return null;
     }
 
-    Expression<R> __(Quantity<T> right) {
+    public Expression<R> __(Quantity<T> right) {
         return times(right);
     }
 
-    Expression<R> __(Expression<Quantity<T>> right) {
+    public Expression<R> __(Expression<Quantity<T>> right) {
         return times(right);
     }
 
-    Expression<R> dividedBy(Quantity<T> right) {
+    public Expression<R> dividedBy(Quantity<T> right) {
         return null;
     }
 
-    Expression<R> dividedBy(Expression<Quantity<T>> right) {
+    public Expression<R> dividedBy(Expression<Quantity<T>> right) {
         return null;
     }
 
-    Expression<R> per(Quantity<T> right) {
+    public Expression<R> per(Quantity<T> right) {
         return dividedBy(right);
     }
 
-    Expression<R> per(Expression<Quantity<T>> right) {
+    public Expression<R> per(Expression<Quantity<T>> right) {
         return dividedBy(right);
     }
 
-    Expression<R> over(Quantity<T> right) {
+    public Expression<R> over(Quantity<T> right) {
         return dividedBy(right);
     }
 
-    Expression<R> over(Expression<Quantity<T>> right) {
+    public Expression<R> over(Expression<Quantity<T>> right) {
         return dividedBy(right);
     }
-    
-    Expression<R> toThePowerOf(T right) {
+
+    public Expression<R> toThePowerOf(T right) {
         return null;
     }
 
-    Expression<R> toThePowerOf(Expression<T> right) {
+    public Expression<R> toThePowerOf(Expression<T> right) {
         return null;
     }
 
-    Expression<R> toTheRootOf(T right) {
+    public Expression<R> toTheRootOf(T right) {
         return null;
     }
 
-    Expression<R> toTheRootOf(Expression<T> right) {
+    public Expression<R> toTheRootOf(Expression<T> right) {
         return null;
     }
 

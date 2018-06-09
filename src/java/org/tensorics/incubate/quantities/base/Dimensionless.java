@@ -4,9 +4,6 @@
 
 package org.tensorics.incubate.quantities.base;
 
-import org.tensorics.incubate.quantities.annotations.Symbol;
-
-@Symbol("T")
-public interface Duration<V> extends BaseQuantity<V> {
+public interface Dimensionless<V> extends BaseQuantity<V> {
 
 }
