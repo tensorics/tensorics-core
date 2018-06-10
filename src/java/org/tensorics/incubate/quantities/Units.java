@@ -7,8 +7,11 @@ package org.tensorics.incubate.quantities;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Map;
 
 import org.tensorics.core.tree.domain.Expression;
+
+import com.google.common.collect.ImmutableMap;
 
 public final class Units {
 
@@ -18,28 +21,31 @@ public final class Units {
         /* only static methods */
     }
 
-    public static <Q extends Quantity<? super Any>> Q base1(Class<Q> quantityClass, String symbol) {
-        return null;
-    }
-
     public static <Q extends Quantity<Any>> Q base(Class<Q> quantityClass, String symbol) {
-        InvocationHandler handler = (Object proxy, Method method, Object[] args) -> {
-            String methodName = method.getName();
-            if ("symbol".equals(methodName)) {
-                return symbol;
-            }
-            throw new IllegalArgumentException("Method '" + methodName + "' is not valid for a base.");
-        };
-
-        @SuppressWarnings("unchecked")
-        Q unit = (Q) Proxy.newProxyInstance(CLASS_LOADER, new Class<?>[] { quantityClass, Unit.class }, handler);
-        return unit;
+        Map<String, Object> returnValues = ImmutableMap.of("symbol", symbol, "toString", symbol);
+        return proxyFor(returnValues, new Class<?>[] { quantityClass, Unit.class });
     }
 
     public static <Q extends Quantity<Any>> Q derived(Class<? super Q> quantityClass, String symbol,
             Expression<Quantity<Any>> expression) {
-        return null;
+        Map<String, Object> returnValues = ImmutableMap.of("symbol", symbol, "toString", symbol, "expression",
+                expression);
+        return proxyFor(returnValues, new Class<?>[] { quantityClass, Unit.class, DerivedQuantity.class });
+    }
 
+    private static <Q extends Quantity<Any>> Q proxyFor(Map<String, Object> returnValues, Class<?>[] interfaces) {
+        InvocationHandler handler = (Object proxy, Method method, Object[] args) -> {
+            String methodName = method.getName();
+            Object returnVal = returnValues.get(methodName);
+            if (returnVal == null) {
+                throw new IllegalArgumentException("Method '" + methodName + "' is not valid for a base Unit.");
+            }
+            return returnVal;
+        };
+
+        @SuppressWarnings("unchecked")
+        Q unit = (Q) Proxy.newProxyInstance(CLASS_LOADER, interfaces, handler);
+        return unit;
     }
 
 }

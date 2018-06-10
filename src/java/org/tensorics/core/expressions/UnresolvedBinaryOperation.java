@@ -13,7 +13,7 @@ import org.tensorics.core.math.operations.BinaryOperation;
 import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 import org.tensorics.core.tree.domain.Node;
 
-public class UnresolvedBinaryOperation<T> extends AbstractDeferredExpression<BinaryOperation<T>> {
+public class UnresolvedBinaryOperation<T, O extends BinaryOperation<T>> extends AbstractDeferredExpression<O> {
     private static final long serialVersionUID = 1L;
 
     private final Class<? extends BinaryOperation<? super T>> operationType;
@@ -22,8 +22,8 @@ public class UnresolvedBinaryOperation<T> extends AbstractDeferredExpression<Bin
         this.operationType = requireNonNull(operationType, "operationType must not be null");
     }
 
-    public static <T> UnresolvedBinaryOperation<T> of(Class<? extends BinaryOperation<? super T>> operationType) {
-        return new UnresolvedBinaryOperation<T>(operationType);
+    public static <T, O extends BinaryOperation<T>> UnresolvedBinaryOperation<T, O> of(Class<O> operationType) {
+        return new UnresolvedBinaryOperation<>(operationType);
     }
 
     public Class<? extends BinaryOperation<? super T>> operationType() {
@@ -59,7 +59,7 @@ public class UnresolvedBinaryOperation<T> extends AbstractDeferredExpression<Bin
         if (getClass() != obj.getClass()) {
             return false;
         }
-        UnresolvedBinaryOperation<?> other = (UnresolvedBinaryOperation<?>) obj;
+        UnresolvedBinaryOperation<?, ?> other = (UnresolvedBinaryOperation<?, ?>) obj;
         if (operationType == null) {
             if (other.operationType != null) {
                 return false;

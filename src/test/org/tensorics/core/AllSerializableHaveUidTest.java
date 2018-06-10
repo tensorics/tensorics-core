@@ -4,6 +4,7 @@
 
 package org.tensorics.core;
 
+import org.tensorics.PackageReference;
 import org.tensorics.core.testing.SerializableHasUid;
 
 public class AllSerializableHaveUidTest extends SerializableHasUid {

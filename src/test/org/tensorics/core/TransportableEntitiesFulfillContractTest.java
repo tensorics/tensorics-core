@@ -4,6 +4,7 @@
 
 package org.tensorics.core;
 
+import org.tensorics.PackageReference;
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.commons.options.Option;
 import org.tensorics.core.math.operations.BinaryFunction;

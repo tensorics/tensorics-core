@@ -6,7 +6,7 @@ import org.tensorics.incubate.quantities.Quantity;
 
 public class TensoricAnyQuantityExpressions {
 
-    private static final TensoricsAnyQuantityExpressionSupport SUPPORT = null;
+    private static final TensoricsAnyQuantityExpressionSupport SUPPORT = new TensoricsAnyQuantityExpressionSupportImpl();
 
     public static final OngoingQuantityBinaryOperationExpression _q(Quantity<Any> left) {
         return SUPPORT._q(left);

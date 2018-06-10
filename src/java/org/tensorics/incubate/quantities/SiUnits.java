@@ -4,13 +4,13 @@
 
 package org.tensorics.incubate.quantities;
 
-import static org.tensorics.incubate.quantities.Any.any;
 import static org.tensorics.incubate.quantities.Units.base;
 import static org.tensorics.incubate.quantities.Units.derived;
 import static org.tensorics.incubate.quantities.any.TensoricAnyQuantityExpressions._q;
 import static org.tensorics.incubate.quantities.any.TensoricAnyQuantityExpressions._v;
 
 import org.tensorics.incubate.quantities.base.AmountOfSubstance;
+import org.tensorics.incubate.quantities.base.Dimensionless;
 import org.tensorics.incubate.quantities.base.Duration;
 import org.tensorics.incubate.quantities.base.ElectricCurrent;
 import org.tensorics.incubate.quantities.base.Length;
@@ -25,6 +25,11 @@ import org.tensorics.incubate.quantities.derived.Power;
 public final class SiUnits {
 
     // @formatter:off
+    private static final Dimensionless<Any> ONE = base(Dimensionless.class, "1");
+    public static <T> Dimensionless<T> one() {
+        return (Dimensionless<T>) ONE;
+    }
+    
     private static final Length<Any> METER = base(Length.class, "m");
     public static <T> Length<T> m() {
         return (Length<T>) METER;
