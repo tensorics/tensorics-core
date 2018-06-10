@@ -1,3 +1,5 @@
+package org.tensorics.incubate.quantities;
+
 
 // @formatter:off
  /*******************************************************************************
@@ -20,7 +22,6 @@
  * 
  ******************************************************************************/
 // @formatter:on
-package org.tensorics.incubate.quantities;
 
 /**
  * Represents a physical quantity, which is basically a pair of a value + unit. However, the unit itself is a quantity
