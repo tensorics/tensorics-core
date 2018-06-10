@@ -5,7 +5,9 @@
 package org.tensorics.core.math.operations.specific;
 
 import org.tensorics.core.math.operations.CommutativeAssociativeOperation;
+import org.tensorics.incubate.quantities.annotations.Symbol;
 
+@Symbol("*")
 public interface Multiplication<T> extends CommutativeAssociativeOperation<T> {
 
 }

@@ -28,15 +28,15 @@ public class ScaledQuantityExpression<V, Q extends Quantity<V>> extends Abstract
 
     @Override
     public List<? extends Node> getChildren() {
-        return Arrays.asList(factor, unit);
+        return Arrays.asList(factor(), unit());
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((factor == null) ? 0 : factor.hashCode());
-        result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+        result = prime * result + ((factor() == null) ? 0 : factor().hashCode());
+        result = prime * result + ((unit() == null) ? 0 : unit().hashCode());
         return result;
     }
 
@@ -52,18 +52,18 @@ public class ScaledQuantityExpression<V, Q extends Quantity<V>> extends Abstract
             return false;
         }
         ScaledQuantityExpression<?, ?> other = (ScaledQuantityExpression<?, ?>) obj;
-        if (factor == null) {
-            if (other.factor != null) {
+        if (factor() == null) {
+            if (other.factor() != null) {
                 return false;
             }
-        } else if (!factor.equals(other.factor)) {
+        } else if (!factor().equals(other.factor())) {
             return false;
         }
-        if (unit == null) {
-            if (other.unit != null) {
+        if (unit() == null) {
+            if (other.unit() != null) {
                 return false;
             }
-        } else if (!unit.equals(other.unit)) {
+        } else if (!unit().equals(other.unit())) {
             return false;
         }
         return true;
@@ -71,7 +71,15 @@ public class ScaledQuantityExpression<V, Q extends Quantity<V>> extends Abstract
 
     @Override
     public String toString() {
-        return "ScaledQuantityExpression [factor=" + factor + ", unit=" + unit + "]";
+        return "ScaledQuantityExpression [factor=" + factor() + ", unit=" + unit() + "]";
+    }
+
+    public Expression<V> factor() {
+        return factor;
+    }
+
+    public Expression<Q> unit() {
+        return unit;
     }
 
 }

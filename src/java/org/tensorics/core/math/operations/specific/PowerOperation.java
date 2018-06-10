@@ -5,7 +5,9 @@
 package org.tensorics.core.math.operations.specific;
 
 import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.incubate.quantities.annotations.Symbol;
 
+@Symbol("^")
 public interface PowerOperation<T> extends BinaryOperation<T> {
 
 }

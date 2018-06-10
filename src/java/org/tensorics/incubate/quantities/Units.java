@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
+import java.util.Objects;
 
 import org.tensorics.core.tree.domain.Expression;
 
@@ -22,25 +23,27 @@ public final class Units {
     }
 
     public static <Q extends Quantity<Any>> Q base(Class<Q> quantityClass, String symbol) {
-        Map<String, Object> returnValues = ImmutableMap.of("symbol", symbol, "toString", symbol);
+        Map<String, Object> returnValues = ImmutableMap.of("symbol", symbol, "toString", symbol, "hashCode",
+                Objects.hash(quantityClass, symbol));
         return proxyFor(returnValues, new Class<?>[] { quantityClass, Unit.class });
     }
 
     public static <Q extends Quantity<Any>> Q derived(Class<? super Q> quantityClass, String symbol,
             Expression<Quantity<Any>> expression) {
         Map<String, Object> returnValues = ImmutableMap.of("symbol", symbol, "toString", symbol, "expression",
-                expression);
+                expression, "hashCode", Objects.hash(quantityClass, symbol, expression));
         return proxyFor(returnValues, new Class<?>[] { quantityClass, Unit.class, DerivedQuantity.class });
     }
 
     private static <Q extends Quantity<Any>> Q proxyFor(Map<String, Object> returnValues, Class<?>[] interfaces) {
         InvocationHandler handler = (Object proxy, Method method, Object[] args) -> {
+
             String methodName = method.getName();
             Object returnVal = returnValues.get(methodName);
-            if (returnVal == null) {
-                throw new IllegalArgumentException("Method '" + methodName + "' is not valid for a base Unit.");
+            if (returnVal != null) {
+                return returnVal;
             }
-            return returnVal;
+            throw new IllegalArgumentException("Method '" + methodName + "' is not valid for a Unit.");
         };
 
         @SuppressWarnings("unchecked")

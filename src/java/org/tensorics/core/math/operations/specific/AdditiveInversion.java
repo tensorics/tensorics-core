@@ -5,7 +5,9 @@
 package org.tensorics.core.math.operations.specific;
 
 import org.tensorics.core.math.operations.UnaryOperation;
+import org.tensorics.incubate.quantities.annotations.Symbol;
 
+@Symbol("-")
 public interface AdditiveInversion<T> extends UnaryOperation<T> {
 
 }
