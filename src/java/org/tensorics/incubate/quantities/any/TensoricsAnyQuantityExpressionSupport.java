@@ -6,12 +6,16 @@ import org.tensorics.incubate.quantities.Quantity;
 
 public interface TensoricsAnyQuantityExpressionSupport {
 
-    OngoingValueBinaryOperationExpression _v(Any left);
+    <T> OngoingValueBinaryOperationExpression<T> _v(String left);
 
-    OngoingValueBinaryOperationExpression _v(Expression<Any> left);
+    <T> OngoingValueBinaryOperationExpression<T> _v(Any left);
 
-    OngoingQuantityBinaryOperationExpression _q(Quantity<Any> left);
+    <T> OngoingValueBinaryOperationExpression<T> _v(T left);
 
-    OngoingQuantityBinaryOperationExpression _q(Expression<Quantity<Any>> left);
+    <T> OngoingValueBinaryOperationExpression<T> _v(Expression<T> left);
+
+    <T> OngoingQuantityBinaryOperationExpression<T> _q(Quantity<T> left);
+
+    <T> OngoingQuantityBinaryOperationExpression<T> _q(Expression<Quantity<T>> left);
 
 }

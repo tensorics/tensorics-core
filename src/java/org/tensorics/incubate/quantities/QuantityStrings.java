@@ -11,18 +11,40 @@ import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ResolvedExpression;
 import org.tensorics.core.util.chains.Chain;
 import org.tensorics.core.util.chains.Chains;
+import org.tensorics.core.util.chains.Chains.OngoingMainChain;
+import org.tensorics.incubate.quantities.base.BaseQuantity;
+import org.tensorics.incubate.quantities.expressions.AnyExpression;
 import org.tensorics.incubate.quantities.expressions.ScaledQuantityExpression;
 
 public class QuantityStrings {
 
-    private static Chain<String> EXPRESSION_CHAIN = createExpressionChain();
+    private static final Chain<String> BASE_EXPRESSION_CHAIN = createBaseExpressionChain();
+    private static final Chain<String> SHORT_EXPRESSION_CHAIN = createShortExpressionChain();
 
-    private static Chain<String> createExpressionChain() {
-        return Chains.chainFor(String.class) //
+    private static final Chain<String> createBaseExpressionChain() {
+        OngoingMainChain<String> firstPart = Chains.chainFor(String.class).endRecursionDefaultDepth(20)
+                .branchCase(Unit.class).then(u -> {
+                    if (u instanceof BaseQuantity) {
+                        return u.symbol();
+                    } else {
+                        return null;
+                    }
+                }).orElseFallThrough(); //
+        return theRest(firstPart);
+    }
+
+    private static final Chain<String> createShortExpressionChain() {
+        OngoingMainChain<String> firstPart = Chains.chainFor(String.class).endRecursionDefaultDepth(20)
+                .branchCase(Unit.class).then(Unit::symbol).orElseFallThrough();
+        return theRest(firstPart); //
+    }
+
+    private static Chain<String> theRest(OngoingMainChain<String> firstPart) {
+        return firstPart //
                 .branchCase(Any.class).then(Any::str).orElseFallThrough() //
-                .branchCase(Unit.class).then(Unit::symbol).orElseFallThrough() //
                 .branchCase(UnresolvedBinaryOperation.class).then(e -> fromSymbolAnnotation(e.operationType()))
                 .orElseFallThrough() //
+                .branchCase(AnyExpression.class).then((e, cb) -> cb.apply(e.any())).orElseFallThrough()
                 .branchCase(DerivedQuantity.class).then((q, cb) -> cb.apply(q.expression())).orElseFallThrough() //
                 .branchCase(ScaledQuantityExpression.class).then((e, cb) -> {
                     String left = cb.apply(e.factor());
@@ -38,11 +60,15 @@ public class QuantityStrings {
                     return "(" + cb.apply(e.getLeft()) + cb.apply(e.getOperation()) + cb.apply(e.getRight()) + ")";
                 }).orElseFallThrough() //
                 .or(Objects::toString) //
-                .orElseThrow(); //
+                .orElseThrow();
     }
 
-    public static final String expressionStringFor(Expression<Quantity<Any>> quantity) {
-        return EXPRESSION_CHAIN.apply(quantity);
+    public static final String baseStringFor(Object quantity) {
+        return BASE_EXPRESSION_CHAIN.apply(quantity);
+    }
+
+    public static final String shortStringFor(Object quantity) {
+        return SHORT_EXPRESSION_CHAIN.apply(quantity);
     }
 
 }

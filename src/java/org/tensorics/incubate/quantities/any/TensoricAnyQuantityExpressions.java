@@ -8,24 +8,28 @@ public class TensoricAnyQuantityExpressions {
 
     private static final TensoricsAnyQuantityExpressionSupport SUPPORT = new TensoricsAnyQuantityExpressionSupportImpl();
 
-    public static final OngoingQuantityBinaryOperationExpression _q(Quantity<Any> left) {
+    public static final <T> OngoingQuantityBinaryOperationExpression<T> _q(Quantity<T> left) {
         return SUPPORT._q(left);
     }
 
-    public static final OngoingQuantityBinaryOperationExpression _q(Expression<Quantity<Any>> left) {
+    public static final <T> OngoingQuantityBinaryOperationExpression<T> _q(Expression<Quantity<T>> left) {
         return SUPPORT._q(left);
     }
 
-    public static final OngoingValueBinaryOperationExpression _v(Any left) {
+    public static final <T> OngoingValueBinaryOperationExpression<T> _v(T left) {
         return SUPPORT._v(left);
     }
 
-    public static final OngoingValueBinaryOperationExpression _v(Expression<Any> left) {
+    public static final <T> OngoingValueBinaryOperationExpression<T> _v(Any left) {
         return SUPPORT._v(left);
     }
 
-    public static final OngoingValueBinaryOperationExpression _v(String left) {
-        return SUPPORT._v(Any.any(left));
+    public static final <T> OngoingValueBinaryOperationExpression<T> _v(Expression<T> left) {
+        return SUPPORT._v(left);
+    }
+
+    public static final <T> OngoingValueBinaryOperationExpression<T> _v(String left) {
+        return SUPPORT._v(left);
     }
 
 }

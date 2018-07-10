@@ -16,45 +16,45 @@ import org.tensorics.incubate.quantities.Quantity;
 import org.tensorics.incubate.quantities.SiUnits;
 import org.tensorics.incubate.quantities.expressions.ScaledQuantityExpression;
 
-public class OngoingValueBinaryOperationExpression {
+public class OngoingValueBinaryOperationExpression<T> {
 
-    private final Expression<Any> left;
+    private final Expression<T> left;
 
-    public OngoingValueBinaryOperationExpression(Expression<Any> left) {
+    public OngoingValueBinaryOperationExpression(Expression<T> left) {
         this.left = requireNonNull(left, "left operand must not be null");
     }
 
-    public Expression<Quantity<Any>> times(Quantity<Any> right) {
+    public Expression<Quantity<T>> times(Quantity<T> right) {
         return times(ResolvedExpression.of(right));
     }
 
-    public Expression<Quantity<Any>> times(Expression<Quantity<Any>> right) {
+    public Expression<Quantity<T>> times(Expression<Quantity<T>> right) {
         return binaryAnyOperationExpression(Multiplication.class, right);
     }
 
-    public Expression<Quantity<Any>> dividedBy(Quantity<Any> right) {
+    public Expression<Quantity<T>> dividedBy(Quantity<T> right) {
         return dividedBy(ResolvedExpression.of(right));
     }
 
-    public Expression<Quantity<Any>> dividedBy(Expression<Quantity<Any>> right) {
+    public Expression<Quantity<T>> dividedBy(Expression<Quantity<T>> right) {
         return binaryAnyOperationExpression(Division.class, right);
     }
 
-    public Expression<Quantity<Any>> over(Quantity<Any> right) {
+    public Expression<Quantity<T>> over(Quantity<T> right) {
         return dividedBy(right);
     }
 
-    public Expression<Quantity<Any>> over(Expression<Quantity<Any>> right) {
+    public Expression<Quantity<T>> over(Expression<Quantity<T>> right) {
         return dividedBy(right);
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private BinaryOperationExpression<Quantity<Any>> binaryAnyOperationExpression(
-            Class<? extends BinaryOperation> operationType, Expression<Quantity<Any>> right) {
+    private BinaryOperationExpression<Quantity<T>> binaryAnyOperationExpression(
+            Class<? extends BinaryOperation> operationType, Expression<Quantity<T>> right) {
         return new BinaryOperationExpression(UnresolvedBinaryOperation.of(operationType), oneTimes(left), right);
     }
 
-    private Expression<Quantity<Any>> oneTimes(Expression<Any> any) {
+    private Expression<Quantity<T>> oneTimes(Expression<T> any) {
         return new ScaledQuantityExpression<>(any, ResolvedExpression.of(SiUnits.one()));
     }
 

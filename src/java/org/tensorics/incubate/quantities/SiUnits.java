@@ -25,59 +25,59 @@ import org.tensorics.incubate.quantities.derived.Power;
 public final class SiUnits {
 
     // @formatter:off
-    private static final Dimensionless<Any> ONE = base(Dimensionless.class, "1");
+    private static final Dimensionless<?> ONE = base(Dimensionless.class, "1");
     public static <T> Dimensionless<T> one() {
         return (Dimensionless<T>) ONE;
     }
     
-    private static final Length<Any> METER = base(Length.class, "m");
+    private static final Length<?> METER = base(Length.class, "m");
     public static <T> Length<T> m() {
         return (Length<T>) METER;
     }
 
-    private static final Duration<Any> SECOND = base(Duration.class, "s");
+    private static final Duration<?> SECOND = base(Duration.class, "s");
     public static <T> Duration<T> s() {
         return (Duration<T>) SECOND;
     }
 
-    private static final Mass<Any> KILOGRAM = base(Mass.class, "kg");
+    private static final Mass<?> KILOGRAM = base(Mass.class, "kg");
     public static <T> Mass<T> kg() {
         return (Mass<T>) KILOGRAM;
     }
 
-    private static final ElectricCurrent<Any> AMPERE = base(ElectricCurrent.class, "A");
+    private static final ElectricCurrent<?> AMPERE = base(ElectricCurrent.class, "A");
     public static <T> ElectricCurrent<T> A() {
         return (ElectricCurrent<T>) AMPERE;
     }
 
-    private static final Temperature<Any> KELVIN = Units.base(Temperature.class, "K");
+    private static final Temperature<?> KELVIN = Units.base(Temperature.class, "K");
     public static <T> Temperature<T> K() {
         return (Temperature<T>) KELVIN;
     }
 
-    private static final AmountOfSubstance<Any> MOLE = base(AmountOfSubstance.class, "mole");
+    private static final AmountOfSubstance<?> MOLE = base(AmountOfSubstance.class, "mole");
     public static <T> AmountOfSubstance<T> mole() {
         return (AmountOfSubstance<T>) MOLE;
     }
 
-    private static final LuminousIntensity<Any> CANDELA = base(LuminousIntensity.class, "cd");
+    private static final LuminousIntensity<?> CANDELA = base(LuminousIntensity.class, "cd");
     public static <T> LuminousIntensity<T> cd() {
         return (LuminousIntensity<T>) CANDELA;
     }
 
-    private static final Frequency<Any> HERTZ = derived(Frequency.class, "Hz", _v("1").over(SECOND));
+    private static final Frequency<?> HERTZ = derived(Frequency.class, "Hz", _v("1").over(s()));
     public static <T> Frequency<T> Hz() {
         return (Frequency<T>) HERTZ;
     }
 
-    private static final ElectricCharge<Any> COULOMB = derived(ElectricCharge.class, "C", _q(AMPERE).timesQ(SECOND));
+    private static final ElectricCharge<?> COULOMB = derived(ElectricCharge.class, "C", _q(A()).timesQ(s()));
     public static <T> ElectricCharge<T> C() {
         return (ElectricCharge<T>) COULOMB;
     }
 
     /* This is still ugly ... should rather be factor times factor or so... */
     private static final Power<Any> WATT = derived(Power.class, "W",
-            _q(_q(KILOGRAM).timesQ(_q(METER).toThePowerOf("2"))).timesQ(_q(SECOND).toThePowerOf("-2")));
+            _q(_q(kg()).timesQ(_q(m()).toThePowerOf("2"))).timesQ(_q(s()).toThePowerOf("-2")));
     public static <T> Power<T> W() {
         return (Power<T>) WATT;
     }

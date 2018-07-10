@@ -17,120 +17,120 @@ import org.tensorics.core.tree.domain.ResolvedExpression;
 import org.tensorics.incubate.quantities.Any;
 import org.tensorics.incubate.quantities.Quantity;
 import org.tensorics.incubate.quantities.SiUnits;
-import org.tensorics.incubate.quantities.base.Dimensionless;
+import org.tensorics.incubate.quantities.expressions.AnyExpression;
 import org.tensorics.incubate.quantities.expressions.ScaledQuantityExpression;
 
-public class OngoingQuantityBinaryOperationExpression {
+public class OngoingQuantityBinaryOperationExpression<T> {
 
-    private final Expression<Quantity<Any>> left;
+    private final Expression<Quantity<T>> left;
 
-    public OngoingQuantityBinaryOperationExpression(Expression<Quantity<Any>> left) {
+    public OngoingQuantityBinaryOperationExpression(Expression<Quantity<T>> left) {
         this.left = requireNonNull(left, "left operand must not be null");
     }
 
-    public Expression<Quantity<Any>> plus(Quantity<Any> right) {
+    public Expression<Quantity<T>> plus(Quantity<T> right) {
         return plus(ResolvedExpression.of(right));
     }
 
-    public Expression<Quantity<Any>> plus(Expression<Quantity<Any>> right) {
+    public Expression<Quantity<T>> plus(Expression<Quantity<T>> right) {
         return binaryOperationExpression(Addition.class, right);
     }
 
-    public Expression<Quantity<Any>> minus(Quantity<Any> right) {
+    public Expression<Quantity<T>> minus(Quantity<T> right) {
         return minus(ResolvedExpression.of(right));
     }
 
-    public Expression<Quantity<Any>> minus(Expression<Quantity<Any>> right) {
+    public Expression<Quantity<T>> minus(Expression<Quantity<T>> right) {
         return binaryOperationExpression(Subtraction.class, right);
     }
 
-    public Expression<Quantity<Any>> timesQ(Quantity<Any> right) {
+    public Expression<Quantity<T>> timesQ(Quantity<T> right) {
         return timesQ(ResolvedExpression.of(right));
     }
 
-    public Expression<Quantity<Any>> timesQ(Expression<Quantity<Any>> right) {
+    public Expression<Quantity<T>> timesQ(Expression<Quantity<T>> right) {
         return binaryOperationExpression(Multiplication.class, right);
     }
 
-    public Expression<Quantity<Any>> dividedByQ(Quantity<Any> right) {
+    public Expression<Quantity<T>> dividedByQ(Quantity<T> right) {
         return dividedByQ(ResolvedExpression.of(right));
     }
 
-    public Expression<Quantity<Any>> dividedByQ(Expression<Quantity<Any>> right) {
+    public Expression<Quantity<T>> dividedByQ(Expression<Quantity<T>> right) {
         return binaryOperationExpression(Division.class, right);
     }
 
-    public Expression<Quantity<Any>> per(Quantity<Any> right) {
+    public Expression<Quantity<T>> per(Quantity<T> right) {
         return dividedByQ(right);
     }
 
-    public Expression<Quantity<Any>> per(Expression<Quantity<Any>> right) {
+    public Expression<Quantity<T>> per(Expression<Quantity<T>> right) {
         return dividedByQ(right);
     }
 
     /* special things, which involve quantities and ANY */
 
-    public Expression<Quantity<Any>> toThePowerOf(String right) {
+    public Expression<Quantity<T>> toThePowerOf(String right) {
         return toThePowerOf(any(right));
     }
 
-    public Expression<Quantity<Any>> toThePowerOf(Any right) {
+    public Expression<Quantity<T>> toThePowerOf(Any right) {
         return toThePowerOf(ResolvedExpression.of(right));
     }
 
-    public Expression<Quantity<Any>> toThePowerOf(Expression<Any> right) {
-        return binaryAnyOperationExpression(PowerOperation.class, right);
+    public Expression<Quantity<T>> toThePowerOf(Expression<Any> right) {
+        return binaryAnyOperationExpression(PowerOperation.class, new AnyExpression<>(right));
     }
 
-    public Expression<Quantity<Any>> toTheRootOf(String right) {
+    public Expression<Quantity<T>> toTheRootOf(String right) {
         return toTheRootOf(any(right));
     }
 
-    public Expression<Quantity<Any>> toTheRootOf(Any right) {
-        return toTheRootOf(ResolvedExpression.of(right));
+    public Expression<Quantity<T>> toTheRootOf(Any right) {
+        return toTheRootOf(new AnyExpression<>(ResolvedExpression.of(right)));
     }
 
-    public Expression<Quantity<Any>> toTheRootOf(Expression<Any> right) {
+    public Expression<Quantity<T>> toTheRootOf(Expression<T> right) {
         return binaryAnyOperationExpression(RootOperation.class, right);
     }
 
-    public Expression<Quantity<Any>> times(String right) {
+    public Expression<Quantity<T>> times(String right) {
         return times(any(right));
     }
 
-    public Expression<Quantity<Any>> times(Any right) {
-        return times(ResolvedExpression.of(right));
+    public Expression<Quantity<T>> times(Any right) {
+        return times(new AnyExpression<>(ResolvedExpression.of(right)));
     }
 
-    public Expression<Quantity<Any>> times(Expression<Any> right) {
+    public Expression<Quantity<T>> times(Expression<T> right) {
         return binaryAnyOperationExpression(Multiplication.class, right);
     }
 
-    public Expression<Quantity<Any>> dividedBy(String right) {
+    public Expression<Quantity<T>> dividedBy(String right) {
         return dividedBy(any(right));
     }
 
-    public Expression<Quantity<Any>> dividedBy(Any right) {
-        return dividedBy(ResolvedExpression.of(right));
+    public Expression<Quantity<T>> dividedBy(Any right) {
+        return dividedBy(new AnyExpression<>(ResolvedExpression.of(right)));
     }
 
-    public Expression<Quantity<Any>> dividedBy(Expression<Any> right) {
+    public Expression<Quantity<T>> dividedBy(Expression<T> right) {
         return binaryAnyOperationExpression(Division.class, right);
     }
 
     @SuppressWarnings({ "rawtypes" })
-    private BinaryOperationExpression<Quantity<Any>> binaryAnyOperationExpression(
-            Class<? extends BinaryOperation> operationType, Expression<Any> right) {
+    private BinaryOperationExpression<Quantity<T>> binaryAnyOperationExpression(
+            Class<? extends BinaryOperation> operationType, Expression<T> right) {
         return binaryOperationExpression(operationType, oneTimes(right));
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private BinaryOperationExpression<Quantity<Any>> binaryOperationExpression(
-            Class<? extends BinaryOperation> operationType, Expression<Quantity<Any>> right) {
+    private BinaryOperationExpression<Quantity<T>> binaryOperationExpression(
+            Class<? extends BinaryOperation> operationType, Expression<Quantity<T>> right) {
         return new BinaryOperationExpression(UnresolvedBinaryOperation.of(operationType), left, right);
     }
 
-    private Expression<Quantity<Any>> oneTimes(Expression<Any> any) {
+    private Expression<Quantity<T>> oneTimes(Expression<T> any) {
         return new ScaledQuantityExpression<>(any, ResolvedExpression.of(SiUnits.one()));
     }
 }
