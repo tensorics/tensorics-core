@@ -152,12 +152,6 @@ public class ImmutableTensor<V> extends AbstractTensor<V> implements Mappable<V>
     }
 
     @Override
-    @SafeVarargs
-    public final V get(Object... coordinates) {
-        return get(Position.of(coordinates));
-    }
-
-    @Override
     public Shape shape() {
         return this.shape;
     }
@@ -251,6 +245,11 @@ public class ImmutableTensor<V> extends AbstractTensor<V> implements Mappable<V>
             buffer.setLength(buffer.length() - 2);
         }
         return Coordinates.dimensionsWithoutClassPath(this) + ", Content:{" + buffer + "}";
+    }
+
+    @Override
+    public boolean contains(Position position) {
+        return this.shape.contains(position);
     }
 
 }

@@ -3,6 +3,8 @@ package org.tensorics.core.tensor.resample;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Lists;
+
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Shape;
@@ -15,6 +17,7 @@ import java.util.SortedSet;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.google.common.collect.Lists.reverse;
 import static java.util.Objects.requireNonNull;
 import static org.tensorics.core.tensor.Positions.difference;
 import static org.tensorics.core.tensor.Positions.stripping;
@@ -48,8 +51,8 @@ public class MixedResampling implements ResamplingStrategy {
 
         Tensor<V> resamplingTensor = from(originalTensor).extract(forcedMatchingPosition);
 
-        Function<Position, V> valueFunction = (c) -> {
-            return originalTensor.get(c);
+        Function<Position, V> valueFunction = (p) -> {
+            return originalTensor.get(p);
         };
         Position pos = resamplingPosition;
         
@@ -70,21 +73,19 @@ public class MixedResampling implements ResamplingStrategy {
 
         }
 
+        
+        
+        // xxx
+        
+        
+        // xxx
+        
+        
+        
+        
         throw new NoSuchElementException("Tensor cannot be resampled at '" + position + "'");
     }
-
-    private static <C, V> Function<C, V> resample(SingleDimensionResampler<C, V> resampler,
-            Function<Position, V> prevValuesCallback, Set<C> coordinates, Position pos) {
-        return c -> {
-            Function<C, V> callback = c1 -> {
-                Position combined = Positions.union(pos, Position.of(c1));
-                return prevValuesCallback.apply(combined);
-            };
-
-            return resampler.resample(coordinates, callback, c);
-        };
-    }
-
+   
     @Override
     public String toString() {
         return "RepeatingResamplingStrategy [positionOrdering=" + positionOrdering + "]";

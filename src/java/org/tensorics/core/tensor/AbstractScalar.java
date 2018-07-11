@@ -39,4 +39,8 @@ public abstract class AbstractScalar<V> extends AbstractTensor<V> implements Sca
         return Shape.zeroDimensional();
     }
 
+    @Override
+    public boolean contains(Position position) {
+        return shape().contains(position);
+    }
 }

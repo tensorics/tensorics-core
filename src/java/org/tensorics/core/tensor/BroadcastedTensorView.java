@@ -97,4 +97,9 @@ public final class BroadcastedTensorView<V> extends AbstractTensor<V> {
                 + ", dimensionStripper=" + dimensionStripper + "]";
     }
 
+    @Override
+    public boolean contains(Position position) {
+        return broadcastedShape.contains(position);
+    }
+
 }
