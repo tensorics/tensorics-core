@@ -57,16 +57,12 @@ buildscript {
         classpath 'com.netflix.nebula:nebula-publishing-plugin:5.1.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
 	}
-    
-    
 }
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: 'nebula.maven-publish'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
 
 repositories {
     if (CERN_VM) {
@@ -79,13 +75,18 @@ repositories {
 }
 
 if (DEPLOYMENT) {
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'nebula.maven-publish'
+    apply plugin: 'com.jfrog.bintray'
+
     println 'Applying deployment scripts'
     apply from: './scripts/bintray-deploy.gradle'
 }
 
-group 'org.streamingpool'
+group 'org.tensorics'
 
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     compile 'org.jscience:jscience:4.3.1'
@@ -118,16 +119,20 @@ sourceSets {
 
 javadoc { options.encoding = "UTF-8" }
 
-task wrapper(type: Wrapper) { gradleVersion = '4.0' }
+task wrapper(type: Wrapper) { gradleVersion = '4.8.1' }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
+if(!project.tasks.findByName("javadocJar")) {
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
 }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+if(!project.tasks.findByName("sourcesJar")) {
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
 }
 
 artifacts { archives javadocJar, sourcesJar }
@@ -138,5 +143,19 @@ jacocoTestReport {
         xml.destination new File("${buildDir}/reports/jacoco/report.xml")
         html.enabled true
         csv.enabled false
+    }
+}
+
+eclipse {
+    classpath {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
     }
 }
