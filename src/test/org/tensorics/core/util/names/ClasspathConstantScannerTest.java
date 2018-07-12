@@ -26,7 +26,7 @@ public class ClasspathConstantScannerTest {
     @Test
     public void test() {
         long start = System.nanoTime();
-        ClasspathConstantScanner scanner = new ClasspathConstantScanner(ImmutableSet.of());
+        ClasspathConstantScanner scanner = new ClasspathConstantScanner(ImmutableSet.of("org.tensorics.core.util.names"));
         NameRepository nameRepo = scanner.scan();
         long end = System.nanoTime();
         System.out.println("Done in " + Double.valueOf((end - start) / 1000000) / 1e3 + " secs.");
