@@ -36,48 +36,48 @@ public class TensoricsRepeatingResamplingAcceptanceTest {
 
     @Test
     public void betweenTwoPoints() {
-        String resampledValue = resample(VECTOR).byRepeating(String.class).get("c");
+        String resampledValue = resample(VECTOR).repeat(String.class).get("c");
         assertThat(resampledValue).isEqualTo("b");
     }
 
     @Test
     public void afterLastPoint() {
-        String resampledValue = resample(VECTOR).byRepeating(String.class).get("e");
+        String resampledValue = resample(VECTOR).repeat(String.class).get("e");
         assertThat(resampledValue).isEqualTo("d");
     }
 
     @Test
     public void beforeFirstPoint() {
-        String resampledValue = resample(VECTOR).byRepeating(String.class).get("a");
+        String resampledValue = resample(VECTOR).repeat(String.class).get("a");
         assertThat(resampledValue).isEqualTo("b");
     }
 
     @Test
     public void matrixOnlyStringRepeatingValidInteger() {
-        String resampledValue = resample(MATRIX).byRepeating(String.class).get("b", 5);
+        String resampledValue = resample(MATRIX).repeat(String.class).get("b", 5);
         assertThat(resampledValue).isEqualTo("a5");
     }
 
     @Test
     public void matrixOnlyStringRepeatingValidNextInteger() {
-        String resampledValue = resample(MATRIX).byRepeating(String.class).get("c", 1);
+        String resampledValue = resample(MATRIX).repeat(String.class).get("c", 1);
         assertThat(resampledValue).isEqualTo("e1");
     }
 
     @Test(expected = NoSuchElementException.class)
     public void matrixOnlyStringRepeatingInvalidInteger() {
-        resample(MATRIX).byRepeating(String.class).get("b", 2);
+        resample(MATRIX).repeat(String.class).get("b", 2);
     }
 
     @Test
     public void matrixStringThenIntegerRepeating() {
-        String repeatedValue = resample(MATRIX).byRepeating(String.class).repeating(Integer.class).get("b", 2);
+        String repeatedValue = resample(MATRIX).repeat(String.class).then().repeat(Integer.class).get("b", 2);
         assertThat(repeatedValue).isEqualTo("e1");
     }
 
     @Test
     public void matrixIntegerThenStringRepeating() {
-        String repeatedValue = resample(MATRIX).byRepeating(Integer.class).repeating(String.class).get("b", 2);
+        String repeatedValue = resample(MATRIX).repeat(Integer.class).then().repeat(String.class).get("b", 2);
         assertThat(repeatedValue).isEqualTo("a5");
     }
 }

@@ -54,7 +54,7 @@ public class MultiDimensionalResamplingTest {
      *             D | B2  B2  B2  D4  D4
      */
     // @formatter:on
-    private Tensoric<String> stringThenInt = resample(b2d4).byRepeating(String.class).then().repeating(Integer.class)
+    private Tensoric<String> stringThenInt = resample(b2d4).repeat(String.class).then().repeat(Integer.class)
             .toTensoric();
 
     @Test
@@ -84,7 +84,7 @@ public class MultiDimensionalResamplingTest {
      *             D | D4  D4  D4  D4  D4
      */
     // @formatter:on
-    private Tensoric<String> intThenString = resample(b2d4).byRepeating(Integer.class).then().repeating(String.class)
+    private Tensoric<String> intThenString = resample(b2d4).repeat(Integer.class).then().repeat(String.class)
             .toTensoric();
 
     @Test
@@ -114,7 +114,7 @@ public class MultiDimensionalResamplingTest {
      *             D |     B2      D4  
      */
     // @formatter:on
-    private Tensoric<String> stringOnly = resample(b2d4).byRepeating(String.class).toTensoric();
+    private Tensoric<String> stringOnly = resample(b2d4).repeat(String.class).toTensoric();
 
     @Test
     public void stringOnlyResamplesC4AsD4() {

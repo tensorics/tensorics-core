@@ -26,7 +26,7 @@ public class OngoingRepeatingResampling<V> {
         return new OngoingRepeatingResampling<>(tensor, MultiDimensionalResampling.resample(dimension, resampler));
     }
 
-    public final <T extends Comparable<T>> OngoingRepeatingResampling<V> repeating(Class<T> dimension) {
+    public final <T extends Comparable<T>> OngoingRepeatingResampling<V> repeat(Class<T> dimension) {
         return repeating(dimension, Comparator.naturalOrder());
     }
 

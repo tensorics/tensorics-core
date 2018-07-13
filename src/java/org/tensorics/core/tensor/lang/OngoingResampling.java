@@ -20,7 +20,7 @@ public class OngoingResampling<V> {
                 new SingleDimensionRepeatingResampler<>(dimensionComparator));
     }
 
-    public <T extends Comparable<T>> OngoingRepeatingResampling<V> byRepeating(Class<T> dimension) {
+    public <T extends Comparable<T>> OngoingRepeatingResampling<V> repeat(Class<T> dimension) {
         return byRepeating(dimension, Comparator.naturalOrder());
     }
 
