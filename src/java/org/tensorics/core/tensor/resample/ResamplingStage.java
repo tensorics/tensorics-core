@@ -36,7 +36,7 @@ public class ResamplingStage<V, C> implements Tensoric<V> {
         Set<C> supportingCoordinates = supportingCoordinates(position);
         C coordinate = coordinate(position);
         if (!resampler.canResample(supportingCoordinates, coordinate)) {
-            throw new NoSuchElementException("Tensor cannot be resampled ad position " + position + ".");
+            throw new NoSuchElementException("Tensor cannot be resampled at " + position + ".");
         }
         return resampler.resample(supportingCoordinates, callbackFor(position), coordinate);
     }

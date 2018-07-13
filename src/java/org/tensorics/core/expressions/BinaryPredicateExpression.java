@@ -38,7 +38,7 @@ import com.google.common.collect.ImmutableList;
  * @param <T> the type of the results of the operands
  * @author caguiler
  */
-public class BinaryPredicateExpression<T> extends AbstractDeferredExpression<Boolean> implements Serializable  {
+public class BinaryPredicateExpression<T> extends AbstractDeferredExpression<Boolean> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final BinaryPredicate<T> predicate;

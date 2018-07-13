@@ -31,13 +31,13 @@ public class BooleanSupportTest extends AbstractBooleanTest {
         calcLogical(tensorTrue).and(tensorTrue);
 
         BooleanSupport nonDefaultRegistrySupport = with(NON_DEFAULT_SHAPING);
-        
+
         Tensor<Boolean> or = calcLogical(tensorTrue).or(tensorFalse);
         Tensor<Boolean> or2 = nonDefaultRegistrySupport.calcLogical(tensorTrue).or(tensorFalse);
         Tensor<Boolean> or3 = nonDefaultRegistrySupport.calcLogical(tensorTrue).or(tensorFalseOther);
         assertEquals(or.shape(), or2.shape());
         assertEquals(tensorFalseOther.shape(), or3.shape());
-        
+
     }
 
     @Test

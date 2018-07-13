@@ -65,10 +65,15 @@ import com.google.common.base.Optional;
 /**
  * The main entry point for constructing and structural manipulation of tensorics. If mathematical operations are
  * required, then you should either inherit from {@link TensoricSupport} (or one of its convenience implementations) or
- * use the {@link #using(ExtendedField)} method (only recommended for one-liners). <p> Additional utilities for
- * supporting classes can be found in the corresponding utility classes. E.g. <ul>
- * <li>{@link org.tensorics.core.tensor.Positions} <li>{@link org.tensorics.core.tensor.Shapes}
- * <li>{@link QuantityTensors} <li>{@link Tensorbackeds} </ul>
+ * use the {@link #using(ExtendedField)} method (only recommended for one-liners).
+ * <p>
+ * Additional utilities for supporting classes can be found in the corresponding utility classes. E.g.
+ * <ul>
+ * <li>{@link org.tensorics.core.tensor.Positions}
+ * <li>{@link org.tensorics.core.tensor.Shapes}
+ * <li>{@link QuantityTensors}
+ * <li>{@link Tensorbackeds}
+ * </ul>
  *
  * @author kfuchsbe, agorzaws, mihostet
  */
@@ -197,7 +202,7 @@ public final class Tensorics {
         return ImmutableTensor.<V> builder(dimensions).build();
     }
 
-    public static <V> Tensor<V> empty(Class<?> ... dimensions) {
+    public static <V> Tensor<V> empty(Class<?>... dimensions) {
         return ImmutableTensor.<V> builder(dimensions).build();
     }
 

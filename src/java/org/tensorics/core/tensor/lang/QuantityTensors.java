@@ -87,7 +87,7 @@ public final class QuantityTensors {
     public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, javax.measure.unit.Unit<?> unit) {
         return quantityTensorOf(tensor, JScienceUnit.of(unit));
     }
-    
+
     public static <S> Tensor<QuantifiedValue<S>> quantityTensorOf(Tensor<S> tensor, Unit unit) {
         Builder<QuantifiedValue<S>> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(tensor.context());

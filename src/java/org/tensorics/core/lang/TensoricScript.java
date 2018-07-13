@@ -95,7 +95,7 @@ public abstract class TensoricScript<E, T> extends TensoricExpressionSupport<E> 
         if (getClass() != obj.getClass()) {
             return false;
         }
-        TensoricScript<?,?> other = (TensoricScript<?,?>) obj;
+        TensoricScript<?, ?> other = (TensoricScript<?, ?>) obj;
         if (internalExpression == null) {
             if (other.internalExpression != null) {
                 return false;

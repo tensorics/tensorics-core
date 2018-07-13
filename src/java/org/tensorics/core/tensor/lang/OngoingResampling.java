@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Comparator;
 
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.coordinates.PositionOrdering;
+import org.tensorics.core.tensor.resample.SingleDimensionRepeatingResampler;
 
 public class OngoingResampling<V> {
 
@@ -15,12 +15,13 @@ public class OngoingResampling<V> {
         this.tensor = requireNonNull(tensor, "tensor must not be null");
     }
 
-    public <T> OngoingRepeatingResampling<V> byRepeatingAlong(Class<T> dimension, Comparator<T> dimensionComparator) {
-        return new OngoingRepeatingResampling<>(tensor, PositionOrdering.of(dimension, dimensionComparator));
+    public <T> OngoingRepeatingResampling<V> byRepeating(Class<T> dimension, Comparator<T> dimensionComparator) {
+        return OngoingRepeatingResampling.of(tensor, dimension,
+                new SingleDimensionRepeatingResampler<>(dimensionComparator));
     }
 
-    public <T extends Comparable<T>> OngoingRepeatingResampling<V> byRepeatingAlong(Class<T> dimension) {
-        return new OngoingRepeatingResampling<>(tensor, PositionOrdering.of(dimension));
+    public <T extends Comparable<T>> OngoingRepeatingResampling<V> byRepeating(Class<T> dimension) {
+        return byRepeating(dimension, Comparator.naturalOrder());
     }
 
 }

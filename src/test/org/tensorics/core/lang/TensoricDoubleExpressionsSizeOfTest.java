@@ -33,7 +33,7 @@ public class TensoricDoubleExpressionsSizeOfTest {
     public void setUp() {
         doubleExpr = ResolvedExpression.of(ImmutableList.of(1.0, 2.0));
     }
-    
+
     @Test
     public void sizeOfWorksWithListOfDoubles() {
         Double size = engine.resolve(sizeOf(doubleExpr));
@@ -47,25 +47,25 @@ public class TensoricDoubleExpressionsSizeOfTest {
         Double sizeVal = engine.resolve(size);
         assertThat(sizeVal).isCloseTo(2.0, offset(0.001));
     }
-    
+
     @Test
     public void avarageWorksWithExpOfList() {
         Double size = engine.resolve(averageOf(doubleExpr));
         assertThat(size).isCloseTo(1.5, offset(0.001));
     }
-    
+
     @Test
     public void rmsWorksWithExpOfList() {
         Double size = engine.resolve(rmsOf(doubleExpr));
         assertThat(size).isCloseTo(1.581, offset(0.001));
     }
-    
+
     @Test
     public void sumOfSquaresWorksWithExpOfList() {
         Double size = engine.resolve(sumOfSquaresOf(doubleExpr));
         assertThat(size).isCloseTo(5.0, offset(0.001));
     }
-    
+
     @Test
     public void sumWorksWithExpOfList() {
         Double size = engine.resolve(TensoricDoubleExpressions.sumOf(doubleExpr));

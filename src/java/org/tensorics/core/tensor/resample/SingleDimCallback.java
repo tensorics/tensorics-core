@@ -10,7 +10,7 @@ import java.util.function.Function;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Positions;
 
-public class SingleDimCallback<C, V> implements Function<C, V>{
+public class SingleDimCallback<C, V> implements Function<C, V> {
 
     private final Position completingPosition;
     private final Function<Position, V> callback;

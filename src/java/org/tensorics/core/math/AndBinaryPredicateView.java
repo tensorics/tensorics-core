@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 import org.tensorics.core.math.predicates.BinaryPredicate;
 
-final class AndBinaryPredicateView<T> implements BinaryPredicate<T> , Serializable{
+final class AndBinaryPredicateView<T> implements BinaryPredicate<T>, Serializable {
     private static final long serialVersionUID = 1L;
 
     private final BinaryPredicate<T> leftPredicate;
@@ -64,8 +64,7 @@ final class AndBinaryPredicateView<T> implements BinaryPredicate<T> , Serializab
 
     @Override
     public String toString() {
-        return "AndBinaryPredicateView [leftPredicate=" + leftPredicate + ", rightPredicate=" + rightPredicate
-                + "]";
+        return "AndBinaryPredicateView [leftPredicate=" + leftPredicate + ", rightPredicate=" + rightPredicate + "]";
     }
 
 }

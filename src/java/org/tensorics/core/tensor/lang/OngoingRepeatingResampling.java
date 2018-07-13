@@ -6,33 +6,53 @@ import java.util.Comparator;
 
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.coordinates.PositionOrdering;
-import org.tensorics.core.tensor.resample.RepeatingResamplingStrategy;
+import org.tensorics.core.tensor.Tensoric;
+import org.tensorics.core.tensor.resample.MultiDimensionalResampling;
+import org.tensorics.core.tensor.resample.SingleDimensionRepeatingResampler;
+import org.tensorics.core.tensor.resample.SingleDimensionResampler;
 
 public class OngoingRepeatingResampling<V> {
 
     private final Tensor<V> tensor;
-    private final PositionOrdering ordering;
+    private final MultiDimensionalResampling<V> ordering;
 
-    OngoingRepeatingResampling(Tensor<V> tensor, PositionOrdering ordering) {
+    private OngoingRepeatingResampling(Tensor<V> tensor, MultiDimensionalResampling<V> resampling) {
         this.tensor = requireNonNull(tensor, "tensor must not be null");
-        this.ordering = requireNonNull(ordering, "ordering must not be null");
+        this.ordering = requireNonNull(resampling, "resampling must not be null");
     }
 
-    public final <T> OngoingRepeatingResampling<V> thenAlong(Class<T> dimension, Comparator<T> dimensionComparator) {
-        return along(ordering.then(dimension, dimensionComparator));
+    public static final <C, V> OngoingRepeatingResampling<V> of(Tensor<V> tensor, Class<C> dimension,
+            SingleDimensionResampler<C, V> resampler) {
+        return new OngoingRepeatingResampling<>(tensor, MultiDimensionalResampling.resample(dimension, resampler));
     }
 
-    public final <T extends Comparable<T>> OngoingRepeatingResampling<V> thenAlong(Class<T> dimension) {
-        return along(ordering.then(dimension));
+    public final <T extends Comparable<T>> OngoingRepeatingResampling<V> repeating(Class<T> dimension) {
+        return repeating(dimension, Comparator.naturalOrder());
     }
 
-    private OngoingRepeatingResampling<V> along(PositionOrdering then) {
-        return new OngoingRepeatingResampling<>(tensor, then);
+    public final <T> OngoingRepeatingResampling<V> repeating(Class<T> dimension, Comparator<T> dimensionComparator) {
+        return then(dimension, new SingleDimensionRepeatingResampler<>(dimensionComparator));
+    }
+
+    public <C> OngoingRepeatingResampling<V> then(Class<C> dimension, SingleDimensionResampler<C, V> resampler) {
+        return new OngoingRepeatingResampling<>(tensor, ordering.then(dimension, resampler));
+    }
+
+    /**
+     * NOOP, to be used for more fluent clauses.
+     * 
+     * @return this instance
+     */
+    public OngoingRepeatingResampling<V> then() {
+        return this;
+    }
+
+    public Tensoric<V> toTensoric() {
+        return ordering.resample(tensor);
     }
 
     public final V get(Position position) {
-        return RepeatingResamplingStrategy.of(ordering).resample(tensor, position);
+        return toTensoric().get(position);
     }
 
     public final V get(Object... coordinates) {

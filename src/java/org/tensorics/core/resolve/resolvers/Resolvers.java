@@ -83,10 +83,9 @@ public final class Resolvers {
             ResolvingContext context) {
         return expressions.stream().allMatch(context::resolves);
     }
-    
-    public static final boolean contextResolvesAllNodes(List<? extends Node> expressions,
-            ResolvingContext context) {
-        /*XXX ugly cast */
+
+    public static final boolean contextResolvesAllNodes(List<? extends Node> expressions, ResolvingContext context) {
+        /* XXX ugly cast */
         return expressions.stream().map(n -> (Expression<?>) n).allMatch(context::resolves);
     }
 }

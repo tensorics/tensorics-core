@@ -36,7 +36,6 @@ public abstract class QuantityUnaryOperation<S> extends AbstractQuantityOperatio
         implements UnaryOperation<QuantifiedValue<S>> {
     private static final long serialVersionUID = 1L;
 
-
     protected QuantityUnaryOperation(QuantityEnvironment<S> environment) {
         super(environment);
     }

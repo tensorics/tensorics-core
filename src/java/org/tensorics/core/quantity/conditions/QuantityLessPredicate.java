@@ -34,7 +34,7 @@ import org.tensorics.core.quantity.options.QuantityEnvironment;
  * @author mihostet
  * @param <S> the value of the scalar (elements of the field)
  */
-public class QuantityLessPredicate<S> extends AbstractQuantityStatisticPredicate<S>implements Serializable {
+public class QuantityLessPredicate<S> extends AbstractQuantityStatisticPredicate<S> implements Serializable {
     private static final long serialVersionUID = 1L;
     final S confidenceLimit;
 

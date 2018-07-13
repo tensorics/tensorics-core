@@ -36,7 +36,7 @@ import org.tensorics.core.math.structures.ringlike.OrderedField;
  * @author kfuchsbe
  * @param <T> the type of elements of the field
  */
-public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T>implements ExtendedField<T> {
+public class ExtendedFieldImpl<T> extends ExplicitFieldImpl<T> implements ExtendedField<T> {
 
     private final org.tensorics.core.math.Math<T> math;
     private final Cheating<T> cheatingInstance;

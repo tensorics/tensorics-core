@@ -69,7 +69,7 @@ public final class Contexts {
         contexts.forEach(newCtx::putAllNew);
         return newCtx;
     }
-    
+
     public static EditableResolvingContext mergeContextsOrdered(ResolvingContext... contexts) {
         return mergeContextsOrdered(Arrays.asList(contexts));
     }

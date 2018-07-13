@@ -6,6 +6,7 @@ package org.tensorics.core.tensor.resample;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.tensorics.core.lang.Tensorics.at;
+import static org.tensorics.core.tensor.lang.TensorStructurals.resample;
 
 import java.util.NoSuchElementException;
 
@@ -13,7 +14,6 @@ import org.junit.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensoric;
-import org.tensorics.core.tensor.coordinates.PositionOrdering;
 
 /**
  * Test for the mixed resampling strategy by using repeating in the individual dimenstions
@@ -54,7 +54,8 @@ public class MultiDimensionalResamplingTest {
      *             D | B2  B2  B2  D4  D4
      */
     // @formatter:on
-    private Tensoric<String> stringThenInt = resampleBy(PositionOrdering.of(String.class).then(Integer.class));
+    private Tensoric<String> stringThenInt = resample(b2d4).byRepeating(String.class).then().repeating(Integer.class)
+            .toTensoric();
 
     @Test
     public void stringThenIntResamplesD3sB2() {
@@ -83,7 +84,8 @@ public class MultiDimensionalResamplingTest {
      *             D | D4  D4  D4  D4  D4
      */
     // @formatter:on
-    private Tensoric<String> intThenString = resampleBy(PositionOrdering.of(Integer.class).then(String.class));
+    private Tensoric<String> intThenString = resample(b2d4).byRepeating(Integer.class).then().repeating(String.class)
+            .toTensoric();
 
     @Test
     public void intThenStringResamplesD3sD4() {
@@ -112,7 +114,7 @@ public class MultiDimensionalResamplingTest {
      *             D |     B2      D4  
      */
     // @formatter:on
-    private Tensoric<String> stringOnly = resampleBy(PositionOrdering.of(String.class));
+    private Tensoric<String> stringOnly = resample(b2d4).byRepeating(String.class).toTensoric();
 
     @Test
     public void stringOnlyResamplesC4AsD4() {
@@ -127,10 +129,6 @@ public class MultiDimensionalResamplingTest {
     @Test(expected = NoSuchElementException.class)
     public void stringOnlyDoesNotResampleA10() {
         stringOnly.get("A", 10);
-    }
-
-    private Tensoric<String> resampleBy(PositionOrdering order) {
-        return MultiDimensionalResampling.of(order).resample(b2d4);
     }
 
 }

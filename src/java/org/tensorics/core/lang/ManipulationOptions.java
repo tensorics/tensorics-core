@@ -85,7 +85,7 @@ public final class ManipulationOptions {
     /**
      * Creates a new registry of manipulation options, which will contain only options which concern structural
      * operations. This is only useful for support classes which only require structural operations. For anything else
-     * such a registry will throw in case and option is asked which is not present. 
+     * such a registry will throw in case and option is asked which is not present.
      * <ul>
      * <li>{@link ExactShapesOrOneZeroStrategy}</li>
      * <li>{@link BroadcastMissingDimensionsStrategy}</li>

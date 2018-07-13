@@ -12,7 +12,7 @@ import org.tensorics.core.tensor.Position;
 import com.google.common.collect.ImmutableList;
 
 /**
- * An instance of this class defines both, the ordering of different dimensions amongst each other and the oder of
+ * An instance of this class defines both, the ordering of different dimensions amongst each other and the order of
  * coordinates within each dimension.
  * 
  * @author kaifox

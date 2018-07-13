@@ -66,9 +66,11 @@ public final class TensorStructurals {
 
     /**
      * Merges the given set of the Tensors based on information in their context and dimensions. This operation is only
-     * possible, if the following preconditions are fulfilled: <ul> <li>The contexts of all the tensors have THE SAME
-     * dimensions AND</li> <li>The dimensions of all the tensors are THE SAME (first found tensor dimension is taken as
-     * an reference)</li> </ul>
+     * possible, if the following preconditions are fulfilled:
+     * <ul>
+     * <li>The contexts of all the tensors have THE SAME dimensions AND</li>
+     * <li>The dimensions of all the tensors are THE SAME (first found tensor dimension is taken as an reference)</li>
+     * </ul>
      * 
      * @param tensors to be merged.
      * @return a merged tensor.
@@ -120,11 +122,11 @@ public final class TensorStructurals {
     }
 
     public static <S> OngoingFlattening<S> flatten(Tensor<S> tensor) {
-        return new OngoingFlattening<S>(tensor);
+        return new OngoingFlattening<>(tensor);
     }
 
     public static final <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
-        return new OngoingCompletion<S>(tensor);
+        return new OngoingCompletion<>(tensor);
     }
 
     public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {

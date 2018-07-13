@@ -47,7 +47,8 @@ public final class Instantiators {
      * this:
      *
      * <pre>
-     * {@code
+     * {
+     *     &#64;code
      *     Instantiator<Argument, Instance> instantiator = instantiatorFor(Instance.class)
      *             .withArgumentType(Argument.class);
      *

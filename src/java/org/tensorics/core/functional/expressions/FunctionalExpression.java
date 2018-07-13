@@ -20,7 +20,7 @@ import com.google.common.collect.ImmutableList;
  * @see FiniteArgumentFunction
  * @param <R> the type of the result of the expression
  */
-public class FunctionalExpression<R> extends AbstractDeferredExpression<R>implements Serializable {
+public class FunctionalExpression<R> extends AbstractDeferredExpression<R> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<Expression<?>> children;

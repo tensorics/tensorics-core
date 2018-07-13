@@ -17,7 +17,6 @@ import org.tensorics.core.tensorbacked.Tensorbacked;
 import org.tensorics.core.testing.TransportableEntityFulfilled;
 import org.tensorics.core.tree.domain.Node;
 
-
 public class TransportableEntitiesFulfillContractTest extends TransportableEntityFulfilled {
 
     public TransportableEntitiesFulfillContractTest() {
