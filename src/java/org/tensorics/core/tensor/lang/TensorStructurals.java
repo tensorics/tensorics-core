@@ -207,8 +207,8 @@ public final class TensorStructurals {
         return builder.build();
     }
 
-    public static final <V> OngoingResampling<V> resample(Tensor<V> tensor) {
-        return new OngoingResampling<>(tensor);
+    public static final <V> OngoingResamplingStart<V> resample(Tensor<V> tensor) {
+        return new OngoingResamplingStart<>(tensor);
     }
 
 }

@@ -44,7 +44,7 @@ import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
-import org.tensorics.core.tensor.lang.OngoingResampling;
+import org.tensorics.core.tensor.lang.OngoingResamplingStart;
 import org.tensorics.core.tensor.lang.OngoingTensorFiltering;
 import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
 import org.tensorics.core.tensor.lang.QuantityTensors;
@@ -502,7 +502,7 @@ public final class Tensorics {
     /**
      * @see TensorStructurals#resample(Tensor)
      */
-    public static <V> OngoingResampling<V> resample(Tensor<V> tensor) {
+    public static <V> OngoingResamplingStart<V> resample(Tensor<V> tensor) {
         return TensorStructurals.resample(tensor);
     }
 
