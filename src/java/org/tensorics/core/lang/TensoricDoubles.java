@@ -35,6 +35,7 @@ import org.tensorics.core.quantity.options.ConfidenceLevel;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.OngoingFieldAwareResamplingStart;
 import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
 import org.tensorics.core.tensor.lang.OngoingQuantityTensorValueExtraction;
 import org.tensorics.core.tensor.lang.OngoingTensorOperation;
@@ -260,6 +261,22 @@ public final class TensoricDoubles {
 
     public static final OngoingQuantityTensorValueExtraction<Double> valuesOf(Tensor<QuantifiedValue<Double>> tensor) {
         return SUPPORT.valuesOf(tensor);
+    }
+
+    public static final Double averageOf(Iterable<Double> values) {
+        return SUPPORT.averageOf(values);
+    }
+
+    public static final Double varOf(Iterable<Double> values) {
+        return SUPPORT.varOf(values);
+    }
+
+    public static final Double stdOf(Iterable<Double> values) {
+        return SUPPORT.stdOf(values);
+    }
+
+    public static final OngoingFieldAwareResamplingStart<Double> resample(Tensor<Double> tensor) {
+        return SUPPORT.resample(tensor);
     }
 
 }

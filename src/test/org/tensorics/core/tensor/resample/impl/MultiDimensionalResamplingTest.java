@@ -2,7 +2,7 @@
  * Copyright (c) 2018 European Organisation for Nuclear Research (CERN), All Rights Reserved.
  */
 
-package org.tensorics.core.tensor.resample;
+package org.tensorics.core.tensor.resample.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.tensorics.core.lang.Tensorics.at;

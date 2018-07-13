@@ -94,6 +94,17 @@ public class TensorSupport<V> extends ScalarIterableSupport<V> {
         return new ElementUnaryOperation<V>(environment.field().additiveInversion()).perform(tensor);
     }
 
+    /**
+     * Starting clause for a fluent expression to resample a tensor, using structural resamplings (e.g. repeating), but
+     * also field aware resamplings (e.g. linear interpolation).
+     * 
+     * @param tensor the tensor to be resampled
+     * @return a object to further refine the resampling
+     */
+    public OngoingFieldAwareResamplingStart<V> resample(Tensor<V> tensor) {
+        return new OngoingFieldAwareResamplingStart<>(tensor, environment.field());
+    }
+
     public <S> Tensor<S> elementwise(BinaryOperation<S> operation, Tensor<S> left, Tensor<S> right) {
         return new ElementBinaryOperation<>(operation, environment.options()).perform(left, right);
     }
@@ -101,4 +112,5 @@ public class TensorSupport<V> extends ScalarIterableSupport<V> {
     public <S, R> Tensor<R> elementwise(BinaryFunction<S, R> operation, Tensor<S> left, Tensor<S> right) {
         return new ElementBinaryFunction<>(operation, environment.options()).perform(left, right);
     }
+
 }
