@@ -99,14 +99,34 @@ public final class Positions {
     }
 
     /**
+     * Delegate to {@link #stripping(Set)} for convenience to get better naming in certain cases
+     * 
+     * @param dimensionsToStrip the dimensions which shall be stripped from the positions passed to the stripper.
+     * @return a function object that can strip the given dimensions from positions.
+     */
+    public static Positions.DimensionStripper strip(final Set<? extends Class<?>> dimensionsToStrip) {
+        return stripping(dimensionsToStrip);
+    }
+
+    /**
      * Factory method for a dimension stripper with one dimension to strip only
      *
-     * @param dimensionsToStrip the dimension to strip
+     * @param dimensionToStrip the dimension to strip
      * @return a dimension stripper stripping exactly one dimension
      * @see #stripping(Set)
      */
-    public static Positions.DimensionStripper stripping(Class<?> dimensionsToStrip) {
-        return new Positions.DimensionStripper(ImmutableSet.of(dimensionsToStrip));
+    public static Positions.DimensionStripper stripping(Class<?> dimensionToStrip) {
+        return new Positions.DimensionStripper(ImmutableSet.of(dimensionToStrip));
+    }
+
+    /**
+     * Delegate to {@link #stripping(Class)} for convenience to get better naming in certain cases
+     * 
+     * @param dimensionToStrip the dimensions which shall be stripped from the positions passed to the stripper.
+     * @return a function object that can strip the given dimension from positions.
+     */
+    public static Positions.DimensionStripper strip(Class<?> dimensionToStrip) {
+        return stripping(dimensionToStrip);
     }
 
     /**
@@ -132,6 +152,10 @@ public final class Positions {
                 }
             }
             return Position.of(builder.build());
+        }
+
+        public Position from(Position position) {
+            return apply(position);
         }
 
     }
@@ -180,18 +204,18 @@ public final class Positions {
 
     /**
      * Combines the both positions of the pair in such a way, that for each coordinate of the types given in the given
-<<<<<<< HEAD
-     * set of dimensions have to be <ul> <li>either present in both positions of the pair, and then have to be the same
-     * <li>or be present in only one of the both positions </ul>
-     * 
-=======
-     * set of dimensions have to be
+     * <<<<<<< HEAD set of dimensions have to be
      * <ul>
      * <li>either present in both positions of the pair, and then have to be the same
      * <li>or be present in only one of the both positions
      * </ul>
-     *
->>>>>>> refs/remotes/origin/master
+     * ======= set of dimensions have to be
+     * <ul>
+     * <li>either present in both positions of the pair, and then have to be the same
+     * <li>or be present in only one of the both positions
+     * </ul>
+     * >>>>>>> refs/remotes/origin/master
+     * 
      * @param pair the pair, whose dimensions should be united
      * @param targetDimensions the dimension in which the positions shall be united
      * @return a new position, containing the coordinates of the pair, merged by the above rules
@@ -205,18 +229,18 @@ public final class Positions {
 
     /**
      * Combines the both positions in such a way, that for each coordinate of the types given in the given set of
-<<<<<<< HEAD
-     * dimensions have to be <ul> <li>either present in both positions of the pair, and then have to be the same <li>or
-     * be present in only one of the both positions </ul>
-     * 
-=======
-     * dimensions have to be
+     * <<<<<<< HEAD dimensions have to be
      * <ul>
      * <li>either present in both positions of the pair, and then have to be the same
      * <li>or be present in only one of the both positions
      * </ul>
-     *
->>>>>>> refs/remotes/origin/master
+     * ======= dimensions have to be
+     * <ul>
+     * <li>either present in both positions of the pair, and then have to be the same
+     * <li>or be present in only one of the both positions
+     * </ul>
+     * >>>>>>> refs/remotes/origin/master
+     * 
      * @param left the first of the two positions, whose dimensions should be united
      * @param right the second of the two positions whose dimensions should be combined
      * @param targetDimensions the dimension in which the positions shall be united

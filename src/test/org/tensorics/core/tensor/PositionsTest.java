@@ -21,6 +21,7 @@
 // @formatter:on
 package org.tensorics.core.tensor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.tensorics.core.tensor.Positions.union;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
@@ -69,6 +70,37 @@ public class PositionsTest {
     @Test
     public void unionWithNonOverlappingDimensionsWorksCorrectly() {
         assertEquals(POS_1A, union(POS_1, POS_A));
+    }
+
+    @Test
+    public void coversSubPosition() {
+        assertThat(POS_1A.covers(POS_1)).isTrue();
+        assertThat(POS_1A.covers(POS_A)).isTrue();
+    }
+
+    @Test
+    public void doesNotCoverForeignPosition() {
+        assertThat(POS_1A.covers(POS_B)).isFalse();
+    }
+
+    @Test
+    public void coversIsNonCommutative() {
+        assertThat(POS_A.covers(POS_1A)).isFalse();
+    }
+
+    @Test
+    public void positionCoversItself() {
+        assertThat(POS_1A.covers(POS_1A)).isTrue();
+    }
+
+    @Test
+    public void positionCoversEmptyPosition() {
+        assertThat(POS_1A.covers(Position.empty())).isTrue();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void coversThrowsFromNullPosition() {
+        POS_1A.covers(null);
     }
 
 }

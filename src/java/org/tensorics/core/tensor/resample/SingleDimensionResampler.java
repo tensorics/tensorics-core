@@ -1,7 +1,6 @@
 package org.tensorics.core.tensor.resample;
 
 import java.util.Collection;
-import java.util.SortedMap;
 import java.util.function.Function;
 
 /**
@@ -11,4 +10,5 @@ public interface SingleDimensionResampler<C, V> {
 
     V resample(Collection<C> coordinates, Function<C, V> values, C coordinate);
 
+    boolean canResample(Collection<C> coordinates, C coordinate);
 }

@@ -72,13 +72,10 @@ public final class ImmutableScalar<V> extends AbstractScalar<V> implements Seria
     public V value() {
         return value;
     }
-    
-    
 
     @Override
     public String toString() {
         return "ImmutableScalar [value=" + value + ", context=" + context + "]";
     }
-
 
 }

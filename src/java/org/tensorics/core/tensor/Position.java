@@ -136,6 +136,19 @@ public final class Position implements Serializable {
         return Positions.areDimensionsConsistentWithCoordinates(dimensions, this);
     }
 
+    /**
+     * Checks if this position covers the other position, meaning that the other position is a sub position of the
+     * other. In other words, this means that all the coordinates of the other position have to be contained in the
+     * coordinates of this position.
+     * 
+     * @param other the other position to compare with
+     * @return {@code true} if this position covers the other, false otherwise
+     */
+    public boolean covers(Position other) {
+        requireNonNull(other, "other position must not be null");
+        return this.coordinates.containsAll(other.coordinates);
+    }
+
     @Override
     public String toString() {
         return "Position [coordinates=" + coordinates + "]";

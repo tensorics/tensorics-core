@@ -1,9 +1,10 @@
 package org.tensorics.core.tensor.resample;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.SortedSet;
 import java.util.function.Function;
 
@@ -14,7 +15,7 @@ public class SingleDimensionRepeatingResampler<C, V> implements SingleDimensionR
     private final Comparator<C> comparator;
 
     public SingleDimensionRepeatingResampler(Comparator<C> comparator) {
-        this.comparator = Objects.requireNonNull(comparator);
+        this.comparator = requireNonNull(comparator);
     }
 
     @Override
@@ -36,5 +37,10 @@ public class SingleDimensionRepeatingResampler<C, V> implements SingleDimensionR
         }
 
         throw new NoSuchElementException("Tensor cannot be resampled at coordinate '" + coordinate + "'");
+    }
+
+    @Override
+    public boolean canResample(Collection<C> coordinates, C coordinate) {
+        return !coordinates.isEmpty();
     }
 }
