@@ -8,8 +8,8 @@ import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensoric;
 import org.tensorics.core.tensor.resample.MultiDimensionalResampling;
-import org.tensorics.core.tensor.resample.SingleDimensionRepeatingResampler;
 import org.tensorics.core.tensor.resample.SingleDimensionResampler;
+import org.tensorics.core.tensor.resample.impl.RepeatingResampler;
 
 public class OngoingResampling<V> {
 
@@ -31,7 +31,7 @@ public class OngoingResampling<V> {
     }
 
     public final <T> OngoingResampling<V> repeating(Class<T> dimension, Comparator<T> dimensionComparator) {
-        return then(dimension, new SingleDimensionRepeatingResampler<>(dimensionComparator));
+        return then(dimension, new RepeatingResampler<>(dimensionComparator));
     }
 
     public <C> OngoingResampling<V> then(Class<C> dimension, SingleDimensionResampler<C, V> resampler) {

@@ -1,4 +1,4 @@
-package org.tensorics.core.tensor.resample;
+package org.tensorics.core.tensor.resample.impl;
 
 import static java.util.Objects.requireNonNull;
 
@@ -8,13 +8,15 @@ import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import java.util.function.Function;
 
+import org.tensorics.core.tensor.resample.SingleDimensionResampler;
+
 import com.google.common.collect.ImmutableSortedSet;
 
-public class SingleDimensionRepeatingResampler<C, V> implements SingleDimensionResampler<C, V> {
+public class RepeatingResampler<C, V> implements SingleDimensionResampler<C, V> {
 
     private final Comparator<C> comparator;
 
-    public SingleDimensionRepeatingResampler(Comparator<C> comparator) {
+    public RepeatingResampler(Comparator<C> comparator) {
         this.comparator = requireNonNull(comparator);
     }
 

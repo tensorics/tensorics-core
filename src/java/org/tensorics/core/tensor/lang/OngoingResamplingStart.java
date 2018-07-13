@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Comparator;
 
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.resample.SingleDimensionRepeatingResampler;
+import org.tensorics.core.tensor.resample.impl.RepeatingResampler;
 
 public class OngoingResamplingStart<V> {
 
@@ -16,7 +16,7 @@ public class OngoingResamplingStart<V> {
     }
 
     public <T> OngoingResampling<V> repeat(Class<T> dimension, Comparator<T> dimensionComparator) {
-        return OngoingResampling.of(tensor, dimension, new SingleDimensionRepeatingResampler<>(dimensionComparator));
+        return OngoingResampling.of(tensor, dimension, new RepeatingResampler<>(dimensionComparator));
     }
 
     public <T extends Comparable<T>> OngoingResampling<V> repeat(Class<T> dimension) {

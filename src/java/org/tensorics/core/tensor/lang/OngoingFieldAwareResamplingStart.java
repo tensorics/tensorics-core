@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.tensor.Tensor;
-import org.tensorics.core.tensor.resample.SingleDimensionRepeatingResampler;
+import org.tensorics.core.tensor.resample.impl.RepeatingResampler;
 
 public class OngoingFieldAwareResamplingStart<V> {
 
@@ -20,7 +20,7 @@ public class OngoingFieldAwareResamplingStart<V> {
 
     public <T> OngoingFieldAwareResampling<V> repeat(Class<T> dimension, Comparator<T> dimensionComparator) {
         return OngoingFieldAwareResampling.of(tensor, dimension,
-                new SingleDimensionRepeatingResampler<>(dimensionComparator), environment);
+                new RepeatingResampler<>(dimensionComparator), environment);
     }
 
     public <T extends Comparable<T>> OngoingFieldAwareResampling<V> repeat(Class<T> dimension) {
