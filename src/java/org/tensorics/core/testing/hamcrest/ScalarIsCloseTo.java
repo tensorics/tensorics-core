@@ -30,7 +30,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.tensorics.core.scalar.lang.ScalarSupport;
 
 /**
- * A matcher for unit tests, that allows to set a tolerance value. This matcher uses the scalar support of tensorics,
+ * A matcher for base tests, that allows to set a tolerance value. This matcher uses the scalar support of tensorics,
  * thus it can be used on any scalars fro which a field is provided.
  * 
  * @author kfuchsbe

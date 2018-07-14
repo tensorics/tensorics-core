@@ -99,12 +99,12 @@ public final class QuantityTensors {
 
     public static <S> Unit unitOf(Tensor<QuantifiedValue<S>> tensor) {
         /*
-         * XXX this is nasty! Even an empty tensor should have a correct unit ...probably?
+         * XXX this is nasty! Even an empty tensor should have a correct base ...probably?
          */
         for (java.util.Map.Entry<Position, QuantifiedValue<S>> entry : TensorInternals.mapFrom(tensor).entrySet()) {
             return entry.getValue().unit();
         }
-        throw new IllegalArgumentException("No entries in the given tensor! Cannot find out what is the unit.");
+        throw new IllegalArgumentException("No entries in the given tensor! Cannot find out what is the base.");
     }
 
 }

@@ -1,23 +1,23 @@
 // @formatter:off
 /*******************************************************************************
-*
-* This file is part of tensorics.
-*
-* Copyright (c) 2008-2011, CERN. All rights reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-******************************************************************************/
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
 // @formatter:on
 package org.tensorics.core.tensor;
 
@@ -62,12 +62,12 @@ public final class Positions {
      * is only correctly defined, if the two given positions do not have any dimensional overlap (i.e. Any coordinate of
      * a certain type (class) is only present in either the left or the right position.)
      *
-     * @param left the first position to use construct the union position
+     * @param left  the first position to use construct the union position
      * @param right the second position to construct the union position
      * @return a position, which contains the union of the coordinates of the two input positions.
-     * @throws NullPointerException if one of the arguments is {@code null}
+     * @throws NullPointerException     if one of the arguments is {@code null}
      * @throws IllegalArgumentException if the given aguments have an overlap of dimensions and therefor the union of
-     *             the position is not well defined
+     *                                  the position is not well defined
      */
     public static Position union(Position left, Position right) {
         checkNotNull(left, "left position must not be null.");
@@ -99,34 +99,14 @@ public final class Positions {
     }
 
     /**
-     * Delegate to {@link #stripping(Set)} for convenience to get better naming in certain cases
-     * 
-     * @param dimensionsToStrip the dimensions which shall be stripped from the positions passed to the stripper.
-     * @return a function object that can strip the given dimensions from positions.
-     */
-    public static Positions.DimensionStripper strip(final Set<? extends Class<?>> dimensionsToStrip) {
-        return stripping(dimensionsToStrip);
-    }
-
-    /**
      * Factory method for a dimension stripper with one dimension to strip only
      *
-     * @param dimensionToStrip the dimension to strip
+     * @param dimensionsToStrip the dimension to strip
      * @return a dimension stripper stripping exactly one dimension
      * @see #stripping(Set)
      */
-    public static Positions.DimensionStripper stripping(Class<?> dimensionToStrip) {
-        return new Positions.DimensionStripper(ImmutableSet.of(dimensionToStrip));
-    }
-
-    /**
-     * Delegate to {@link #stripping(Class)} for convenience to get better naming in certain cases
-     * 
-     * @param dimensionToStrip the dimensions which shall be stripped from the positions passed to the stripper.
-     * @return a function object that can strip the given dimension from positions.
-     */
-    public static Positions.DimensionStripper strip(Class<?> dimensionToStrip) {
-        return stripping(dimensionToStrip);
+    public static Positions.DimensionStripper stripping(Class<?> dimensionsToStrip) {
+        return new Positions.DimensionStripper(ImmutableSet.of(dimensionsToStrip));
     }
 
     /**
@@ -154,16 +134,12 @@ public final class Positions {
             return Position.of(builder.build());
         }
 
-        public Position from(Position position) {
-            return apply(position);
-        }
-
     }
 
     /**
      * Checks if the given position is conform with the given coordinate and throws an exception, if not.
      *
-     * @param position the position for which to check the consistency
+     * @param position   the position for which to check the consistency
      * @param dimensions the dimensions for which the conformity has to be verified.
      * @throws IllegalArgumentException if the position is not conform
      * @see Position#isConsistentWith(Set)
@@ -204,19 +180,13 @@ public final class Positions {
 
     /**
      * Combines the both positions of the pair in such a way, that for each coordinate of the types given in the given
-     * <<<<<<< HEAD set of dimensions have to be
+     * set of dimensions have to be
      * <ul>
      * <li>either present in both positions of the pair, and then have to be the same
      * <li>or be present in only one of the both positions
      * </ul>
-     * ======= set of dimensions have to be
-     * <ul>
-     * <li>either present in both positions of the pair, and then have to be the same
-     * <li>or be present in only one of the both positions
-     * </ul>
-     * >>>>>>> refs/remotes/origin/master
-     * 
-     * @param pair the pair, whose dimensions should be united
+     *
+     * @param pair             the pair, whose dimensions should be united
      * @param targetDimensions the dimension in which the positions shall be united
      * @return a new position, containing the coordinates of the pair, merged by the above rules
      */
@@ -229,20 +199,14 @@ public final class Positions {
 
     /**
      * Combines the both positions in such a way, that for each coordinate of the types given in the given set of
-     * <<<<<<< HEAD dimensions have to be
+     * dimensions have to be
      * <ul>
      * <li>either present in both positions of the pair, and then have to be the same
      * <li>or be present in only one of the both positions
      * </ul>
-     * ======= dimensions have to be
-     * <ul>
-     * <li>either present in both positions of the pair, and then have to be the same
-     * <li>or be present in only one of the both positions
-     * </ul>
-     * >>>>>>> refs/remotes/origin/master
-     * 
-     * @param left the first of the two positions, whose dimensions should be united
-     * @param right the second of the two positions whose dimensions should be combined
+     *
+     * @param left             the first of the two positions, whose dimensions should be united
+     * @param right            the second of the two positions whose dimensions should be combined
      * @param targetDimensions the dimension in which the positions shall be united
      * @return a new position, with the coordinates merged according to the above rules
      */
@@ -270,12 +234,12 @@ public final class Positions {
      * Combines all position pairs into positions containing the given dimensions and returns a map from the combined
      * positions to the original position pairs.
      *
-     * @param positionPairs the position pairs to combine the final positions
+     * @param positionPairs    the position pairs to combine the final positions
      * @param targetDimensions the dimensions in which to combine the positions
      * @return a map from the combined dimensions to the original pairs
      */
     public static ImmutableSetMultimap<Position, PositionPair> combineAll(Set<PositionPair> positionPairs,
-            Set<Class<?>> targetDimensions) {
+                                                                          Set<Class<?>> targetDimensions) {
         ImmutableSetMultimap.Builder<Position, PositionPair> builder = ImmutableSetMultimap.builder();
         for (PositionPair pair : positionPairs) {
             builder.put(combineDimensions(pair, targetDimensions), pair);
@@ -284,7 +248,7 @@ public final class Positions {
     }
 
     public static Multimap<Position, Position> mapByStripping(Iterable<Position> positions,
-            Set<Class<?>> dimensionsToStrip) {
+                                                              Set<Class<?>> dimensionsToStrip) {
         DimensionStripper stripper = stripping(dimensionsToStrip);
         ImmutableMultimap.Builder<Position, Position> builder = ImmutableMultimap.builder();
         for (Position position : positions) {
@@ -297,7 +261,7 @@ public final class Positions {
      * Extracts the provided class of the coordinate from the set of the positions.
      *
      * @param positions
-     * @param ofClass a class of the coordinate to be extracted
+     * @param ofClass   a class of the coordinate to be extracted
      * @return a set of the extracted coordinates from provided positions
      */
     public static <T> Set<T> coordinatesOfType(Set<Position> positions, Class<T> ofClass) {
@@ -401,8 +365,8 @@ public final class Positions {
      * Returns a position which contains the coordinates which are contained in the left position but not in the right
      * position. The right position might also contain coordinates not contained in the left position, which are simply
      * ignored.
-     * 
-     * @param left the position from which the coordinates of the right position shall be substracted
+     *
+     * @param left  the position from which the coordinates of the right position shall be substracted
      * @param right the position whose coordinates shall be substracted from the left position
      * @return a position containing all coordinates from the left position, which are not present in the right position
      */

@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * tensor-algebra, by transformation of the values of the tensor when transforming the basis of the values.
  * <p>
  * 'Physical' vectors/quantities usually transform in such a way, that they transform inverse to the basis. For example,
- * lets assume a vector of 3 values, representing karthesian coordinates in a certain unit. If now the basis vectors
+ * lets assume a vector of 3 values, representing karthesian coordinates in a certain base. If now the basis vectors
  * would be multiplied by a factor, the values of the vector would have to be divided by the same factor. This
  * transformation property is called 'contravariance'.
  * <p>

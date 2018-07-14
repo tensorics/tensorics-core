@@ -36,7 +36,6 @@ import org.tensorics.core.tensor.operations.TensorReduction;
  *            class)
  * @param <E> the type of the elements of the tensor to be reduced.
  */
-@Deprecated
 public class OngoingStructuralReduction<C, E> {
 
     private final Tensor<E> tensor;
@@ -55,8 +54,8 @@ public class OngoingStructuralReduction<C, E> {
         return reduceBy(new Slicing<C, E>(slicePosition));
     }
 
-    public OngoingStructuralReductionOptions<E, C> byInterpolatedSlicingAt(C slicePosition) {
-        return new OngoingStructuralReductionOptions<>(slicePosition, tensor, dimension);
+    public OngoingInterpolation<E, C> byInterpolatedSlicingAt(C slicePosition) {
+        return new OngoingInterpolation<>(slicePosition, tensor, dimension);
     }
 
     protected <R> Tensor<R> reduceBy(ReductionStrategy<? super C, E, R> strategy) {

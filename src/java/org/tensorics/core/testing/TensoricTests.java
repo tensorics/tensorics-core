@@ -23,7 +23,7 @@
 package org.tensorics.core.testing;
 
 /**
- * Static methods for unit tests involving tensorics objects.
+ * Static methods for base tests involving tensorics objects.
  * 
  * @author kfuchsbe
  */

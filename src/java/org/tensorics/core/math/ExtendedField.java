@@ -47,11 +47,11 @@ public interface ExtendedField<T> extends ExplicitField<T> {
     /**
      * Returns an object that provides methods for cheating. The usage of these methods is highly discouraged for
      * clients, because they are planned to be removed, as soon as they are not required anymore by the framework. This
-     * will be the case as soon as a unit-treating framework is in place, which will be based on fields only. This is
+     * will be the case as soon as a base-treating framework is in place, which will be based on fields only. This is
      * also the reason, why this method is marked as deprecated.
      * 
      * @return the object providing methods for cheating
-     * @deprecated Will be removed, as soon as a unit-treatment framework, purely based on fields is in place.
+     * @deprecated Will be removed, as soon as a base-treatment framework, purely based on fields is in place.
      */
     @Deprecated
     Cheating<T> cheating();
