@@ -96,10 +96,23 @@ public class TensorSupport<V> extends ScalarIterableSupport<V> {
 
     /**
      * Starting clause for a fluent expression to resample a tensor, using structural resamplings (e.g. repeating), but
-     * also field aware resamplings (e.g. linear interpolation).
+     * also field aware resamplings (e.g. linear interpolation). For example:
+     * 
+     * <pre>
+     * <code>
+     * Tensoric<Double> resampled = resample(aDoubleTensor)
+     *                           .repeat(String.class)
+     *                           .then().linear(Integer.class, Integer::doubleValue)
+     *                           .toTensoric();
+     * </code>
+     * </pre>
+     * 
+     * Note: The order of the options is important, as the resampling will be performed in the given order!
+     * <p>
+     * For options which do not require a field, see the version in {@link TensorStructurals#resample(Tensor)}.
      * 
      * @param tensor the tensor to be resampled
-     * @return a object to further refine the resampling
+     * @return an object to define further the strategy for resampling.
      */
     public OngoingFieldAwareResamplingStart<V> resample(Tensor<V> tensor) {
         return new OngoingFieldAwareResamplingStart<>(tensor, environment.field());

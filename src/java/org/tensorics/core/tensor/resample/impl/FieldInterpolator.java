@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.function.Function;
 
 import org.tensorics.core.math.ExtendedField;
@@ -44,7 +43,7 @@ public class FieldInterpolator<C, V> extends ScalarSupport<V> {
      * @param xConversion a conversion function to convert x-values into the type V. This function has to be defined for
      *            each value of coordinates and x.
      * @param yFunction the function providing the y-values corresponding to each x-value. This function has to be
-     *            defined for each value of coordinates and x.
+     *            defined for each value of coordinates (not for x, as otherwise interpolation would not be required).
      * @param x the point at which the y-value shall be determined.
      * @throws NullPointerException in case any of the given parameters is {@code null}
      */

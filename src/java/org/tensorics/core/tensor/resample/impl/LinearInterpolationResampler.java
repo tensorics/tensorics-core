@@ -12,6 +12,16 @@ import java.util.function.Function;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.tensor.resample.SingleDimensionResampler;
 
+/**
+ * Resamples in one dimension, by linearly interpolating by two neighboring values. If possible it will try to
+ * interpolate between the left and right neighbor. If The requested point is before the first support coordinate or
+ * after the last one, then the interpolation will be done from the first two points or the last two points,
+ * respectively.
+ * 
+ * @author kfuchsbe
+ * @param <C> the type of the coordinates of the concerned dimension
+ * @param <V> the type of the tensor values to resample
+ */
 public class LinearInterpolationResampler<C, V> implements SingleDimensionResampler<C, V> {
 
     private final ExtendedField<V> field;
