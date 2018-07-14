@@ -15,7 +15,7 @@ import org.tensorics.core.tensor.Tensoric;
  * 
  * <pre>
  * <code>
- * MultiDimensionalResampling<V> resampling = MultiDimensionalResampling.resample(Coord1.class, coord1Resampler)
+ * MultiDimensionalResampling&#60;V&#62; resampling = MultiDimensionalResampling.resample(Coord1.class, coord1Resampler)
  *                                                                      .then(Coord2.class, coord2Resampler)
  *                                                                      [...];
  * </code>

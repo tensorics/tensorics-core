@@ -18,8 +18,8 @@ import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.scalar.lang.ScalarSupport;
 
 /**
- * Takes a discrete set of x-values (being of type C - one coordinate of a tensor) and a transformation function of C->V
- * together with a callback function to Y values (of type V - the elements of a field) corresponding to the given X
+ * Takes a discrete set of x-values (being of type C - one coordinate of a tensor) and a transformation function of C to
+ * V together with a callback function to Y values (of type V - the elements of a field) corresponding to the given X
  * values, and tries to determine a y-value for a given x-value by interpolating between the two neighbouring points.
  * The main purpose of this class is encapsulation for reusage and avoiding to avoid pass around a lot of parameters.
  * 
