@@ -24,6 +24,9 @@ public class LinearInterpolationResampler<C, V> implements SingleDimensionResamp
 
     @Override
     public V resample(Collection<C> coordinates, Function<C, V> yFunction, C coordinate) {
+        if (coordinates.contains(coordinate)) {
+            return yFunction.apply(coordinate);
+        }
         return new FieldInterpolator<>(field, coordinates, xConversion, yFunction, coordinate).calculate();
     }
 
@@ -33,7 +36,7 @@ public class LinearInterpolationResampler<C, V> implements SingleDimensionResamp
          * this is not necessarily always true ... It could be that several coordinates transform into the same V ... to
          * be seen if this shall be considered..
          */
-        return coordinates.size() >= 2;
+        return (coordinates.size() >= 2) || (coordinates.contains(coordinate));
     }
 
 }

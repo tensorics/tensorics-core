@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Comparator;
 import java.util.function.Function;
 
-import org.tensorics.core.commons.options.Environment;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.resample.impl.LinearInterpolationResampler;
