@@ -213,7 +213,7 @@ public final class TensorStructurals {
      * 
      * <pre>
      * <code>
-     * Tensoric<V> resampled = resample(aTensor)
+     * Tensoric resampled = resample(aTensor)
      *                           .repeat(Integer.class)
      *                           .then().repeat(String.class)
      *                           .toTensoric();

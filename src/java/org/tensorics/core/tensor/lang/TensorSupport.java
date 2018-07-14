@@ -100,7 +100,7 @@ public class TensorSupport<V> extends ScalarIterableSupport<V> {
      * 
      * <pre>
      * <code>
-     * Tensoric<Double> resampled = resample(aDoubleTensor)
+     * Tensoric resampled = resample(aDoubleTensor)
      *                           .repeat(String.class)
      *                           .then().linear(Integer.class, Integer::doubleValue)
      *                           .toTensoric();
