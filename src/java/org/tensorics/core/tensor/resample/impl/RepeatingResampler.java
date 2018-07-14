@@ -2,9 +2,9 @@ package org.tensorics.core.tensor.resample.impl;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.function.Function;
 
@@ -21,7 +21,7 @@ public class RepeatingResampler<C, V> implements SingleDimensionResampler<C, V> 
     }
 
     @Override
-    public V resample(Collection<C> coordinates, Function<C, V> valuesCallback, C coordinate) {
+    public V resample(Set<C> coordinates, Function<C, V> valuesCallback, C coordinate) {
         if (coordinates.contains(coordinate)) {
             return valuesCallback.apply(coordinate);
         }
@@ -42,7 +42,7 @@ public class RepeatingResampler<C, V> implements SingleDimensionResampler<C, V> 
     }
 
     @Override
-    public boolean canResample(Collection<C> coordinates, C coordinate) {
+    public boolean canResample(Set<C> coordinates, C coordinate) {
         return !coordinates.isEmpty();
     }
 }

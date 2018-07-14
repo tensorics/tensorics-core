@@ -6,7 +6,7 @@ package org.tensorics.core.tensor.resample.impl;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Collection;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.tensorics.core.math.ExtendedField;
@@ -23,7 +23,7 @@ public class LinearInterpolationResampler<C, V> implements SingleDimensionResamp
     }
 
     @Override
-    public V resample(Collection<C> coordinates, Function<C, V> yFunction, C coordinate) {
+    public V resample(Set<C> coordinates, Function<C, V> yFunction, C coordinate) {
         if (coordinates.contains(coordinate)) {
             return yFunction.apply(coordinate);
         }
@@ -31,7 +31,7 @@ public class LinearInterpolationResampler<C, V> implements SingleDimensionResamp
     }
 
     @Override
-    public boolean canResample(Collection<C> coordinates, C coordinate) {
+    public boolean canResample(Set<C> coordinates, C coordinate) {
         /*
          * this is not necessarily always true ... It could be that several coordinates transform into the same V ... to
          * be seen if this shall be considered..

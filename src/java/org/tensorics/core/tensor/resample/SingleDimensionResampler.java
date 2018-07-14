@@ -1,6 +1,6 @@
 package org.tensorics.core.tensor.resample;
 
-import java.util.Collection;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -8,7 +8,7 @@ import java.util.function.Function;
  */
 public interface SingleDimensionResampler<C, V> {
 
-    V resample(Collection<C> coordinates, Function<C, V> values, C coordinate);
+    V resample(Set<C> coordinates, Function<C, V> values, C coordinate);
 
-    boolean canResample(Collection<C> coordinates, C coordinate);
+    boolean canResample(Set<C> coordinates, C coordinate);
 }
