@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Tensor
+title: Tensors
 permalink: /projects/tensorics-core/tensors/
 project: "Tensorics Core"
 ---
@@ -16,7 +16,7 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics
 :simple-meteo-example: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
 
-== Tensor
+== Tensors
 The name "Tensorics" is derived from "Tensor". 
 In mathematics - loosely spoken -, a tensor is a multidimensional data structure,  whose dimensionality is given by the number of indices. A tensor of dimensionality N contains a value for each N-tuple of index values. Tensors in mathematics are usually denoted by noting their elements with a full set of indices. E.g. an element of a 3-dimensional tensor A would be denoted as a_{ijk}. Each index (i,j,k) can potentially have its own range (e.g. 1 < = i < =  M_i, 1 < = j < =  M_j, 1 < = k < =  M_k).
 
