@@ -1,0 +1,18 @@
+---
+layout: default
+title: Core Features
+---
+:page-liquid:
+== Core Features
+Despite the libraries core focus is on multidimensional data treatment and its name ("tensorics") is derived from "tensor" (a multidimensional object in mathematics), it provides several additional concepts which complement each other. The features are designed to work smoothly together, but each of them can of course also be used stand-alone. Te most important ones of them are:
+
+* Tensors of arbitrary dimensionality as central object.
+* Tensors can have elements of any (java) type.
+* Structural and numerical operations on tensors.
+* Java internal DSL (fluent API) for all operations on scalars and tensors.
+* Quantities (value - unit pair).
+* Full support for Tensors of quantities.
+* Error and Validity propagation for quantities and tensors of quantities.
+* Scripting of all functionality with deferred execution, which opens the
+possibilities for parallel processing and massive distribution of calculations.
+* Utilities for creating decision 'chains' in java, which emulate a concept similar to case-matching in scala.
