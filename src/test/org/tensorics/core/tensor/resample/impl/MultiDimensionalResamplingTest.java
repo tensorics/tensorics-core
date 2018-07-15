@@ -74,8 +74,9 @@ public class MultiDimensionalResamplingTest {
 
     // @formatter:on// @formatter:off
     /*
-     * This resamples the tensor only by repeating in string dimension 
-     * (Forward if possible, otherwise backward). This results in:
+     * This resamples the tensor by repeating first in the Integer and then in the
+     * String dimension (Forward if possible, otherwise backward). This results in:
+     * 
      * \ Integer dim:|
      *  \____________|__1___2___3___4___5
      * String      A | B2  B2  B2  B2  B2
@@ -104,8 +105,9 @@ public class MultiDimensionalResamplingTest {
 
     // @formatter:off
     /*
-     * This resamples the tensor by repeating first in the Integer and then in the
-     * String dimension (Forward if possible, otherwise backward). This results in:
+     * This resamples the tensor only by repeating in string dimension 
+     * (Forward if possible, otherwise backward). This results in:
+     * 
      * \ Integer dim:|
      *  \____________|__1___2___3___4___5_...
      * String      A |     B2      D4  
