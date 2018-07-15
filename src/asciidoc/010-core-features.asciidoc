@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Core Features
+permalink: /projects/tensorics-core/features/
+project: "Tensorics Core"
 ---
 :page-liquid:
 == Core Features
