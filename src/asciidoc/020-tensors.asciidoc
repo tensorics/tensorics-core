@@ -1,0 +1,17 @@
+---
+layout: default
+title: Tensors
+permalink: /projects/tensorics-core/tensors/
+project: "Tensorics Core"
+---
+= Tensors
+Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadiusz.gorzawski@cern.ch>
+:icons: font
+:sectanchors:
+:page-liquid:
+:experimental:
+:source-highlighter: highlightjs
+:examplesource: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples
+:sourcecodedir: {{ site.tensorics-core-dir }}/src/java/org/tensorics/core
+:javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics
+:simple-meteo-example: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
