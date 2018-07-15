@@ -106,3 +106,26 @@ A tensor can have zero dimensions. This particular tensor we denote as _scalar_ 
 ----
 Scalar<Double> scalar = scalarOf(2.5);
 ----
+
+=== Shape
+Up to now, we were simply using a tensor as a kind-of map with combined keys. However, the real power is unleashed only when it comes to transformations. As a precondition of this, it is important to introduct the concept of the tensors _Shape_: Just like a map has its set of keys, a tensorics tensor has a shape. It basically describes the structure of the tensor, without its values. Basically it contains the following information:
+- The dimensions of the tensor (e.g. ``Time.class`` and ``City.class`` in the above example) and
+- The available positions in the tensor.
+
+The shape can be retrieved from the tensor and used for our example like the following:
+[source,java]
+----
+Shape shape = degrees.shape();
+
+Set<Class<?>> dims = shape.dimensionSet();
+/* Contains Time.class and City.class */
+
+int dim = shape.dimensionality();
+/* Will be 2 */
+
+Set<Position> poss = shape.positionSet();
+/* contains the 4 positions */
+
+int size = shape.size(); 
+/* Will be 4 */
+----
