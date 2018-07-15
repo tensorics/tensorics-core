@@ -15,3 +15,98 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :sourcecodedir: {{ site.tensorics-core-dir }}/src/java/org/tensorics/core
 :javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics
 :simple-meteo-example: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
+
+== Tensors
+The name "Tensorics" is derived from "Tensor". 
+Loosely speaking, a tensor in mathematics is a multidimensional data structure, 
+whose dimensionality is given by the number of indices. 
+A tensor of dimensionality N contains a value for each N-tuple of index values. 
+Tensors in mathematics are usually denoted by noting their elements with a full set of indices. 
+E.g. an element of a 3-dimensional tensor \tens{A} would be denoted as \tensel{a_{ijk}}. Each index ($i,j,k$) can potentially have its own range (e.g. $1 <= i <=  M_i$, $1 <= j <=  M_j$, $1 <= k <=  M_k$).
+
+Another way to see this is that a tensor has a value for each point in an N-dimensional integer space. In the above notation a dimension is identified by the position of the respective index, and the coordinate in that dimension is given by the value of the index.
+These mathematical concepts are extremely useful, especially when it comes to operations on such tensors (as we see in later sections). Therefore, \tensorics{} borrows many concepts from mathematics. At the same time it translates them into the  programming language in a way that is aimed to form a powerful data structures which encourages readable code as much as possible and helps avoiding confusion and mistakes. For this reason, we use the word "Tensor" in an even sloppier manner. 
+
+The main particularity of a tensorics tensor is that a dimension is not identified by the position of the index, but by a java type (class). Instances of the respective type we denote as \emph{coordinates}. A point within the N-dimensional coordinate space is then defined by a set of objects (instances of coordinate classes), of which each type must be exactly once.  This key concept allows easier and less error-prone usage (because the order of the coordinates/indices is not relevant) and still leads to readable code.
+
+A \tensorics{} tensor has one type parameter, the type of the values it contains, usually denoted as \code{<V>}. Therefore, the tensor data structure can be used as container for any Java type. However, some operations on the tensors will be only possible for certain value types (e.g. mathematical operations).
+
+=== An Example
+
+Since tensorics concepts and syntax are best explained in a practical walk-through, we will use the following example throughout the subsequent sections: 
+
+Consider weather analysis: A data set consists of weather data from different cities and times. The class City and Time are defined and some constants are instantiated.  Temperature values are stored in a tensor of doubles, for example:
+
+[source,java]
+----
+City SF = City.ofName("San Francisco");
+City LA = City.ofName("Los Angeles");
+
+Time T1 = Time.of("2017-01-01 15:00");
+Time T2 = Time.of("2017-01-02 15:00");
+
+Tensor<Double> degrees; 
+/* creation omitted */
+----
+
+=== Accessing Values
+
+Assuming the above constants, we can then simply get temperature values from the tensor:
+[source,java]
+----
+Double t = degrees.get(T1, SF);
+----
+
+As visible here, this looks very similar to getting values from a map, with the following important differences:
+
+* The get method of a tensor accepts N arguments, one for each dimension.
+* The get method of a tensor never returns `null`. It will throw an appropriate exception in case there is no value available in the tensor for the given set of coordinates. 
+
+In general, it shall be noted that all methods within the tensorics library are designed to fail fast. This is particularly important because \tensorics{}, due to its flexible API, cannot rely on compile-time checks in many cases and thus some errors only appear at runtime.
+
+The set of N coordinates is called a _position_ in tensorics. Thus, the code from the above listing is equivalent to
+[source,java]
+----
+Position position = Position.of(T1, SF);
+Double t = degrees.get(position);
+----
+
+=== Main Entry Point
+The interfaces of tensorics objects are kept very slim and usually only provide the absolutely necessary methods. All the other operations on these objects is based on static methods operating on them. The main entry point for these methods (containing all the methods which are not specific to certain value types) is the class \code{Tensorics}. This class contains also, for example, a delegation method to the \code{Position.of()} method:
+
+[source,java]
+----
+Position position = Tensorics.at(T1, SF);
+/* with static import: */
+Position position = at(T1, SF); 
+----
+
+Using a static import for this, allows concise code which will be particularly important when creating tensors. 
+
+NOTE: In all the following code examples, we assume that, whenever there is a plain method call, then it is a static method from the ``Tensorics`` class (or in other words that `Tensorics.` is imported statically).
+
+=== Creating Tensors
+All currently available implementations of tensors are immutable. The usual way to create them is through builders. For example, to create our temperature tensor and put 4 values into it, we would have to do something like:
+
+[source,java]
+----
+Tensor<Double> degrees = 
+    builder(City.class, Time.class)
+         .put(at(SF, T1), 12.5)
+         .put(at(SF, T2), 14.2)
+         .put(at(LA, T1), 17.5)
+         .put(at(LA, T2), 19.2)
+         .build();
+----
+Again, the syntax is very similar to building an immutable map. And indeed this is another way how a \tensorics{} tensor can be seen: As a map from position to a value - and it can be transformed into one:
+[source,java]
+----
+Map<Position, Double> degreesMap = 	mapFrom(degrees);
+----
+
+=== Scalar
+A tensor can have zero dimensions. This particular tensor we denote as _scalar_ in \tensorics{}. It has exactly one value at the position ``Position.empty()``. A scalar can simply be created using the static factory method 
+[source,java]
+----
+Scalar<Double> scalar = scalarOf(2.5);
+----
