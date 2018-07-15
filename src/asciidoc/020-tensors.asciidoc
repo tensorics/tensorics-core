@@ -97,7 +97,7 @@ Tensor<Double> degrees =
 Again, the syntax is very similar to building an immutable map. And indeed this is another way how a \tensorics{} tensor can be seen: As a map from position to a value - and it can be transformed into one:
 [source,java]
 ----
-Map<Position, Double> degreesMap = 	mapFrom(degrees);
+Map<Position, Double> degreesMap = mapFrom(degrees);
 ----
 
 === Scalar
