@@ -16,30 +16,6 @@ Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>, Arkadiusz Gorzawski <arkadius
 :javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics/core/tensor
 
 == Structural Operations
-Up to now, we were simply using a tensor as a kind-of map with combined keys. However, the real power is unleashed only when it comes to transformations. For this it is useful to understand on additional concept:
-
-=== Shape
-Just like a map has its set of keys, a tensorics tensor has a shape. It basically describes the structure of the tensor, without its values. Basically it contains the following information:
-- The dimensions of the tensor (e.g. ``Time.class`` and ``City.class`` in the above example) and
-- The available positions in the tensor.
-
-The shape can be retrieved from the tensor and used for our example like the following:
-[source,java]
-----
-Shape shape = degrees.shape();
-
-Set<Class<?>> dims = shape.dimensionSet();
-/* Contains Time.class and City.class */
-
-int dim = shape.dimensionality();
-/* Will be 2 */
-
-Set<Position> poss = shape.positionSet();
-/* contains the 4 positions */
-
-int size = shape.size(); 
-/* Will be 4 */
-----
 
 === Extracting Subtensors
 One very common structural operation is extracting sub-tensors from a tensor:
