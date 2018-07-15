@@ -130,4 +130,6 @@ This very particular multiplication of two tensors is basically the generalizati
 ----
 calculate(degrees).times(other);
 ----
-To have this yield the expected results, co- and contra-variant dimensions have to be distinguished. In \tensorics{}, this distinction is achieved by the following mechanism: By default, coordinates are assumed to be contravariant. Covariant coordinates are forced to inherit from the class \code{Covariant<C>}, where the generic parameter \code{<C>} is the type of the corresponding contravariant coordinate. Detailed information about this can be found in the tensorics source code documentation \cite{tensorics-javadoc}.
+To have this yield the expected results, co- and contra-variant dimensions have to be distinguished. In \tensorics{}, this distinction is achieved by the following mechanism: By default, coordinates are assumed to be contravariant. Covariant coordinates are forced to inherit from the class \code{Covariant<C>}, where the generic parameter \code{<C>} is the type of the corresponding contravariant coordinate. Detailed information about this can be found in the respective 
+
+link:{javadoc-baseurl}/operations/InnerTensorOperation[javadoc entry].
