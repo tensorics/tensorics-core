@@ -1,1 +1,32 @@
+---
+layout: default
+title: Mathematical Remarks
+permalink: /projects/tensorics-core/mathematical-remarks/
+project: "Tensorics Core"
+---
+= Mathematical Remarks
+Kajetan Fuchsberger <kajetan.fuchsberger@cern.ch>
+:icons: font
+:sectanchors:
+:page-liquid:
+:experimental:
+:source-highlighter: highlightjs
+:examplesource: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples
+:sourcecodedir: {{ site.tensorics-core-dir }}/src/java/org/tensorics/core
+:javadoc-baseurl: {{ site.tensorics-core-javadoc }}/org/tensorics
+:simple-meteo-example: {{ site.tensorics-core-dir }}/src/examples/org/tensorics/core/examples/meteo/simple/SimpleMeteoExample.java
+
+== Mathematical Remarks
+
+=== Tensors
+
+The name "Tensorics" is derived from "Tensor". 
+In mathematics - loosely spoken -, a tensor is a multidimensional data structure,  whose dimensionality is given by the number of indices. A tensor of dimensionality N contains a value for each N-tuple of index values. Tensors in mathematics are usually denoted by noting their elements with a full set of indices. E.g. an element of a 3-dimensional tensor A would be denoted as a_{ijk}. Each index (i,j,k) can potentially have its own range (e.g. 1 < = i < =  M_i, 1 < = j < =  M_j, 1 < = k < =  M_k).
+
+Another way to see this is that a tensor has a value for each point in an N-dimensional integer space. In the above notation a dimension is identified by the position of the respective index, and the coordinate in that dimension is given by the value of the index.
+These mathematical concepts are extremely useful, especially when it comes to operations on such tensors (as we see in later sections). Therefore, tensorics borrows many concepts from mathematics. At the same time it translates them into the  programming language in a way that is aimed to form powerful data structures which encourage readable code as much as possible and help avoiding confusion and mistakes. For this reason, we use the word "Tensor" in an even sloppier manner. 
+
+The main particularity of a tensorics tensor is that a dimension is not identified by the position of the index, but by a java type (class). Instances of the respective type we denote as _coordinates_. A point within the N-dimensional coordinate space is then defined by a set of objects (instances of coordinate classes), of which each type must be exactly once.  This key concept allows easier and less error-prone usage (because the order of the coordinates/indices is not relevant) and still leads to readable code.
+
+A tensorics tensor has one type parameter, the type of the values it contains, usually denoted as `<V>`. Therefore, the tensor data structure can be used as container for any Java type. However, some operations on the tensors will be only possible for certain value types (e.g. mathematical operations).
 
