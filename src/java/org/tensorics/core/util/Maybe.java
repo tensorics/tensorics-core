@@ -27,11 +27,11 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 
 /**
- * This utility class implements the concept of a "Maybe" or "Try" {@link Optional}. A Maybe<T> either carries a T or an
+ * This utility class implements the concept of a "Maybe" or "Try" {@link Optional}. A Maybe&lt;T&gt; either carries a T or an
  * exception that occurred when producing it.
  * 
  * @author mihostet
- * @param <T>
+ * @param <T> the type to carry.
  */
 public class Maybe<T> {
     private final T value;
@@ -76,8 +76,8 @@ public class Maybe<T> {
     }
 
     /**
-     * Construct a "successful" {@link Maybe}<Void> containing a null value. This special Maybe objects represents a
-     * successful execution with no result (e.g. a void function). Note that ONLY Maybe<Void> is allowed to carry a null
+     * Construct a "successful" {@link Maybe}&lt;Void&gt; containing a null value. This special Maybe objects represents a
+     * successful execution with no result (e.g. a void function). Note that ONLY Maybe&lt;Void&gt; is allowed to carry a null
      * value.
      * 
      * @return the successful Maybe<Void> object
@@ -163,10 +163,10 @@ public class Maybe<T> {
     }
 
     /**
-     * Construct a {@link Maybe}<Void> from the execution of a void function.
+     * Construct a {@link Maybe}&lt;Void&gt; from the execution of a void function.
      * 
      * @param runnable the function to run.
-     * @return A successful {@link Maybe}<Void> if the function run successfully, or an exception of one occurred.
+     * @return A successful {@link Maybe}&lt;Void&gt; if the function run successfully, or an exception of one occurred.
      */
     public static Maybe<Void> attempt(ThrowingRunnable runnable) {
         requireNonNull(runnable);
@@ -201,10 +201,10 @@ public class Maybe<T> {
     /**
      * Apply a void function if this {@link Maybe} is in a "successful" state. Pass through the exception in case it is
      * in an "unsuccessful" state. If the transformation function throws, the exception is returned wrapped in an
-     * "unsuccessful" Maybe. If it succeeds, return an empty Maybe<Void>.
+     * "unsuccessful" Maybe. If it succeeds, return an empty Maybe&lt;Void&gt;.
      * 
      * @param function the function to apply
-     * @return A successful Maybe<Void> if the function is executed and succeeds. An unsuccessful Maybe otherwise.
+     * @return A successful Maybe&lt;Void&gt; if the function is executed and succeeds. An unsuccessful Maybe otherwise.
      */
     public Maybe<Void> map(ThrowingConsumer<T> function) {
         requireNonNull(function);
@@ -222,7 +222,7 @@ public class Maybe<T> {
     /**
      * Apply a function if this {@link Maybe} is in a "successful" state. Pass through the exception in case it is in an
      * "unsuccessful" state. The function does not get the value of the Maybe passed as parameter, which is useful e.g.
-     * for chaining Maybe<Void>. If the function succeeds, its result is returned as a successful Maybe.
+     * for chaining Maybe&lt;Void&gt;. If the function succeeds, its result is returned as a successful Maybe.
      * 
      * @param runnable the function to apply
      * @return A successful Maybe wrapping the return value if the function is executed and succeeds. An unsuccessful
@@ -243,10 +243,10 @@ public class Maybe<T> {
     /**
      * Apply a void function if this {@link Maybe} is in a "successful" state. Pass through the exception in case it is
      * in an "unsuccessful" state. The function does not get the value of the Maybe passed as parameter, which is useful
-     * e.g. for chaining Maybe<Void>. If the function succeeds, a successful empty Maybe<Void> is returned.
+     * e.g. for chaining Maybe&lt;Void&gt;. If the function succeeds, a successful empty Maybe&lt;Void&gt; is returned.
      * 
      * @param runnable the function to apply
-     * @return A successful Maybe<Void> it the function is executed and succeeds. An unsuccessful Maybe otherwise.
+     * @return A successful Maybe&lt;Void&gt; it the function is executed and succeeds. An unsuccessful Maybe otherwise.
      */
     public Maybe<Void> then(ThrowingRunnable runnable) {
         requireNonNull(runnable);
