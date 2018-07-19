@@ -80,7 +80,7 @@ public class Maybe<T> {
      * successful execution with no result (e.g. a void function). Note that ONLY Maybe&lt;Void&gt; is allowed to carry a null
      * value.
      * 
-     * @return the successful Maybe<Void> object
+     * @return the successful Maybe&lt;Void&gt; object
      */
     public static Maybe<Void> ofVoid() {
         return new Maybe<>();
