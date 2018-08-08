@@ -108,7 +108,7 @@ public abstract class AbstractDiscreteFunctionBinaryOperation<X, Y>
         if (getClass() != obj.getClass()) {
             return false;
         }
-        AbstractDiscreteFunctionBinaryOperation<?,?> other = (AbstractDiscreteFunctionBinaryOperation<?,?>) obj;
+        AbstractDiscreteFunctionBinaryOperation<?, ?> other = (AbstractDiscreteFunctionBinaryOperation<?, ?>) obj;
         if (comparator == null) {
             if (other.comparator != null) {
                 return false;

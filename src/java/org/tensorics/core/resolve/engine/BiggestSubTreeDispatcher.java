@@ -110,11 +110,12 @@ public class BiggestSubTreeDispatcher implements Dispatcher {
                     }
                 }
 
-                if (repository.resolversFor(expression).isEmpty() && Resolvers.contextResolvesAllNodes(expression.getChildren(), oldContext)) {
+                if (repository.resolversFor(expression).isEmpty()
+                        && Resolvers.contextResolvesAllNodes(expression.getChildren(), oldContext)) {
                     throw new IllegalStateException("No resolvers could be found for node " + expression
                             + ", while all children are already resolved.");
                 }
-                
+
                 return repository.containsKey(expression);
             }
 

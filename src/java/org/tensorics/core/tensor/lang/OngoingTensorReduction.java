@@ -14,7 +14,7 @@ public class OngoingTensorReduction<V> {
     }
 
     protected <C, R> Tensor<R> reduceBy(ReductionStrategy<C, V, R> strategy) {
-      return null;//  return new TensorReduction<>(dimension, strategy).apply(tensor);
+        return null;// return new TensorReduction<>(dimension, strategy).apply(tensor);
     }
 
 }

@@ -24,12 +24,11 @@ public class LogicalOperationTest {
     @Test
     @Parameters(method = "getParametersAnd")
     public void testAND(boolean input1, boolean input2, boolean result) {
-         BinaryFunction<Boolean, Boolean> andOperation = BooleanOperations.and();
+        BinaryFunction<Boolean, Boolean> andOperation = BooleanOperations.and();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
 
-    
     @Test
     @Parameters(method = "getParametersNand")
     public void testNAND(boolean input1, boolean input2, boolean result) {
@@ -37,11 +36,11 @@ public class LogicalOperationTest {
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
-    
+
     @Test
     @Parameters(method = "getParametersXor")
     public void testXOR(boolean input1, boolean input2, boolean result) {
-         BinaryFunction<Boolean, Boolean> andOperation = BooleanOperations.xor();
+        BinaryFunction<Boolean, Boolean> andOperation = BooleanOperations.xor();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
@@ -63,7 +62,7 @@ public class LogicalOperationTest {
 
         return params;
     }
-    
+
     public Object[] getParametersNand() {
         Object[] params = new Object[4];
         params[0] = new Object[] { true, true, false };
@@ -73,7 +72,6 @@ public class LogicalOperationTest {
 
         return params;
     }
-    
 
     public Object[] getParametersXor() {
         Object[] params = new Object[4];

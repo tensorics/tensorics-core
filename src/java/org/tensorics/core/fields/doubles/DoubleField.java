@@ -37,7 +37,7 @@ import org.tensorics.core.math.structures.ringlike.OrderedField;
  * @author kfuchsbe
  * @see Structures
  */
-public final class DoubleField extends AbstractOrderedField<Double>implements OrderedField<Double> {
+public final class DoubleField extends AbstractOrderedField<Double> implements OrderedField<Double> {
     private static final long serialVersionUID = 1L;
 
     private static final double ZERO = 0.0;

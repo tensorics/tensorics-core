@@ -37,6 +37,7 @@ import org.tensorics.core.quantity.options.ImmutableConfidenceLevel;
 import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.OngoingFieldAwareResamplingStart;
 import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
 import org.tensorics.core.tensor.lang.OngoingQuantityTensorValueExtraction;
 import org.tensorics.core.tensor.lang.OngoingTensorOperation;
@@ -271,4 +272,22 @@ public class TensoricSupport<V> {
         return new ImmutableConfidenceLevel<>(confidenceLevel);
     }
 
+    public final V averageOf(Iterable<V> values) {
+        return tensoricFieldUsage.averageOf(values);
+    }
+
+    public V varOf(Iterable<V> values) {
+        return tensoricFieldUsage.varOf(values);
+    }
+
+    public V stdOf(Iterable<V> values) {
+        return tensoricFieldUsage.stdOf(values);
+    }
+
+    public OngoingFieldAwareResamplingStart<V> resample(Tensor<V> tensor) {
+        return tensoricFieldUsage.resample(tensor);
+    }
+
+    
+    
 }

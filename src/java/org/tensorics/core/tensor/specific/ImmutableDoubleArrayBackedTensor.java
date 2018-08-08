@@ -67,6 +67,11 @@ public class ImmutableDoubleArrayBackedTensor extends AbstractTensor<Double> {
         return this.tensorContext;
     }
 
+    @Override
+    public boolean contains(Position position) {
+        return shape().contains(position);
+    }
+
     public static Builder builder(PositionIndexer indexer) {
         return new Builder(indexer);
     }
@@ -103,4 +108,5 @@ public class ImmutableDoubleArrayBackedTensor extends AbstractTensor<Double> {
         }
 
     }
+
 }

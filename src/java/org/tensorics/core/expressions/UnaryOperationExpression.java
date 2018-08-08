@@ -41,7 +41,7 @@ import com.google.common.collect.ImmutableList;
  * @author kfuchsbe
  * @param <T> the type of the unary operand on which to perform the unary operation
  */
-public class UnaryOperationExpression<T> extends AbstractDeferredExpression<T>  implements Serializable{
+public class UnaryOperationExpression<T> extends AbstractDeferredExpression<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final UnaryOperation<T> operation;

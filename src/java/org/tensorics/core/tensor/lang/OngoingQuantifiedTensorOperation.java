@@ -61,7 +61,6 @@ public class OngoingQuantifiedTensorOperation<S>
         return plus(ImmutableScalar.of(right));
     }
 
-    
     @Override
     public Tensor<QuantifiedValue<S>> minus(Tensor<QuantifiedValue<S>> right) {
         return evaluate(right, operationRepository.subtraction());
@@ -71,8 +70,7 @@ public class OngoingQuantifiedTensorOperation<S>
     public Tensor<QuantifiedValue<S>> minusV(QuantifiedValue<S> right) {
         return minus(ImmutableScalar.of(right));
     }
-    
-    
+
     @Override
     public Tensor<QuantifiedValue<S>> elementTimes(Tensor<QuantifiedValue<S>> right) {
         return evaluate(right, operationRepository.multiplication());
@@ -100,5 +98,4 @@ public class OngoingQuantifiedTensorOperation<S>
                 right);
     }
 
-   
 }

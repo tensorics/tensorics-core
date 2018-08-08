@@ -28,24 +28,7 @@ package org.tensorics.core.tensor;
  * @author agorzaws, kfuchsbe
  * @param <E> type of the values hold in the tensor.
  */
-public interface Tensor<E> {
-
-    /**
-     * @param position the position in the N-dimensional space where to find the value.
-     * @return the value at the given position
-     * @throws IllegalArgumentException when number of coordinates is not sufficient
-     * @throws java.util.NoSuchElementException if the tensor contains no element for the given position
-     */
-    E get(Position position);
-
-    /**
-     * @param coordinates form N-dimensional space where to find the value.
-     * @return a value at the given coordinates.
-     * @throws IllegalArgumentException if the number of coordinates in incorrect
-     * @throws java.util.NoSuchElementException if the tensor contains no element for the position constructed from the
-     *             given coordinates.
-     */
-    E get(Object... coordinates);
+public interface Tensor<E> extends Tensoric<E> {
 
     /**
      * Retrieves the shape of the tensor. As shape we understand simply the structure of a tensor: Its dimensions and

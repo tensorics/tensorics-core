@@ -22,7 +22,7 @@ import com.google.common.collect.ImmutableList;
  * @author acalia, caguiler, kfuchsberger
  * @param <T> type of the elements of the iterable
  */
-public class IterableResolvingExpression<T> extends AbstractDeferredExpression<Iterable<T>>implements Serializable {
+public class IterableResolvingExpression<T> extends AbstractDeferredExpression<Iterable<T>> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<Expression<T>> expressions;

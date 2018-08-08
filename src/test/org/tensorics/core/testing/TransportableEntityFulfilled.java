@@ -39,8 +39,7 @@ public abstract class TransportableEntityFulfilled {
     private final String packageNameToScan;
     private final Set<Class<?>> typeToTest;
 
-    public TransportableEntityFulfilled(String packageNameToScan, Class<?> typeToTest,
-            Class<?>... moreClassesToTest) {
+    public TransportableEntityFulfilled(String packageNameToScan, Class<?> typeToTest, Class<?>... moreClassesToTest) {
         this.packageNameToScan = Objects.requireNonNull(packageNameToScan, "packageNameToScan must not be null");
         this.typeToTest = ImmutableSet.<Class<?>> builder().add(typeToTest).addAll(Arrays.asList(moreClassesToTest))
                 .build();
@@ -61,10 +60,9 @@ public abstract class TransportableEntityFulfilled {
     @Test
     @Ignore("Damn this is difficult! ;-) To be worked on!")
     @Parameters(method = "getParameters")
-    public void equalsMethodIsValid(Class<?> classToCheck)  {
+    public void equalsMethodIsValid(Class<?> classToCheck) {
         EqualsVerifier.forClass(classToCheck).verify();
     }
-
 
     @Test
     @Parameters(method = "getParameters")

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.tensorics.core.tensor.Coordinates;
 import org.tensorics.core.tensor.Position;
@@ -11,7 +12,7 @@ import org.tensorics.core.tensor.Position;
 import com.google.common.collect.ImmutableList;
 
 /**
- * An instance of this class defines both, the ordering of different dimensions amongst each other and the oder of
+ * An instance of this class defines both, the ordering of different dimensions amongst each other and the order of
  * coordinates within each dimension.
  * 
  * @author kaifox
@@ -64,7 +65,7 @@ public class PositionOrdering {
         return then(dimension, Comparator.naturalOrder());
     }
 
-    public Iterable<Class<?>> dimensions() {
+    public List<Class<?>> dimensions() {
         return ImmutableList.copyOf(this.dimensionComparators.keySet());
     }
 
@@ -73,7 +74,7 @@ public class PositionOrdering {
                 .reduce((l, r) -> l.thenComparing(r)).get();
     }
 
-    private <T> Comparator<T> comparatorFor(Class<T> dimension) {
+    public <T> Comparator<T> comparatorFor(Class<T> dimension) {
         /* This cast is safe, as we ensure the correct type when putting the comparator into the map */
         @SuppressWarnings("unchecked")
         Comparator<T> comparator = (Comparator<T>) this.dimensionComparators.get(dimension);

@@ -97,4 +97,7 @@ public class ScalarSupport<V> implements BasicOperationSupport<V> {
         return field.absoluteValue().perform(value);
     }
 
+    public ExtendedField<V> field() {
+        return this.field;
+    }
 }

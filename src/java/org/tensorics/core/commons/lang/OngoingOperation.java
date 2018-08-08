@@ -33,11 +33,11 @@ package org.tensorics.core.commons.lang;
 public interface OngoingOperation<T, V> {
 
     T plus(T right);
-    
+
     T plusV(V right);
 
     T minus(T right);
-    
+
     T minusV(V right);
 
     T elementTimes(T right);

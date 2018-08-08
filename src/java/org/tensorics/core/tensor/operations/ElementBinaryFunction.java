@@ -102,7 +102,7 @@ public class ElementBinaryFunction<V, R> implements BinaryFunction<Tensor<V>, Te
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ElementBinaryFunction<?,?> other = (ElementBinaryFunction<?,?>) obj;
+        ElementBinaryFunction<?, ?> other = (ElementBinaryFunction<?, ?>) obj;
         if (operation == null) {
             if (other.operation != null) {
                 return false;

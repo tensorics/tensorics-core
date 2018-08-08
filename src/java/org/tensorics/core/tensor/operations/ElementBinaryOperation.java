@@ -43,7 +43,7 @@ import org.tensorics.core.tensor.options.ShapingStrategy;
  * @author kfuchsbe
  * @param <V> The type of the tensor values
  */
-public class ElementBinaryOperation<V> extends ElementBinaryFunction<V, V>implements BinaryOperation<Tensor<V>> {
+public class ElementBinaryOperation<V> extends ElementBinaryFunction<V, V> implements BinaryOperation<Tensor<V>> {
     private static final long serialVersionUID = 1L;
 
     public ElementBinaryOperation(BinaryOperation<V> operation, OptionRegistry<ManipulationOption> optionRegistry) {

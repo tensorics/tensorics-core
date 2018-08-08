@@ -122,11 +122,11 @@ public final class TensorStructurals {
     }
 
     public static <S> OngoingFlattening<S> flatten(Tensor<S> tensor) {
-        return new OngoingFlattening<S>(tensor);
+        return new OngoingFlattening<>(tensor);
     }
 
     public static final <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
-        return new OngoingCompletion<S>(tensor);
+        return new OngoingCompletion<>(tensor);
     }
 
     public static <S, T> Tensor<T> transformEntries(Tensor<S> tensor, Function<Entry<Position, S>, T> function) {
@@ -207,8 +207,29 @@ public final class TensorStructurals {
         return builder.build();
     }
 
-    public static final <V> OngoingResampling<V> resample(Tensor<V> tensor) {
-        return new OngoingResampling<>(tensor);
+    /**
+     * Starting point for a fluent clause to describe resampling in one or more dimensions. This resampling only
+     * provides options which do not require the knowledge of a field. For example:
+     * 
+     * <pre>
+     * <code>
+     * Tensoric&#60;V&#62; resampled = resample(aTensor)
+     *                           .repeat(Integer.class)
+     *                           .then().repeat(String.class)
+     *                           .toTensoric();
+     * </code>
+     * </pre>
+     * 
+     * Note: The order of the options is important, as the resampling will be performed in the given order!
+     * <p>
+     * For options which require a field, (e.g. linear interpolation), see the version in
+     * {@link TensorSupport#resample(Tensor)}.
+     * 
+     * @param tensor the tensor to be resampled
+     * @return an object to define further the strategy for resampling.
+     */
+    public static final <V> OngoingResamplingStart<V> resample(Tensor<V> tensor) {
+        return new OngoingResamplingStart<>(tensor);
     }
 
 }
