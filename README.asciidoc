@@ -10,6 +10,8 @@ Tensorics is a java framework which uses a tensor as a central object. A tensor 
 
 = Getting started
 
+== A map with composed keys
+
 One way to describe a tensor within tensorics is to imagine it as a map from a position within a multidimensional to values of any type. To illustrate this, let's assume a tensor of double values: 
 ----
 Tensor<Double> aTensor; /* initialization omitted for the moment */;
