@@ -39,6 +39,13 @@ Tensor<Double> aTensor = builder(String.class, Integer.class) // the dimension o
                             .build();
 ----
 
+Tensors built in such a way are always immutable objects. The values can then be simply accessed through get methods:
+----
+Double value = aTensor.get("kaifox", 1); // would return 1.5
+----
+
+NOTE: A main difference to a usual map is here that get() methods on tensors would throw a `NoSuchElementException` if a set of coordinates i provided for which no value is stored in the tensor, while a get() method of a map would silently return `null`. 
+
 
 Tensorics provides a big featureset of operations to work with such tensors, for example:
 
