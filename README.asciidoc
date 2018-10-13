@@ -18,13 +18,14 @@ then it can be transformed into a map by:
 ----
 Map<Position, Double> map = Tensorics.mapFrom(aTensor);
 ----
-
-Here, 'Position' denotes the set of partial keys. For example a position could be something like:
+Here, 'Position' is the type of keys in this map and is itself composed of a fixed number (N) of partial keys. N is the number of dimensions of the tensor. The partial keys are identified by their types. For example, if we would assume that our tensor would have two dimensions (`String.class` and `Date.class`), then a valid position for this tensor could be e.g. created like this:
 [source, java]
 ----
 Position position = Position.of("kaifox", Date.now());
 ----
-where the two coordinates of in the forementioned N-dimensional space (where N=2 in this case) are "kaifox" and Date.now(). The types of the coordinates are denoted as the dimensions (String.class and Date.class in this case - with the disclaimer that Date is not a good choice, because it's not immutable - but let this aside ;-). Tensorics provides a big featureset of operations to work with such tensors, for example:
+where the two coordinates within the 2-dimensional space (where N=2 in this case) are "kaifox" and Date.now(). (with the disclaimer that Date is not a good choice, because it's not immutable - but let this aside ;-). 
+
+Tensorics provides a big featureset of operations to work with such tensors, for example:
 
 * Structural operations (extractions, slicing) for any value type of tensors
 * Fluent API for all operations on scalars and tensors.
