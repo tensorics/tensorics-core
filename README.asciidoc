@@ -8,10 +8,6 @@ image:https://api.codacy.com/project/badge/Grade/b830f8eafc0441199d126967bd87d08
 
 Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors. 
 
-= Links
-* http://tensorics.org
-* https://tensorics.github.io/projects/tensorics-core/javadoc/
-
 = Getting started
 
 ----
@@ -35,12 +31,7 @@ where the two coordinates of in the forementioned N-dimensional space (where N=2
 possibilities for parallel processing and massive distribution of calculations. 
 
 More on: http://tensorics.github.io/tensorics-core/tensorics-quickstart.html
----
- 
-IMPORTANT: Both, the current implementation as well as this document, are work in progress. 
-The main purpose of the actual version is provide some functionality of every of the above 
-mentioned categories and proofing the concepts of their interplay. Still, already the available 
-subset of features should have useful applications in many contexts. Almost no effort put on 
-profiling and performance optimization. Therefore, it might well be that some operations are 
-quite inefficient and/or memory consuming for big objects. Such improvements are definitely planned 
-for later iterations. Any contributions are welcome.
+
+= Links
+* http://tensorics.org
+* https://tensorics.github.io/projects/tensorics-core/javadoc/
