@@ -25,7 +25,7 @@ Here, 'Position' is the type of keys in this map and is itself composed of a fix
 ----
 Position position = Position.of("kaifox", 1);
 ----
-where the two coordinates within the 2-dimensional space (where N=2 in this case) are "kaifox" and "1".
+where the two coordinates within the 2-dimensional space (where N=2 in this case) are "kaifox" (dimension `String.class`) and 1 (dimension `Integer.class`).
 
 == Construction and accessing values
 
