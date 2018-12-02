@@ -23,6 +23,11 @@ public class DimtypedTensorTest {
     }
 
     @Test
+    public void getExistingInversedOrderWorks() {
+        assertThat(tensor().get(3, "c")).isCloseTo(0.3, offset(0.001));
+    }
+
+    @Test
     public void getNonExistingThrows() {
         thrown.expect(NoSuchElementException.class);
         tensor().get("c", 1);
