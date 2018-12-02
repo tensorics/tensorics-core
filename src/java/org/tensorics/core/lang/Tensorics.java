@@ -1,5 +1,5 @@
 // @formatter:off
- /*******************************************************************************
+/*******************************************************************************
  *
  * This file is part of tensorics.
  *
@@ -42,6 +42,7 @@ import org.tensorics.core.tensor.Scalar;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensor.dimtyped.*;
 import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingResamplingStart;
@@ -91,8 +92,8 @@ public final class Tensorics {
      * tensor manipulation.
      *
      * @param field the (mathematical construct) field which defines the operations for the tensor elements.
+     * @param <E>   the types of values in the field
      * @return a tensoric support, which provides the starting methods for the tensoric fluent API.
-     * @param <E> the types of values in the field
      */
     public static <E> TensoricSupport<E> using(ExtendedField<E> field) {
         return new TensoricSupport<>(EnvironmentImpl.of(field, ManipulationOptions.defaultOptions(field)));
@@ -121,6 +122,26 @@ public final class Tensorics {
      */
     public static <T> TensorBuilder<T> builder(Class<?>... dimensions) {
         return ImmutableTensor.builder(dimensions);
+    }
+
+    public static <C1, T> TensorBuilder1D<C1, T> builder(Class<C1> dimension1) {
+        return DimtypedTensorBuilders.create(TensorBuilder1D.class, ImmutableTensor.builder(dimension1), Tensor1D.class);
+    }
+
+    public static <C1, C2, T> TensorBuilder2D<C1, C2, T> builder(Class<C1> d1, Class<C2> d2) {
+        return DimtypedTensorBuilders.create(TensorBuilder2D.class, ImmutableTensor.builder(d1, d2), Tensor2D.class);
+    }
+
+    public static <C1, C2, C3, T> TensorBuilder3D<C1, C2, C3, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3) {
+        return DimtypedTensorBuilders.create(TensorBuilder3D.class, ImmutableTensor.builder(d1, d2, d3), Tensor1D.class);
+    }
+
+    public static <C1, C2, C3, C4, T> TensorBuilder4D<C1, C2, C3, C4, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4) {
+        return DimtypedTensorBuilders.create(TensorBuilder4D.class, ImmutableTensor.builder(d1, d2, d3, d4), Tensor1D.class);
+    }
+
+    public static <C1, C2, C3, C4, C5, T> TensorBuilder5D<C1, C2, C3, C4, C5, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4, Class<C5> d5) {
+        return DimtypedTensorBuilders.create(TensorBuilder5D.class, ImmutableTensor.builder(d1, d2, d3, d4, d5), Tensor1D.class);
     }
 
     /**
@@ -162,7 +183,7 @@ public final class Tensorics {
      * Convenience method to create a quantity directly from a jscience base.
      *
      * @param value the of the quantity
-     * @param unit the base of the quantity
+     * @param unit  the base of the quantity
      * @return a new instance of the quantity
      * @see Tensorics#quantityOf(Object, Unit)
      */
@@ -199,11 +220,11 @@ public final class Tensorics {
     }
 
     public static <V> Tensor<V> empty(Iterable<Class<?>> dimensions) {
-        return ImmutableTensor.<V> builder(dimensions).build();
+        return ImmutableTensor.<V>builder(dimensions).build();
     }
 
     public static <V> Tensor<V> empty(Class<?>... dimensions) {
-        return ImmutableTensor.<V> builder(dimensions).build();
+        return ImmutableTensor.<V>builder(dimensions).build();
     }
 
     /**
@@ -389,7 +410,7 @@ public final class Tensorics {
     }
 
     public static final Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value,
-            javax.measure.unit.Unit<?> unit) {
+                                                                          javax.measure.unit.Unit<?> unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
         return scalarOf(quantity);
     }
