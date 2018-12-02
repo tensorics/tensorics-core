@@ -1,6 +1,5 @@
 package org.tensorics.core.tensor.dimtyped;
 
-import com.sun.jdi.InvocationException;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.TensorBuilder;
 
