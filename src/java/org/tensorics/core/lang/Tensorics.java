@@ -125,23 +125,23 @@ public final class Tensorics {
     }
 
     public static <C1, T> TensorBuilder1D<C1, T> builder(Class<C1> dimension1) {
-        return DimtypedTensorBuilders.create(TensorBuilder1D.class, ImmutableTensor.builder(dimension1), Tensor1D.class);
+        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(dimension1), TensorBuilder1D.class, Tensor1D.class);
     }
 
     public static <C1, C2, T> TensorBuilder2D<C1, C2, T> builder(Class<C1> d1, Class<C2> d2) {
-        return DimtypedTensorBuilders.create(TensorBuilder2D.class, ImmutableTensor.builder(d1, d2), Tensor2D.class);
+        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(d1, d2), TensorBuilder2D.class, Tensor2D.class);
     }
 
     public static <C1, C2, C3, T> TensorBuilder3D<C1, C2, C3, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3) {
-        return DimtypedTensorBuilders.create(TensorBuilder3D.class, ImmutableTensor.builder(d1, d2, d3), Tensor1D.class);
+        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3), TensorBuilder3D.class, Tensor1D.class);
     }
 
     public static <C1, C2, C3, C4, T> TensorBuilder4D<C1, C2, C3, C4, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4) {
-        return DimtypedTensorBuilders.create(TensorBuilder4D.class, ImmutableTensor.builder(d1, d2, d3, d4), Tensor1D.class);
+        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4), TensorBuilder4D.class, Tensor1D.class);
     }
 
     public static <C1, C2, C3, C4, C5, T> TensorBuilder5D<C1, C2, C3, C4, C5, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4, Class<C5> d5) {
-        return DimtypedTensorBuilders.create(TensorBuilder5D.class, ImmutableTensor.builder(d1, d2, d3, d4, d5), Tensor1D.class);
+        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4, d5), TensorBuilder5D.class, Tensor1D.class);
     }
 
     /**
