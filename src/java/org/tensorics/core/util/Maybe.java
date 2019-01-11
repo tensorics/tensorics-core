@@ -117,6 +117,21 @@ public class Maybe<T> {
     }
 
     /**
+     * Retrieve the value stored in this {@link Maybe} as an {@link Optional}. If an exception is stored in this Maybe,
+     * the returned optional will be empty. For a "successful" {@link Maybe}&lt;Void&gt;, it will contain null.
+     * 
+     * @return the value
+     * @throws RuntimeException if this Maybe objects contains an exception
+     */
+    public Optional<T> optionalValue() {
+        if (exception != null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(value);
+        }
+    }
+
+    /**
      * Throw the contained exception, wrapped in a {@link RuntimeException}, if any. If called on a "successful" Maybe,
      * this method does nothing.
      */
