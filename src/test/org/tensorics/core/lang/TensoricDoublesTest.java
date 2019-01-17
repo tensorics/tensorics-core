@@ -15,6 +15,7 @@ import java.util.function.Function;
 
 import javax.measure.unit.Unit;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.matchers.EqualsWithDelta;
@@ -78,6 +79,6 @@ public class TensoricDoublesTest {
             Unit<?> expectedUnit) {
         QuantifiedValue<Double> result = operation.apply(iterableSample);
         assertThat(result.unit(), is(JScienceUnit.of(expectedUnit)));
-        assertThat(result.value(), is(new EqualsWithDelta(expectedResult, DELTA)));
+        assertThat(result.value(), is(Matchers.closeTo(expectedResult, DELTA)));
     }
 }
