@@ -1,5 +1,5 @@
 == tensorics-core
-
+   
 image:https://img.shields.io/github/release/tensorics/tensorics-core.svg?maxAge=1000["Latest release", link="https://github.com/tensorics/tensorics-core/releases"]
 image:https://travis-ci.org/tensorics/tensorics-core.svg?branch=master["Travis-CI build", link="https://travis-ci.org/tensorics/tensorics-core"]
 image:https://img.shields.io/github/license/tensorics/tensorics-core.svg[]
