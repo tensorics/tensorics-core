@@ -6,14 +6,28 @@ before_install:
   - chmod +x ./gradlew
 script:
   - ./gradlew check
-  - ./gradlew javadoc
   - ./gradlew jacocoTestReport
+before_deploy:
+  - ./gradlew generateLicenseReport
+  - ./gradlew javadoc
+  - mkdir projectpage
+  - cp -r build/reports/* projectpage
+  - cp -r build/docs/* projectpage
+  - cp -r docs/* projectpage
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: ./gradlew bintrayUpload -Ddeployment=true
-  on:
-    tags: true
-    jdk: oraclejdk8
+  - provider: script
+    skip_cleanup: true
+    script: ./gradlew bintrayUpload -Ddeployment=true
+    on:
+      tags: true
+      jdk: oraclejdk8
+  - provider: pages
+    skip_cleanup: true
+    github-token: $GITHUB_TOKEN
+    local-dir: projectpage
+    keep-history: false
+    on:
+      branch: master
+      jdk: oraclejdk8
 after_success:
   - bash <(curl -s https://codecov.io/bash)
