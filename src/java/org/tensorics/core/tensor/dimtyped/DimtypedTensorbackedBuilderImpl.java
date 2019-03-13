@@ -3,6 +3,8 @@ package org.tensorics.core.tensor.dimtyped;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -10,34 +12,41 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 
-public class DimtypedTensorBuilderImpl<V, T extends DimtypedTensor<V>, B extends DimtypedTensorBuilder<V, T, B>> implements DimtypedTensorBuilder<V, T, B> {
+public class DimtypedTensorbackedBuilderImpl<V, T extends DimtypedTensorbacked<V>, B extends DimtypedTensorbackedBuilder<V, T, B>> implements DimtypedTensorbackedBuilder<V, T, B> {
 
     private final TensorBuilder<V> delegate;
     private final Class<T> tensorType;
     private final B proxy;
 
-    private DimtypedTensorBuilderImpl(TensorBuilder<V> delegate, Class<B> tensorBuilderType, Class<T> tensorType) {
+    private DimtypedTensorbackedBuilderImpl(TensorBuilder<V> delegate, Class<B> tensorBuilderType, Class<T> tensorType) {
         this.delegate = requireNonNull(delegate, "delegate must not be null");
         this.proxy = proxy(tensorBuilderType);
         this.tensorType = requireNonNull(tensorType, "tensorType must not be null");
     }
 
-    public static <V, T extends DimtypedTensor<V>, B extends DimtypedTensorBuilder<V, T, B>> B from(TensorBuilder<V> delegate, Class<B> tensorBuilderType, Class<T> tensorType) {
-        return new DimtypedTensorBuilderImpl<>(delegate, tensorBuilderType, tensorType).proxy;
+    public static <V, T extends DimtypedTensorbacked<V>, B extends DimtypedTensorbackedBuilder<V, T, B>> B from(TensorBuilder<V> delegate, Class<B> tensorBuilderType, Class<T> tensorType) {
+        return new DimtypedTensorbackedBuilderImpl<>(delegate, tensorBuilderType, tensorType).proxy;
     }
 
 
     @Override
     public T build() {
-        return DimtypedTensors.create(tensorType, delegate.build());
+        return DimtypedTensorbackeds.create(tensorType, delegate.build());
     }
 
     @Override
     public B context(Position context) {
         this.delegate.context(context);
+        return proxy;
+    }
+
+    @Override
+    public B context(Object... coordinates) {
+        this.delegate.context(coordinates);
         return proxy;
     }
 
@@ -55,8 +64,26 @@ public class DimtypedTensorBuilderImpl<V, T extends DimtypedTensor<V>, B extends
     }
 
     @Override
+    public B putAll(Position position, Tensorbacked<V> tensorbacked) {
+        delegate.putAll(position, tensorbacked.tensor());
+        return proxy;
+    }
+
+    @Override
+    public B putAll(T tensorBacked) {
+        delegate.putAll(tensorBacked.tensor());
+        return proxy;
+    }
+
+    @Override
     public B put(Position position, V value) {
         delegate.put(position, value);
+        return proxy;
+    }
+
+    @Override
+    public B putAll(Set<Map.Entry<Position, V>> entries) {
+        delegate.putAll(entries);
         return proxy;
     }
 
@@ -86,11 +113,11 @@ public class DimtypedTensorBuilderImpl<V, T extends DimtypedTensor<V>, B extends
 
 
     private B proxy(Class<B> tensorBuilderType) {
-        return (B) Proxy.newProxyInstance(DimtypedTensorBuilderImpl.class.getClassLoader(), new Class<?>[]{tensorBuilderType}, new DelegatingInvocationHandler<>(tensorBuilderType, this));
+        return (B) Proxy.newProxyInstance(DimtypedTensorbackedBuilderImpl.class.getClassLoader(), new Class<?>[]{tensorBuilderType}, new DelegatingInvocationHandler<>(tensorBuilderType, this));
 
     }
 
-    private final static class DelegatingInvocationHandler<V, B extends TensorBuilder<V>> implements InvocationHandler {
+    private final static class DelegatingInvocationHandler<V, B extends TensorbackedBuilder<V, ?>> implements InvocationHandler {
         private final B delegate;
         private final Class<?> tensorBuilderType;
 

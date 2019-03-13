@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
 
@@ -101,4 +102,23 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serial
         return getClass().getSimpleName() + " [backingTensor=" + backingTensor + "]";
     }
 
+    @Override
+    public E get(Position position) {
+        return backingTensor.get(position);
+    }
+
+    @Override
+    public E get(Object... coordinates) {
+        return backingTensor.get(coordinates);
+    }
+
+    @Override
+    public boolean contains(Position position) {
+        return backingTensor.contains(position);
+    }
+
+    @Override
+    public boolean contains(Object... coordinates) {
+        return backingTensor.contains(coordinates);
+    }
 }

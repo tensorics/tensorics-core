@@ -1,7 +1,5 @@
 package org.tensorics.core.tensor.dimtyped;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.data.Offset;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -41,8 +39,8 @@ public class DimtypedTensorTest {
     }
 
 
-    private Tensor2D<String, Integer, Double> tensor() {
-        TensorBuilder2D<String, Integer, Double> builder = Tensorics.builder(String.class, Integer.class);
+    private Tensorbacked2D<String, Integer, Double> tensor() {
+        TensorbackedBuilder2D<String, Integer, Double> builder = Tensorics.backedBuilder(String.class, Integer.class);
         return builder.put("a", 1, 0.1)
                 .put("b", 2, 0.2)
                 .put("c", 3, 0.3)

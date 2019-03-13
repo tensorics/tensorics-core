@@ -62,8 +62,8 @@ public final class Tensorbackeds {
      * @param tensorbackedClass the type of tensor backed object to be created.
      * @return a builder for the tensor backed object
      */
-    public static <V, TB extends Tensorbacked<V>> TensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
-        return new TensorbackedBuilder<>(tensorbackedClass);
+    public static <V, TB extends Tensorbacked<V>> SimpleTensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
+        return new SimpleTensorbackedBuilder<>(tensorbackedClass);
     }
 
     /**
@@ -102,7 +102,7 @@ public final class Tensorbackeds {
 
     /**
      * Creates a new empty instance of a tensorbacked class of the given type. This is simply a convenience method for
-     * calling {@link TensorbackedBuilder#build()} on an empty builder.
+     * calling {@link SimpleTensorbackedBuilder#build()} on an empty builder.
      *
      * @param tensorbackedClass the class of the tensor backed object to create
      * @return a new empty instance of the tensorbacked object.

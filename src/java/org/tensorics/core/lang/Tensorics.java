@@ -54,7 +54,7 @@ import org.tensorics.core.tensor.operations.TensorInternals;
 import org.tensorics.core.tensor.stream.TensorStreams;
 import org.tensorics.core.tensorbacked.OngoingTensorbackedCompletion;
 import org.tensorics.core.tensorbacked.Tensorbacked;
-import org.tensorics.core.tensorbacked.TensorbackedBuilder;
+import org.tensorics.core.tensorbacked.SimpleTensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
@@ -124,24 +124,24 @@ public final class Tensorics {
         return ImmutableTensor.builder(dimensions);
     }
 
-    public static <C1, T> TensorBuilder1D<C1, T> builder(Class<C1> dimension1) {
-        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(dimension1), TensorBuilder1D.class, Tensor1D.class);
+    public static <C1, T> TensorbackedBuilder1D<C1, T> backedBuilder(Class<C1> dimension1) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(dimension1), TensorbackedBuilder1D.class, Tensorbacked1D.class);
     }
 
-    public static <C1, C2, T> TensorBuilder2D<C1, C2, T> builder(Class<C1> d1, Class<C2> d2) {
-        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(d1, d2), TensorBuilder2D.class, Tensor2D.class);
+    public static <C1, C2, T> TensorbackedBuilder2D<C1, C2, T> backedBuilder(Class<C1> d1, Class<C2> d2) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2), TensorbackedBuilder2D.class, Tensorbacked2D.class);
     }
 
-    public static <C1, C2, C3, T> TensorBuilder3D<C1, C2, C3, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3) {
-        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3), TensorBuilder3D.class, Tensor1D.class);
+    public static <C1, C2, C3, T> TensorbackedBuilder3D<C1, C2, C3, T> backedBuilder(Class<C1> d1, Class<C2> d2, Class<C3> d3) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3), TensorbackedBuilder3D.class, Tensorbacked1D.class);
     }
 
-    public static <C1, C2, C3, C4, T> TensorBuilder4D<C1, C2, C3, C4, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4) {
-        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4), TensorBuilder4D.class, Tensor1D.class);
+    public static <C1, C2, C3, C4, T> TensorbackedBuilder4D<C1, C2, C3, C4, T> backedBuilder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4), TensorbackedBuilder4D.class, Tensorbacked1D.class);
     }
 
-    public static <C1, C2, C3, C4, C5, T> TensorBuilder5D<C1, C2, C3, C4, C5, T> builder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4, Class<C5> d5) {
-        return DimtypedTensorBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4, d5), TensorBuilder5D.class, Tensor1D.class);
+    public static <C1, C2, C3, C4, C5, T> TensorbackedBuilder5D<C1, C2, C3, C4, C5, T> backedBuilder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4, Class<C5> d5) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4, d5), TensorbackedBuilder5D.class, Tensorbacked1D.class);
     }
 
     /**
@@ -194,7 +194,7 @@ public final class Tensorics {
     /**
      * @see Tensorbackeds#builderFor(Class)
      */
-    public static <V, TB extends Tensorbacked<V>> TensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
+    public static <V, TB extends Tensorbacked<V>> SimpleTensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
         return Tensorbackeds.builderFor(tensorbackedClass);
     }
 

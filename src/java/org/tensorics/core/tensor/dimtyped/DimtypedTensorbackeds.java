@@ -9,13 +9,13 @@ import java.lang.reflect.Proxy;
 
 import static java.util.Objects.requireNonNull;
 
-public class DimtypedTensors {
+public class DimtypedTensorbackeds {
 
-    public static final <V, T extends DimtypedTensor<V>> T create(Class<T> tensorType, Tensor<V> delegate) {
-        if (DimtypedTensor.class.equals(tensorType)) {
-            throw new IllegalArgumentException("The class of the tensor must be a subtype of '" + DimtypedTensor.class + "', but not the class itself.");
+    public static final <V, T extends DimtypedTensorbacked<V>> T create(Class<T> tensorType, Tensor<V> delegate) {
+        if (DimtypedTensorbacked.class.equals(tensorType)) {
+            throw new IllegalArgumentException("The class of the tensor must be a subtype of '" + DimtypedTensorbacked.class + "', but not the class itself.");
         }
-        return (T) Proxy.newProxyInstance(DimtypedTensors.class.getClassLoader(), new Class<?>[]{tensorType}, new DelegatingInvocationHandler<>(tensorType, delegate));
+        return (T) Proxy.newProxyInstance(DimtypedTensorbackeds.class.getClassLoader(), new Class<?>[]{tensorType}, new DelegatingInvocationHandler<>(tensorType, delegate));
     }
 
     private final static class DelegatingInvocationHandler<V> implements InvocationHandler {

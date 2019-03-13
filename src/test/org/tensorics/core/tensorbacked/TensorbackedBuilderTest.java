@@ -61,7 +61,7 @@ public class TensorbackedBuilderTest {
 
     @Test
     public void putOneCorrectValueWorks() {
-        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        SimpleTensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         Object[] coordinates = { BPM_A, Plane.H };
         builder.put(Position.of(coordinates), 1.0);
         SinglebeamOrbit orbit = builder.build();
@@ -101,7 +101,7 @@ public class TensorbackedBuilderTest {
 
     @Test
     public void putOneEntryIsEqualToOriginal() {
-        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        SimpleTensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         builder.put(Iterables.getFirst(Tensorics.mapFrom(oneValuePosAH().tensor()).entrySet(), null));
         assertThat(builder.build(), equalTo(oneValuePosAH()));
     }
@@ -114,7 +114,7 @@ public class TensorbackedBuilderTest {
 
     @Test
     public void putEmptyCollectionResultsInEmptyTensor() {
-        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        SimpleTensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         builder.putAll(Collections.<java.util.Map.Entry<Position, Double>> emptySet());
         assertThat(Tensorics.sizeOf(builder.build()), equalTo(0));
     }
@@ -130,25 +130,25 @@ public class TensorbackedBuilderTest {
     }
 
     private SinglebeamOrbit oneValuePosCopied() {
-        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        SimpleTensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         builder.putAll(Tensorics.mapFrom(oneValuePosAH().tensor()).entrySet());
         SinglebeamOrbit copiedOrbit = builder.build();
         return copiedOrbit;
     }
 
     private SinglebeamOrbit oneValueCoordinatesAH() {
-        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        SimpleTensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         builder.put(Position.of(POS_A_H.coordinates()), TESTVALUE_1_0);
         return builder.build();
     }
 
     private SinglebeamOrbit oneValuePosAH() {
-        TensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
+        SimpleTensorbackedBuilder<Double, SinglebeamOrbit> builder = newBuilder();
         builder.put(POS_A_H, TESTVALUE_1_0);
         return builder.build();
     }
 
-    private TensorbackedBuilder<Double, SinglebeamOrbit> newBuilder() {
+    private SimpleTensorbackedBuilder<Double, SinglebeamOrbit> newBuilder() {
         return Tensorics.builderFor(SinglebeamOrbit.class);
     }
 
