@@ -42,7 +42,7 @@ import org.tensorics.core.tensor.Scalar;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
-import org.tensorics.core.tensor.dimtyped.*;
+import org.tensorics.core.tensorbacked.dimtyped.*;
 import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingResamplingStart;

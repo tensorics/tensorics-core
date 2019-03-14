@@ -1,6 +1,5 @@
-package org.tensorics.core.tensor.dimtyped;
+package org.tensorics.core.tensorbacked.dimtyped;
 
-import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.Tensorbacked;
 
 public interface DimtypedTensorbacked<V> extends Tensorbacked<V> {

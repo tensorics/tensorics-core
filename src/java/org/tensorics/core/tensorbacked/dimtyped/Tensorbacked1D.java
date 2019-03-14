@@ -1,4 +1,4 @@
-package org.tensorics.core.tensor.dimtyped;
+package org.tensorics.core.tensorbacked.dimtyped;
 
 public interface Tensorbacked1D<C1, V> extends DimtypedTensorbacked<V> {
 

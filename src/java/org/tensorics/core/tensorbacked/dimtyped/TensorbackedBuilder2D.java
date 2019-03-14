@@ -1,4 +1,4 @@
-package org.tensorics.core.tensor.dimtyped;
+package org.tensorics.core.tensorbacked.dimtyped;
 
 public interface TensorbackedBuilder2D<C1, C2, V> extends DimtypedTensorbackedBuilder<V, Tensorbacked2D<C1, C2, V>, TensorbackedBuilder2D<C1, C2, V>> {
 
