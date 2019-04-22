@@ -58,7 +58,7 @@ public class TensorbackedsTest {
                 .put(new Bpm("bpm1"), Plane.H, 0.1)
                 .build();
 
-        assertThat(t.tensor().shape().dimensionSet()).containsExactly(Bpm.class, Plane.class);
+        assertThat(t.tensor().shape().dimensionSet()).containsExactlyInAnyOrder(Bpm.class, Plane.class);
         assertThat(t.tensor().shape().size()).isEqualTo(1);
         assertThat(t.get(new Bpm("bpm1"), Plane.H)).isCloseTo(0.1, offset(0.000001));
 

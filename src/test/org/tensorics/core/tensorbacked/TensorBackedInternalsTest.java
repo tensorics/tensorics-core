@@ -79,7 +79,7 @@ public class TensorBackedInternalsTest {
     @Test
     public void dimensionsFromDimtypedAreRetrieved() {
         Set<Class<?>> dimensions = dimensionsOf(SingleBeamOrbitIf.class);
-        Assertions.assertThat(dimensions).containsExactly(Bpm.class, Plane.class);
+        Assertions.assertThat(dimensions).containsExactlyInAnyOrder(Bpm.class, Plane.class);
     }
 
     @Test
