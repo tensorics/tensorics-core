@@ -162,6 +162,13 @@ idea {
     }
 }
 
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "short"
+    }
+}
+
 if (!project['CERN_VM']) {
     println 'Applying licensing report'
     apply plugin: 'com.github.jk1.dependency-license-report'
