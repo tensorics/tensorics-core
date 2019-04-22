@@ -1,10 +1,10 @@
 package org.tensorics.core.tensorbacked.dimtyped;
 
+import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
-import org.tensorics.core.tensorbacked.Tensorbacked;
-import org.tensorics.core.tensorbacked.TensorbackedBuilder;
+import org.tensorics.core.tensorbacked.*;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -16,26 +16,31 @@ import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 
-public class DimtypedTensorbackedBuilderImpl<V, T extends DimtypedTensorbacked<V>, B extends DimtypedTensorbackedBuilder<V, T, B>> implements DimtypedTensorbackedBuilder<V, T, B> {
+public class DimtypedTensorbackedBuilderImpl<V, TB extends DimtypedTensorbacked<V>, B extends DimtypedTensorbackedBuilder<V, TB, B>> implements DimtypedTensorbackedBuilder<V, TB, B> {
 
     private final TensorBuilder<V> delegate;
-    private final Class<T> tensorType;
+    private final Class<TB> tensorbackedType;
     private final B proxy;
 
-    private DimtypedTensorbackedBuilderImpl(TensorBuilder<V> delegate, Class<B> tensorBuilderType, Class<T> tensorType) {
+    private DimtypedTensorbackedBuilderImpl(TensorBuilder<V> delegate, Class<B> tensorBuilderType, Class<TB> tensorType) {
         this.delegate = requireNonNull(delegate, "delegate must not be null");
         this.proxy = proxy(tensorBuilderType);
-        this.tensorType = requireNonNull(tensorType, "tensorType must not be null");
+        this.tensorbackedType = requireNonNull(tensorType, "tensorbackedType must not be null");
     }
 
     public static <V, T extends DimtypedTensorbacked<V>, B extends DimtypedTensorbackedBuilder<V, T, B>> B from(TensorBuilder<V> delegate, Class<B> tensorBuilderType, Class<T> tensorType) {
         return new DimtypedTensorbackedBuilderImpl<>(delegate, tensorBuilderType, tensorType).proxy;
     }
 
+    public static <V, TB extends DimtypedTensorbacked<V>, B extends DimtypedTensorbackedBuilder<V, TB, B>> B immutableBuilderFrom(Class<TB> tensorbackedClass, Class<B> builderClass) {
+        ImmutableTensor.Builder<V> tensorBuilder = ImmutableTensor.builder(Tensorbackeds.dimensionsOf(tensorbackedClass));
+        return from(tensorBuilder, builderClass, tensorbackedClass);
+    }
+
 
     @Override
-    public T build() {
-        return DimtypedTensorbackeds.create(tensorType, delegate.build());
+    public TB build() {
+        return ProxiedInterfaceTensorbackeds.create(tensorbackedType, delegate.build());
     }
 
     @Override
@@ -70,7 +75,7 @@ public class DimtypedTensorbackedBuilderImpl<V, T extends DimtypedTensorbacked<V
     }
 
     @Override
-    public B putAll(T tensorBacked) {
+    public B putAll(TB tensorBacked) {
         delegate.putAll(tensorBacked.tensor());
         return proxy;
     }

@@ -124,24 +124,24 @@ public final class Tensorics {
         return ImmutableTensor.builder(dimensions);
     }
 
-    public static <C1, T> TensorbackedBuilder1D<C1, T> backedBuilder(Class<C1> dimension1) {
-        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(dimension1), TensorbackedBuilder1D.class, Tensorbacked1D.class);
+    public static <C1, T> Tensorbacked1dBuilder<C1, T, Tensorbacked1d<C1, T>> builderBacked(Class<C1> dimension1) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(dimension1), Tensorbacked1dBuilder.class, Tensorbacked1d.class);
     }
 
-    public static <C1, C2, T> TensorbackedBuilder2D<C1, C2, T> backedBuilder(Class<C1> d1, Class<C2> d2) {
-        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2), TensorbackedBuilder2D.class, Tensorbacked2D.class);
+    public static <C1, C2, T> Tensorbacked2dBuilder<C1, C2, T, Tensorbacked2d<C1, C2, T>> builderBacked(Class<C1> d1, Class<C2> d2) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2), Tensorbacked2dBuilder.class, Tensorbacked2d.class);
     }
 
-    public static <C1, C2, C3, T> TensorbackedBuilder3D<C1, C2, C3, T> backedBuilder(Class<C1> d1, Class<C2> d2, Class<C3> d3) {
-        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3), TensorbackedBuilder3D.class, Tensorbacked1D.class);
+    public static <C1, C2, C3, T> Tensorbacked3dBuilder<C1, C2, C3, T, Tensorbacked3d<C1, C2, C3, T>> builderBacked(Class<C1> d1, Class<C2> d2, Class<C3> d3) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3), Tensorbacked3dBuilder.class, Tensorbacked3d.class);
     }
 
-    public static <C1, C2, C3, C4, T> TensorbackedBuilder4D<C1, C2, C3, C4, T> backedBuilder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4) {
-        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4), TensorbackedBuilder4D.class, Tensorbacked1D.class);
+    public static <C1, C2, C3, C4, T> Tensorbacked4dBuilder<C1, C2, C3, C4, T, Tensorbacked4d<C1, C2, C3, C4, T>> builderBacked(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4), Tensorbacked4dBuilder.class, Tensorbacked4d.class);
     }
 
-    public static <C1, C2, C3, C4, C5, T> TensorbackedBuilder5D<C1, C2, C3, C4, C5, T> backedBuilder(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4, Class<C5> d5) {
-        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4, d5), TensorbackedBuilder5D.class, Tensorbacked1D.class);
+    public static <C1, C2, C3, C4, C5, T> Tensorbacked5dBuilder<C1, C2, C3, C4, C5, T, Tensorbacked5d<C1, C2, C3, C4, C5, T>> builderBacked(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4, Class<C5> d5) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4, d5), Tensorbacked5dBuilder.class, Tensorbacked5d.class);
     }
 
     /**
@@ -197,6 +197,42 @@ public final class Tensorics {
     public static <V, TB extends Tensorbacked<V>> SimpleTensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
         return Tensorbackeds.builderFor(tensorbackedClass);
     }
+
+    /**
+     * @see Tensorbackeds#builderFor1D(Class)
+     */
+    public static <C1, V, TB extends Tensorbacked1d<C1, V>> Tensorbacked1dBuilder<C1, V, TB> builderFor1D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor1D(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor2D(Class)
+     */
+    public static <C1, C2, V, TB extends Tensorbacked2d<C1, C2, V>> Tensorbacked2dBuilder<C1, C2, V, TB> builderFor2D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor2D(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor3D(Class)
+     */
+    public static <C1, C2, C3, V, TB extends Tensorbacked3d<C1, C2, C3, V>> Tensorbacked3dBuilder<C1, C2, C3, V, TB> builderFor3D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor3D(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor4D(Class)
+     */
+    public static <C1, C2, C3, C4, V, TB extends Tensorbacked4d<C1, C2, C3, C4, V>> Tensorbacked4dBuilder<C1, C2, C3, C4, V, TB> builderFor4D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor4D(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor5D(Class)
+     */
+    public static <C1, C2, C3, C4, C5, V, TB extends Tensorbacked5d<C1, C2, C3, C4, C5, V>> Tensorbacked5dBuilder<C1, C2, C3, C4, C5, V, TB> builderFor5D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor5D(tensorbackedClass);
+    }
+
 
     /**
      * @see Tensorbackeds#sizeOf(Tensorbacked)

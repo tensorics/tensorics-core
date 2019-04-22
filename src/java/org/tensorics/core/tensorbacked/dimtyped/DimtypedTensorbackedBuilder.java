@@ -8,7 +8,7 @@ import org.tensorics.core.tensorbacked.TensorbackedBuilder;
 import java.util.Map;
 import java.util.Set;
 
-public interface DimtypedTensorbackedBuilder<V, T extends DimtypedTensorbacked<V>, B extends DimtypedTensorbackedBuilder<V, T, B>> extends TensorbackedBuilder<V, T> {
+public interface DimtypedTensorbackedBuilder<V, TB extends DimtypedTensorbacked<V>, B extends DimtypedTensorbackedBuilder<V, TB, B>> extends TensorbackedBuilder<V, TB> {
 
     @Override
     B context(Position context);
@@ -26,7 +26,7 @@ public interface DimtypedTensorbackedBuilder<V, T extends DimtypedTensorbacked<V
     B putAll(Position position, Tensorbacked<V> tensorbacked);
 
     @Override
-    B putAll(T tensorBacked);
+    B putAll(TB tensorBacked);
 
     @Override
     B put(Position position, V value);
@@ -47,5 +47,5 @@ public interface DimtypedTensorbackedBuilder<V, T extends DimtypedTensorbacked<V
     B putAll(Position position, Map<Position, V> map);
 
     @Override
-    T build();
+    TB build();
 }

@@ -33,7 +33,7 @@ import org.tensorics.core.tensor.Tensoric;
  * @param <T> Type of the tensor which backs this object.
  * @author agorzaws
  */
-public interface Tensorbacked<T> extends Tensoric<T> {
+public interface Tensorbacked<T> {
 
     /**
      * @return a {@link Tensor} for given types.

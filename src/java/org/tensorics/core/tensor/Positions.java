@@ -23,6 +23,7 @@ package org.tensorics.core.tensor;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
 
 import java.util.HashSet;
@@ -62,12 +63,12 @@ public final class Positions {
      * is only correctly defined, if the two given positions do not have any dimensional overlap (i.e. Any coordinate of
      * a certain type (class) is only present in either the left or the right position.)
      *
-     * @param left the first position to use construct the union position
+     * @param left  the first position to use construct the union position
      * @param right the second position to construct the union position
      * @return a position, which contains the union of the coordinates of the two input positions.
-     * @throws NullPointerException if one of the arguments is {@code null}
+     * @throws NullPointerException     if one of the arguments is {@code null}
      * @throws IllegalArgumentException if the given aguments have an overlap of dimensions and therefor the union of
-     *             the position is not well defined
+     *                                  the position is not well defined
      */
     public static Position union(Position left, Position right) {
         checkNotNull(left, "left position must not be null.");
@@ -154,7 +155,7 @@ public final class Positions {
     /**
      * Checks if the given position is conform with the given coordinate and throws an exception, if not.
      *
-     * @param position the position for which to check the consistency
+     * @param position   the position for which to check the consistency
      * @param dimensions the dimensions for which the conformity has to be verified.
      * @throws IllegalArgumentException if the position is not conform
      * @see Position#isConsistentWith(Set)
@@ -175,17 +176,17 @@ public final class Positions {
      * @return
      */
     public static boolean areDimensionsConsistentWithCoordinates(Set<Class<?>> dimensions, Position position) {
-        if (position.coordinates().size() != dimensions.size()) {
-            return false;
-        }
-        Preconditions.checkArgument(dimensions != null, "Argument '" + "dimensions" + "' must not be null!");
-        Set<Class<?>> positionCoordinatesToCheck = position.dimensionSet();
-        return areDimensionsConsistent(dimensions, positionCoordinatesToCheck);
+        requireNonNull(dimensions, "dimensions must not be null!");
+        requireNonNull(position, "position must not be null!");
+        return areDimensionsConsistent(dimensions, position.dimensionSet());
     }
 
     public static boolean areDimensionsConsistent(Set<Class<?>> dimensions, Set<Class<?>> positionCoordinatesToCheck) {
         if (dimensions.equals(positionCoordinatesToCheck)) {
             return true;
+        }
+        if (positionCoordinatesToCheck.size() != dimensions.size()) {
+            return false;
         }
         for (Class<?> one : positionCoordinatesToCheck) {
             Coordinates.checkClassRelations(one, dimensions);
@@ -201,7 +202,7 @@ public final class Positions {
      * <li>or be present in only one of the both positions
      * </ul>
      *
-     * @param pair the pair, whose dimensions should be united
+     * @param pair             the pair, whose dimensions should be united
      * @param targetDimensions the dimension in which the positions shall be united
      * @return a new position, containing the coordinates of the pair, merged by the above rules
      */
@@ -220,8 +221,8 @@ public final class Positions {
      * <li>or be present in only one of the both positions
      * </ul>
      *
-     * @param left the first of the two positions, whose dimensions should be united
-     * @param right the second of the two positions whose dimensions should be combined
+     * @param left             the first of the two positions, whose dimensions should be united
+     * @param right            the second of the two positions whose dimensions should be combined
      * @param targetDimensions the dimension in which the positions shall be united
      * @return a new position, with the coordinates merged according to the above rules
      */
@@ -249,12 +250,12 @@ public final class Positions {
      * Combines all position pairs into positions containing the given dimensions and returns a map from the combined
      * positions to the original position pairs.
      *
-     * @param positionPairs the position pairs to combine the final positions
+     * @param positionPairs    the position pairs to combine the final positions
      * @param targetDimensions the dimensions in which to combine the positions
      * @return a map from the combined dimensions to the original pairs
      */
     public static ImmutableSetMultimap<Position, PositionPair> combineAll(Set<PositionPair> positionPairs,
-            Set<Class<?>> targetDimensions) {
+                                                                          Set<Class<?>> targetDimensions) {
         ImmutableSetMultimap.Builder<Position, PositionPair> builder = ImmutableSetMultimap.builder();
         for (PositionPair pair : positionPairs) {
             builder.put(combineDimensions(pair, targetDimensions), pair);
@@ -263,7 +264,7 @@ public final class Positions {
     }
 
     public static Multimap<Position, Position> mapByStripping(Iterable<Position> positions,
-            Set<Class<?>> dimensionsToStrip) {
+                                                              Set<Class<?>> dimensionsToStrip) {
         DimensionStripper stripper = stripping(dimensionsToStrip);
         ImmutableMultimap.Builder<Position, Position> builder = ImmutableMultimap.builder();
         for (Position position : positions) {
@@ -276,7 +277,7 @@ public final class Positions {
      * Extracts the provided class of the coordinate from the set of the positions.
      *
      * @param positions
-     * @param ofClass a class of the coordinate to be extracted
+     * @param ofClass   a class of the coordinate to be extracted
      * @return a set of the extracted coordinates from provided positions
      */
     public static <T> Set<T> coordinatesOfType(Set<Position> positions, Class<T> ofClass) {
@@ -381,7 +382,7 @@ public final class Positions {
      * position. The right position might also contain coordinates not contained in the left position, which are simply
      * ignored.
      *
-     * @param left the position from which the coordinates of the right position shall be substracted
+     * @param left  the position from which the coordinates of the right position shall be substracted
      * @param right the position whose coordinates shall be substracted from the left position
      * @return a position containing all coordinates from the left position, which are not present in the right position
      */
