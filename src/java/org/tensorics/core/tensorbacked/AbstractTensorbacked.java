@@ -44,7 +44,7 @@ public abstract class AbstractTensorbacked<E> implements Tensorbacked<E>, Serial
 
     @SuppressWarnings("unchecked")
     public AbstractTensorbacked(Tensor<E> tensor) {
-        this.backingTensor = TensorbackedInternals.ensureSameDimensions(this.getClass(), tensor);
+        this.backingTensor = TensorbackedInternals.ensureExactTensorbackedDimensions(this.getClass(), tensor);
     }
 
     @Override

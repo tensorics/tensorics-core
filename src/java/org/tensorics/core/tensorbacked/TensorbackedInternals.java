@@ -87,7 +87,7 @@ public final class TensorbackedInternals {
      * @return a new instance of the given class, backed by the given tensor
      */
     public static <V, T extends Tensorbacked<V>> T createBackedByTensor(Class<T> tensorBackedClass, Tensor<V> tensor) {
-        Tensor<V> dimensionAdjustedTensor = ensureSameDimensions(tensorBackedClass, tensor);
+        Tensor<V> dimensionAdjustedTensor = ensureExactTensorbackedDimensions(tensorBackedClass, tensor);
         if (tensorBackedClass.isInterface()) {
             return ProxiedInterfaceTensorbackeds.create(tensorBackedClass, dimensionAdjustedTensor);
         } else {
@@ -127,18 +127,13 @@ public final class TensorbackedInternals {
     }
 
     /*
-     * This was extracted from the abstract tensorbacked, as it was implemented there by michi. To be consisten this is
-     * now applied to all kind of instantiation techniques.
+     * This method ensures that the tensorbacked will have exactly the dimensions as annotatet, even if e.g. a tensor
+     * with subclass dimensions is passed in.
      *
-     * However, there are 2 questions:
-     *
-     * * What is the original reason to potentially mutate the dimensions of the tensor here? Couldnt we be more strict
-     * and require the equality of the dimensionset? Anyhow, the builders should enforce this....or am I (KF)
-     * overlooking something?
-     *  * For the moment the same calls are kept in the abstract tensorbacked... However, they could potentially be removed,
+     * NB: For the moment the same calls are kept in the abstract tensorbacked... However, they could potentially be removed,
      *  except we assume that somebody calls this constructor directly...?
      */
-    public static <TB extends Tensorbacked<E>, E> Tensor<E> ensureSameDimensions(Class<TB> tensorbackedClass, Tensor<E> tensor) {
+    public static <TB extends Tensorbacked<E>, E> Tensor<E> ensureExactTensorbackedDimensions(Class<TB> tensorbackedClass, Tensor<E> tensor) {
         verifyDimensions(tensorbackedClass, tensor);
         Set<Class<?>> annotatedDimensions = dimensionsOf(tensorbackedClass);
         if (annotatedDimensions.equals(tensor.shape().dimensionSet())) {
