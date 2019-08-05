@@ -23,6 +23,7 @@ package org.tensorics.core.tensor;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * The interface any builder of a tensor have to implement.
@@ -33,6 +34,8 @@ import java.util.Map.Entry;
 public interface TensorBuilder<V> {
 
     TensorBuilder<V> context(Position context);
+
+    TensorBuilder<V> context(Object ... coordinates);
 
     /**
      * Puts all the values of the given tensor into the new tensor, at the given position. The positions in the new
@@ -53,6 +56,8 @@ public interface TensorBuilder<V> {
     TensorBuilder<V> remove(Position position);
 
     TensorBuilder<V> putAll(Map<Position, V> newEntries);
+
+    TensorBuilder<V> putAll(Set<Entry<Position, V>> entries);
 
     TensorBuilder<V> putAll(Position position, Map<Position, V> map);
 

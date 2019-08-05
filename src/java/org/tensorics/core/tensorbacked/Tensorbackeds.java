@@ -1,5 +1,5 @@
 // @formatter:off
- /*******************************************************************************
+/*******************************************************************************
  *
  * This file is part of tensorics.
  *
@@ -34,6 +34,7 @@ import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
+import org.tensorics.core.tensorbacked.dimtyped.*;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.Unit;
@@ -62,17 +63,37 @@ public final class Tensorbackeds {
      * @param tensorbackedClass the type of tensor backed object to be created.
      * @return a builder for the tensor backed object
      */
-    public static <V, TB extends Tensorbacked<V>> TensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
-        return new TensorbackedBuilder<>(tensorbackedClass);
+    public static <V, TB extends Tensorbacked<V>> SimpleTensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
+        return new SimpleTensorbackedBuilder<>(tensorbackedClass);
+    }
+
+    public static <C1, V, TB extends Tensorbacked1d<C1, V>> Tensorbacked1dBuilder<C1, V, TB> builderFor1D(Class<TB> tensorbackedClass) {
+        return DimtypedTensorbackedBuilderImpl.immutableBuilderFrom(tensorbackedClass, Tensorbacked1dBuilder.class);
+    }
+
+    public static <C1, C2, V, TB extends Tensorbacked2d<C1, C2, V>> Tensorbacked2dBuilder<C1, C2, V, TB> builderFor2D(Class<TB> tensorbackedClass) {
+        return DimtypedTensorbackedBuilderImpl.immutableBuilderFrom(tensorbackedClass, Tensorbacked2dBuilder.class);
+    }
+
+    public static <C1, C2, C3, V, TB extends Tensorbacked3d<C1, C2, C3, V>> Tensorbacked3dBuilder<C1, C2, C3, V, TB> builderFor3D(Class<TB> tensorbackedClass) {
+        return DimtypedTensorbackedBuilderImpl.immutableBuilderFrom(tensorbackedClass, Tensorbacked3dBuilder.class);
+    }
+
+    public static <C1, C2, C3, C4, V, TB extends Tensorbacked4d<C1, C2, C3, C4, V>> Tensorbacked4dBuilder<C1, C2, C3, C4, V, TB> builderFor4D(Class<TB> tensorbackedClass) {
+        return DimtypedTensorbackedBuilderImpl.immutableBuilderFrom(tensorbackedClass, Tensorbacked4dBuilder.class);
+    }
+
+    public static <C1, C2, C3, C4, C5, V, TB extends Tensorbacked5d<C1, C2, C3, C4, C5, V>> Tensorbacked5dBuilder<C1, C2, C3, C4, C5, V, TB> builderFor5D(Class<TB> tensorbackedClass) {
+        return DimtypedTensorbackedBuilderImpl.immutableBuilderFrom(tensorbackedClass, Tensorbacked5dBuilder.class);
     }
 
     /**
      * Retrieves the dimensions from the given class inheriting from tensor backed. This is done by inspecting the
      * {@link Dimensions} annotation.
-     * 
+     *
      * @param tensorBackedClass the class for which to determine the dimensions
      * @return the set of dimensions (classes of coordinates) which are required to create an instance of the given
-     *         class.
+     * class.
      */
     public static <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
         return TensorbackedInternals.dimensionsOf(tensorBackedClass);
@@ -81,7 +102,7 @@ public final class Tensorbackeds {
     /**
      * A convenience method to retrieve the size (number of entries) of a tensor backed object. This is nothing else
      * than a shortcut to the size of the underlaying tensor.
-     * 
+     *
      * @param tensorbacked the tensor backed object for which to retrieve the size
      * @return the size (number of entries) of the object
      */
@@ -102,7 +123,7 @@ public final class Tensorbackeds {
 
     /**
      * Creates a new empty instance of a tensorbacked class of the given type. This is simply a convenience method for
-     * calling {@link TensorbackedBuilder#build()} on an empty builder.
+     * calling {@link SimpleTensorbackedBuilder#build()} on an empty builder.
      *
      * @param tensorbackedClass the class of the tensor backed object to create
      * @return a new empty instance of the tensorbacked object.
@@ -114,7 +135,7 @@ public final class Tensorbackeds {
     /**
      * Starting point for a fluent clause to construct tensor backed objects by different means from other objects. For
      * example:
-     * 
+     *
      * <pre>
      * <code>
      *     // Assume that Orbit and OrbitTimeseries are tensorbacked objects
@@ -147,7 +168,7 @@ public final class Tensorbackeds {
     /**
      * Retrieves the values of a tensorbacked object which contains quantities as values. This is a convenience method
      * to calling {@link QuantityTensors#valuesOf(Tensor)} on the tensor backing the tensorbacked object.
-     * 
+     *
      * @param tensorbacked the tensorbacked object from which to retrieve the values
      * @return a tensor containing the values of quantities in the tensorbacked object
      */
@@ -179,7 +200,7 @@ public final class Tensorbackeds {
 
     /**
      * Retrieves a set of all positions within a tensorbacked class.
-     * 
+     *
      * @param tensorbacked the tensor backed object
      * @return a set containing all positions of the tensorbacked object
      */
@@ -224,7 +245,7 @@ public final class Tensorbackeds {
      * Retrieves the tensor from each tensorbacked in the given iterable and returns them in a new iterable. The order
      * of iteration is conserved from the input iterable and also duplicated entries are returned in a duplicated
      * manner.
-     * 
+     *
      * @param tensorbackeds the iterable of tensorbackeds from which to retrieve the tensors
      * @return an iterable containing the tensors from the given iterable of tensorbackeds
      */
@@ -246,16 +267,16 @@ public final class Tensorbackeds {
      * Merges the given {@link Tensorbacked}s into one {@link Tensorbacked} of the given class. The resulting dimensions
      * must match the dimensions required by the resulting object's class.
      * <p>
-     * 
-     * @param toBeMerged the tensor backed objects that shall be merged into one
+     *
+     * @param toBeMerged    the tensor backed objects that shall be merged into one
      * @param classToReturn the type of the tensor backed that should be resulting from the merge
      * @return a new tensor backed object resulting from the the merge of the tensors
-     * @deprecated use construct(classToReturn).byMergingTb(toBeMerged);
      * @see #construct(Class)
+     * @deprecated use construct(classToReturn).byMergingTb(toBeMerged);
      */
     @Deprecated
     public static <TB extends Tensorbacked<E>, TBOUT extends Tensorbacked<E>, E> TBOUT mergeTo(Iterable<TB> toBeMerged,
-            Class<TBOUT> classToReturn) {
+                                                                                               Class<TBOUT> classToReturn) {
         return construct(classToReturn).byMergingTb(toBeMerged);
     }
 

@@ -216,11 +216,14 @@ public class ImmutableTensor<V> extends AbstractTensor<V> implements Mappable<V>
             this.entries.put(position, value);
         }
 
+
+
         @Override
         public TensorBuilder<V> remove(Position position) {
             entries.remove(position);
             return this;
         }
+
 
     }
 

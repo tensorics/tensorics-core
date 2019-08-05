@@ -1,5 +1,5 @@
 // @formatter:off
- /*******************************************************************************
+/*******************************************************************************
  *
  * This file is part of tensorics.
  *
@@ -42,6 +42,7 @@ import org.tensorics.core.tensor.Scalar;
 import org.tensorics.core.tensor.Shape;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensorbacked.dimtyped.*;
 import org.tensorics.core.tensor.lang.OngoingCompletion;
 import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.OngoingResamplingStart;
@@ -53,7 +54,7 @@ import org.tensorics.core.tensor.operations.TensorInternals;
 import org.tensorics.core.tensor.stream.TensorStreams;
 import org.tensorics.core.tensorbacked.OngoingTensorbackedCompletion;
 import org.tensorics.core.tensorbacked.Tensorbacked;
-import org.tensorics.core.tensorbacked.TensorbackedBuilder;
+import org.tensorics.core.tensorbacked.SimpleTensorbackedBuilder;
 import org.tensorics.core.tensorbacked.Tensorbackeds;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
@@ -91,8 +92,8 @@ public final class Tensorics {
      * tensor manipulation.
      *
      * @param field the (mathematical construct) field which defines the operations for the tensor elements.
+     * @param <E>   the types of values in the field
      * @return a tensoric support, which provides the starting methods for the tensoric fluent API.
-     * @param <E> the types of values in the field
      */
     public static <E> TensoricSupport<E> using(ExtendedField<E> field) {
         return new TensoricSupport<>(EnvironmentImpl.of(field, ManipulationOptions.defaultOptions(field)));
@@ -121,6 +122,26 @@ public final class Tensorics {
      */
     public static <T> TensorBuilder<T> builder(Class<?>... dimensions) {
         return ImmutableTensor.builder(dimensions);
+    }
+
+    public static <C1, T> Tensorbacked1dBuilder<C1, T, Tensorbacked1d<C1, T>> builderBacked(Class<C1> dimension1) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(dimension1), Tensorbacked1dBuilder.class, Tensorbacked1d.class);
+    }
+
+    public static <C1, C2, T> Tensorbacked2dBuilder<C1, C2, T, Tensorbacked2d<C1, C2, T>> builderBacked(Class<C1> d1, Class<C2> d2) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2), Tensorbacked2dBuilder.class, Tensorbacked2d.class);
+    }
+
+    public static <C1, C2, C3, T> Tensorbacked3dBuilder<C1, C2, C3, T, Tensorbacked3d<C1, C2, C3, T>> builderBacked(Class<C1> d1, Class<C2> d2, Class<C3> d3) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3), Tensorbacked3dBuilder.class, Tensorbacked3d.class);
+    }
+
+    public static <C1, C2, C3, C4, T> Tensorbacked4dBuilder<C1, C2, C3, C4, T, Tensorbacked4d<C1, C2, C3, C4, T>> builderBacked(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4), Tensorbacked4dBuilder.class, Tensorbacked4d.class);
+    }
+
+    public static <C1, C2, C3, C4, C5, T> Tensorbacked5dBuilder<C1, C2, C3, C4, C5, T, Tensorbacked5d<C1, C2, C3, C4, C5, T>> builderBacked(Class<C1> d1, Class<C2> d2, Class<C3> d3, Class<C4> d4, Class<C5> d5) {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4, d5), Tensorbacked5dBuilder.class, Tensorbacked5d.class);
     }
 
     /**
@@ -162,7 +183,7 @@ public final class Tensorics {
      * Convenience method to create a quantity directly from a jscience base.
      *
      * @param value the of the quantity
-     * @param unit the base of the quantity
+     * @param unit  the base of the quantity
      * @return a new instance of the quantity
      * @see Tensorics#quantityOf(Object, Unit)
      */
@@ -173,9 +194,45 @@ public final class Tensorics {
     /**
      * @see Tensorbackeds#builderFor(Class)
      */
-    public static <V, TB extends Tensorbacked<V>> TensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
+    public static <V, TB extends Tensorbacked<V>> SimpleTensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
         return Tensorbackeds.builderFor(tensorbackedClass);
     }
+
+    /**
+     * @see Tensorbackeds#builderFor1D(Class)
+     */
+    public static <C1, V, TB extends Tensorbacked1d<C1, V>> Tensorbacked1dBuilder<C1, V, TB> builderFor1D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor1D(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor2D(Class)
+     */
+    public static <C1, C2, V, TB extends Tensorbacked2d<C1, C2, V>> Tensorbacked2dBuilder<C1, C2, V, TB> builderFor2D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor2D(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor3D(Class)
+     */
+    public static <C1, C2, C3, V, TB extends Tensorbacked3d<C1, C2, C3, V>> Tensorbacked3dBuilder<C1, C2, C3, V, TB> builderFor3D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor3D(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor4D(Class)
+     */
+    public static <C1, C2, C3, C4, V, TB extends Tensorbacked4d<C1, C2, C3, C4, V>> Tensorbacked4dBuilder<C1, C2, C3, C4, V, TB> builderFor4D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor4D(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor5D(Class)
+     */
+    public static <C1, C2, C3, C4, C5, V, TB extends Tensorbacked5d<C1, C2, C3, C4, C5, V>> Tensorbacked5dBuilder<C1, C2, C3, C4, C5, V, TB> builderFor5D(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderFor5D(tensorbackedClass);
+    }
+
 
     /**
      * @see Tensorbackeds#sizeOf(Tensorbacked)
@@ -199,11 +256,11 @@ public final class Tensorics {
     }
 
     public static <V> Tensor<V> empty(Iterable<Class<?>> dimensions) {
-        return ImmutableTensor.<V> builder(dimensions).build();
+        return ImmutableTensor.<V>builder(dimensions).build();
     }
 
     public static <V> Tensor<V> empty(Class<?>... dimensions) {
-        return ImmutableTensor.<V> builder(dimensions).build();
+        return ImmutableTensor.<V>builder(dimensions).build();
     }
 
     /**
@@ -389,7 +446,7 @@ public final class Tensorics {
     }
 
     public static final Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value,
-            javax.measure.unit.Unit<?> unit) {
+                                                                          javax.measure.unit.Unit<?> unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
         return scalarOf(quantity);
     }

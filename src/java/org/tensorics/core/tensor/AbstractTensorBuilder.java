@@ -81,6 +81,13 @@ public abstract class AbstractTensorBuilder<V> implements TensorBuilder<V> {
         return this;
     }
 
+    @Override
+    public TensorBuilder<V> context(Object... coordinates) {
+        return context(Position.of(coordinates));
+    }
+
+
+
     private void checkIfContextValid(Position context2) {
         for (Class<?> oneDimensionClass : context2.dimensionSet()) {
             if (dimensions.contains(oneDimensionClass)) {
@@ -108,6 +115,13 @@ public abstract class AbstractTensorBuilder<V> implements TensorBuilder<V> {
         putAll(Position.empty(), newEntries);
         return this;
     }
+
+    @Override
+    public TensorBuilder<V> putAll(Set<Map.Entry<Position, V>> entries) {
+        entries.forEach(this::put);
+        return this;
+    }
+
 
     @Override
     public TensorBuilder<V> putAll(Position position, Map<Position, V> map) {

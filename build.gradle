@@ -1,5 +1,5 @@
 buildscript {
-    project.ext.CERN_VM = System.getProperty('CERN_TECHNET_VM') ?: System.getenv('CERN_TECHNET_VM') ?: project.hasProperty('CERN_TECHNET_VM') ?: false
+    project.ext.CERN_VM = System.getProperty('CERN_TECHNET_VM') ?: System.getenv('CERN_TECHNET_VM') ?: false
     project.ext.TRAVIS_CI = System.getProperty('TRAVIS') ?: System.getenv('TRAVIS') ?: false
     project.ext.DEPLOYMENT = System.getProperty('deployment') ?: false
     project.ext.VCS_TAG = System.getProperty('TRAVIS_TAG') ?: System.getenv('TRAVIS_TAG')
@@ -159,6 +159,13 @@ idea {
     module {
         downloadJavadoc = true
         downloadSources = true
+    }
+}
+
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "short"
     }
 }
 
