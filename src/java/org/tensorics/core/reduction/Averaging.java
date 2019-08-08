@@ -42,10 +42,4 @@ public class Averaging<V> extends ScalarIterableSupport<V> implements ReductionS
     public V reduce(Map<?, V> inputValues, Position position) {
         return averageOf(inputValues.values());
     }
-
-    @Override
-    public Position context(Position originalContext) {
-        return originalContext;
-    }
-
 }

@@ -44,5 +44,7 @@ public interface ReductionStrategy<C, T, R> {
      */
     R reduce(Map<? extends C, T> inputValues, Position position);
 
-    Position context(Position originalContext);
+    default Position context(Position originalContext) {
+        return originalContext;
+    }
 }

@@ -44,10 +44,4 @@ public class RootMeanSquare<S> extends ScalarIterableSupport<S> implements Reduc
     public S reduce(Map<? extends Object, S> inputValues, Position position) {
         return rmsOf(inputValues.values());
     }
-
-    @Override
-    public Position context(Position originalContext) {
-        return originalContext;
-    }
-
 }

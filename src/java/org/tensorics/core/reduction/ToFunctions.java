@@ -19,14 +19,8 @@ import org.tensorics.core.tensor.Position;
  * @param <Y> the type of the tensor elements and also the type of the values along the Y-axis
  */
 public final class ToFunctions<X, Y> implements ReductionStrategy<X, Y, DiscreteFunction<X, Y>> {
-
     @Override
     public DiscreteFunction<X, Y> reduce(Map<? extends X, Y> inputValues, Position position) {
         return MapBackedDiscreteFunction.fromMap(inputValues);
-    }
-
-    @Override
-    public Position context(Position originalContext) {
-        return originalContext;
     }
 }
