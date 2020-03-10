@@ -2,7 +2,7 @@
  /*******************************************************************************
  *
  * This file is part of tensorics.
- * 
+ *
  * Copyright (c) 2008-2011, CERN. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  ******************************************************************************/
 // @formatter:on
 
@@ -48,7 +48,7 @@ import com.google.common.collect.Sets;
 /**
  * Structural manipulations of tensors (which do not require any knowledge about the mathematical behaviour of the
  * elements).
- * 
+ *
  * @author kfuchsbe, mihostet
  */
 public final class TensorStructurals {
@@ -71,14 +71,14 @@ public final class TensorStructurals {
      * <li>The contexts of all the tensors have THE SAME dimensions AND</li>
      * <li>The dimensions of all the tensors are THE SAME (first found tensor dimension is taken as an reference)</li>
      * </ul>
-     * 
+     *
      * @param tensors to be merged.
      * @return a merged tensor.
      * @throws IllegalArgumentException if zero or one tensor is put to be merged OR if tensors dimensionality and their
      *             context positions dimensionality is not equal OR tensor context is empty.
      */
     public static <E> Tensor<E> merge(Iterable<Tensor<E>> tensors) {
-        if (Iterables.isEmpty(tensors) || Iterables.size(tensors) == 1) {
+        if (Iterables.isEmpty(tensors) || (Iterables.size(tensors) == 1)) {
             throw new IllegalArgumentException("Cannot merge empty or one element list of tensors!");
         }
         Tensor<E> firstTensor = tensors.iterator().next();
@@ -86,9 +86,9 @@ public final class TensorStructurals {
         Position refContextPosition = firstTensor.context();
         Set<Class<?>> outcomeDimensionSet = new HashSet<>(refDimensionSet);
         Set<Class<?>> dimensionSet = refContextPosition.dimensionSet();
-        if (dimensionSet.isEmpty()) {
-            throw new IllegalArgumentException("Cannot merge tensors with empty context!");
-        }
+        //        if (dimensionSet.isEmpty()) {
+        //            throw new IllegalArgumentException("Cannot merge tensors with empty context!");
+        //        }
         outcomeDimensionSet.addAll(dimensionSet);
         Builder<E> tensorBuilder = ImmutableTensor.builder(outcomeDimensionSet);
 
@@ -108,7 +108,7 @@ public final class TensorStructurals {
     /**
      * Checks if the provided tensor has: the same dimension as the reference dimensions, equal number of them, as well
      * as equal number of Context Position dimension and referenceContext Position and their dimensionality.
-     * 
+     *
      * @param tensor the tensor to check
      * @param refDimensions the dimensions that the tensor should have
      * @param refContextDimensions the context position the context dimensions, to which the tensor shall be compatible
@@ -125,7 +125,7 @@ public final class TensorStructurals {
         return new OngoingFlattening<>(tensor);
     }
 
-    public static final <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
+    public static <S> OngoingCompletion<S> complete(Tensor<S> tensor) {
         return new OngoingCompletion<>(tensor);
     }
 
@@ -163,13 +163,13 @@ public final class TensorStructurals {
         Tensorics.stream(tensor).forEach(e -> consumer.accept(e.getKey(), e.getValue()));
     }
 
-    public static final <S> Tensor<S> stripContext(Tensor<S> tensor) {
+    public static <S> Tensor<S> stripContext(Tensor<S> tensor) {
         Builder<S> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.putAll(tensor);
         return builder.build();
     }
 
-    public static final <V> Tensor<V> mergeContextIntoShape(Tensor<V> tensor) {
+    public static <V> Tensor<V> mergeContextIntoShape(Tensor<V> tensor) {
         if (tensor.context().coordinates().isEmpty()) {
             throw new IllegalArgumentException("an empty context can't be merged into the positions");
         }
@@ -179,18 +179,18 @@ public final class TensorStructurals {
         return builder.build();
     }
 
-    public static final <V> Tensor<V> setContext(Tensor<V> tensor, Position context) {
+    public static <V> Tensor<V> setContext(Tensor<V> tensor, Position context) {
         Builder<V> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
         builder.context(context);
         builder.putAll(tensor);
         return builder.build();
     }
 
-    public static final <V> OngoingTensorFiltering<V> filter(Tensor<V> tensor) {
+    public static <V> OngoingTensorFiltering<V> filter(Tensor<V> tensor) {
         return new OngoingTensorFiltering<>(tensor);
     }
 
-    public static final <V> Tensor<V> completeWith(Tensor<V> tensor, Tensor<V> second) {
+    public static <V> Tensor<V> completeWith(Tensor<V> tensor, Tensor<V> second) {
         checkNotNull(second, "second tensor must not be null");
 
         Builder<V> builder = ImmutableTensor.builder(tensor.shape().dimensionSet());
@@ -210,7 +210,7 @@ public final class TensorStructurals {
     /**
      * Starting point for a fluent clause to describe resampling in one or more dimensions. This resampling only
      * provides options which do not require the knowledge of a field. For example:
-     * 
+     *
      * <pre>
      * <code>
      * Tensoric&#60;V&#62; resampled = resample(aTensor)
@@ -219,16 +219,16 @@ public final class TensorStructurals {
      *                           .toTensoric();
      * </code>
      * </pre>
-     * 
+     *
      * Note: The order of the options is important, as the resampling will be performed in the given order!
      * <p>
      * For options which require a field, (e.g. linear interpolation), see the version in
      * {@link TensorSupport#resample(Tensor)}.
-     * 
+     *
      * @param tensor the tensor to be resampled
      * @return an object to define further the strategy for resampling.
      */
-    public static final <V> OngoingResamplingStart<V> resample(Tensor<V> tensor) {
+    public static <V> OngoingResamplingStart<V> resample(Tensor<V> tensor) {
         return new OngoingResamplingStart<>(tensor);
     }
 

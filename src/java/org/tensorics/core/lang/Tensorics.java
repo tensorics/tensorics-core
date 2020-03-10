@@ -241,6 +241,10 @@ public final class Tensorics {
         return Tensorbackeds.sizeOf(tensorbacked);
     }
 
+    public static int sizeOf(Tensor<?> tensor) {
+        return tensor.shape().size();
+    }
+
     /**
      * @see Tensorbackeds#dimensionalityOf(Tensorbacked)
      */
@@ -445,13 +449,13 @@ public final class Tensorics {
         TensorStructurals.consumeScalars(tensor, consumer);
     }
 
-    public static final Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value,
+    public static Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value,
                                                                           javax.measure.unit.Unit<?> unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
         return scalarOf(quantity);
     }
 
-    public static final Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value, Unit unit) {
+    public static Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value, Unit unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
         return scalarOf(quantity);
     }
