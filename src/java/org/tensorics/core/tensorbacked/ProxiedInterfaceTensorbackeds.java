@@ -1,13 +1,12 @@
 package org.tensorics.core.tensorbacked;
 
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.util.JavaVersions;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import static java.util.Objects.requireNonNull;
 
@@ -22,7 +21,7 @@ public final class ProxiedInterfaceTensorbackeds {
             throw new IllegalArgumentException("The given tensorbacked type '" + tensorbackedType
                     + "' is not an interface! Therefore, it cannot be instantiated by proxying!");
         }
-        return (T) Proxy.newProxyInstance(Tensorbacked.class.getClassLoader(), new Class<?>[] { tensorbackedType },
+        return (T) Proxy.newProxyInstance(Tensorbacked.class.getClassLoader(), new Class<?>[]{tensorbackedType},
                 new DelegatingInvocationHandler<>(tensor, tensorbackedType));
     }
 
@@ -39,11 +38,8 @@ public final class ProxiedInterfaceTensorbackeds {
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
             if (method.isDefault()) {
-                return MethodHandles.lookup()
-                        .findSpecial(intfc, method.getName(),
-                                MethodType.methodType(method.getReturnType(), method.getParameterTypes()), intfc)
-                        .bindTo(proxy).invokeWithArguments(args);
-
+                MethodCallHandler callHandler = callHandlerFor(intfc, method);
+                return callHandler.invoke(proxy, args);
             }
 
             if (Tensorbacked.class.equals(method.getDeclaringClass()) && "tensor".equals(method.getName())
@@ -60,35 +56,29 @@ public final class ProxiedInterfaceTensorbackeds {
         Object invoke(Object proxy, Object[] args) throws Throwable;
     }
 
-    @FunctionalInterface
-    private interface MethodInterpreter extends InvocationHandler {
 
-        @Override
-        default Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            MethodCallHandler handler = interpret(method);
-            return handler.invoke(proxy, args);
-        }
-
-        MethodCallHandler interpret(Method method);
+    private static MethodCallHandler callHandlerFor(Class<?> intfc, Method method) {
+        MethodHandle handle = getMethodHandle(intfc, method);
+        return (proxy, args) -> handle.bindTo(proxy).invokeWithArguments(args);
     }
 
-    private static class DefaultMethodCallHandler {
+    private static MethodHandle getMethodHandle(Class<?> intfc, Method method) {
+        Class<?> declaringClass = method.getDeclaringClass();
 
-        private DefaultMethodCallHandler() {
-        }
-
-        private static final ConcurrentMap<Method, MethodCallHandler> cache = new ConcurrentHashMap<>();
-
-        private static MethodCallHandler forMethod(Method method) {
-            return cache.computeIfAbsent(method, m -> {
-                MethodHandle handle = getMethodHandle(m);
-                return (proxy, args) -> handle.bindTo(proxy).invokeWithArguments(args);
-            });
-        }
-
-        private static MethodHandle getMethodHandle(Method method) {
-            Class<?> declaringClass = method.getDeclaringClass();
-
+            /*
+            XXX: This is not too nice: For some reason, the original code (java) 8 did not run in java 11 anymore.
+            And vice versa ... what the exact border is where it stopped working was not full checked.
+            So potentially more research would be needed here.
+             */
+        if (JavaVersions.isAtLeastJava11()) {
+            try {
+                return MethodHandles.lookup()
+                        .findSpecial(intfc, method.getName(),
+                                MethodType.methodType(method.getReturnType(), method.getParameterTypes()), intfc);
+            } catch (NoSuchMethodException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
             try {
                 Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
                         .getDeclaredConstructor(Class.class, int.class);
