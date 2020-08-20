@@ -38,7 +38,7 @@ where the two coordinates within the 2-dimensional space (where N=2 in this case
 To most common way to create tensors is to use builders (in the following example we assume a static import of `Tensorics.*`):
 
 ```java
-Tensor<Double> aTensor = builder(String.class, Integer.class) // the dimension of the tensor
+Tensor<Double> aTensor = Tensorics.<Double>builder(String.class, Integer.class) // the dimension of the tensor
                             .put(at("kaifox", 1), 1.5)
                             .put(at("kaifox", 2), 2.5)
                             .put(at("michi",1), 3.5)
