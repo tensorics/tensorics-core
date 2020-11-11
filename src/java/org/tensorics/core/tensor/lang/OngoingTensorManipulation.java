@@ -23,18 +23,23 @@
 package org.tensorics.core.tensor.lang;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.tensorics.core.tensor.Coordinates;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.TensorInternals;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Part of the tensoric fluent API which provides methods to describe misc manipulations on a given tensor.
@@ -89,6 +94,17 @@ public class OngoingTensorManipulation<V> {
 
     public V get(Object... coordinates) {
         return tensor.get(coordinates);
+    }
+
+    public <C> List<V> list(List<C> listCoordinateValues, Position remainingCoordinates) {
+        return listCoordinateValues.stream().map(Position::of)//
+                .map(p -> Positions.union(remainingCoordinates, p)) //
+                .map(p -> get(p))//
+                .collect(toImmutableList());
+    }
+
+    public <C> List<V> list(List<C> listCoordinateValues, Object ...otherCoordinates) {
+        return list(listCoordinateValues, Position.of(otherCoordinates));
     }
 
     public Tensor<V> extract(Position position) {
