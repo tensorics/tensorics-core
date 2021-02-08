@@ -6,4 +6,8 @@ public interface Tensorbacked2d<C1, C2, V> extends DimtypedTensorbacked<V> {
         return tensor().get(c1, c2);
     }
 
+    
+    default boolean contains(C1 c1, C2 c2) {
+        return tensor().contains(c1, c2);
+    }
 }

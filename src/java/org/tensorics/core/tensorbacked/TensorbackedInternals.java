@@ -28,6 +28,7 @@ import static org.tensorics.core.util.Instantiators.instantiatorFor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.tensorics.core.lang.Tensorics;
@@ -58,7 +59,7 @@ public final class TensorbackedInternals {
      * {@link Dimensions} annotation.
      *
      * @param tensorBackedClass the class for which to determine the dimensions
-     * @return the set of dimentions (classses of coordinates) which are required to create an instance of the given
+     * @return the set of dimensions (classses of coordinates) which are required to create an instance of the given
      * class.
      */
     public static <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
@@ -123,6 +124,10 @@ public final class TensorbackedInternals {
 
     @SuppressWarnings("unchecked")
     public static final <TB extends Tensorbacked<?>> Class<TB> classOf(TB tensorBacked) {
+        Optional<Class<TB>> proxiedInterface = ProxiedInterfaceTensorbackeds.tensorbackedInterfaceFrom(tensorBacked);
+        if (proxiedInterface.isPresent()) {
+            return proxiedInterface.get();
+        }
         return (Class<TB>) tensorBacked.getClass();
     }
 

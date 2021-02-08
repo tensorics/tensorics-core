@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.util.JavaVersions;
@@ -30,6 +31,19 @@ public final class ProxiedInterfaceTensorbackeds {
                 new DelegatingInvocationHandler<>(tensor, tensorbackedType));
     }
 
+    public static < T extends Tensorbacked<?>> Optional<Class<T>> tensorbackedInterfaceFrom(T object) {
+        if (!(object instanceof Proxy)) {
+            return Optional.empty();
+        }
+
+        InvocationHandler handler = Proxy.getInvocationHandler(object);
+        if (!(handler instanceof DelegatingInvocationHandler)) {
+            return Optional.empty();
+        }
+
+        return Optional.of((DelegatingInvocationHandler<?, T>) handler).map(h -> h.intfc);
+    }
+    
     private final static class DelegatingInvocationHandler<V, T extends Tensorbacked<V>> implements InvocationHandler {
         private final Tensor<V> delegate;
         private final Class<T> intfc;
