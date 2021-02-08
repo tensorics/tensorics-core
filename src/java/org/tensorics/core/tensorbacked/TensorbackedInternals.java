@@ -123,7 +123,7 @@ public final class TensorbackedInternals {
     }
 
     @SuppressWarnings("unchecked")
-    public static final <TB extends Tensorbacked<?>> Class<TB> classOf(TB tensorBacked) {
+    public static final <V, TB extends Tensorbacked<V>> Class<TB> classOf(TB tensorBacked) {
         Optional<Class<TB>> proxiedInterface = ProxiedInterfaceTensorbackeds.tensorbackedInterfaceFrom(tensorBacked);
         if (proxiedInterface.isPresent()) {
             return proxiedInterface.get();
