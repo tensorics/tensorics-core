@@ -33,6 +33,7 @@ import org.tensorics.core.tensor.ImmutableScalar;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.operations.ElementBinaryOperation;
 import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.TensorbackedInternals;
 
 /**
  * Part of the tensorics fluent API that provides methods to describe the right hand part of binary operations on tensor
@@ -113,12 +114,8 @@ public class OngoingQuantifiedTensorBackedOperation<QTB extends Tensorbacked<Qua
     private QTB evaluate(Tensor<QuantifiedValue<S>> right, BinaryOperation<QuantifiedValue<S>> operation) {
         Tensor<QuantifiedValue<S>> perform = new ElementBinaryOperation<>(operation,
                 pseudoField.environment().options()).perform(left.tensor(), right);
-        return createBackedByTensor(classOf(left), perform);
+        return createBackedByTensor(TensorbackedInternals.classOf(left), perform);
     }
 
-    @SuppressWarnings("unchecked")
-    private Class<QTB> classOf(QTB tensorBacked) {
-        return (Class<QTB>) tensorBacked.getClass();
-    }
-
+    
 }

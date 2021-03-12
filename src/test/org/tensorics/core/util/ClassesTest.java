@@ -22,7 +22,6 @@
 
 package org.tensorics.core.util;
 
-import static org.junit.Assert.assertNotNull;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 
 import org.junit.Test;
@@ -34,19 +33,7 @@ public class ClassesTest {
         assertUtilityClass(Classes.class);
     }
 
-    @Test
-    public void classOfLastClassDoesNotThrow() {
-        ChildClass object = new ChildClass();
-        Class<ChildClass> theClass = Classes.classOf(object);
-        assertNotNull(theClass);
-    }
-
-    @Test
-    public void classOfParentClassDoesNotThrow() {
-        ParentClass object = new ChildClass();
-        Class<ParentClass> theClass = Classes.classOf(object);
-        assertNotNull(theClass);
-    }
+   
 
     private class ParentClass {
         /* Only for testing the hierarchy */

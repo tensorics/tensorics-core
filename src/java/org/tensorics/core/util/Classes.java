@@ -70,11 +70,4 @@ public final class Classes {
         return builder.build();
     }
 
-    public static <T> Class<T> classOf(T object) {
-        @SuppressWarnings("unchecked")
-        /* This cast is always safe, right? */
-        Class<T> toReturn = (Class<T>) object.getClass();
-        return toReturn;
-    }
-
 }

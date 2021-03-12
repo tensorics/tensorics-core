@@ -22,8 +22,6 @@
 
 package org.tensorics.core.tensorbacked;
 
-import static org.tensorics.core.util.Classes.classOf;
-
 import java.util.Set;
 
 import org.tensorics.core.quantity.QuantifiedValue;
@@ -34,7 +32,17 @@ import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
-import org.tensorics.core.tensorbacked.dimtyped.*;
+import org.tensorics.core.tensorbacked.dimtyped.DimtypedTensorbackedBuilderImpl;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked1d;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked1dBuilder;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked2d;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked2dBuilder;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked3d;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked3dBuilder;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked4d;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked4dBuilder;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked5d;
+import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked5dBuilder;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.Unit;
@@ -281,12 +289,12 @@ public final class Tensorbackeds {
     }
 
     public static final <V, TB extends Tensorbacked<V>> TB stripContext(TB tensorbacked) {
-        TB toReturn = builderFor(classOf(tensorbacked)).putAll(tensorbacked.tensor()).build();
+        TB toReturn = builderFor(TensorbackedInternals.classOf(tensorbacked)).putAll(tensorbacked.tensor()).build();
         return toReturn;
     }
 
     public static <V, TB extends Tensorbacked<V>> TB setContext(TB tensorbacked, Position context) {
-        return builderFor(classOf(tensorbacked)).context(context).putAll(tensorbacked.tensor()).build();
+        return builderFor(TensorbackedInternals.classOf(tensorbacked)).context(context).putAll(tensorbacked.tensor()).build();
     }
 
     public static final <V, TB extends Tensorbacked<V>> OngoingTensorbackedFiltering<V, TB> filter(TB tensorbacked) {

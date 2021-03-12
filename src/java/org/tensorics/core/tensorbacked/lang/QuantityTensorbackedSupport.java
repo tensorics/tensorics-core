@@ -54,9 +54,7 @@ public class QuantityTensorbackedSupport<V> extends QuantityIterableSupport<V> {
     public <QTB extends Tensorbacked<QuantifiedValue<V>>> QTB negativeOf(QTB tensorBacked) {
         Tensor<QuantifiedValue<V>> perform = new ElementUnaryOperation<>(pseudoField.additiveInversion())
                 .perform(tensorBacked.tensor());
-        /* safe cast since we ensure QTB as a type in the argument! */
-        @SuppressWarnings("unchecked")
-        Class<QTB> tensorBackedClass = (Class<QTB>) tensorBacked.getClass();
+        Class<QTB> tensorBackedClass = TensorbackedInternals.classOf(tensorBacked);
         return TensorbackedInternals.createBackedByTensor(tensorBackedClass, perform);
     }
 

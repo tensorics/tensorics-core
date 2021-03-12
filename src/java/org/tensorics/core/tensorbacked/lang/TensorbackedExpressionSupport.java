@@ -49,7 +49,7 @@ public class TensorbackedExpressionSupport<V> {
 
     public final <TB extends Tensorbacked<V>> OngoingDeferredTensorBackedOperation<V, TB> calculateTB(
             Class<TB> resultClass, Expression<TB> left) {
-        return new OngoingDeferredTensorBackedOperation<V, TB>(environment, resultClass, left);
+        return new OngoingDeferredTensorBackedOperation<>(environment, resultClass, left);
     }
 
 }
