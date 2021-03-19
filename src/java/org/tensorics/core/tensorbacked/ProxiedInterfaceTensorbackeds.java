@@ -101,7 +101,7 @@ public final class ProxiedInterfaceTensorbackeds {
                 return false;
             }
             Optional<DelegatingInvocationHandler<?, ?>> otherIh = invokationHandlerFrom((Tensorbacked) obj);
-            if (otherIh.isEmpty()) {
+            if (!otherIh.isPresent()) {
                 return false;
             }
             DelegatingInvocationHandler<?, ?> other = otherIh.get();
