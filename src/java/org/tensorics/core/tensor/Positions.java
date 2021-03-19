@@ -33,11 +33,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.mockito.internal.util.collections.Iterables;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -389,12 +386,11 @@ public final class Positions {
     public static <T> Set<Position> from(Collection<T> coordinates) {
         return coordinates.stream().map(t -> Position.of(t)).collect(toSet());
     }
-    
-    public static <T> Set<Position> from(T ... coordinates) {
+
+    public static <T> Set<Position> from(T... coordinates) {
         return from(ImmutableSet.copyOf(coordinates));
     }
-    
-    
+
     /**
      * Returns a position which contains the coordinates which are contained in the left position but not in the right
      * position. The right position might also contain coordinates not contained in the left position, which are simply

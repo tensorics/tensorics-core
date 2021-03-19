@@ -32,11 +32,10 @@ public final class ProxiedInterfaceTensorbackeds {
     }
 
     public static <V, T extends Tensorbacked<V>> Optional<Class<T>> tensorbackedInterfaceFrom(T object) {
-        return invokationHandlerFrom(object).map(h -> h.intfc);
+        return invokationHandlerFrom(object).map(h -> (Class<T>) h.intfc);
     }
 
-    private static <V, T extends Tensorbacked<V>> Optional<DelegatingInvocationHandler<V, T>> invokationHandlerFrom(
-            T object) {
+    private static Optional<DelegatingInvocationHandler<?, ?>> invokationHandlerFrom(Object object) {
         if (!(object instanceof Proxy)) {
             return Optional.empty();
         }
@@ -46,7 +45,7 @@ public final class ProxiedInterfaceTensorbackeds {
             return Optional.empty();
         }
 
-        return Optional.of((DelegatingInvocationHandler<V, T>) handler);
+        return Optional.of((DelegatingInvocationHandler<?, ?>) handler);
     }
 
     private final static class DelegatingInvocationHandler<V, T extends Tensorbacked<V>> implements InvocationHandler {
@@ -100,7 +99,7 @@ public final class ProxiedInterfaceTensorbackeds {
             if (!(obj instanceof Tensorbacked)) {
                 return false;
             }
-            Optional<DelegatingInvocationHandler<?, ?>> otherIh = invokationHandlerFrom((Tensorbacked) obj);
+            Optional<DelegatingInvocationHandler<?, ?>> otherIh = invokationHandlerFrom(obj);
             if (!otherIh.isPresent()) {
                 return false;
             }
