@@ -1,5 +1,8 @@
 package org.tensorics.core.tensorbacked;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
+
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -7,6 +10,7 @@ import org.junit.rules.ExpectedException;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensorbacked.interfacebacked.AnyOtherOrbitIf;
 import org.tensorics.core.tensorbacked.interfacebacked.SingleBeamOrbitIf;
 import org.tensorics.core.tensorbacked.orbit.SinglebeamOrbit;
 import org.tensorics.core.tensorbacked.orbit.coordinates.Bpm;
@@ -25,10 +29,30 @@ public class ProxiedInterfaceTensorbackedsTest {
 
     @Test
     public void proxiedInterfaceTensorbackedCanBeInstantiated() {
-        SingleBeamOrbitIf orbit = ProxiedInterfaceTensorbackeds.create(SingleBeamOrbitIf.class, anyBpmPlaneTensor());
+        SingleBeamOrbitIf orbit = anyOrbit();
         Assertions.assertThat(orbit.tensor().shape().size()).isEqualTo(1);
     }
 
+    private SingleBeamOrbitIf anyOrbit() {
+        return ProxiedInterfaceTensorbackeds.create(SingleBeamOrbitIf.class, anyBpmPlaneTensor());
+    }
+    
+    private AnyOtherOrbitIf sameOrbitOtherIf() {
+        return ProxiedInterfaceTensorbackeds.create(AnyOtherOrbitIf.class, anyBpmPlaneTensor());
+    }
+
+    @Test
+    public void two_instances_equal() {
+        assertThat(anyOrbit()).isEqualTo(anyOrbit());
+    }
+    
+    @Test
+    public void same_tensor_other_if_not_equals() {
+        assertThat(anyOrbit()).isNotEqualTo(sameOrbitOtherIf());
+        assertThat(sameOrbitOtherIf()).isNotEqualTo(anyOrbit());
+    }
+    
+    
     @Test
     public void concreteClassCanNotBeInstantiatedByProxying() {
         thrown.expect(IllegalArgumentException.class);
