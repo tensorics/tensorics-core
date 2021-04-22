@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BroadcastMissingDimensionsStrategy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.options</a> &gt; <span class="el_source">BroadcastMissingDimensionsStrategy.java</span></div><h1>BroadcastMissingDimensionsStrategy.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.options;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.tensorics.core.tensor.Shapes.dimensionStripped;
+
+import java.util.Set;
+
+import org.tensorics.core.tensor.BroadcastedTensorView;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Shapes;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorPair;
+
+import com.google.common.collect.Sets;
+
+/**
+ * A broadcasting strategies that broadcasts all dimensions which are not available in one tensor to the shape of the
+ * second tensor. For example, lets assume tensors of double values:
+ * &lt;ul&gt;
+ * &lt;li&gt;the left tensor has one dimension X with two entries {[x1]=1.0, [x2]=2.0},
+ * &lt;li&gt;the right tensor has one dimension Y with two entries {[y1]=0.1, [y2]=0.2},
+ * &lt;/ul&gt;
+ * then these two tensors will both be broadcasted to tensors with two dimensions (X, Y) and four values:
+ * &lt;ul&gt;
+ * &lt;li&gt;broadcasted left: {[x1,y1]=1.0, [x1,y2]=1.0, [x2,y1]=2.0, [x2,y2]=2.0},
+ * &lt;li&gt;broadcasted left: {[x1,y1]=0.1, [x1,y2]=0.2, [x2,y1]=0.1, [x2,y2]=0.2}.
+ * &lt;/ul&gt;
+ * This strategy is rather close to the behaviour of
+ * &lt;a href=&quot;http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html&quot;&gt;numpy&lt;/a&gt;, but has one very important
+ * difference: It does NOT broadcast dimensions with one entry. So, if e.g. in the following example, the second tensor
+ * would have had a different shape, like {[x1, y1]=1.0, [x2, y1]=2.0}, then it would have remained the same after
+ * broadcasting and the shapes of the two resulting tensors would be different. This still can be useful in
+ * calculations. The final shape for the result is determined from the two input shapes by a different strategy, the
+ * shaping strategy.
+ * &lt;p&gt;
+ * The reason for this important difference to numpy, is that we consider this as more consistent in the general case:
+ * If a dimension is not present in a tensor, we treat it as 'applicable for all' while if the dimension is present with
+ * one entry, then it is clearly defined where the values are positioned in this dimension and it would be dangerous to
+ * assume they would be applicable everywhere.
+ * 
+ * @author kfuchsbe
+ */
+public class BroadcastMissingDimensionsStrategy implements BroadcastingStrategy {
+
+    /** use factory method {@link #get()} */
+    @Deprecated
+<span class="fc" id="L69">    public BroadcastMissingDimensionsStrategy() {</span>
+        /* nothing, to be changed to private */
+<span class="fc" id="L71">    }</span>
+
+    public static BroadcastMissingDimensionsStrategy get() {
+<span class="fc" id="L74">        return new BroadcastMissingDimensionsStrategy();</span>
+    }
+
+    @Override
+    public &lt;V&gt; TensorPair&lt;V&gt; broadcast(Tensor&lt;V&gt; left, Tensor&lt;V&gt; right, Set&lt;Class&lt;?&gt;&gt; excludedDimensions) {
+<span class="fc" id="L79">        checkNotNull(left, &quot;left tensor must not be null&quot;);</span>
+<span class="fc" id="L80">        checkNotNull(right, &quot;right tensor must not be null&quot;);</span>
+
+<span class="fc" id="L82">        Set&lt;Class&lt;?&gt;&gt; dimensionalIntersection = Shapes.parentDimensionalIntersection(left.shape(), right.shape());</span>
+<span class="fc" id="L83">        Set&lt;Class&lt;?&gt;&gt; notBroadcastedDimensions = Sets.union(dimensionalIntersection, excludedDimensions)</span>
+<span class="fc" id="L84">                .immutableCopy();</span>
+
+<span class="fc" id="L86">        Shape missingLeft = dimensionStripped(right.shape(), notBroadcastedDimensions);</span>
+<span class="fc" id="L87">        Shape missingRight = dimensionStripped(left.shape(), notBroadcastedDimensions);</span>
+
+<span class="fc" id="L89">        return TensorPair.fromLeftRight(new BroadcastedTensorView&lt;V&gt;(left, missingLeft),</span>
+                new BroadcastedTensorView&lt;V&gt;(right, missingRight));
+    }
+
+    @Override
+    public Class&lt;BroadcastingStrategy&gt; getMarkerInterface() {
+<span class="fc" id="L95">        return BroadcastingStrategy.class;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

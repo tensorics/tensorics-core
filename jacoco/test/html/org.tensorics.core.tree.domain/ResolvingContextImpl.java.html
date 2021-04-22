@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResolvingContextImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tree.domain</a> &gt; <span class="el_source">ResolvingContextImpl.java</span></div><h1>ResolvingContextImpl.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tree.domain;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * The simplest implementation of a resolving context. It is inspired by the original implementation in the TE-MPE
+ * analysis package.
+ * 
+ * @author kfuchsbe
+ */
+<span class="fc" id="L36">public class ResolvingContextImpl implements EditableResolvingContext {</span>
+
+<span class="fc" id="L38">    private final Map&lt;Object, Object&gt; resolvedExpressions = new ConcurrentHashMap&lt;&gt;();</span>
+
+    @Override
+    public void putAllNew(ResolvingContext context) {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for (Entry&lt;Object, Object&gt; entry : ((ResolvingContextImpl) context).getRebuildingMap().entrySet()) {</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">            if (!resolvedExpressions.containsKey(entry.getKey())) {</span>
+<span class="fc" id="L44">                resolvedExpressions.put(entry.getKey(), entry.getValue());</span>
+            }
+<span class="fc" id="L46">        }</span>
+<span class="fc" id="L47">    }</span>
+
+    @Override
+    public int size() {
+<span class="fc" id="L51">        return this.resolvedExpressions.size();</span>
+    }
+
+    /**
+     * Returns a map of instruction nodes to instruction nodes, which contains the nodes to be replaced as key and the
+     * nodes which shall replace the old nodes as values.
+     * 
+     * @return the replacement mapping
+     */
+    private Map&lt;Object, Object&gt; getRebuildingMap() {
+<span class="fc" id="L61">        return new HashMap&lt;&gt;(resolvedExpressions);</span>
+    }
+
+    @Override
+    public &lt;E extends Expression&lt;?&gt;&gt; boolean resolves(E expression) {
+<span class="fc bfc" id="L66" title="All 4 branches covered.">        return expression.isResolved() || resolvedExpressions.containsKey(expression);</span>
+    }
+
+    @Override
+    public &lt;R, E extends Expression&lt;R&gt;&gt; R resolvedValueOf(E expression) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (expression.isResolved()) {</span>
+<span class="fc" id="L72">            return expression.get();</span>
+        }
+
+        /*
+         * This cast is safe, because we took care when putting the value that it has the right type
+         */
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L79">        R value = (R) resolvedExpressions.get(expression);</span>
+
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L82">            throw new IllegalArgumentException(&quot;No resolved value for expression '&quot; + expression</span>
+                    + &quot;' is available. Always use the isResolved() method before to check the availability.&quot;);
+        }
+<span class="fc" id="L85">        return value;</span>
+    }
+
+    @Override
+    public &lt;R, E extends Expression&lt;R&gt;&gt; void put(E key, R value) {
+<span class="fc" id="L90">        resolvedExpressions.put(key, value);</span>
+<span class="fc" id="L91">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

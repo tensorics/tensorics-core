@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractTensor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">AbstractTensor.java</span></div><h1>AbstractTensor.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2017 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.tensor;
+
+import static org.tensorics.core.tensor.operations.TensorInternals.mapFrom;
+
+import java.util.Map;
+
+/**
+ * Provides sceletal behaviour of tensors. It is highly recommended that all implementations of this tensor inherit from
+ * this class. This is particularly important in order to respect the equality of tensors.
+ *
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the values of the tensor
+ */
+<span class="fc" id="L18">public abstract class AbstractTensor&lt;V&gt; implements Tensor&lt;V&gt; {</span>
+
+    @Override
+    public final int hashCode() {
+<span class="fc" id="L22">        final int prime = 31;</span>
+<span class="fc" id="L23">        int result = 1;</span>
+<span class="fc" id="L24">        Position context = context();</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        result = prime * result + ((context == null) ? 0 : context.hashCode());</span>
+<span class="fc" id="L26">        Shape shape = shape();</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        result = prime * result + ((shape == null) ? 0 : shape.hashCode());</span>
+<span class="fc" id="L28">        Map&lt;Position, V&gt; map = mapFrom(this);</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        result = prime * result + ((map == null) ? 0 : map.hashCode());</span>
+<span class="fc" id="L30">        return result;</span>
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L36">            return true;</span>
+        }
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L39">            return false;</span>
+        }
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (!(obj instanceof Tensor)) {</span>
+<span class="nc" id="L42">            return false;</span>
+        }
+<span class="fc" id="L44">        Tensor&lt;?&gt; other = (Tensor&lt;?&gt;) obj;</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (context() == null) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (other.context() != null) {</span>
+<span class="nc" id="L47">                return false;</span>
+            }
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        } else if (!context().equals(other.context())) {</span>
+<span class="fc" id="L50">            return false;</span>
+        }
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (shape() == null) {</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (other.shape() != null) {</span>
+<span class="nc" id="L54">                return false;</span>
+            }
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        } else if (!shape().equals(other.shape())) {</span>
+<span class="nc" id="L57">            return false;</span>
+        }
+<span class="fc" id="L59">        Map&lt;Position, V&gt; map = mapFrom(this);</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if (map == null) {</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            if (mapFrom(other) != null) {</span>
+<span class="nc" id="L62">                return false;</span>
+            }
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        } else if (!map.equals(mapFrom(other))) {</span>
+<span class="nc" id="L65">            return false;</span>
+        }
+
+<span class="fc" id="L68">        return true;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

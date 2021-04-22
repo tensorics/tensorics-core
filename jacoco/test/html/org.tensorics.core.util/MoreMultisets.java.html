@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MoreMultisets.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.util</a> &gt; <span class="el_source">MoreMultisets.java</span></div><h1>MoreMultisets.java</h1><pre class="source lang-java linenums">package org.tensorics.core.util;
+
+import static com.google.common.collect.Multisets.difference;
+
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Multiset;
+
+public class MoreMultisets {
+
+    private MoreMultisets() {
+        /* only static methods */
+    }
+
+    public static boolean containsNonUniqueElements(Multiset&lt;?&gt; dimensions) {
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        return dimensions.size() &gt; dimensions.elementSet().size();</span>
+    }
+
+    public static &lt;T&gt; Multiset&lt;T&gt; nonUniqueElementsOf(Multiset&lt;T&gt; dimensions) {
+<span class="fc" id="L19">        return difference(dimensions, ImmutableMultiset.copyOf(dimensions.elementSet()));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

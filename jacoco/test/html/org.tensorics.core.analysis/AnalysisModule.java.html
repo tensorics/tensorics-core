@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnalysisModule.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.analysis</a> &gt; <span class="el_source">AnalysisModule.java</span></div><h1>AnalysisModule.java</h1><pre class="source lang-java linenums">// @formatter:off
+/**
+*
+* This file is part of streaming pool (http://www.streamingpool.org).
+*
+* Copyright (c) 2017-present, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
+// @formatter:on
+
+package org.tensorics.core.analysis;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.tensorics.core.analysis.expression.AnalysisExpression;
+import org.tensorics.core.analysis.expression.AssertionExpression;
+import org.tensorics.core.analysis.lang.OngoingAllBooleanCondition;
+import org.tensorics.core.analysis.lang.OngoingAllBooleanExcludableCondition;
+import org.tensorics.core.analysis.lang.OngoingAnyBooleanCondition;
+import org.tensorics.core.analysis.lang.OngoingBooleanCondition;
+import org.tensorics.core.analysis.lang.OngoingCondition;
+import org.tensorics.core.analysis.lang.OngoingPrecondition;
+import org.tensorics.core.booleans.operations.And;
+import org.tensorics.core.expressions.LatestOfExpression;
+import org.tensorics.core.iterable.expressions.IterableExpressionToIterable;
+import org.tensorics.core.iterable.expressions.IterableOperationExpression;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvedExpression;
+
+/**
+ * Abstract base class for analysis modules. Provides fluent API methods to specify assertions.
+ * &lt;p&gt;
+ * This class is not threadsafe!
+ *
+ * @author acalia, caguiler, kfuchsbe, mhruska
+ */
+<span class="nc" id="L54">public abstract class AnalysisModule {</span>
+
+<span class="nc" id="L56">    private final List&lt;AssertionBuilder&gt; assertionBuilders = new ArrayList&lt;&gt;();</span>
+
+    protected final &lt;T1&gt; OngoingCondition&lt;T1&gt; assertThat(Expression&lt;T1&gt; thatSource) {
+<span class="nc" id="L59">        return new OngoingCondition&lt;&gt;(newAssertionBuilder(), thatSource);</span>
+    }
+
+    protected final &lt;T1&gt; OngoingCondition&lt;T1&gt; assertThat(T1 thatSource) {
+<span class="nc" id="L63">        return assertThat(ResolvedExpression.of(thatSource));</span>
+    }
+
+    protected final OngoingBooleanCondition assertBoolean(Expression&lt;Boolean&gt; thatSource) {
+<span class="nc" id="L67">        return new OngoingBooleanCondition(newAssertionBuilder(), thatSource);</span>
+    }
+
+    protected final OngoingBooleanCondition assertBoolean(Boolean thatSource) {
+<span class="nc" id="L71">        return assertBoolean(ResolvedExpression.of(thatSource));</span>
+    }
+
+    protected final OngoingAllBooleanExcludableCondition assertAllBoolean(
+            Set&lt;? extends Expression&lt;Boolean&gt;&gt; thatSource) {
+<span class="nc" id="L76">        return new OngoingAllBooleanExcludableCondition(newAssertionBuilder(), thatSource);</span>
+    }
+
+    protected final OngoingAllBooleanCondition assertAllBoolean(Expression&lt;? extends Iterable&lt;Boolean&gt;&gt; thatSource) {
+<span class="nc" id="L80">        return new OngoingAllBooleanCondition(newAssertionBuilder(), thatSource);</span>
+    }
+
+    protected final OngoingAnyBooleanCondition assertAtLeastOneBooleanOf(
+            Expression&lt;? extends Iterable&lt;Boolean&gt;&gt; thatSource) {
+<span class="nc" id="L85">        return new OngoingAnyBooleanCondition(newAssertionBuilder(), thatSource);</span>
+    }
+
+    protected OngoingBooleanCondition assertLatestBooleanOf(Expression&lt;? extends Iterable&lt;Boolean&gt;&gt; buffered) {
+<span class="nc" id="L89">        return new OngoingBooleanCondition(newAssertionBuilder(), LatestOfExpression.latestOf(buffered));</span>
+    }
+
+    protected final OngoingPrecondition&lt;Boolean&gt; whenTrue(Expression&lt;Boolean&gt; whenSource) {
+<span class="nc" id="L93">        return new OngoingPrecondition&lt;&gt;(newAssertionBuilder(), whenSource).isEqualTo(true);</span>
+    }
+
+    protected final OngoingPrecondition&lt;Boolean&gt; whenFalse(Expression&lt;Boolean&gt; whenSource) {
+<span class="nc" id="L97">        return new OngoingPrecondition&lt;&gt;(newAssertionBuilder(), whenSource).isEqualTo(false);</span>
+    }
+
+    protected final OngoingPrecondition&lt;Boolean&gt; whenNot(Expression&lt;Boolean&gt; whenSource) {
+<span class="nc" id="L101">        return whenFalse(whenSource);</span>
+    }
+
+    protected final OngoingPrecondition&lt;Boolean&gt; whenAllTrue(Iterable&lt;Expression&lt;Boolean&gt;&gt; expressions) {
+<span class="nc" id="L105">        Expression&lt;Iterable&lt;Boolean&gt;&gt; booleans = new IterableExpressionToIterable&lt;&gt;(expressions);</span>
+<span class="nc" id="L106">        Expression&lt;Boolean&gt; combined = new IterableOperationExpression&lt;&gt;(new And(), booleans);</span>
+<span class="nc" id="L107">        return whenTrue(combined);</span>
+    }
+
+    protected final &lt;T1&gt; OngoingPrecondition&lt;T1&gt; when(Expression&lt;T1&gt; whenSource) {
+<span class="nc" id="L111">        return new OngoingPrecondition&lt;&gt;(newAssertionBuilder(), whenSource);</span>
+    }
+
+    protected final &lt;T1&gt; OngoingPrecondition&lt;T1&gt; when(T1 whenSource) {
+<span class="nc" id="L115">        return when(ResolvedExpression.of(whenSource));</span>
+    }
+
+    private AssertionBuilder newAssertionBuilder() {
+<span class="nc" id="L119">        AssertionBuilder builder = new AssertionBuilder();</span>
+<span class="nc" id="L120">        assertionBuilders.add(builder);</span>
+<span class="nc" id="L121">        return builder;</span>
+    }
+
+    public List&lt;AssertionBuilder&gt; assertionBuilders() {
+<span class="nc" id="L125">        return assertionBuilders;</span>
+    }
+
+    public AnalysisExpression buildExpression() {
+<span class="nc" id="L129">        return assertionBuilders().stream().map(AssertionExpression::new)</span>
+<span class="nc" id="L130">                .collect(collectingAndThen(toList(), AnalysisExpression::new));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

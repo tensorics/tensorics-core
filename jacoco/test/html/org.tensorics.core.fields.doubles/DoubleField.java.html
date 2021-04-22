@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DoubleField.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.fields.doubles</a> &gt; <span class="el_source">DoubleField.java</span></div><h1>DoubleField.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.fields.doubles;
+
+import org.tensorics.core.math.operations.CommutativeAssociativeOperation;
+import org.tensorics.core.math.operations.UnaryOperation;
+import org.tensorics.core.math.predicates.BinaryPredicate;
+import org.tensorics.core.math.structures.grouplike.AbstractAbelianGroup;
+import org.tensorics.core.math.structures.ringlike.OrderedField;
+
+/**
+ * Provides mathematical structures for double values (which form a field). Usually, users will not construct instances
+ * of this class manually, but use the convenience methods from the {@link Structures} class. The reason is that
+ * instances of this class are per se of limited use. They only become useful, if they are extended by additional
+ * functionality.
+ *
+ * @author kfuchsbe
+ * @see Structures
+ */
+public final class DoubleField extends AbstractOrderedField&lt;Double&gt; implements OrderedField&lt;Double&gt; {
+    private static final long serialVersionUID = 1L;
+
+    private static final double ZERO = 0.0;
+    private static final double ONE = 1.0;
+
+    /**
+     * Package visible constructor to allow the structures class to instantiate the class. Use the lookup methods in the
+     * {@link Structures} class to retrieve an instance of the field.
+     */
+    DoubleField() {
+<span class="fc" id="L51">        super(new DoubleAdditionGroup(), new DoubleMultiplicationGroup(), new DoubleLessOrEqual());</span>
+<span class="fc" id="L52">    }</span>
+
+<span class="fc" id="L54">    static class DoubleLessOrEqual implements BinaryPredicate&lt;Double&gt; {</span>
+        @Override
+        public boolean test(Double left, Double right) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            return left &lt;= right;</span>
+        }
+    }
+
+    private static class DoubleAddition implements CommutativeAssociativeOperation&lt;Double&gt; {
+        @Override
+        public Double perform(Double left, Double right) {
+<span class="fc" id="L64">            return left + right;</span>
+        }
+    }
+
+    private static class DoubleMultiplication implements CommutativeAssociativeOperation&lt;Double&gt; {
+        @Override
+        public Double perform(Double left, Double right) {
+<span class="fc" id="L71">            return left * right;</span>
+        }
+    }
+
+    private static class DoubleAdditiveInversion implements UnaryOperation&lt;Double&gt; {
+        @Override
+        public Double perform(Double value) {
+<span class="fc" id="L78">            return -value;</span>
+        }
+    }
+
+    private static class DoubleMultiplicativeInversion implements UnaryOperation&lt;Double&gt; {
+        @Override
+        public Double perform(Double value) {
+<span class="fc" id="L85">            return 1 / value;</span>
+        }
+    }
+
+    static class DoubleAdditionGroup extends AbstractAbelianGroup&lt;Double&gt; {
+        private static final long serialVersionUID = 1L;
+
+        public DoubleAdditionGroup() {
+<span class="fc" id="L93">            super(new DoubleAddition(), ZERO, new DoubleAdditiveInversion());</span>
+<span class="fc" id="L94">        }</span>
+
+    }
+
+    static class DoubleMultiplicationGroup extends AbstractAbelianGroup&lt;Double&gt; {
+        private static final long serialVersionUID = 1L;
+
+        public DoubleMultiplicationGroup() {
+<span class="fc" id="L102">            super(new DoubleMultiplication(), ONE, new DoubleMultiplicativeInversion());</span>
+<span class="fc" id="L103">        }</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

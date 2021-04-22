@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExceptionHandlingRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.resolve.domain</a> &gt; <span class="el_source">ExceptionHandlingRequest.java</span></div><h1>ExceptionHandlingRequest.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.resolve.domain;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.tensorics.core.tree.domain.EditableResolvingContext;
+import org.tensorics.core.tree.domain.Node;
+
+/**
+ * Describes the situation that at some point in the expression tree an exception occured which probably should be
+ * handled. It contains the information about
+ * &lt;ul&gt;
+ * &lt;li&gt;the root node of the tree
+ * &lt;li&gt;the node, where the exception occures
+ * &lt;li&gt;the eception itself
+ * &lt;li&gt;and the context, which should be modified as soon as the exception will be handled
+ * &lt;/ul&gt;
+ * &lt;p&gt;
+ * This class is immutable
+ * 
+ * @author kfuchsbe
+ */
+public final class ExceptionHandlingRequest {
+    private final Node rootNode;
+    private final Node throwingNode;
+    private final RuntimeException exception;
+    private final EditableResolvingContext context;
+
+<span class="fc" id="L50">    public ExceptionHandlingRequest(Builder builder) {</span>
+<span class="fc" id="L51">        this.rootNode = checkNotNull(builder.rootNode, &quot;rootNode must not be null&quot;);</span>
+<span class="fc" id="L52">        this.throwingNode = checkNotNull(builder.throwingNode, &quot;throwingNode must not be null&quot;);</span>
+<span class="fc" id="L53">        this.exception = checkNotNull(builder.exception, &quot;exception must not be null&quot;);</span>
+<span class="fc" id="L54">        this.context = checkNotNull(builder.context, &quot;context must not be null&quot;);</span>
+<span class="fc" id="L55">    }</span>
+
+    public static Builder builder() {
+<span class="fc" id="L58">        return new Builder();</span>
+    }
+
+    public Node getRootNode() {
+<span class="nc" id="L62">        return rootNode;</span>
+    }
+
+    public RuntimeException getException() {
+<span class="fc" id="L66">        return exception;</span>
+    }
+
+    public EditableResolvingContext getContext() {
+<span class="nc" id="L70">        return context;</span>
+    }
+
+    public Node getThrowingNode() {
+<span class="fc" id="L74">        return throwingNode;</span>
+    }
+
+    /**
+     * The builder for an exception handling request.
+     * &lt;p&gt;
+     * This class is not threadsafe.
+     * 
+     * @author kfuchsbe
+     */
+    public static class Builder {
+        private Node rootNode;
+        private Node throwingNode;
+        private RuntimeException exception;
+        private EditableResolvingContext context;
+
+<span class="fc" id="L90">        Builder() {</span>
+            /* Avoid public instantiation */
+<span class="fc" id="L92">        }</span>
+
+        public Builder withRoot(Node newRootNode) {
+<span class="fc" id="L95">            this.rootNode = newRootNode;</span>
+<span class="fc" id="L96">            return this;</span>
+        }
+
+        public Builder withThrowingNode(Node newThrowingNode) {
+<span class="fc" id="L100">            this.throwingNode = newThrowingNode;</span>
+<span class="fc" id="L101">            return this;</span>
+        }
+
+        public Builder withException(RuntimeException newException) {
+<span class="fc" id="L105">            this.exception = newException;</span>
+<span class="fc" id="L106">            return this;</span>
+        }
+
+        public Builder withContext(EditableResolvingContext newContext) {
+<span class="fc" id="L110">            this.context = newContext;</span>
+<span class="fc" id="L111">            return this;</span>
+        }
+
+        public ExceptionHandlingRequest build() {
+<span class="fc" id="L115">            return new ExceptionHandlingRequest(this);</span>
+        }
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

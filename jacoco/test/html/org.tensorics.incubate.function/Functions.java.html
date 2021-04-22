@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Functions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.incubate.function</a> &gt; <span class="el_source">Functions.java</span></div><h1>Functions.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.incubate.function;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+/**
+ * Provides utility methods which deal with functions.
+ * &lt;p&gt;
+ * 
+ * @author agorzaws
+ */
+public final class Functions {
+
+    private static final double ZERO = 0.0;
+
+    private Functions() {
+        /* only static methods */
+    }
+
+    public static DiscreteFunction&lt;Double, Double&gt; convertToDiscreteFunctionFrom(double[] times, double[] values) {
+<span class="nc" id="L45">        double[] errors = new double[values.length];</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (int i = 0; i &lt; values.length; i++) {</span>
+<span class="nc" id="L47">            errors[i] = ZERO;</span>
+        }
+<span class="nc" id="L49">        return convertToDiscreteFunctionFrom(times, values, errors);</span>
+    }
+
+    public static List&lt;Double&gt; getXsIntersection(DiscreteFunction&lt;Double, ?&gt; first,
+            DiscreteFunction&lt;Double, ?&gt; second) {
+
+<span class="nc" id="L55">        List&lt;Double&gt; firstTs = first.getXs();</span>
+<span class="nc" id="L56">        List&lt;Double&gt; secondTs = second.getXs();</span>
+
+<span class="nc" id="L58">        List&lt;Double&gt; tsToReturn = new ArrayList&lt;Double&gt;();</span>
+<span class="nc bnc" id="L59" title="All 4 branches missed.">        if (firstTs.size() == 0 || secondTs.size() == 0) {</span>
+<span class="nc" id="L60">            return tsToReturn;</span>
+        }
+
+<span class="nc" id="L63">        double upperLimit = Math.min(firstTs.get(firstTs.size() - 1), secondTs.get(secondTs.size() - 1));</span>
+<span class="nc" id="L64">        double lowerLimit = Math.max(firstTs.get(0), secondTs.get(0));</span>
+
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        for (Double one : firstTs) {</span>
+<span class="nc bnc" id="L67" title="All 4 branches missed.">            if (one &gt; lowerLimit &amp;&amp; one &lt; upperLimit)</span>
+<span class="nc" id="L68">                tsToReturn.add(one);</span>
+<span class="nc" id="L69">        }</span>
+<span class="nc" id="L70">        return tsToReturn;</span>
+    }
+
+    @SuppressWarnings(&quot;boxing&quot;)
+    public static DiscreteFunction&lt;Double, Double&gt; convertToDiscreteFunctionFrom(double[] times, double[] values,
+            double[] errors) {
+<span class="nc bnc" id="L76" title="All 4 branches missed.">        if (times.length != values.length &amp;&amp; values.length != errors.length) {</span>
+<span class="nc" id="L77">            throw new IllegalArgumentException(&quot;Cannot create discrete function from two diffrent size arrays&quot;);</span>
+        }
+<span class="nc" id="L79">        DiscreteFunctionBuilder&lt;Double, Double&gt; builder = SortedMapBackedDiscreteFunction.builder();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        for (int i = 0; i &lt; times.length; i++) {</span>
+<span class="nc" id="L81">            builder.put(times[i], values[i], errors[i]);</span>
+        }
+<span class="nc" id="L83">        return builder.withName(&quot;NoName&quot;).build();</span>
+    }
+
+    public static DiscreteFunction&lt;Double, Double&gt; convertToDiscreteFunctionFrom(Map&lt;Double, Double&gt; map, String name) {
+<span class="nc" id="L87">        DiscreteFunctionBuilder&lt;Double, Double&gt; builder = SortedMapBackedDiscreteFunction.builder();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (Entry&lt;Double, Double&gt; one : map.entrySet()) {</span>
+<span class="nc" id="L89">            builder.put(one.getKey(), one.getValue(), ZERO);</span>
+<span class="nc" id="L90">        }</span>
+<span class="nc" id="L91">        return builder.withInterpolationStrategy(new LinearInterpolationStrategy()).withName(name).build();</span>
+    }
+
+    public static DiscreteFunction&lt;Double, Double&gt; emptyDiscreteFunction() {
+<span class="nc" id="L95">        DiscreteFunctionBuilder&lt;Double, Double&gt; builder = SortedMapBackedDiscreteFunction.builder();</span>
+<span class="nc" id="L96">        return builder.withName(&quot;EMPTY&quot;).build();</span>
+    }
+
+    public static DiscreteFunction&lt;Double, Double&gt; createInterpolatedFunctionFromTwoPoints(double startPoint,
+            double endPoint, double length) {
+<span class="nc" id="L101">        DiscreteFunctionBuilder&lt;Double, Double&gt; builder = SortedMapBackedDiscreteFunction.builder();</span>
+<span class="nc" id="L102">        builder.put(0.0, startPoint, ZERO);</span>
+<span class="nc" id="L103">        builder.put(length, endPoint, ZERO);</span>
+<span class="nc" id="L104">        return builder.withName(&quot;INTERPOLATED_TWO_POINTS&quot;).withInterpolationStrategy(new LinearInterpolationStrategy())</span>
+<span class="nc" id="L105">                .build();</span>
+    }
+
+    /**
+     * Multiplies the Y values of the given function with the value {@code scale}.
+     * 
+     * @param function the function to scale
+     * @param scale the factor, by which to multiply the function Y values
+     * @return the scaled function
+     */
+    public static DiscreteFunction&lt;Double, Double&gt; //
+            scaleFunction(DiscreteFunction&lt;Double, Double&gt; function, double scale) {
+
+<span class="nc" id="L118">        DiscreteFunctionBuilder&lt;Double, Double&gt; builder = SortedMapBackedDiscreteFunction.builder();</span>
+<span class="nc" id="L119">        builder.withName(function.getName());</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        for (Double oneTime : function.getXs()) {</span>
+<span class="nc" id="L121">            builder.put(oneTime, function.getY(oneTime) * scale);</span>
+<span class="nc" id="L122">        }</span>
+<span class="nc" id="L123">        return builder.build();</span>
+    }
+
+    /**
+     * Performs numerical integral of given function within full range of given function. Simplest method of sum of
+     * dt*Y.
+     * 
+     * @param function the function to treat
+     * @return the value of the numerical integral
+     */
+    public static double integrate(DiscreteFunction&lt;Double, Double&gt; function) {
+<span class="fc" id="L134">        List&lt;Double&gt; xValues = function.getXs();</span>
+<span class="fc" id="L135">        double firstTime = xValues.get(0);</span>
+<span class="fc" id="L136">        double endTime = xValues.get(xValues.size() - 1);</span>
+<span class="fc" id="L137">        return integrate(function, firstTime, endTime);</span>
+    }
+
+    /**
+     * performs numerical integral of given function within start and end values. Simplest method of sum of dt*Y.
+     * 
+     * @param function the function to integrate
+     * @param start the lower border of the integration
+     * @param end the upper border of the integration
+     * @return the value calculated from the integration
+     */
+    public static double integrate(DiscreteFunction&lt;Double, Double&gt; function, double start, double end) {
+<span class="fc" id="L149">        double sum = 0.0;</span>
+<span class="fc" id="L150">        List&lt;Double&gt; xValues = function.getXs();</span>
+<span class="fc" id="L151">        double lastT = start;</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        for (Double t : xValues) {</span>
+<span class="fc bfc" id="L153" title="All 4 branches covered.">            if (t &gt;= start &amp;&amp; t &lt;= end) {</span>
+<span class="fc" id="L154">                sum += function.getY(t) * (t - lastT);</span>
+<span class="fc" id="L155">                lastT = t;</span>
+            }
+<span class="fc" id="L157">        }</span>
+<span class="fc" id="L158">        return sum;</span>
+    }
+
+    /**
+     * Allows to get cut first part of ig exp decay if above limit.
+     * 
+     * @param function function to treat
+     * @param yLimit UPPER limit, above which original values are omitted
+     * @return the cut function
+     */
+    public static DiscreteFunction&lt;Double, Double&gt; cutBeginingOfExp(DiscreteFunction&lt;Double, Double&gt; function,
+            double yLimit) {
+<span class="nc" id="L170">        DiscreteFunctionBuilder&lt;Double, Double&gt; builder = SortedMapBackedDiscreteFunction.builder();</span>
+
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        for (Double x : function.getXs()) {</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            if (function.getY(x) &lt;= yLimit) {</span>
+<span class="nc" id="L174">                builder.put(x, function.getY(x));</span>
+            }
+<span class="nc" id="L176">        }</span>
+
+<span class="nc" id="L178">        return builder.build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

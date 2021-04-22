@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingDiscreteFunctionBinaryOperation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.function.lang</a> &gt; <span class="el_source">OngoingDiscreteFunctionBinaryOperation.java</span></div><h1>OngoingDiscreteFunctionBinaryOperation.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.function.lang;
+
+import java.util.Comparator;
+
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.commons.options.Environment;
+import org.tensorics.core.function.DiscreteFunction;
+import org.tensorics.core.function.operations.DiscreteFunctionOperationRepository;
+
+/**
+ * Provides methods to describe the right hand side of binary operations on {@link DiscreteFunction} from X to Y
+ * 
+ * @param &lt;X&gt; the type of the independent variable (input) of the discrete function
+ * @param &lt;Y&gt; the type of the dependent variable (output) of the discrete function and the type of the scalar values
+ *            (elements of the field) on which to operate
+ * @author caguiler
+ */
+public class OngoingDiscreteFunctionBinaryOperation&lt;X, Y&gt; {
+
+    private final DiscreteFunction&lt;X, Y&gt; left;
+    private final DiscreteFunctionOperationRepository&lt;X, Y&gt; repository;
+
+    /**
+     * @param environment the {@link Environment} for this support
+     * @param conversion defines how to transform a value of X type to Y type
+     */
+    OngoingDiscreteFunctionBinaryOperation(Environment&lt;Y&gt; environment, DiscreteFunction&lt;X, Y&gt; left,
+<span class="fc" id="L50">            Conversion&lt;X, Y&gt; conversion, Comparator&lt;X&gt; comparator) {</span>
+<span class="fc" id="L51">        this.left = left;</span>
+<span class="fc" id="L52">        this.repository = new DiscreteFunctionOperationRepository&lt;&gt;(environment, conversion, comparator);</span>
+<span class="fc" id="L53">    }</span>
+
+    public final DiscreteFunction&lt;X, Y&gt; plus(DiscreteFunction&lt;X, Y&gt; right) {
+<span class="fc" id="L56">        return repository.addition().perform(left, right);</span>
+    }
+
+    public final DiscreteFunction&lt;X, Y&gt; minus(DiscreteFunction&lt;X, Y&gt; right) {
+<span class="fc" id="L60">        return repository.subtraction().perform(left, right);</span>
+    }
+
+    public final DiscreteFunction&lt;X, Y&gt; times(DiscreteFunction&lt;X, Y&gt; right) {
+<span class="fc" id="L64">        return repository.multiplication().perform(left, right);</span>
+    }
+
+    public final DiscreteFunction&lt;X, Y&gt; dividedBy(DiscreteFunction&lt;X, Y&gt; right) {
+<span class="fc" id="L68">        return repository.division().perform(left, right);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

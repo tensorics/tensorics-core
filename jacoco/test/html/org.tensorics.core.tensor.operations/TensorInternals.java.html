@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensorInternals.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.operations</a> &gt; <span class="el_source">TensorInternals.java</span></div><h1>TensorInternals.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.operations;
+
+import static java.util.Objects.requireNonNull;
+import static org.tensorics.core.tensor.operations.PositionFunctions.forSupplier;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import org.tensorics.core.tensor.Mappable;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+
+import com.google.common.collect.ImmutableMap;
+
+/**
+ * Utility methods for tensors which are not exposed to the public API
+ * 
+ * @author kfuchsbe
+ */
+public final class TensorInternals {
+
+    private TensorInternals() {
+        /* only static methods */
+    }
+
+    public static &lt;T&gt; OngoingMapOut&lt;T&gt; mapOut(Tensor&lt;T&gt; tensor) {
+<span class="fc" id="L53">        return new OngoingMapOut&lt;&gt;(tensor);</span>
+    }
+
+    public static &lt;T&gt; Set&lt;Entry&lt;Position, T&gt;&gt; entrySetOf(Tensor&lt;T&gt; tensor) {
+<span class="nc" id="L57">        return mapFrom(tensor).entrySet();</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; sameValues(Shape shape, S value) {
+<span class="nc" id="L61">        return new SingleValueTensorCreationOperation&lt;S&gt;(shape, value).perform();</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; createFrom(Shape shape, Supplier&lt;S&gt; supplier) {
+<span class="nc" id="L65">        return new FunctionTensorCreationOperation&lt;&gt;(shape, forSupplier(supplier)).perform();</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; createFrom(Shape shape, Function&lt;Position, S&gt; function) {
+<span class="nc" id="L69">        return new FunctionTensorCreationOperation&lt;&gt;(shape, function).perform();</span>
+    }
+
+    /**
+     * Returns a map representing the content of the given tensor. The concrete instance of the map might differ
+     * depending on the implementation of the passed in tensor: Tensor implementations can offer a more efficient way to
+     * retrieve a map from them, by implementing the {@link Mappable} interface. If this interface is present, then its
+     * {@link Mappable#asMap()} method will be called. Otherwise, as a fallback, a new immutable map will be created
+     * from information from the shape of the passed in tensor and its values.
+     * 
+     * @param tensor the tensor from which a map should be returned
+     * @return a map representing the content of the tensor
+     * @throws NullPointerException in case the passed in tensor is {@code null}
+     */
+    public static &lt;V&gt; Map&lt;Position, V&gt; mapFrom(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L84">        requireNonNull(tensor, &quot;tensor must not be null&quot;);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (tensor instanceof Mappable) {</span>
+            @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L87">            Mappable&lt;V&gt; mappable = (Mappable&lt;V&gt;) tensor;</span>
+<span class="fc" id="L88">            return mappable.asMap();</span>
+        }
+<span class="fc" id="L90">        ImmutableMap.Builder&lt;Position, V&gt; builder = ImmutableMap.builder();</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (Position position : tensor.shape().positionSet()) {</span>
+<span class="fc" id="L92">            builder.put(position, tensor.get(position));</span>
+<span class="fc" id="L93">        }</span>
+<span class="fc" id="L94">        return builder.build();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

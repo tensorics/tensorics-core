@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScalarIsCloseTo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.testing.hamcrest</a> &gt; <span class="el_source">ScalarIsCloseTo.java</span></div><h1>ScalarIsCloseTo.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.testing.hamcrest;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
+import org.tensorics.core.scalar.lang.ScalarSupport;
+
+/**
+ * A matcher for base tests, that allows to set a tolerance value. This matcher uses the scalar support of tensorics,
+ * thus it can be used on any scalars fro which a field is provided.
+ * 
+ * @author kfuchsbe
+ * @param &lt;S&gt; the type of the scalars (elements of the field)
+ */
+public class ScalarIsCloseTo&lt;S&gt; extends TypeSafeMatcher&lt;S&gt; {
+
+    private final ScalarSupport&lt;S&gt; support;
+    private final S value;
+    private final S tolerance;
+
+    public ScalarIsCloseTo(ScalarSupport&lt;S&gt; scalarSupport, S value, S tolerance) {
+<span class="fc" id="L46">        super();</span>
+<span class="fc" id="L47">        this.support = checkNotNull(scalarSupport, &quot;scalarSupport must not be null&quot;);</span>
+<span class="fc" id="L48">        this.value = checkNotNull(value, &quot;value must not be null&quot;);</span>
+<span class="fc" id="L49">        this.tolerance = checkNotNull(tolerance, &quot;tolerance must not be null&quot;);</span>
+<span class="fc" id="L50">        checkArgument(support.testIf(tolerance).isGreaterOrEqualTo(support.zero()), &quot;Tolerance must be positive.&quot;);</span>
+<span class="fc" id="L51">    }</span>
+
+    @Override
+    public void describeTo(Description description) {
+<span class="nc" id="L55">        description.appendText(&quot;within &quot; + tolerance + &quot; close to &quot; + value);</span>
+<span class="nc" id="L56">    }</span>
+
+    @Override
+    protected boolean matchesSafely(S valueToAssert) {
+<span class="fc" id="L60">        S diff = support.calculate(valueToAssert).minus(value);</span>
+<span class="fc" id="L61">        S absoluteDiff = support.absoluteValueOf(diff);</span>
+<span class="fc" id="L62">        return support.testIf(absoluteDiff).isLessOrEqualTo(tolerance);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

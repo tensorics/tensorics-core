@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PickExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.iterable.expressions</a> &gt; <span class="el_source">PickExpression.java</span></div><h1>PickExpression.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2016 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.iterable.expressions;
+
+import static org.tensorics.core.iterable.expressions.PickExpression.Mode.FROM_END;
+import static org.tensorics.core.iterable.expressions.PickExpression.Mode.FROM_START;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.tensorics.core.resolve.resolvers.PickResolver;
+import org.tensorics.core.tree.domain.AbstractDeferredExpression;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.Node;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+
+/**
+ * Deferred expression that can pick an element of an, {@link Expression} of, {@link Iterable}. The {@link Mode} and the
+ * offset define the resulting element.
+ *
+ * @see PickResolver
+ * @author kfuchsbe, acalia
+ * @param &lt;T&gt; the type of the data to pick
+ */
+public class PickExpression&lt;T&gt; extends AbstractDeferredExpression&lt;T&gt; implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final Expression&lt;? extends Iterable&lt;T&gt;&gt; iterable;
+    private final int offset;
+    private final Mode mode;
+
+    protected PickExpression(Expression&lt;? extends Iterable&lt;T&gt;&gt; iterable, int offset, Mode mode) {
+<span class="fc" id="L37">        super();</span>
+<span class="fc" id="L38">        this.iterable = iterable;</span>
+<span class="fc" id="L39">        this.offset = offset;</span>
+<span class="fc" id="L40">        this.mode = mode;</span>
+<span class="fc" id="L41">    }</span>
+
+    public static &lt;T&gt; PickExpression&lt;T&gt; fromFirst(Expression&lt;? extends Iterable&lt;T&gt;&gt; iterable, int offset) {
+<span class="fc" id="L44">        return new PickExpression&lt;&gt;(iterable, offset, FROM_START);</span>
+    }
+
+    public static &lt;T&gt; PickExpression&lt;T&gt; fromLast(Expression&lt;? extends Iterable&lt;T&gt;&gt; iterable, int offset) {
+<span class="fc" id="L48">        return new PickExpression&lt;&gt;(iterable, offset, FROM_END);</span>
+    }
+
+    @Override
+    public List&lt;? extends Node&gt; getChildren() {
+<span class="nc" id="L53">        return ImmutableList.of(iterable);</span>
+    }
+
+    public Expression&lt;? extends Iterable&lt;T&gt;&gt; iterableExpression() {
+<span class="fc" id="L57">        return iterable;</span>
+    }
+
+    public int offset() {
+<span class="fc" id="L61">        return offset;</span>
+    }
+
+    public Mode mode() {
+<span class="fc" id="L65">        return mode;</span>
+    }
+
+<span class="fc" id="L68">    public static enum Mode {</span>
+<span class="fc" id="L69">        FROM_START {</span>
+            @Override
+            public &lt;T&gt; T pick(Iterable&lt;T&gt; iterable, int offset) {
+<span class="fc" id="L72">                return Iterables.get(iterable, offset);</span>
+            }
+        },
+<span class="fc" id="L75">        FROM_END {</span>
+            @Override
+            public &lt;T&gt; T pick(Iterable&lt;T&gt; iterable, int offset) {
+<span class="fc" id="L78">                int size = Iterables.size(iterable);</span>
+<span class="fc" id="L79">                int index = size - offset - 1;</span>
+<span class="fc" id="L80">                return Iterables.get(iterable, index);</span>
+            }
+        };
+
+        public abstract &lt;T&gt; T pick(Iterable&lt;T&gt; iterable, int offset);
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L89">        final int prime = 31;</span>
+<span class="fc" id="L90">        int result = 1;</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        result = prime * result + ((iterable == null) ? 0 : iterable.hashCode());</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        result = prime * result + ((mode == null) ? 0 : mode.hashCode());</span>
+<span class="fc" id="L93">        result = prime * result + offset;</span>
+<span class="fc" id="L94">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L100">            return true;</span>
+        }
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L103">            return false;</span>
+        }
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L106">            return false;</span>
+        }
+<span class="fc" id="L108">        PickExpression&lt;?&gt; other = (PickExpression&lt;?&gt;) obj;</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (iterable == null) {</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (other.iterable != null) {</span>
+<span class="nc" id="L111">                return false;</span>
+            }
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        } else if (!iterable.equals(other.iterable)) {</span>
+<span class="nc" id="L114">            return false;</span>
+        }
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (mode != other.mode) {</span>
+<span class="nc" id="L117">            return false;</span>
+        }
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (offset != other.offset) {</span>
+<span class="nc" id="L120">            return false;</span>
+        }
+<span class="fc" id="L122">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L127">        return &quot;PickExpression [iterable=&quot; + iterable + &quot;, offset=&quot; + offset + &quot;, mode=&quot; + mode + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

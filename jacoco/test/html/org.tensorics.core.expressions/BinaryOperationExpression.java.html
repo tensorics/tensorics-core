@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BinaryOperationExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.expressions</a> &gt; <span class="el_source">BinaryOperationExpression.java</span></div><h1>BinaryOperationExpression.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.expressions;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tree.domain.AbstractDeferredExpression;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.Node;
+
+import com.google.common.collect.ImmutableList;
+
+/**
+ * An unresolved expression which can be resolved by applying a binary operation on the results of the two operands
+ * (left, right). An instance contains the binary operation itself as well as expressions for both operands.
+ *
+ * @author kfuchsbe
+ * @param &lt;T&gt; the type of the results of the operands (and the result of the expression)
+ */
+public class BinaryOperationExpression&lt;T&gt; extends AbstractDeferredExpression&lt;T&gt; implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final BinaryOperation&lt;T&gt; operation;
+    private final Expression&lt;T&gt; left;
+    private final Expression&lt;T&gt; right;
+
+    public BinaryOperationExpression(BinaryOperation&lt;T&gt; operation, Expression&lt;T&gt; left, Expression&lt;T&gt; right) {
+<span class="fc" id="L51">        super();</span>
+<span class="fc" id="L52">        this.operation = checkNotNull(operation, &quot;Operation must not be null!&quot;);</span>
+<span class="fc" id="L53">        this.left = checkNotNull(left, &quot;Left operand must not be null!&quot;);</span>
+<span class="fc" id="L54">        this.right = checkNotNull(right, &quot;Right operand must not be null!&quot;);</span>
+<span class="fc" id="L55">    }</span>
+
+    public BinaryOperation&lt;T&gt; getOperation() {
+<span class="fc" id="L58">        return operation;</span>
+    }
+
+    public Expression&lt;T&gt; getLeft() {
+<span class="fc" id="L62">        return left;</span>
+    }
+
+    public Expression&lt;T&gt; getRight() {
+<span class="fc" id="L66">        return right;</span>
+    }
+
+    @Override
+    public List&lt;Node&gt; getChildren() {
+<span class="fc" id="L71">        return ImmutableList.&lt;Node&gt; of(left, right);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L76">        final int prime = 31;</span>
+<span class="fc" id="L77">        int result = 1;</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        result = prime * result + ((left == null) ? 0 : left.hashCode());</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        result = prime * result + ((operation == null) ? 0 : operation.hashCode());</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        result = prime * result + ((right == null) ? 0 : right.hashCode());</span>
+<span class="fc" id="L81">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L87">            return true;</span>
+        }
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L90">            return false;</span>
+        }
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L93">            return false;</span>
+        }
+<span class="nc" id="L95">        BinaryOperationExpression&lt;?&gt; other = (BinaryOperationExpression&lt;?&gt;) obj;</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (left == null) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (other.left != null) {</span>
+<span class="nc" id="L98">                return false;</span>
+            }
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        } else if (!left.equals(other.left)) {</span>
+<span class="nc" id="L101">            return false;</span>
+        }
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (operation == null) {</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (other.operation != null) {</span>
+<span class="nc" id="L105">                return false;</span>
+            }
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        } else if (!operation.equals(other.operation)) {</span>
+<span class="nc" id="L108">            return false;</span>
+        }
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (right == null) {</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">            if (other.right != null) {</span>
+<span class="nc" id="L112">                return false;</span>
+            }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        } else if (!right.equals(other.right)) {</span>
+<span class="nc" id="L115">            return false;</span>
+        }
+<span class="nc" id="L117">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L122">        return &quot;BinaryOperationExpression [operation=&quot; + operation + &quot;, left=&quot; + left + &quot;, right=&quot; + right + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

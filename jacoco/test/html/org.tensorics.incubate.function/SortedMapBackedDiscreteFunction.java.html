@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SortedMapBackedDiscreteFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.incubate.function</a> &gt; <span class="el_source">SortedMapBackedDiscreteFunction.java</span></div><h1>SortedMapBackedDiscreteFunction.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.incubate.function;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+
+import com.google.common.collect.ImmutableSortedMap;
+
+/**
+ * This implementation of {@link KeyValueFunction} only provides values at discrete points of X argument. If value is
+ * requested for unavailable value an {@link IllegalDiscreteFunctionUsageException} is thrown.
+ * 
+ * @author agorzaws
+ * @param &lt;X&gt; function arguments type
+ * @param &lt;Y&gt; function values type
+ */
+public class SortedMapBackedDiscreteFunction&lt;X extends Comparable&lt;X&gt;, Y&gt;
+        implements DiscreteFunction&lt;X, Y&gt;, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final SortedMap&lt;X, Y&gt; function;
+    private final SortedMap&lt;X, Y&gt; errors;
+    private final InterpolationStrategy&lt;X, Y&gt; interpolationStrategy;
+    private final String name;
+
+    // private Tensor&lt;X, Y&gt; functionTensor;
+    /**
+     * @param builder
+     */
+    SortedMapBackedDiscreteFunction(Builder&lt;X, Y&gt; builder) {
+<span class="fc" id="L56">        super();</span>
+<span class="fc" id="L57">        this.function = builder.mapBuilder.build();</span>
+<span class="fc" id="L58">        this.errors = builder.errorsBuilder.build();</span>
+<span class="fc" id="L59">        this.interpolationStrategy = builder.interpolationStrategy;</span>
+<span class="fc" id="L60">        this.name = builder.name;</span>
+<span class="fc" id="L61">    }</span>
+
+    @Override
+    public Y getY(X xValue) {
+<span class="fc" id="L65">        Y value = function.get(xValue);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L67">            return value;</span>
+        }
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (interpolationStrategy == null) {</span>
+<span class="nc" id="L70">            throw new IllegalDiscreteFunctionUsageException(</span>
+                    &quot;No interpolation Strategy found and No values can be found for given argument: &quot; + xValue);
+        }
+<span class="fc" id="L73">        return interpolationStrategy.interpolate(xValue, this);</span>
+    }
+
+    @Override
+    public List&lt;X&gt; getXs() {
+<span class="fc" id="L78">        return new ArrayList&lt;&gt;(function.keySet());</span>
+    }
+
+    @Override
+    public List&lt;Y&gt; getYs() {
+<span class="fc" id="L83">        return new ArrayList&lt;&gt;(function.values());</span>
+    }
+
+    @Override
+    public List&lt;Y&gt; getYsErr() {
+<span class="nc" id="L88">        return new ArrayList&lt;&gt;(errors.values());</span>
+    }
+
+    @Override
+    public String getName() {
+<span class="nc" id="L93">        return name;</span>
+    }
+
+    /**
+     * The builder for the function based on a sorted map. This class provides methods to add values to the function.
+     * 
+     * @author kfuchsbe
+     * @param &lt;X&gt; the type of the values in x-direction (Independent variable)
+     * @param &lt;Y&gt; the type of the values in y-direction (Dependent variable)
+     */
+    public static final class Builder&lt;X extends Comparable&lt;X&gt;, Y&gt; implements DiscreteFunctionBuilder&lt;X, Y&gt; {
+
+        private static final String NO_NAME = &quot;NO NAME&quot;;
+
+<span class="fc" id="L107">        private String name = NO_NAME;</span>
+<span class="fc" id="L108">        private final ImmutableSortedMap.Builder&lt;X, Y&gt; mapBuilder = ImmutableSortedMap.naturalOrder();</span>
+<span class="fc" id="L109">        private final ImmutableSortedMap.Builder&lt;X, Y&gt; errorsBuilder = ImmutableSortedMap.naturalOrder();</span>
+
+<span class="fc" id="L111">        private InterpolationStrategy&lt;X, Y&gt; interpolationStrategy = null;</span>
+
+<span class="fc" id="L113">        Builder() {</span>
+            /* Should only be instantiated from the static method */
+<span class="fc" id="L115">        }</span>
+
+        public DiscreteFunctionBuilder&lt;X, Y&gt; put(Entry&lt;? extends X, ? extends Y&gt; entry) {
+<span class="nc" id="L118">            mapBuilder.put(entry);</span>
+<span class="nc" id="L119">            return this;</span>
+        }
+
+        @Override
+        public DiscreteFunctionBuilder&lt;X, Y&gt; put(X key, Y value) {
+<span class="fc" id="L124">            mapBuilder.put(key, value);</span>
+<span class="fc" id="L125">            return this;</span>
+        }
+
+        @Override
+        public DiscreteFunctionBuilder&lt;X, Y&gt; put(X key, Y value, Y error) {
+<span class="nc" id="L130">            mapBuilder.put(key, value);</span>
+<span class="nc" id="L131">            errorsBuilder.put(key, error);</span>
+<span class="nc" id="L132">            return this;</span>
+        }
+
+        public DiscreteFunctionBuilder&lt;X, Y&gt; putAll(Map&lt;? extends X, ? extends Y&gt; values) {
+<span class="nc" id="L136">            mapBuilder.putAll(values);</span>
+<span class="nc" id="L137">            return this;</span>
+        }
+
+        @Override
+        public DiscreteFunctionBuilder&lt;X, Y&gt; withInterpolationStrategy(InterpolationStrategy&lt;X, Y&gt; strategy) {
+<span class="fc" id="L142">            this.interpolationStrategy = strategy;</span>
+<span class="fc" id="L143">            return this;</span>
+        }
+
+        @Override
+        public DiscreteFunctionBuilder&lt;X, Y&gt; withName(String newName) {
+<span class="nc" id="L148">            this.name = newName;</span>
+<span class="nc" id="L149">            return this;</span>
+        }
+
+        @Override
+        public SortedMapBackedDiscreteFunction&lt;X, Y&gt; build() {
+<span class="fc" id="L154">            return new SortedMapBackedDiscreteFunction&lt;&gt;(this);</span>
+        }
+    }
+
+    public static final &lt;X extends Comparable&lt;X&gt;, Y&gt; Builder&lt;X, Y&gt; builder() {
+<span class="fc" id="L159">        return new Builder&lt;&gt;();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

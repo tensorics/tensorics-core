@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnvironmentImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">EnvironmentImpl.java</span></div><h1>EnvironmentImpl.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.lang;
+
+import java.io.Serializable;
+
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.commons.options.OptionRegistry;
+import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.quantity.options.ConfidenceLevel;
+import org.tensorics.core.quantity.options.ErrorPropagationStrategy;
+import org.tensorics.core.quantity.options.QuantificationStrategy;
+import org.tensorics.core.quantity.options.QuantityEnvironment;
+
+/**
+ * Encapsulates all relevant information which is required for calculations of scalars, tensors and iterables. These
+ * include the field (which defines the basic operations on scalars) and the the options which define tensors and
+ * iterables are manipulated exactly.
+ *
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the values (field elements)
+ */
+public final class EnvironmentImpl&lt;V&gt; implements QuantityEnvironment&lt;V&gt;, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final ExtendedField&lt;V&gt; extendedField;
+    private final OptionRegistry&lt;ManipulationOption&gt; optionRegistry;
+
+<span class="fc" id="L49">    private EnvironmentImpl(ExtendedField&lt;V&gt; field, OptionRegistry&lt;ManipulationOption&gt; strategyRegistry) {</span>
+<span class="fc" id="L50">        this.extendedField = field;</span>
+<span class="fc" id="L51">        this.optionRegistry = strategyRegistry;</span>
+<span class="fc" id="L52">    }</span>
+
+    public static &lt;V&gt; EnvironmentImpl&lt;V&gt; of(ExtendedField&lt;V&gt; field, OptionRegistry&lt;ManipulationOption&gt; optionRegistry) {
+<span class="fc" id="L55">        return new EnvironmentImpl&lt;&gt;(field, optionRegistry);</span>
+    }
+
+    @Override
+    public ExtendedField&lt;V&gt; field() {
+<span class="fc" id="L60">        return extendedField;</span>
+    }
+
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public ErrorPropagationStrategy&lt;V&gt; errorPropagation() {
+<span class="fc" id="L66">        return options().get(ErrorPropagationStrategy.class);</span>
+    }
+
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public QuantificationStrategy&lt;V&gt; quantification() {
+<span class="fc" id="L72">        return this.options().get(QuantificationStrategy.class);</span>
+    }
+
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public V confidenceLevel() {
+<span class="fc" id="L78">        return (V) this.options().get(ConfidenceLevel.class).confidenceLevel();</span>
+    }
+
+    @Override
+    public OptionRegistry&lt;ManipulationOption&gt; options() {
+<span class="fc" id="L83">        return optionRegistry;</span>
+    }
+
+    public &lt;T extends ManipulationOption&gt; EnvironmentImpl&lt;V&gt; with(T newOption) {
+<span class="fc" id="L87">        return new EnvironmentImpl&lt;&gt;(extendedField, optionRegistry.with(newOption));</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L92">        final int prime = 31;</span>
+<span class="fc" id="L93">        int result = 1;</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        result = prime * result + ((extendedField == null) ? 0 : extendedField.hashCode());</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        result = prime * result + ((optionRegistry == null) ? 0 : optionRegistry.hashCode());</span>
+<span class="fc" id="L96">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L102">            return true;</span>
+        }
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L105">            return false;</span>
+        }
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L108">            return false;</span>
+        }
+<span class="nc" id="L110">        EnvironmentImpl&lt;?&gt; other = (EnvironmentImpl&lt;?&gt;) obj;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (extendedField == null) {</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (other.extendedField != null) {</span>
+<span class="nc" id="L113">                return false;</span>
+            }
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        } else if (!extendedField.equals(other.extendedField)) {</span>
+<span class="nc" id="L116">            return false;</span>
+        }
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (optionRegistry == null) {</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            if (other.optionRegistry != null) {</span>
+<span class="nc" id="L120">                return false;</span>
+            }
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        } else if (!optionRegistry.equals(other.optionRegistry)) {</span>
+<span class="nc" id="L123">            return false;</span>
+        }
+<span class="nc" id="L125">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L130">        return &quot;EnvironmentImpl [extendedField=&quot; + extendedField + &quot;, optionRegistry=&quot; + optionRegistry + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

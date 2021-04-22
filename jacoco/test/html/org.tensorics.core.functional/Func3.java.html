@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Func3.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.functional</a> &gt; <span class="el_source">Func3.java</span></div><h1>Func3.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2016 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.functional;
+
+/**
+ * Represents a function with three arguments.
+ * 
+ * @param &lt;T1&gt; the first argument type
+ * @param &lt;T2&gt; the second argument type
+ * @param &lt;T3&gt; the third argument type
+ * @param &lt;R&gt; the result type
+ */
+@FunctionalInterface
+public interface Func3&lt;T1, T2, T3, R&gt; extends FiniteArgumentFunction&lt;R&gt; {
+
+    R apply(T1 t1, T2 t2, T3 t3);
+
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    default FuncN&lt;R&gt; toFuncN() {
+<span class="fc" id="L23">        return args -&gt; apply((T1) args[0], (T2) args[1], (T3) args[2]);</span>
+    }
+
+    @Override
+    default int numberOfArgs() {
+<span class="fc" id="L28">        return 3;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

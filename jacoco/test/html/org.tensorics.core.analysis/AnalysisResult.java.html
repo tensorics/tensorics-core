@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnalysisResult.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.analysis</a> &gt; <span class="el_source">AnalysisResult.java</span></div><h1>AnalysisResult.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2017 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.analysis;
+
+import static java.util.Objects.requireNonNull;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
+import org.tensorics.core.analysis.expression.AssertionExpression;
+
+import com.google.common.collect.ImmutableMap;
+
+public class AnalysisResult implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /* We on purpose we use a guava immutable map here, because it preserves insertion order */
+    private final ImmutableMap&lt;AssertionExpression, AssertionResult&gt; assertionResults;
+    private final AssertionStatus overallStatus;
+
+<span class="nc" id="L26">    public AnalysisResult(Builder builder) {</span>
+<span class="nc" id="L27">        this.overallStatus = builder.overallStatus;</span>
+<span class="nc" id="L28">        this.assertionResults = builder.resultsBuilder.build();</span>
+<span class="nc" id="L29">    }</span>
+
+    public static final Builder builder(AssertionStatus overallStatus) {
+<span class="nc" id="L32">        return new Builder(overallStatus);</span>
+    }
+
+    public static final class Builder {
+
+        private final AssertionStatus overallStatus;
+<span class="nc" id="L38">        private final ImmutableMap.Builder&lt;AssertionExpression, AssertionResult&gt; resultsBuilder = ImmutableMap</span>
+<span class="nc" id="L39">                .builder();</span>
+
+<span class="nc" id="L41">        Builder(AssertionStatus overallStatus) {</span>
+<span class="nc" id="L42">            this.overallStatus = requireNonNull(overallStatus, &quot;overallStatus must not be null.&quot;);</span>
+<span class="nc" id="L43">        }</span>
+
+        public Builder put(AssertionExpression expression, AssertionResult result) {
+<span class="nc" id="L46">            requireNonNull(expression, &quot;expression to add must not be null.&quot;);</span>
+<span class="nc" id="L47">            requireNonNull(result, &quot;result to add must not be null.&quot;);</span>
+<span class="nc" id="L48">            resultsBuilder.put(expression, result);</span>
+<span class="nc" id="L49">            return this;</span>
+        }
+
+        public AnalysisResult build() {
+<span class="nc" id="L53">            return new AnalysisResult(this);</span>
+        }
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L59">        return &quot;AnalysisResult [overallStatus=&quot; + overallStatus + &quot;, assertionResults=&quot; + assertionResults + &quot;]&quot;;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L64">        final int prime = 31;</span>
+<span class="nc" id="L65">        int result = 1;</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        result = prime * result + ((assertionResults == null) ? 0 : assertionResults.hashCode());</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        result = prime * result + ((overallStatus == null) ? 0 : overallStatus.hashCode());</span>
+<span class="nc" id="L68">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L74">            return true;</span>
+        }
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L77">            return false;</span>
+        }
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L80">            return false;</span>
+        }
+<span class="nc" id="L82">        AnalysisResult other = (AnalysisResult) obj;</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (assertionResults == null) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (other.assertionResults != null) {</span>
+<span class="nc" id="L85">                return false;</span>
+            }
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        } else if (!assertionResults.equals(other.assertionResults)) {</span>
+<span class="nc" id="L88">            return false;</span>
+        }
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (overallStatus != other.overallStatus) {</span>
+<span class="nc" id="L91">            return false;</span>
+        }
+<span class="nc" id="L93">        return true;</span>
+    }
+
+    public List&lt;AssertionExpression&gt; assertions() {
+<span class="nc" id="L97">        return this.assertionResults.keySet().stream().collect(Collectors.toList());</span>
+    }
+
+    public AssertionStatus statusFor(AssertionExpression assertion) {
+<span class="nc" id="L101">        return resultFor(assertion).status();</span>
+
+    }
+
+    public AssertionResult resultFor(AssertionExpression assertion) {
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (!assertionResults.containsKey(assertion)) {</span>
+<span class="nc" id="L107">            throw new NoSuchElementException(&quot;No result available for assertion'&quot; + assertion + &quot;'.&quot;);</span>
+        }
+<span class="nc" id="L109">        return assertionResults.get(assertion);</span>
+    }
+
+    public AssertionStatus overallStatus() {
+<span class="nc" id="L113">        return overallStatus;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

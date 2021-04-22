@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensorStreams.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.stream</a> &gt; <span class="el_source">TensorStreams.java</span></div><h1>TensorStreams.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+ * This file is part of tensorics.
+ * &lt;p&gt;
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ * &lt;p&gt;
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * &lt;p&gt;
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * &lt;p&gt;
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.stream;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+
+/**
+ * Utility class for producing streams of {@code Entry&lt;Position, T&gt;} out of Tensors and collecting them back into
+ * Tensors.
+ *
+ * @author mihostet
+ */
+public final class TensorStreams {
+    private TensorStreams() {
+        /* static only */
+    }
+
+    /**
+     * Return a stream of all entries of the tensor
+     *
+     * @param tensor
+     * @return
+     */
+    public static &lt;S&gt; Stream&lt;Map.Entry&lt;Position, S&gt;&gt; tensorEntryStream(Tensor&lt;S&gt; tensor) {
+<span class="fc" id="L52">        return TensorInternals.mapFrom(tensor).entrySet().stream();</span>
+
+    }
+
+    /**
+     * Build a collector to collect a stream of {@code Entry&lt;Position,T&gt;} to a generic {@code Tensor&lt;T&gt;} of the
+     * dimensions defined in the set of classes.
+     *
+     * @param dimensions the dimensions of the tensor to construct
+     * @return
+     */
+    public static &lt;T&gt; TensorCollector&lt;Map.Entry&lt;Position, T&gt;, T&gt; toTensor(Set&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc" id="L64">        return new TensorCollector&lt;&gt;(dimensions, Map.Entry::getKey, Map.Entry::getValue);</span>
+    }
+
+    /**
+     * Build a collector to collect an arbitrary stream to a generic {@code Tensor&lt;T&gt;} of the given dimensions.
+     * Functions mapping the values to {@link Position} and T must be provided.
+     *
+     * @param positionMapper function mapping stream values to Position
+     * @param valueMapper function mapping stream values to tensor values
+     * @param dimensions the dimensions of the tensor to construct
+     * @return
+     */
+    public static &lt;V, T&gt; TensorCollector&lt;V, T&gt; toTensor(Function&lt;V, Position&gt; positionMapper,
+            Function&lt;V, T&gt; valueMapper, Set&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc" id="L78">        return new TensorCollector&lt;&gt;(dimensions, positionMapper, valueMapper);</span>
+    }
+
+    /**
+     * Build a collector to collect a stream of {@code Entry&lt;Position,T&gt;} to a {@code Tensorbacked&lt;T&gt;} class. The
+     * {@link Position}s in the stream must be consistent with the dimensions of the Tensorbacked.
+     *
+     * @param tensorBackedClass the tensorbacked to produce
+     * @return
+     */
+    public static &lt;T, TB extends Tensorbacked&lt;T&gt;&gt; TensorbackedCollector&lt;Map.Entry&lt;Position, T&gt;, T, TB&gt; toTensorbacked(
+            Class&lt;TB&gt; tensorBackedClass) {
+<span class="fc" id="L90">        return new TensorbackedCollector&lt;&gt;(tensorBackedClass, Map.Entry::getKey, Map.Entry::getValue);</span>
+    }
+
+    /**
+     * Build a collector to collect an arbitrary stream to a Tensorbackedclass. Functions mapping the values to
+     * {@link Position} and T must be provided. The {@link Position}s generated must be consistent with the dimensions
+     * of the Tensorbacked.
+     *
+     * @param tensorBackedClass the tensorbacked to produce
+     * @param positionMapper function mapping stream values to Position
+     * @param valueMapper function mapping stream values to tensor values
+     * @return
+     */
+    public static &lt;V, T, TB extends Tensorbacked&lt;T&gt;&gt; TensorbackedCollector&lt;V, T, TB&gt; toTensorbacked(
+            Class&lt;TB&gt; tensorBackedClass, Function&lt;V, Position&gt; positionMapper, Function&lt;V, T&gt; valueMapper) {
+<span class="nc" id="L105">        return new TensorbackedCollector&lt;&gt;(tensorBackedClass, positionMapper, valueMapper);</span>
+    }
+
+    /* Delegation methods to stream mappers. Names to be reviewed */
+
+    public static &lt;T, CI, CO&gt; Function&lt;Map.Entry&lt;Position, T&gt;, Map.Entry&lt;Position, T&gt;&gt; coordinatesOfType(
+            Class&lt;CI&gt; dimension, Function&lt;CI, CO&gt; coordinateMapper) {
+<span class="nc" id="L112">        return TensorStreamMappers.coordinatesOfType(dimension, coordinateMapper);</span>
+    }
+
+    public static &lt;T&gt; Function&lt;Map.Entry&lt;Position, T&gt;, Map.Entry&lt;Position, T&gt;&gt; positions(
+            Function&lt;Position, Position&gt; positionMapper) {
+<span class="nc" id="L117">        return TensorStreamMappers.positions(positionMapper);</span>
+    }
+
+    public static &lt;I, O&gt; Function&lt;Map.Entry&lt;Position, I&gt;, Map.Entry&lt;Position, O&gt;&gt; values(Function&lt;I, O&gt; valueMapper) {
+<span class="nc" id="L121">        return TensorStreamMappers.values(valueMapper);</span>
+    }
+
+    public static &lt;T&gt; Function&lt;Map.Entry&lt;Position, T&gt;, Map.Entry&lt;Position, T&gt;&gt; positions(
+            BiFunction&lt;Position, T, Position&gt; positionMapper) {
+<span class="nc" id="L126">        return TensorStreamMappers.positions(positionMapper);</span>
+    }
+
+    public static &lt;I, O&gt; Function&lt;Map.Entry&lt;Position, I&gt;, Map.Entry&lt;Position, O&gt;&gt; values(
+            BiFunction&lt;Position, I, O&gt; valueMapper) {
+<span class="nc" id="L131">        return TensorStreamMappers.values(valueMapper);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

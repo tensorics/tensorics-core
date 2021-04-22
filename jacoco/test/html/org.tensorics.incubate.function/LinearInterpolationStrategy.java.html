@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinearInterpolationStrategy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.incubate.function</a> &gt; <span class="el_source">LinearInterpolationStrategy.java</span></div><h1>LinearInterpolationStrategy.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.incubate.function;
+
+import java.util.List;
+
+/**
+ * A strategy for interpolating linearly between two values of doubles, with also the x-direction of the function being
+ * double values.
+ * 
+ * @author agorzaws
+ */
+<span class="fc" id="L33">public class LinearInterpolationStrategy implements InterpolationStrategy&lt;Double, Double&gt; {</span>
+    private static final long serialVersionUID = 1L;
+
+    @SuppressWarnings(&quot;boxing&quot;)
+    @Override
+    public Double interpolate(Double xValue, DiscreteFunction&lt;Double, Double&gt; function) {
+<span class="fc" id="L39">        double timeBefore = 0;</span>
+<span class="fc" id="L40">        double timeAfter = 0;</span>
+<span class="fc" id="L41">        boolean nextBreak = false;</span>
+<span class="fc" id="L42">        List&lt;Double&gt; timesInFunction = function.getXs();</span>
+
+<span class="fc" id="L44">        int size = timesInFunction.size();</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (size &lt; 1) {</span>
+<span class="nc" id="L46">            throw new IllegalStateException(</span>
+                    &quot;Cannot interpolate beyond function time series for only one or none points!&quot;);
+        }
+
+<span class="fc" id="L50">        Double lastTime = timesInFunction.get(size - 1);</span>
+<span class="fc" id="L51">        Double firstTime = timesInFunction.get(0);</span>
+<span class="pc bpc" id="L52" title="1 of 4 branches missed.">        if (xValue &lt; firstTime || xValue &gt; lastTime) {</span>
+<span class="fc" id="L53">            throw new IllegalStateException(&quot;Cannot interpolate beyond function time series [&quot; + firstTime + &quot;, &quot;</span>
+                    + lastTime + &quot;]&quot; + &quot; asked for &quot; + xValue);
+        }
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (Double xVal : timesInFunction) {</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if (nextBreak) {</span>
+<span class="fc" id="L59">                break;</span>
+            }
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (xVal &gt;= xValue) {</span>
+<span class="fc" id="L62">                timeAfter = xVal;</span>
+<span class="fc" id="L63">                nextBreak = true;</span>
+            }
+<span class="fc" id="L65">        }</span>
+<span class="fc" id="L66">        timeBefore = timesInFunction.get(timesInFunction.indexOf(timeAfter) - 1);</span>
+
+<span class="fc" id="L68">        return function.getY(timeBefore) + (Math.abs(xValue - timeBefore) / Math.abs(timeAfter - timeBefore))</span>
+<span class="fc" id="L69">                * (function.getY(timeAfter) - function.getY(timeBefore));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

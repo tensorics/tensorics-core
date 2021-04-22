@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensorChangeDetectionOperation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.booleans.operations</a> &gt; <span class="el_source">TensorChangeDetectionOperation.java</span></div><h1>TensorChangeDetectionOperation.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2016 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.booleans.operations;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+
+/**
+ * The detection class for changes in Tensors. &lt;br&gt;
+ * So far it only supports one dimension tensors.
+ * 
+ * @author agorzaws
+ * @param &lt;C&gt; type values in the tensor.
+ */
+public class TensorChangeDetectionOperation&lt;C&gt; implements Conversion&lt;Tensor&lt;Boolean&gt;, Iterable&lt;C&gt;&gt; {
+
+    private final Class&lt;C&gt; direction;
+    private final Comparator&lt;? super C&gt; comparator;
+
+<span class="fc" id="L29">    private TensorChangeDetectionOperation(Class&lt;C&gt; direction, Comparator&lt;? super C&gt; comparator) {</span>
+<span class="fc" id="L30">        this.direction = Objects.requireNonNull(direction, &quot;direction must not be null&quot;);</span>
+<span class="fc" id="L31">        this.comparator = Objects.requireNonNull(comparator, &quot;comparator must not be null&quot;);</span>
+
+<span class="fc" id="L33">    }</span>
+
+    public static &lt;C&gt; TensorChangeDetectionOperation&lt;C&gt; of(Class&lt;C&gt; direction, Comparator&lt;? super C&gt; comparator) {
+<span class="fc" id="L36">        return new TensorChangeDetectionOperation&lt;C&gt;(direction, comparator);</span>
+    }
+
+    public static &lt;C extends Comparable&lt;C&gt;&gt; TensorChangeDetectionOperation&lt;C&gt; of(Class&lt;C&gt; direction) {
+<span class="fc" id="L40">        return new TensorChangeDetectionOperation&lt;C&gt;(direction, Comparator.naturalOrder());</span>
+    }
+
+    @Override
+    public Iterable&lt;C&gt; apply(Tensor&lt;Boolean&gt; tensor) {
+<span class="fc" id="L45">        Shape shape = tensor.shape();</span>
+
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (shape.dimensionality() &gt; 1) {</span>
+<span class="fc" id="L48">            throw new IllegalArgumentException(</span>
+                    &quot;Detecting changes is currently only supported for 1-dimensional tensors. However, the provided tensor has &quot;
+<span class="fc" id="L50">                            + shape.dimensionality() + &quot; dimensions.&quot;);</span>
+        }
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (!shape.dimensionSet().contains(direction)) {</span>
+<span class="fc" id="L53">            throw new IllegalArgumentException(&quot;Provided tensor &quot; + tensor.shape().dimensionSet()</span>
+                    + &quot; doesn't have requested detection direction class '&quot; + direction + &quot;'&quot;);
+        }
+
+<span class="fc" id="L57">        List&lt;C&gt; coordinates = new ArrayList&lt;&gt;(shape.coordinatesOfType(direction));</span>
+<span class="fc" id="L58">        Collections.sort(coordinates, comparator);</span>
+
+<span class="fc" id="L60">        List&lt;C&gt; changes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L61">        Boolean lastValue = null;</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (C coordinate : coordinates) {</span>
+<span class="fc" id="L63">            Boolean newValue = tensor.get(coordinate);</span>
+<span class="fc bfc" id="L64" title="All 4 branches covered.">            if ((lastValue != null) &amp;&amp; (lastValue ^ newValue)) {</span>
+<span class="fc" id="L65">                changes.add(coordinate);</span>
+            }
+<span class="fc" id="L67">            lastValue = newValue;</span>
+<span class="fc" id="L68">        }</span>
+<span class="fc" id="L69">        return changes;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

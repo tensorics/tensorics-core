@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Covariant.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.variance</a> &gt; <span class="el_source">Covariant.java</span></div><h1>Covariant.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.variance;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+/**
+ * Coordinates inheriting from this class mark are treated as covariant axis. The type of 'variance' is defined, as in
+ * tensor-algebra, by transformation of the values of the tensor when transforming the basis of the values.
+ * &lt;p&gt;
+ * 'Physical' vectors/quantities usually transform in such a way, that they transform inverse to the basis. For example,
+ * lets assume a vector of 3 values, representing karthesian coordinates in a certain base. If now the basis vectors
+ * would be multiplied by a factor, the values of the vector would have to be divided by the same factor. This
+ * transformation property is called 'contravariance'.
+ * &lt;p&gt;
+ * If the vectors would transform in the same way as the basis, we would say the vector (tensor in that direction)
+ * transforms 'covariant'. This is for example the case for tensors that represent transformations themselves.
+ * &lt;p&gt;
+ * Within the tensorics framework, because of the forementioned reasons, the contravariant case is considered as the
+ * default. Simply any object can be put as contravariant coordinate. On the other hand, covariant axes have to be
+ * marked explicitely, by inheriting from this class.
+ * &lt;p&gt;
+ * All sub classes are obliged to provide a public constructor with a single argument, taking the coordinate itself as
+ * an argument. This inheritance structure is necessary, to be able to have several covariant coordinates in one tensor
+ * (because tensorics treats coordinates of the same class as the same coordinate-dimension).
+ * 
+ * @param &lt;C&gt; the type of the (contravariant!) coordinate
+ * @see &lt;a href= &quot;http://en.wikipedia.org/wiki/Covariance_and_contravariance_of_vectors&quot;&gt; http://en.wikipedia.org/wiki/
+ *      Covariance_and_contravariance_of_vectors&lt;/a&gt;
+ * @author kfuchsbe
+ */
+public class Covariant&lt;C&gt; {
+
+    private final C coordinate;
+
+    /**
+     * The single-argument constructor that has to be overriden by subclasses. It takes the coordinate itself.
+     * 
+     * @param coordinate the coordinate, which will be treated as a covariant axis
+     * @throws NullPointerException if the given coordinate is null
+     */
+<span class="fc" id="L62">    protected Covariant(C coordinate) {</span>
+<span class="fc" id="L63">        this.coordinate = checkNotNull(coordinate, &quot;coordinate must not be null!&quot;);</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Retrieves the coordinate value from the covariant coordinate.
+     * 
+     * @return the coordinate value
+     */
+    public C get() {
+<span class="fc" id="L72">        return this.coordinate;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L77">        final int prime = 31;</span>
+<span class="fc" id="L78">        int result = 1;</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        result = prime * result + ((coordinate == null) ? 0 : coordinate.hashCode());</span>
+<span class="fc" id="L80">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L86">            return true;</span>
+        }
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L89">            return false;</span>
+        }
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (getClass() != obj.getClass()) {</span>
+<span class="fc" id="L92">            return false;</span>
+        }
+<span class="fc" id="L94">        Covariant&lt;?&gt; other = (Covariant&lt;?&gt;) obj;</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (coordinate == null) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (other.coordinate != null) {</span>
+<span class="nc" id="L97">                return false;</span>
+            }
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        } else if (!coordinate.equals(other.coordinate)) {</span>
+<span class="nc" id="L100">            return false;</span>
+        }
+<span class="fc" id="L102">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L107">        return getClass().getSimpleName() + &quot; [&quot; + coordinate + &quot;]&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

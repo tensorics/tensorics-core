@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ToFunctions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.reduction</a> &gt; <span class="el_source">ToFunctions.java</span></div><h1>ToFunctions.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2016 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.reduction;
+
+import java.util.Map;
+
+import org.tensorics.core.function.DiscreteFunction;
+import org.tensorics.core.function.MapBackedDiscreteFunction;
+import org.tensorics.core.tensor.Position;
+
+/**
+ * A reduction strategy which reduces all elements of dimension {@code &lt;X&gt;} by transforming them into a
+ * {@link DiscreteFunction} s from {@code &lt;X&gt;} to {@code &lt;Y&gt;}
+ * 
+ * @author kfuchsbe, caguiler
+ * @param &lt;X&gt; the type of the values along the X-axis, the type of coordinate (aka 'the dimension') do be reduced
+ * @param &lt;Y&gt; the type of the tensor elements and also the type of the values along the Y-axis
+ */
+<span class="fc" id="L21">public final class ToFunctions&lt;X, Y&gt; implements ReductionStrategy&lt;X, Y, DiscreteFunction&lt;X, Y&gt;&gt; {</span>
+    @Override
+    public DiscreteFunction&lt;X, Y&gt; reduce(Map&lt;? extends X, Y&gt; inputValues, Position position) {
+<span class="fc" id="L24">        return MapBackedDiscreteFunction.fromMap(inputValues);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensoricExpressionSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">TensoricExpressionSupport.java</span></div><h1>TensoricExpressionSupport.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.lang;
+
+import java.util.Comparator;
+
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.function.DiscreteFunction;
+import org.tensorics.core.function.lang.FunctionExpressionSupport;
+import org.tensorics.core.function.lang.FunctionExpressionSupportWithConversionAndComparator;
+import org.tensorics.core.iterable.lang.OngoingDeferredIterableBinaryPredicate;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.lang.OngoingDeferredQuantifiedScalarOperation;
+import org.tensorics.core.scalar.lang.OngoingDeferredBinaryOperation;
+import org.tensorics.core.scalar.lang.OngoingDeferredBinaryPredicate;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.OngoingDeferredQuantifiedTensorOperation;
+import org.tensorics.core.tensor.lang.OngoingDeferredTensorOperation;
+import org.tensorics.core.tensor.lang.QuantityTensorExpressionSupport;
+import org.tensorics.core.tensor.lang.TensorExpressionSupport;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.lang.OngoingDeferredQuantifiedTensorBackedOperation;
+import org.tensorics.core.tensorbacked.lang.OngoingDeferredTensorBackedOperation;
+import org.tensorics.core.tensorbacked.lang.QuantityTensorbackedExpressionSupport;
+import org.tensorics.core.tensorbacked.lang.TensorbackedExpressionSupport;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.units.Unit;
+
+/**
+ * Mixes together the quantified versions of the operations and the basic tensor operations. Contains delegation methods
+ * only!
+ * 
+ * @author kfuchsbe
+ * @param &lt;V&gt; The type of the values of the tensors
+ */
+public class TensoricExpressionSupport&lt;V&gt; {
+
+    private final TensorExpressionSupport&lt;V&gt; tensoricFieldUsage;
+    private final TensorbackedExpressionSupport&lt;V&gt; tensorbackedExpressionSupport;
+    private final QuantityTensorExpressionSupport&lt;V&gt; quantifiedTensoricFieldUsage;
+    private final QuantityTensorbackedExpressionSupport&lt;V&gt; quantityTensorbackedExpressionSupport;
+    private final FunctionExpressionSupport&lt;V&gt; functionExpressionSupport;
+
+    private final EnvironmentImpl&lt;V&gt; environment;
+
+<span class="fc" id="L68">    public TensoricExpressionSupport(EnvironmentImpl&lt;V&gt; environment) {</span>
+<span class="fc" id="L69">        this.tensoricFieldUsage = new TensorExpressionSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L70">        this.tensorbackedExpressionSupport = new TensorbackedExpressionSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L71">        this.quantifiedTensoricFieldUsage = new QuantityTensorExpressionSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L72">        this.quantityTensorbackedExpressionSupport = new QuantityTensorbackedExpressionSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L73">        this.functionExpressionSupport = new FunctionExpressionSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L74">        this.environment = environment;</span>
+<span class="fc" id="L75">    }</span>
+
+    public TensoricExpressionSupport&lt;V&gt; with(ManipulationOption newOption) {
+<span class="nc" id="L78">        return new TensoricExpressionSupport&lt;&gt;(environment.with(newOption));</span>
+    }
+
+    public final Expression&lt;V&gt; negativeOf(V element) {
+<span class="nc" id="L82">        return tensoricFieldUsage.negativeOf(element);</span>
+    }
+
+    public final Expression&lt;V&gt; negativeOf(Expression&lt;V&gt; element) {
+<span class="nc" id="L86">        return tensoricFieldUsage.negativeOf(element);</span>
+    }
+
+    public final Expression&lt;V&gt; inverseOf(V element) {
+<span class="nc" id="L90">        return tensoricFieldUsage.inverseOf(element);</span>
+    }
+
+    public final Expression&lt;V&gt; averageOf(Iterable&lt;V&gt; iterable) {
+<span class="nc" id="L94">        return tensoricFieldUsage.averageOf(iterable);</span>
+    }
+
+    public final Expression&lt;V&gt; inverseOf(Expression&lt;V&gt; element) {
+<span class="nc" id="L98">        return tensoricFieldUsage.inverseOf(element);</span>
+    }
+
+    public final Expression&lt;V&gt; averageOf(Expression&lt;? extends Iterable&lt;V&gt;&gt; iterableExpression) {
+<span class="fc" id="L102">        return tensoricFieldUsage.averageOf(iterableExpression);</span>
+    }
+
+    public final V zero() {
+<span class="nc" id="L106">        return tensoricFieldUsage.zero();</span>
+    }
+
+    public final Expression&lt;V&gt; sizeOf(Iterable&lt;V&gt; iterable) {
+<span class="nc" id="L110">        return tensoricFieldUsage.sizeOf(iterable);</span>
+    }
+
+    public final V two() {
+<span class="nc" id="L114">        return tensoricFieldUsage.two();</span>
+    }
+
+    public final V one() {
+<span class="nc" id="L118">        return tensoricFieldUsage.one();</span>
+    }
+
+    public final Expression&lt;V&gt; sizeOf(Expression&lt;? extends Iterable&lt;?&gt;&gt; iterableExpression) {
+<span class="fc" id="L122">        return tensoricFieldUsage.sizeOf(iterableExpression);</span>
+    }
+
+    public Expression&lt;V&gt; squareRootOf(V value) {
+<span class="nc" id="L126">        return tensoricFieldUsage.squareRootOf(value);</span>
+    }
+
+    public Expression&lt;V&gt; squareRootOf(Expression&lt;V&gt; value) {
+<span class="nc" id="L130">        return tensoricFieldUsage.squareRootOf(value);</span>
+    }
+
+    public final Expression&lt;V&gt; sumOf(Iterable&lt;V&gt; iterable) {
+<span class="nc" id="L134">        return tensoricFieldUsage.sumOf(iterable);</span>
+    }
+
+    public Expression&lt;V&gt; squareOf(V value) {
+<span class="nc" id="L138">        return tensoricFieldUsage.squareOf(value);</span>
+    }
+
+    public final Expression&lt;V&gt; sumOf(Expression&lt;? extends Iterable&lt;V&gt;&gt; iterableExpression) {
+<span class="fc" id="L142">        return tensoricFieldUsage.sumOf(iterableExpression);</span>
+    }
+
+    public Expression&lt;V&gt; squareOf(Expression&lt;V&gt; value) {
+<span class="nc" id="L146">        return tensoricFieldUsage.squareOf(value);</span>
+    }
+
+    public final &lt;C&gt; OngoingDeferredTensorOperation&lt;V&gt; calculateT(Expression&lt;Tensor&lt;V&gt;&gt; tensoric) {
+<span class="nc" id="L150">        return tensoricFieldUsage.calculateT(tensoric);</span>
+    }
+
+    public Expression&lt;V&gt; rmsOf(Iterable&lt;V&gt; iterable) {
+<span class="nc" id="L154">        return tensoricFieldUsage.rmsOf(iterable);</span>
+    }
+
+    public OngoingDeferredBinaryOperation&lt;V&gt; calculate(V left) {
+<span class="fc" id="L158">        return tensoricFieldUsage.calculate(left);</span>
+    }
+
+    public Expression&lt;V&gt; rmsOf(Expression&lt;? extends Iterable&lt;V&gt;&gt; iterableExpression) {
+<span class="fc" id="L162">        return tensoricFieldUsage.rmsOf(iterableExpression);</span>
+    }
+
+    public OngoingDeferredBinaryOperation&lt;V&gt; calculate(Expression&lt;V&gt; left) {
+<span class="fc" id="L166">        return tensoricFieldUsage.calculate(left);</span>
+    }
+
+    public Expression&lt;V&gt; sumOfSquaresOf(Iterable&lt;V&gt; iterable) {
+<span class="nc" id="L170">        return tensoricFieldUsage.sumOfSquaresOf(iterable);</span>
+    }
+
+    public final &lt;C&gt; Expression&lt;Tensor&lt;V&gt;&gt; zeros(Shape shape) {
+<span class="nc" id="L174">        return tensoricFieldUsage.zeros(shape);</span>
+    }
+
+    public Expression&lt;V&gt; sumOfSquaresOf(Expression&lt;? extends Iterable&lt;V&gt;&gt; iterableExpression) {
+<span class="fc" id="L178">        return tensoricFieldUsage.sumOfSquaresOf(iterableExpression);</span>
+    }
+
+    public final &lt;C&gt; Expression&lt;Tensor&lt;V&gt;&gt; ones(Shape shape) {
+<span class="nc" id="L182">        return tensoricFieldUsage.ones(shape);</span>
+    }
+
+    public final &lt;C&gt; Expression&lt;Tensor&lt;V&gt;&gt; elementInverseOf(Expression&lt;Tensor&lt;V&gt;&gt; tensor) {
+<span class="nc" id="L186">        return tensoricFieldUsage.elementInverseOf(tensor);</span>
+    }
+
+    public final &lt;C&gt; Expression&lt;Tensor&lt;V&gt;&gt; elementNegativeOf(Expression&lt;Tensor&lt;V&gt;&gt; tensor) {
+<span class="nc" id="L190">        return tensoricFieldUsage.elementNegativeOf(tensor);</span>
+    }
+
+    public OngoingDeferredQuantifiedTensorOperation&lt;V&gt; calculate(Tensor&lt;QuantifiedValue&lt;V&gt;&gt; left) {
+<span class="nc" id="L194">        return quantifiedTensoricFieldUsage.calculateV(left);</span>
+    }
+
+    public Expression&lt;QuantifiedValue&lt;V&gt;&gt; valueOf(V value, Unit unit) {
+<span class="nc" id="L198">        return quantifiedTensoricFieldUsage.valueOf(value, unit);</span>
+    }
+
+    public OngoingDeferredQuantifiedScalarOperation&lt;V&gt; calculate(V value, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="nc" id="L202">        return quantifiedTensoricFieldUsage.calculate(value, unit);</span>
+    }
+
+    public OngoingDeferredQuantifiedScalarOperation&lt;V&gt; calculateQ(Expression&lt;QuantifiedValue&lt;V&gt;&gt; scalar) {
+<span class="nc" id="L206">        return quantifiedTensoricFieldUsage.calculate(scalar);</span>
+    }
+
+    public Expression&lt;QuantifiedValue&lt;V&gt;&gt; negativeOf(QuantifiedValue&lt;V&gt; element) {
+<span class="nc" id="L210">        return quantifiedTensoricFieldUsage.negativeOf(element);</span>
+    }
+
+    public Expression&lt;QuantifiedValue&lt;V&gt;&gt; inverseOf(QuantifiedValue&lt;V&gt; element) {
+<span class="nc" id="L214">        return quantifiedTensoricFieldUsage.inverseOf(element);</span>
+    }
+
+    public Expression&lt;QuantifiedValue&lt;V&gt;&gt; valueOf(V value, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="nc" id="L218">        return quantifiedTensoricFieldUsage.valueOf(value, unit);</span>
+    }
+
+    public final &lt;TB extends Tensorbacked&lt;V&gt;&gt; Expression&lt;TB&gt; elementNegativeOfTB(Expression&lt;TB&gt; tensor) {
+<span class="nc" id="L222">        return tensorbackedExpressionSupport.elementNegativeOfTB(tensor);</span>
+    }
+
+    public final &lt;TB extends Tensorbacked&lt;V&gt;&gt; OngoingDeferredTensorBackedOperation&lt;V, TB&gt; calculateTB(
+            Class&lt;TB&gt; resultClass, Expression&lt;TB&gt; tensoric) {
+<span class="nc" id="L227">        return tensorbackedExpressionSupport.calculateTB(resultClass, tensoric);</span>
+    }
+
+    public final &lt;QTB extends Tensorbacked&lt;QuantifiedValue&lt;V&gt;&gt;&gt; Expression&lt;QTB&gt; elementNegativeOfQTB(
+            Class&lt;QTB&gt; resultClass, Expression&lt;QTB&gt; tensor) {
+<span class="nc" id="L232">        return quantityTensorbackedExpressionSupport.elementNegativeOfTB(resultClass, tensor);</span>
+    }
+
+    public final &lt;TB extends Tensorbacked&lt;QuantifiedValue&lt;V&gt;&gt;&gt; OngoingDeferredQuantifiedTensorBackedOperation&lt;V, TB&gt; //
+            calculateQTB(Class&lt;TB&gt; resultClass, Expression&lt;TB&gt; tensor) {
+<span class="nc" id="L237">        return quantityTensorbackedExpressionSupport.calculateTB(resultClass, tensor);</span>
+    }
+
+    public final OngoingDeferredBinaryPredicate&lt;V&gt; testIf(Expression&lt;V&gt; expression) {
+<span class="fc" id="L241">        return tensoricFieldUsage.testIf(expression);</span>
+    }
+
+    public final OngoingDeferredIterableBinaryPredicate&lt;V&gt; testIfIt(Expression&lt;Iterable&lt;V&gt;&gt; iterableExpression) {
+<span class="fc" id="L245">        return tensoricFieldUsage.testIfIt(iterableExpression);</span>
+    }
+
+    @Deprecated
+    public &lt;X&gt; Expression&lt;V&gt; rmsOfF(Expression&lt;DiscreteFunction&lt;X, V&gt;&gt; functionExpresssion) {
+<span class="nc" id="L250">        return functionExpressionSupport.rmsOfF(functionExpresssion);</span>
+    }
+
+    @Deprecated
+    public &lt;X&gt; Expression&lt;V&gt; averageOfF(Expression&lt;DiscreteFunction&lt;X, V&gt;&gt; functionExpresssion) {
+<span class="nc" id="L255">        return functionExpressionSupport.averageOfF(functionExpresssion);</span>
+    }
+
+    @Deprecated
+    public &lt;X&gt; FunctionExpressionSupportWithConversionAndComparator&lt;X, V&gt; withConversionAndComparator(
+            Conversion&lt;X, V&gt; conversion, Comparator&lt;X&gt; comparator) {
+<span class="nc" id="L261">        return functionExpressionSupport.withConversionAndComparator(conversion, comparator);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

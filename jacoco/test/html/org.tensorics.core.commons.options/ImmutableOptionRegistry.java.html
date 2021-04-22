@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmutableOptionRegistry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.commons.options</a> &gt; <span class="el_source">ImmutableOptionRegistry.java</span></div><h1>ImmutableOptionRegistry.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.commons.options;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.ImmutableClassToInstanceMap;
+import com.google.common.collect.MutableClassToInstanceMap;
+
+/**
+ * The default implementation of an options registry. It is backed by a class to instance map. Use the factory method
+ * {@link #of(Collection)} to create a new instance.
+ * &lt;p&gt;
+ * This class is immutable
+ * 
+ * @author kfuchsbe
+ * @param &lt;T&gt;
+ */
+public final class ImmutableOptionRegistry&lt;T extends Option&lt;T&gt;&gt; implements OptionRegistry&lt;T&gt; {
+
+    private final ClassToInstanceMap&lt;T&gt; options;
+
+    /**
+     * creates a new registry which will contain the given options. If the collection contains options of the same type
+     * (marker interface), then the ones in the order of the iterator of the collection, will override the earlier ones.
+     * 
+     * @param processingOptions the options that will be contained in the registry
+     * @return a new instance of a registry, containing the options
+     */
+    public static &lt;T extends Option&lt;T&gt;&gt; ImmutableOptionRegistry&lt;T&gt; of(Collection&lt;T&gt; processingOptions) {
+<span class="fc" id="L54">        return new ImmutableOptionRegistry&lt;T&gt;(processingOptions);</span>
+    }
+
+<span class="fc" id="L57">    private &lt;T1 extends Option&lt;T1&gt;&gt; ImmutableOptionRegistry(Collection&lt;T&gt; options) {</span>
+        /*
+         * we first have to create a mutable map, because the collection might contain options of the same class, where
+         * later ones will override previous ones. This would not be allowed by the builder of the immutable map.
+         */
+<span class="fc" id="L62">        ClassToInstanceMap&lt;T&gt; mutableOptions = MutableClassToInstanceMap.create();</span>
+<span class="fc" id="L63">        addToMap(mutableOptions, options);</span>
+<span class="fc" id="L64">        this.options = ImmutableClassToInstanceMap.copyOf(mutableOptions);</span>
+<span class="fc" id="L65">    }</span>
+
+    private void addToMap(ClassToInstanceMap&lt;T&gt; mutableMap, Collection&lt;T&gt; toAdd) {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (T option : toAdd) {</span>
+            @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L70">            Class&lt;T&gt; markerInterface = (Class&lt;T&gt;) option.getMarkerInterface();</span>
+<span class="fc" id="L71">            mutableMap.putInstance(markerInterface, option);</span>
+<span class="fc" id="L72">        }</span>
+<span class="fc" id="L73">    }</span>
+
+    @Override
+    public &lt;T1 extends T&gt; T1 get(Class&lt;T1&gt; optionType) {
+<span class="fc" id="L77">        return this.options.getInstance(optionType);</span>
+    }
+
+    @Override
+    public &lt;T1 extends T&gt; OptionRegistry&lt;T&gt; with(T1 newOption) {
+<span class="fc" id="L82">        List&lt;T&gt; mergedOptions = new ArrayList&lt;&gt;(this.options.values());</span>
+        /*
+         * The new option is added at the end, because it will then override the old option, when put to the map
+         */
+<span class="fc" id="L86">        mergedOptions.add(newOption);</span>
+<span class="fc" id="L87">        return ImmutableOptionRegistry.of(mergedOptions);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

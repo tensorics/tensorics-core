@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuantityBinaryOperation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.quantity.operations</a> &gt; <span class="el_source">QuantityBinaryOperation.java</span></div><h1>QuantityBinaryOperation.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.quantity.operations;
+
+import java.io.Serializable;
+
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.options.QuantityEnvironment;
+
+/**
+ * A base class for binary operations on physical quantities. It keeps the scalar bianary operation to be retrieved by
+ * the sub classes.
+ *
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the scalar values on which all operations are based on (elements of a field)
+ */
+public abstract class QuantityBinaryOperation&lt;V&gt; extends AbstractQuantityOperation&lt;V&gt;
+        implements BinaryOperation&lt;QuantifiedValue&lt;V&gt;&gt;, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final BinaryOperation&lt;V&gt; scalarBinaryOeration;
+
+    protected QuantityBinaryOperation(QuantityEnvironment&lt;V&gt; environment, BinaryOperation&lt;V&gt; scalarBinaryOperation) {
+<span class="fc" id="L45">        super(environment);</span>
+<span class="fc" id="L46">        this.scalarBinaryOeration = scalarBinaryOperation;</span>
+<span class="fc" id="L47">    }</span>
+
+    protected BinaryOperation&lt;V&gt; operation() {
+<span class="fc" id="L50">        return scalarBinaryOeration;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L55">        final int prime = 31;</span>
+<span class="nc" id="L56">        int result = 1;</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        result = prime * result + ((scalarBinaryOeration == null) ? 0 : scalarBinaryOeration.hashCode());</span>
+<span class="nc" id="L58">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L64">            return true;</span>
+        }
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L67">            return false;</span>
+        }
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L70">            return false;</span>
+        }
+<span class="nc" id="L72">        QuantityBinaryOperation&lt;?&gt; other = (QuantityBinaryOperation&lt;?&gt;) obj;</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (scalarBinaryOeration == null) {</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (other.scalarBinaryOeration != null) {</span>
+<span class="nc" id="L75">                return false;</span>
+            }
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        } else if (!scalarBinaryOeration.equals(other.scalarBinaryOeration)) {</span>
+<span class="nc" id="L78">            return false;</span>
+        }
+<span class="nc" id="L80">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L85">        return &quot;QuantityBinaryOperation [scalarBinaryOeration=&quot; + scalarBinaryOeration + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

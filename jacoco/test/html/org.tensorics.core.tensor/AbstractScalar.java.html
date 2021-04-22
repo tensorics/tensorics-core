@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractScalar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">AbstractScalar.java</span></div><h1>AbstractScalar.java</h1><pre class="source lang-java linenums">package org.tensorics.core.tensor;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+
+/**
+ * A base class for scalars, that already guarantees the shape and the correct delegation of the get() methods to the
+ * value method.
+ *
+ * @author kaifox
+ * @param &lt;V&gt; the type of the value of the scalar
+ */
+<span class="fc" id="L15">public abstract class AbstractScalar&lt;V&gt; extends AbstractTensor&lt;V&gt; implements Scalar&lt;V&gt; {</span>
+
+    @Override
+    public final V get(Position position) {
+<span class="fc" id="L19">        requireNonNull(position, &quot;position must not be null&quot;);</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (Position.empty().equals(position)) {</span>
+<span class="fc" id="L21">            return value();</span>
+        }
+<span class="fc" id="L23">        throw new NoSuchElementException(&quot;A scalar contains exactly one value (for the 'empty' position). &quot;</span>
+                + &quot;However, it contains no value for the requested position '&quot; + position + &quot;'&quot;);
+    }
+
+    @Override
+    public final V get(Object... coordinates) {
+<span class="fc" id="L29">        requireNonNull(coordinates, &quot;coordinates must not be null&quot;);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (coordinates.length == 0) {</span>
+<span class="fc" id="L31">            return value();</span>
+        }
+<span class="fc" id="L33">        throw new NoSuchElementException(&quot;A scalar contains exactly one value (for the 'empty' position). &quot;</span>
+<span class="fc" id="L34">                + &quot;However, it contains no value for the requested coordinates '&quot; + Arrays.toString(coordinates) + &quot;'&quot;);</span>
+    }
+
+    @Override
+    public final Shape shape() {
+<span class="fc" id="L39">        return Shape.zeroDimensional();</span>
+    }
+
+    @Override
+    public boolean contains(Position position) {
+<span class="nc" id="L44">        return shape().contains(position);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

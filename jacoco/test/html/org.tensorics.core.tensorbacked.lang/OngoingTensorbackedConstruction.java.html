@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingTensorbackedConstruction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensorbacked.lang</a> &gt; <span class="el_source">OngoingTensorbackedConstruction.java</span></div><h1>OngoingTensorbackedConstruction.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.tensorbacked.lang;
+
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.dimensionsOf;
+
+import java.util.Map;
+
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.TensorbackedInternals;
+
+import com.google.common.base.Preconditions;
+
+public class OngoingTensorbackedConstruction&lt;V, TB extends Tensorbacked&lt;V&gt;&gt; {
+
+    private final Class&lt;TB&gt; tensorbackedClass;
+
+<span class="fc" id="L41">    public OngoingTensorbackedConstruction(Class&lt;TB&gt; tensorbackedClass) {</span>
+<span class="fc" id="L42">        this.tensorbackedClass = Preconditions.checkNotNull(tensorbackedClass, &quot;tensorbackedClass must not be null&quot;);</span>
+<span class="fc" id="L43">    }</span>
+
+    public TB from(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L46">        return TensorbackedInternals.createBackedByTensor(tensorbackedClass, tensor);</span>
+    }
+
+    public TB byMerging(Iterable&lt;Tensor&lt;V&gt;&gt; tensors) {
+<span class="fc" id="L50">        return from(TensorStructurals.merge(tensors));</span>
+    }
+
+    public TB byMergingTb(Iterable&lt;? extends Tensorbacked&lt;V&gt;&gt; tensorbackeds) {
+<span class="fc" id="L54">        return byMerging(TensorbackedInternals.tensorsOf(tensorbackeds));</span>
+    }
+
+    public TB fromMap(Map&lt;Position, V&gt; inputMap) {
+<span class="fc" id="L58">        Preconditions.checkNotNull(inputMap, &quot;inputMap must not be null&quot;);</span>
+<span class="fc" id="L59">        Tensor&lt;V&gt; tensor = ImmutableTensor.fromMap(dimensionsOf(tensorbackedClass), inputMap);</span>
+<span class="fc" id="L60">        return from(tensor);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Instantiators.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.util</a> &gt; <span class="el_source">Instantiators.java</span></div><h1>Instantiators.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.util;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.base.Preconditions;
+
+/**
+ * Contains utility methods which help to instantiate classes which follow certain conventions. The most common one is
+ * that e.g. a class provides a constructor with one argument of a certain type.
+ * 
+ * @author kfuchsbe
+ */
+public final class Instantiators {
+
+    /**
+     * Private Constructor to avoid instantiation
+     */
+    private Instantiators() {
+        /* only static methods */
+    }
+
+    /**
+     * Starting point for fluent clauses to create instantiators for certain type of objects. A typical example for the
+     * creation of a certain type of object (Instance) with an argument of a certain type (Argument) could look like
+     * this:
+     *
+     * &lt;pre&gt;
+     * &lt;code&gt;
+     *     Instantiator&amp;#60;Argument, Instance&amp;#62; instantiator = instantiatorFor(Instance.class)
+     *             .withArgumentType(Argument.class);
+     *
+     *     Instance instance = instantiator.create(anArgument); // anArgument being of type Argument
+     * &lt;/code&gt;
+     * &lt;/pre&gt;
+     *
+     * @param instanceClass the type of the objects to be created by the instantiator
+     * @return an objects that provides methods for refinements of the instantiator
+     */
+    public static &lt;T&gt; OngoingInstantiatorCreation&lt;T&gt; instantiatorFor(Class&lt;T&gt; instanceClass) {
+<span class="fc" id="L62">        return new OngoingInstantiatorCreation&lt;&gt;(InstantiatorType.FACTORY_METHOD, instanceClass);</span>
+    }
+
+    /**
+     * Part of a fluent API to create Instantiators with one arguments.
+     * 
+     * @author kfuchsbe
+     * @param &lt;T&gt; the type of the objects that will be finally created by the instantiators
+     */
+    public static final class OngoingInstantiatorCreation&lt;T&gt; {
+        private final Class&lt;T&gt; instanceClass;
+        private final InstantiatorType type;
+
+        /**
+         * Constructor, which takes the class of the objects to instantiate, package private because it will be
+         * instantiated from within this class only.
+         * 
+         * @param instanceClass the type of the objects to create
+         */
+<span class="fc" id="L81">        OngoingInstantiatorCreation(InstantiatorType type, Class&lt;T&gt; instanceClass) {</span>
+<span class="fc" id="L82">            this.instanceClass = checkNotNull(instanceClass, &quot;Class to instantiate must not be null!&quot;);</span>
+<span class="fc" id="L83">            this.type = checkNotNull(type, &quot;Instantiator type must not be null&quot;);</span>
+<span class="fc" id="L84">        }</span>
+
+        public OngoingInstantiatorCreation&lt;T&gt; ofType(InstantiatorType newType) {
+<span class="fc" id="L87">            return new OngoingInstantiatorCreation&lt;&gt;(newType, instanceClass);</span>
+        }
+
+        /**
+         * Creates the Instantiator for the previously specified object type and the given type of arguments for the
+         * object constructor. The returned Instantiator is reusable and thread safe, because it does not contain any
+         * state.
+         * 
+         * @param argumentClass the type of the argument of the constructor for the object
+         * @return a new instantiator
+         */
+        public &lt;A&gt; Instantiator&lt;A, T&gt; withArgumentType(Class&lt;A&gt; argumentClass) {
+<span class="fc" id="L99">            Preconditions.checkNotNull(argumentClass, &quot;The type of the constructor argument must not be null!&quot;);</span>
+<span class="fc" id="L100">            return type.createInstantiator(instanceClass, argumentClass);</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

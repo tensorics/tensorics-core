@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingQuantifiedTensorBackedOperation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensorbacked.lang</a> &gt; <span class="el_source">OngoingQuantifiedTensorBackedOperation.java</span></div><h1>OngoingQuantifiedTensorBackedOperation.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensorbacked.lang;
+
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.createBackedByTensor;
+
+import org.tensorics.core.commons.lang.OngoingOperation;
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.operations.QuantityOperationRepository;
+import org.tensorics.core.tensor.ImmutableScalar;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.ElementBinaryOperation;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.TensorbackedInternals;
+
+/**
+ * Part of the tensorics fluent API that provides methods to describe the right hand part of binary operations on tensor
+ * backed instances, containing quantified values.
+ * 
+ * @author agorzaws
+ * @param &lt;QTB&gt; the type of the quantified tensor backed instances
+ * @param &lt;S&gt; the type of the scalars (elements of the field on which all the operations are based on)
+ */
+public class OngoingQuantifiedTensorBackedOperation&lt;QTB extends Tensorbacked&lt;QuantifiedValue&lt;S&gt;&gt;, S&gt;
+        implements OngoingOperation&lt;QTB, QuantifiedValue&lt;S&gt;&gt; {
+
+    private final QuantityOperationRepository&lt;S&gt; pseudoField;
+    private final QTB left;
+
+    public OngoingQuantifiedTensorBackedOperation(QuantityOperationRepository&lt;S&gt; pseudoField, QTB left) {
+<span class="fc" id="L53">        super();</span>
+<span class="fc" id="L54">        this.pseudoField = pseudoField;</span>
+<span class="fc" id="L55">        this.left = left;</span>
+<span class="fc" id="L56">    }</span>
+
+    @Override
+    public QTB plus(QTB right) {
+<span class="fc" id="L60">        return plusQT(right.tensor());</span>
+    }
+
+    public QTB plusQT(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; tensor) {
+<span class="fc" id="L64">        return evaluate(tensor, pseudoField.addition());</span>
+    }
+
+    @Override
+    public QTB plusV(QuantifiedValue&lt;S&gt; right) {
+<span class="nc" id="L69">        return plusQT(ImmutableScalar.of(right));</span>
+    }
+
+    @Override
+    public QTB minus(QTB right) {
+<span class="nc" id="L74">        return minusQT(right.tensor());</span>
+    }
+
+    public QTB minusQT(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; tensor) {
+<span class="nc" id="L78">        return evaluate(tensor, pseudoField.subtraction());</span>
+    }
+
+    @Override
+    public QTB minusV(QuantifiedValue&lt;S&gt; right) {
+<span class="nc" id="L83">        return minusQT(ImmutableScalar.of(right));</span>
+    }
+
+    @Override
+    public QTB elementTimes(QTB right) {
+<span class="fc" id="L88">        return evaluate(right.tensor(), pseudoField.multiplication());</span>
+    }
+
+    @Override
+    public QTB elementTimesV(QuantifiedValue&lt;S&gt; right) {
+<span class="fc" id="L93">        return elementTimesQT(Tensorics.scalarOf(right));</span>
+    }
+
+    public QTB elementTimesQT(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; right) {
+<span class="fc" id="L97">        return evaluate(right, pseudoField.multiplication());</span>
+    }
+
+    @Override
+    public QTB elementDividedBy(QTB right) {
+<span class="fc" id="L102">        return evaluate(right.tensor(), pseudoField.division());</span>
+    }
+
+    public QTB elementDividedByQT(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; right) {
+<span class="fc" id="L106">        return evaluate(right, pseudoField.division());</span>
+    }
+
+    @Override
+    public QTB elementDividedByV(QuantifiedValue&lt;S&gt; value) {
+<span class="fc" id="L111">        return elementDividedByQT(Tensorics.scalarOf(value));</span>
+    }
+
+    private QTB evaluate(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; right, BinaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; operation) {
+<span class="fc" id="L115">        Tensor&lt;QuantifiedValue&lt;S&gt;&gt; perform = new ElementBinaryOperation&lt;&gt;(operation,</span>
+<span class="fc" id="L116">                pseudoField.environment().options()).perform(left.tensor(), right);</span>
+<span class="fc" id="L117">        return createBackedByTensor(TensorbackedInternals.classOf(left), perform);</span>
+    }
+
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

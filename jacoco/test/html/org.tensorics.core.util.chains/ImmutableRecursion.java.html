@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmutableRecursion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.util.chains</a> &gt; <span class="el_source">ImmutableRecursion.java</span></div><h1>ImmutableRecursion.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2017 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.util.chains;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import com.google.common.collect.ImmutableSet;
+
+final class ImmutableRecursion&lt;R&gt; implements Function&lt;Object, R&gt; {
+
+    private final Set&lt;Object&gt; ongoingQueries;
+    private final BiFunction&lt;Object, Function&lt;Object, R&gt;, R&gt; delegate;
+    private final int endRecursionDepth;
+    private final Function&lt;Object, R&gt; endRecursionFunction;
+
+    public ImmutableRecursion(BiFunction&lt;Object, Function&lt;Object, R&gt;, R&gt; delegate, int maxRecursionDepth,
+            Set&lt;Object&gt; ongoingQueries, Function&lt;Object, R&gt; endRecursionFunction) {
+<span class="fc" id="L26">        super();</span>
+<span class="fc" id="L27">        this.delegate = requireNonNull(delegate, &quot;delegate must not be null&quot;);</span>
+<span class="fc" id="L28">        this.ongoingQueries = requireNonNull(ongoingQueries, &quot;ongoingQueries must not be null&quot;);</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        checkArgument(maxRecursionDepth &gt;= 0, &quot;endRecursionDepth must be positive, but was {}.&quot;, maxRecursionDepth);</span>
+<span class="fc" id="L30">        this.endRecursionDepth = maxRecursionDepth;</span>
+<span class="fc" id="L31">        this.endRecursionFunction = requireNonNull(endRecursionFunction, &quot;endRecursionFunction must not be null&quot;);</span>
+<span class="fc" id="L32">    }</span>
+
+    static final &lt;R&gt; ImmutableRecursion&lt;R&gt; delegatingTo(BiFunction&lt;Object, Function&lt;Object, R&gt;, R&gt; newDelegate) {
+<span class="pc" id="L35">        return new ImmutableRecursion&lt;&gt;(newDelegate, Integer.MAX_VALUE, Collections.emptySet(), (o) -&gt; null);</span>
+    }
+
+    final ImmutableRecursion&lt;R&gt; endRecursionAtDepth(int newMaxRecursionDepth) {
+<span class="fc" id="L39">        return new ImmutableRecursion&lt;&gt;(delegate, newMaxRecursionDepth, ongoingQueries, endRecursionFunction);</span>
+    }
+
+    final ImmutableRecursion&lt;R&gt; endingRecursionWith(Function&lt;Object, R&gt; newRndRecursionFunction) {
+<span class="fc" id="L43">        return new ImmutableRecursion&lt;&gt;(delegate, endRecursionDepth, ongoingQueries, newRndRecursionFunction);</span>
+    }
+
+    final ImmutableRecursion&lt;R&gt; withAdditionalQuery(Object o) {
+<span class="fc" id="L47">        Set&lt;Object&gt; newQueries = ImmutableSet.builder().addAll(ongoingQueries).add(o).build();</span>
+<span class="fc" id="L48">        return new ImmutableRecursion&lt;&gt;(delegate, endRecursionDepth, newQueries, endRecursionFunction);</span>
+    }
+
+    @Override
+    public R apply(Object t) {
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (ongoingQueries.contains(t)) {</span>
+<span class="nc" id="L54">            throw new RuntimeException(&quot;Loop detected in recursive calls. Object '&quot; + t</span>
+                    + &quot;' was queried again, while the following queries were ongoing: &quot; + ongoingQueries + &quot;.&quot;);
+        }
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if ((actualRecursionDepth()) &gt;= endRecursionDepth) {</span>
+<span class="nc" id="L58">            return endRecursionFunction.apply(t);</span>
+        }
+<span class="fc" id="L60">        return delegate.apply(t, this.withAdditionalQuery(t));</span>
+    }
+
+    private int actualRecursionDepth() {
+<span class="fc" id="L64">        return ongoingQueries.size();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

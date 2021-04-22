@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Coordinates.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">Coordinates.java</span></div><h1>Coordinates.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+*
+* This file is part of tensorics.
+* 
+* Copyright (c) 2008-2011, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+* 
+******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor;
+
+import static java.lang.String.format;
+import static org.tensorics.core.util.MoreMultisets.containsNonUniqueElements;
+import static org.tensorics.core.util.MoreMultisets.nonUniqueElementsOf;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.tensorics.core.util.Classes;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.ImmutableClassToInstanceMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multiset;
+
+/**
+ * Utility methods to handle coordinates
+ * 
+ * @author kfuchsbe
+ */
+public final class Coordinates {
+
+    private Coordinates() {
+        /* only static methods */
+    }
+
+    /**
+     * Creates a class to instance map, from the given coordinates. The map will contain the classes of the coordinates
+     * as keys and the coordinates themselves as values. Duplicate keys (dimensions) are not allowed and will result in
+     * an {@link IllegalArgumentException}.
+     * 
+     * @param coordinates the coordinates to be added to the map
+     * @return an immutable map from dimensions (coordinate classes) to coordinate
+     * @throws IllegalArgumentException if more than one coordinate per dimension are provided
+     * @deprecated
+     */
+    @Deprecated
+    public static &lt;C&gt; ClassToInstanceMap&lt;C&gt; mapOf(Iterable&lt;? extends C&gt; coordinates) {
+<span class="nc" id="L65">        ImmutableClassToInstanceMap.Builder&lt;C&gt; coordinateBuilder = ImmutableClassToInstanceMap.builder();</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        for (C coordinate : coordinates) {</span>
+            @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L68">            Class&lt;C&gt; coordinateClass = (Class&lt;C&gt;) coordinate.getClass();</span>
+<span class="nc" id="L69">            coordinateBuilder.put(coordinateClass, coordinate);</span>
+<span class="nc" id="L70">        }</span>
+<span class="nc" id="L71">        return coordinateBuilder.build();</span>
+    }
+
+    /**
+     * Validates dependence between given classes (interfaces) such that two interfaces in the same inheritance line are
+     * not given.
+     * 
+     * @param coordinates
+     * @throws IllegalArgumentException when any of the given classes are linked by the inheritance line.
+     */
+    public static void checkClassesRelations(Iterable&lt;Class&lt;?&gt;&gt; coordinates) {
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (Class&lt;?&gt; one : coordinates) {</span>
+<span class="fc" id="L83">            initialCheckForClassRelations(one, coordinates);</span>
+<span class="fc" id="L84">        }</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * Validates dependence between given class (interface) such that NONE of the classes can be assignable from it.
+     * 
+     * @param classToCheck a class to verify
+     * @param coordinates available coordinates classes
+     * @throws IllegalArgumentException when any of the given classes are linked by the inheritance line.
+     */
+    public static void initialCheckForClassRelations(Class&lt;?&gt; classToCheck, Iterable&lt;Class&lt;?&gt;&gt; coordinates) {
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (Class&lt;?&gt; oneToCompare : coordinates) {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            if (classToCheck.equals(oneToCompare)) {</span>
+<span class="fc" id="L97">                continue;</span>
+            }
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            if (oneToCompare.isAssignableFrom(classToCheck)) {</span>
+<span class="fc" id="L101">                throw new IllegalArgumentException(&quot;Cannot use given coordinates class!'&quot;</span>
+<span class="fc" id="L102">                        + classToCheck.getCanonicalName() + &quot;' is assignable from '&quot; + oneToCompare.getName() + &quot;'&quot;);</span>
+            }
+<span class="fc" id="L104">        }</span>
+<span class="fc" id="L105">    }</span>
+
+    /**
+     * Validates dependence between given class (interface) such that ANY o the given coordinates is assignable from it.
+     * 
+     * @param classToCheck a class to verify
+     * @param dimensions available coordinates classes
+     * @throws IllegalArgumentException when any of the given classes are linked by the inheritance line.
+     */
+    public static void checkClassRelations(Class&lt;?&gt; classToCheck, Iterable&lt;Class&lt;?&gt;&gt; dimensions) {
+        // XXX find better names
+<span class="fc" id="L116">        mapToAnEntry(classToCheck, dimensions);</span>
+<span class="fc" id="L117">    }</span>
+
+    public static &lt;C&gt; Class&lt;? super C&gt; mapToAnEntry(Class&lt;C&gt; classToCheck, Iterable&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        for (Class&lt;?&gt; dimension : dimensions) {</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (classToCheck.equals(dimension)) {</span>
+                @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L123">                Class&lt;? super C&gt; toReturn = (Class&lt;? super C&gt;) dimension;</span>
+<span class="fc" id="L124">                return toReturn;</span>
+            }
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            if (dimension.isAssignableFrom(classToCheck)) {</span>
+                @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L128">                Class&lt;? super C&gt; toReturn = (Class&lt;? super C&gt;) dimension;</span>
+<span class="fc" id="L129">                return toReturn;</span>
+            }
+<span class="fc" id="L131">        }</span>
+<span class="fc" id="L132">        throw new IllegalArgumentException(&quot;Cannot use given coordinates class! '&quot; + classToCheck.getCanonicalName()</span>
+                + &quot;' is not assignable from any of the avaliable dimensions '&quot; + dimensions + &quot;'&quot;);
+    }
+
+    /**
+     * Finds the intersection of the two dimension sets, taking correctly into account the class hierarchy of the set
+     * dimensions.
+     * &lt;p&gt;
+     * example: If class A inherits from class B and one set contains A and the other B, then B will be returned.
+     * 
+     * @param left one set of dimensions
+     * @param right the other set of dimensions
+     * @return the intersection of the two sets, considering the class hierarchy
+     * @throws IllegalArgumentException if a combination of elements of the two sets would result in duplicated entries
+     *             (e.g. the sets are not disjunct in hierarchy)
+     */
+    public static Set&lt;Class&lt;?&gt;&gt; parentClassIntersection(Set&lt;Class&lt;?&gt;&gt; left, Set&lt;Class&lt;?&gt;&gt; right) {
+<span class="fc" id="L149">        Set&lt;Class&lt;?&gt;&gt; toReturn = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        for (Class&lt;?&gt; leftDim : left) {</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">            for (Class&lt;?&gt; rightDim : right) {</span>
+<span class="fc" id="L152">                Optional&lt;Class&lt;?&gt;&gt; higher = higherOf(leftDim, rightDim);</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">                if (higher.isPresent()) {</span>
+<span class="fc" id="L154">                    boolean wasAdded = toReturn.add(higher.get());</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">                    if (!wasAdded) {</span>
+<span class="fc" id="L156">                        throw new IllegalArgumentException(format(</span>
+                                &quot;A combination of dimensions from %s and %s resulted twice in dimension %s.&quot;
+                                        + &quot;Probably the set of dimensions are not disjunct?&quot;,
+<span class="fc" id="L159">                                left, right, higher.get()));</span>
+                    }
+                }
+<span class="fc" id="L162">            }</span>
+<span class="fc" id="L163">        }</span>
+<span class="fc" id="L164">        return toReturn;</span>
+    }
+
+    private static Optional&lt;Class&lt;?&gt;&gt; higherOf(Class&lt;?&gt; leftDim, Class&lt;?&gt; rightDim) {
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        if (leftDim.isAssignableFrom(rightDim)) {</span>
+<span class="fc" id="L169">            return Optional.of(leftDim);</span>
+        }
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (rightDim.isAssignableFrom(leftDim)) {</span>
+<span class="fc" id="L172">            return Optional.of(rightDim);</span>
+        }
+<span class="fc" id="L174">        return Optional.absent();</span>
+    }
+
+    /**
+     * Provides the way to reduce long classpath names of the coordinates classes to only short Class names. It produces
+     * a combination of the tensor and it's context result.
+     * 
+     * @param tensor to extract the dimension set and reduce their length of the output string
+     * @return a reduced string
+     */
+    public static String dimensionsWithoutClassPath(Tensor&lt;?&gt; tensor) {
+<span class="fc" id="L185">        String dimensions = dimensionsWithoutClassPath(tensor.shape().dimensionSet());</span>
+<span class="fc" id="L186">        String dimensionsContext = dimensionsWithoutClassPath(tensor.context());</span>
+<span class="fc" id="L187">        return &quot;Tensor:&quot; + dimensions + &quot;, Context:&quot; + dimensionsContext;</span>
+    }
+
+    /**
+     * Provides the way to reduce long classpath names of the coordinates classes to only short Class names.
+     * 
+     * @param position to extract the dimension set and reduce their ength of the output string
+     * @return a reduced string
+     */
+    public static String dimensionsWithoutClassPath(Position position) {
+<span class="fc" id="L197">        return dimensionsWithoutClassPath(position.dimensionSet());</span>
+    }
+
+    /**
+     * Provides the way to reduce long classpath names of the coordinates classes to only short Class names.
+     * 
+     * @param dimensionSet to reduce length of the output string
+     * @return a reduced string
+     */
+    public static String dimensionsWithoutClassPath(Set&lt;Class&lt;?&gt;&gt; dimensionSet) {
+<span class="fc" id="L207">        List&lt;String&gt; classNames = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (Class&lt;?&gt; oneClass : dimensionSet) {</span>
+<span class="fc" id="L209">            classNames.add(oneClass.getSimpleName());</span>
+<span class="fc" id="L210">        }</span>
+<span class="fc" id="L211">        return classNames.toString();</span>
+    }
+
+    public static Set&lt;?&gt; requireValidCoordinates(Iterable&lt;?&gt; coordinates) {
+<span class="fc" id="L215">        requireValidDimensions(Classes.classesOf(coordinates));</span>
+<span class="fc" id="L216">        return ImmutableSet.copyOf(coordinates);</span>
+    }
+
+    public static Set&lt;Class&lt;?&gt;&gt; requireValidDimensions(Multiset&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (containsNonUniqueElements(dimensions)) {</span>
+<span class="fc" id="L221">            throw new IllegalArgumentException(</span>
+                    &quot;Only unique dimensions are allowed. The following dimensions are not unique: &quot;
+<span class="fc" id="L223">                            + nonUniqueElementsOf(dimensions));</span>
+        }
+<span class="fc" id="L225">        return ImmutableSet.copyOf(dimensions.elementSet());</span>
+    }
+
+    /**
+     * Extracts from a set of coordinates, the coordinate which corresponds to the given dimension. Hereby
+     * 'corresponding' means that the cooridnate is an instance of the given dimension (class).
+     * 
+     * @param coordinates the set of coordinates from which to extract the coordinate
+     * @param dimension the dimension for which to find the coordinate.
+     * @return the (first) coordinate which is an instance of the given dimension or {@code null} if none is contained
+     *         in the set.
+     */
+    /*
+     * TODO: Probably we should check, that there are not two mathing coordinates in the set and throw in case?
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public static &lt;C&gt; C firstCoordinateOfTyp(Set&lt;?&gt; coordinates, Class&lt;C&gt; dimension) {
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        for (Object positionCoordinate : coordinates) {</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">            if (dimension.isAssignableFrom(positionCoordinate.getClass())) {</span>
+<span class="fc" id="L244">                return (C) positionCoordinate;</span>
+            }
+<span class="fc" id="L246">        }</span>
+<span class="fc" id="L247">        return null;</span>
+    }
+
+    /**
+     * Utility method that extract the final classes of the given coordinates instances.
+     * 
+     * @param coordinates to scan
+     * @return classes of the coordinates
+     */
+    public static Set&lt;Class&lt;?&gt;&gt; getDimensionsFrom(Set&lt;?&gt; coordinates) {
+<span class="fc" id="L257">        Set&lt;Class&lt;?&gt;&gt; classes = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        for (Object one : coordinates) {</span>
+<span class="fc" id="L259">            classes.add(one.getClass());</span>
+<span class="fc" id="L260">        }</span>
+<span class="fc" id="L261">        return classes;</span>
+    }
+
+    /**
+     * Returns the difference of two sets of coordinates, by removing the dimensionToStrip set from the
+     * originalDimensions. This method correctly considers the class hierarchy: subclasses of the classes specified in
+     * dimensionsToStrip are also removed from originalDimensions.
+     * 
+     * @param originalDimensions the original set of dimensions
+     * @param dimensionsToStrip the dimensions to remove
+     * @return the original dimension set minus the dimensions to strip
+     */
+    public static Set&lt;Class&lt;?&gt;&gt; parentClassDifference(Set&lt;Class&lt;?&gt;&gt; originalDimensions,
+            Set&lt;? extends Class&lt;?&gt;&gt; dimensionsToStrip) {
+<span class="fc" id="L275">        Set&lt;Class&lt;?&gt;&gt; toReturn = new HashSet&lt;&gt;(originalDimensions);</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        for (Class&lt;?&gt; original : originalDimensions) {</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">            for (Class&lt;?&gt; toStrip : dimensionsToStrip) {</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">                if (toStrip.isAssignableFrom(original)) {</span>
+<span class="fc" id="L279">                    toReturn.remove(original);</span>
+                }
+<span class="fc" id="L281">            }</span>
+<span class="fc" id="L282">        }</span>
+<span class="fc" id="L283">        return toReturn;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

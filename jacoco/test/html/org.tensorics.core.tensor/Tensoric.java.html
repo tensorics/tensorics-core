@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tensoric.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">Tensoric.java</span></div><h1>Tensoric.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2018 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.tensor;
+
+/**
+ * The most generic interface of a multidimensional object within tensorics. Values can be retrieved from it and it
+ * knows for which positions it contains values.
+ *
+ * @param &lt;V&gt; the type of the values of the tensoric object
+ * @author kfuchsbe
+ */
+public interface Tensoric&lt;V&gt; {
+
+    /**
+     * @param position the position in the N-dimensional space where to find the value.
+     * @return the value at the given position
+     * @throws IllegalArgumentException         when number of coordinates is not sufficient
+     * @throws java.util.NoSuchElementException if the tensor contains no element for the given position
+     */
+    V get(Position position);
+
+    /**
+     * @param coordinates form N-dimensional space where to find the value.
+     * @return a value at the given coordinates.
+     * @throws IllegalArgumentException         if the number of coordinates in incorrect
+     * @throws java.util.NoSuchElementException if the tensor contains no element for the position constructed from the
+     *                                          given coordinates.
+     */
+    default V get(Object... coordinates) {
+<span class="fc" id="L32">        return get(Position.of(coordinates));</span>
+    }
+
+    /**
+     * Returns {@code true} if the tensoric object contains the given position, {@code false} otherwise.
+     *
+     * @param position the position to be checked
+     * @return {@code true} if the position is contained in the tensoric object, {@code false} otherwise.
+     */
+    boolean contains(Position position);
+
+    /**
+     * Convenience method for {@link #contains(Position)}, with the position constructed from the given coordinates.
+     *
+     * @param coordinates the coordinates which represent the position to be checked
+     * @return {@code true} if the position represented by the given coordinates is contained in the tensoric object,
+     * {@code false} otherwise.
+     */
+    default boolean contains(Object... coordinates) {
+<span class="nc" id="L51">        return contains(Position.of(coordinates));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

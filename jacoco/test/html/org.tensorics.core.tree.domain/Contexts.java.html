@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Contexts.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tree.domain</a> &gt; <span class="el_source">Contexts.java</span></div><h1>Contexts.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tree.domain;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+
+/**
+ * Provides utility methods for creating different kind of contexts.
+ * 
+ * @author kfuchsbe
+ */
+public final class Contexts {
+
+<span class="fc" id="L36">    private static final RebuildingContext EMPTY_CONTEXT = new EmptyRebuildingContext();</span>
+
+    private Contexts() {
+        /* only static methods */
+    }
+
+    /**
+     * returns an immutable empty context.
+     * 
+     * @return an immutable version of an empty context.
+     */
+    public static RebuildingContext emptyRebuildingContext() {
+<span class="nc" id="L48">        return EMPTY_CONTEXT;</span>
+    }
+
+    /**
+     * creates a new resolving-context which can be filled with resolved operations.
+     * 
+     * @return a new instance of a resolving context.
+     */
+    public static EditableResolvingContext newResolvingContext() {
+<span class="fc" id="L57">        return new ResolvingContextImpl();</span>
+    }
+
+    /**
+     * Merges the contexts of the iterable in the order they appear. Being a context a map-like object the order of
+     * insertion matters.
+     * 
+     * @param contexts the given contexts to merge
+     * @return the context with all the values of the given contexts
+     */
+    public static EditableResolvingContext mergeContextsOrdered(Iterable&lt;ResolvingContext&gt; contexts) {
+<span class="nc" id="L68">        EditableResolvingContext newCtx = newResolvingContext();</span>
+<span class="nc" id="L69">        contexts.forEach(newCtx::putAllNew);</span>
+<span class="nc" id="L70">        return newCtx;</span>
+    }
+
+    public static EditableResolvingContext mergeContextsOrdered(ResolvingContext... contexts) {
+<span class="nc" id="L74">        return mergeContextsOrdered(Arrays.asList(contexts));</span>
+    }
+
+    /**
+     * creates a new rebuilding-context which allows the rebuilding of model nodes
+     * 
+     * @return a new instance of a rebuilding context.
+     */
+    public static RebuildingContext newRebuildingContext() {
+<span class="nc" id="L83">        return new RebuildingContextImpl();</span>
+    }
+
+    private static final class EmptyRebuildingContext implements RebuildingContext {
+        @Override
+        public &lt;T extends Node&gt; T getUpdatedOrSame(T node) {
+<span class="nc" id="L89">            return node;</span>
+        }
+
+        @Override
+        public Map&lt;Node, Node&gt; getRebuildingMap() {
+<span class="nc" id="L94">            return Collections.emptyMap();</span>
+        }
+
+        @Override
+        public boolean containsUpdated(Node node) {
+<span class="nc" id="L99">            return false;</span>
+        }
+
+        @Override
+        public &lt;T extends Node&gt; T getUpdated(T node) {
+<span class="nc" id="L104">            return null;</span>
+        }
+
+        @Override
+        public &lt;T extends Node&gt; void put(T oldNode, T newNode) {
+            /* nothing to do here */
+<span class="nc" id="L110">        }</span>
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinearInterpolationResampler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.resample.impl</a> &gt; <span class="el_source">LinearInterpolationResampler.java</span></div><h1>LinearInterpolationResampler.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2018 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.tensor.resample.impl;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Set;
+import java.util.function.Function;
+
+import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.tensor.resample.SingleDimensionResampler;
+
+/**
+ * Resamples in one dimension, by linearly interpolating by two neighboring values. If possible it will try to
+ * interpolate between the left and right neighbor. If The requested point is before the first support coordinate or
+ * after the last one, then the interpolation will be done from the first two points or the last two points,
+ * respectively.
+ * 
+ * @author kfuchsbe
+ * @param &lt;C&gt; the type of the coordinates of the concerned dimension
+ * @param &lt;V&gt; the type of the tensor values to resample
+ */
+public class LinearInterpolationResampler&lt;C, V&gt; implements SingleDimensionResampler&lt;C, V&gt; {
+
+    private final ExtendedField&lt;V&gt; field;
+    private final Function&lt;C, V&gt; xConversion;
+
+<span class="fc" id="L30">    public LinearInterpolationResampler(ExtendedField&lt;V&gt; field, Function&lt;C, V&gt; toFieldElementConversion) {</span>
+<span class="fc" id="L31">        this.field = requireNonNull(field, &quot;field must not be null&quot;);</span>
+<span class="fc" id="L32">        this.xConversion = requireNonNull(toFieldElementConversion, &quot;conversion to field element must not be null&quot;);</span>
+<span class="fc" id="L33">    }</span>
+
+    @Override
+    public V resample(Set&lt;C&gt; coordinates, Function&lt;C, V&gt; yFunction, C coordinate) {
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (coordinates.contains(coordinate)) {</span>
+<span class="fc" id="L38">            return yFunction.apply(coordinate);</span>
+        }
+<span class="fc" id="L40">        return new FieldInterpolator&lt;&gt;(field, coordinates, xConversion, yFunction, coordinate).calculate();</span>
+    }
+
+    @Override
+    public boolean canResample(Set&lt;C&gt; coordinates, C coordinate) {
+        /*
+         * this is not necessarily always true ... It could be that several coordinates transform into the same V ... to
+         * be seen if this shall be considered..
+         */
+<span class="fc bfc" id="L49" title="All 4 branches covered.">        return (coordinates.size() &gt;= 2) || (coordinates.contains(coordinate));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

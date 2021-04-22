@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingBasicDeferredBinaryPredicate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">OngoingBasicDeferredBinaryPredicate.java</span></div><h1>OngoingBasicDeferredBinaryPredicate.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2017 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.lang;
+
+import org.tensorics.core.expressions.BinaryPredicateExpression;
+import org.tensorics.core.math.predicates.IsEqualTo;
+import org.tensorics.core.math.predicates.IsNotEqualTo;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvedExpression;
+
+public class OngoingBasicDeferredBinaryPredicate&lt;T&gt; {
+
+    private final Expression&lt;T&gt; left;
+
+<span class="nc" id="L17">    public OngoingBasicDeferredBinaryPredicate(Expression&lt;T&gt; left) {</span>
+<span class="nc" id="L18">        this.left = left;</span>
+<span class="nc" id="L19">    }</span>
+
+    public Expression&lt;Boolean&gt; isEqualTo(Expression&lt;T&gt; right) {
+<span class="nc" id="L22">        return new BinaryPredicateExpression&lt;&gt;(IsEqualTo.isEqualTo(), left, right);</span>
+    }
+
+    public Expression&lt;Boolean&gt; isEqualTo(T right) {
+<span class="nc" id="L26">        return isEqualTo(ResolvedExpression.of(right));</span>
+    }
+
+    public Expression&lt;Boolean&gt; isNotEqualTo(Expression&lt;T&gt; right) {
+<span class="nc" id="L30">        return new BinaryPredicateExpression&lt;&gt;(IsNotEqualTo.isNotEqualTo(), left, right);</span>
+    }
+
+    public Expression&lt;Boolean&gt; isNotEqualTo(T right) {
+<span class="nc" id="L34">        return isNotEqualTo(ResolvedExpression.of(right));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

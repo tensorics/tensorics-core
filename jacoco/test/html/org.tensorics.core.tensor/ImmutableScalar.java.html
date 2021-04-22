@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmutableScalar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">ImmutableScalar.java</span></div><h1>ImmutableScalar.java</h1><pre class="source lang-java linenums">package org.tensorics.core.tensor;
+
+import static java.util.Objects.requireNonNull;
+
+import java.io.Serializable;
+
+/**
+ * An immutable implementation of a scalar (a tensor with zero dimensions and exactly one value). To construct a simple
+ * scalar (with an empty context), use the {@link #of(Object)} method. An immutable scalar with a non-empty context can
+ * be created by chaining the {@link #of(Object)} method with the {@link #withContext(Position)} method.
+ *
+ * @author kaifox
+ * @param &lt;V&gt; the type of the value of the scalar
+ */
+public final class ImmutableScalar&lt;V&gt; extends AbstractScalar&lt;V&gt; implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final V value;
+    private final Position context;
+
+    /**
+     * Should not be used directly. Use the factory method {@link #of(Object)}
+     *
+     * @param value the value of the scalar
+     * @param context the context of the new scalar
+     */
+<span class="fc" id="L27">    private ImmutableScalar(V value, Position context) {</span>
+<span class="fc" id="L28">        this.value = requireNonNull(value, &quot;value must not be null&quot;);</span>
+<span class="fc" id="L29">        this.context = requireNonNull(context, &quot;context must not be null&quot;);</span>
+<span class="fc" id="L30">    }</span>
+
+    /**
+     * Factory method for a scalar with an empty context.
+     *
+     * @param value the value of the scalar
+     * @return a new scalar with the given value
+     * @throws NullPointerException if the given value is {@code null}
+     */
+    public static &lt;V&gt; ImmutableScalar&lt;V&gt; of(V value) {
+<span class="fc" id="L40">        return new ImmutableScalar&lt;&gt;(value, Position.empty());</span>
+    }
+
+    /**
+     * Returns a new scalar with the same value as this scalar, but the context overridden by the given one.
+     *
+     * @param newContext the context for the new scalar instance
+     * @return a new immutable scalar with the new context
+     * @throws NullPointerException if the given context is {@code null}
+     */
+    public final ImmutableScalar&lt;V&gt; withContext(Position newContext) {
+<span class="fc" id="L51">        return new ImmutableScalar&lt;&gt;(this.value, newContext);</span>
+    }
+
+    /**
+     * Returns a new scalar with the same value as this scalar, but the context overridden by a position constructed
+     * from the given coordinates.
+     *
+     * @param coordinates the coordinates for the context of the new scalar instance
+     * @return a new immutable scalar with the new context
+     * @throws NullPointerException if the given context is {@code null}
+     */
+    public final ImmutableScalar&lt;V&gt; withContext(Object... coordinates) {
+<span class="fc" id="L63">        return withContext(Position.of(coordinates));</span>
+    }
+
+    @Override
+    public Position context() {
+<span class="fc" id="L68">        return this.context;</span>
+    }
+
+    @Override
+    public V value() {
+<span class="fc" id="L73">        return value;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L78">        return &quot;ImmutableScalar [value=&quot; + value + &quot;, context=&quot; + context + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResamplingStage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.resample</a> &gt; <span class="el_source">ResamplingStage.java</span></div><h1>ResamplingStage.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2018 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.tensor.resample;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toSet;
+import static org.tensorics.core.tensor.Positions.strip;
+import static org.tensorics.core.tensor.Positions.union;
+
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.function.Function;
+
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensoric;
+
+/**
+ * A tensoric object, which is created by applying one resampler on a certain dimension onto a previous tensoric object,
+ * which e.g. by itself can be a resampled one or a tensor.
+ * 
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the values of the tensoric objects
+ * @param &lt;C&gt; the type of the coordinates to resample
+ */
+public class ResamplingStage&lt;V, C&gt; implements Tensoric&lt;V&gt; {
+
+    private final Tensoric&lt;V&gt; nonresampled;
+    private final SingleDimensionResampler&lt;C, V&gt; resampler;
+    private final Class&lt;C&gt; dimension;
+    private final Shape originalShape;
+
+    /**
+     * Constructs a new resampling stage, derived from a previous stage by using a resampler and a dimension.
+     * 
+     * @param supportingShape the shape of the original tensor. This is passed on through all the stages, as the
+     *            supporting points have to be extracted from it during each stage.
+     * @param previousStage the stage, representing the previous resampling (or the original tensor)
+     * @param resampler the resampler to use for the given dimension
+     * @param dimension the the dimension which is resampled by this stage
+     */
+    public ResamplingStage(Shape supportingShape, Tensoric&lt;V&gt; previousStage, SingleDimensionResampler&lt;C, V&gt; resampler,
+<span class="fc" id="L45">            Class&lt;C&gt; dimension) {</span>
+<span class="fc" id="L46">        this.originalShape = requireNonNull(supportingShape, &quot;supportingShape must not be null&quot;);</span>
+<span class="fc" id="L47">        this.nonresampled = requireNonNull(previousStage, &quot;previousStage must not be null&quot;);</span>
+<span class="fc" id="L48">        this.resampler = requireNonNull(resampler, &quot;resampler must not be null&quot;);</span>
+<span class="fc" id="L49">        this.dimension = requireNonNull(dimension, &quot;dimension must not be null&quot;);</span>
+<span class="fc" id="L50">    }</span>
+
+    @Override
+    public V get(Position position) {
+<span class="fc" id="L54">        Set&lt;C&gt; supportingCoordinates = supportingCoordinates(position);</span>
+<span class="fc" id="L55">        C coordinate = coordinate(position);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (!resampler.canResample(supportingCoordinates, coordinate)) {</span>
+<span class="fc" id="L57">            throw new NoSuchElementException(&quot;Tensor cannot be resampled at &quot; + position + &quot;.&quot;);</span>
+        }
+<span class="fc" id="L59">        return resampler.resample(supportingCoordinates, callbackFor(position), coordinate);</span>
+    }
+
+    @Override
+    public boolean contains(Position position) {
+<span class="fc" id="L64">        return resampler.canResample(supportingCoordinates(position), coordinate(position));</span>
+    }
+
+    private Set&lt;C&gt; supportingCoordinates(Position position) {
+<span class="fc" id="L68">        Position remainingPos = remaining(position);</span>
+
+        // @formatter:off
+<span class="fc" id="L71">        return originalShape.coordinatesOfType(dimension).stream()</span>
+<span class="fc" id="L72">                .filter(c -&gt; nonresampled.contains(union(remainingPos, Position.of(c))))</span>
+<span class="fc" id="L73">                .collect(toSet());</span>
+        // @formatter:on
+    }
+
+    private C coordinate(Position position) {
+<span class="fc" id="L78">        return position.coordinateFor(dimension);</span>
+    }
+
+    private Position remaining(Position position) {
+<span class="fc" id="L82">        return strip(dimension).from(position);</span>
+    }
+
+    private Function&lt;C, V&gt; callbackFor(Position position) {
+<span class="fc" id="L86">        Position remainingPos = remaining(position);</span>
+<span class="fc" id="L87">        return c -&gt; nonresampled.get(union(remainingPos, Position.of(c)));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

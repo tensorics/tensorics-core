@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DetailedExpressionResult.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.resolve.domain</a> &gt; <span class="el_source">DetailedExpressionResult.java</span></div><h1>DetailedExpressionResult.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2016 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.resolve.domain;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Optional;
+
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvingContext;
+
+public class DetailedExpressionResult&lt;R, E extends Expression&lt;R&gt;&gt; {
+
+    private final E rootExpression;
+    private final R value;
+    private final ResolvingContext context;
+
+    protected DetailedExpressionResult(E rootExpression, R value, ResolvingContext context) {
+<span class="nc" id="L21">        super();</span>
+<span class="nc" id="L22">        this.rootExpression = requireNonNull(rootExpression, &quot;rootExpression must not be null&quot;);</span>
+<span class="nc" id="L23">        this.value = requireNonNull(value, &quot;value must not be null&quot;);</span>
+<span class="nc" id="L24">        this.context = requireNonNull(context, &quot;context must not be null&quot;);</span>
+<span class="nc" id="L25">    }</span>
+
+    public static final &lt;R, E extends Expression&lt;R&gt;&gt; DetailedExpressionResult&lt;R, E&gt; of(E rootExpression, R value,
+            ResolvingContext context) {
+<span class="nc" id="L29">        return new DetailedExpressionResult&lt;&gt;(rootExpression, value, context);</span>
+    }
+
+    public R value() {
+<span class="nc" id="L33">        return value;</span>
+    }
+
+    public &lt;T&gt; Optional&lt;T&gt; resolvedValueOf(Expression&lt;T&gt; expression) {
+<span class="nc" id="L37">        requireNonNull(expression, &quot;expression must not be null.&quot;);</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (context.resolves(expression)) {</span>
+<span class="nc" id="L39">            return Optional.of(context.resolvedValueOf(expression));</span>
+        }
+<span class="nc" id="L41">        return Optional.empty();</span>
+    }
+
+    public E rootExpression() {
+<span class="nc" id="L45">        return this.rootExpression;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L50">        final int prime = 31;</span>
+<span class="nc" id="L51">        int result = 1;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        result = prime * result + ((context == null) ? 0 : context.hashCode());</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        result = prime * result + ((rootExpression == null) ? 0 : rootExpression.hashCode());</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        result = prime * result + ((value == null) ? 0 : value.hashCode());</span>
+<span class="nc" id="L55">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L61">            return true;</span>
+        }
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L64">            return false;</span>
+        }
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L67">            return false;</span>
+        }
+<span class="nc" id="L69">        DetailedExpressionResult&lt;?, ?&gt; other = (DetailedExpressionResult&lt;?, ?&gt;) obj;</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (context == null) {</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (other.context != null) {</span>
+<span class="nc" id="L72">                return false;</span>
+            }
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        } else if (!context.equals(other.context)) {</span>
+<span class="nc" id="L75">            return false;</span>
+        }
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (rootExpression == null) {</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            if (other.rootExpression != null) {</span>
+<span class="nc" id="L79">                return false;</span>
+            }
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        } else if (!rootExpression.equals(other.rootExpression)) {</span>
+<span class="nc" id="L82">            return false;</span>
+        }
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (value == null) {</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (other.value != null) {</span>
+<span class="nc" id="L86">                return false;</span>
+            }
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        } else if (!value.equals(other.value)) {</span>
+<span class="nc" id="L89">            return false;</span>
+        }
+<span class="nc" id="L91">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L96">        return &quot;DetailedExpressionResult [rootExpression=&quot; + rootExpression + &quot;, value=&quot; + value + &quot;, context=&quot;</span>
+                + context + &quot;]&quot;;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

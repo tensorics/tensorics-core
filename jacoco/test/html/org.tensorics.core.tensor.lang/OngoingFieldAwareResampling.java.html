@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingFieldAwareResampling.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.lang</a> &gt; <span class="el_source">OngoingFieldAwareResampling.java</span></div><h1>OngoingFieldAwareResampling.java</h1><pre class="source lang-java linenums">package org.tensorics.core.tensor.lang;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Comparator;
+import java.util.function.Function;
+
+import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.Tensoric;
+import org.tensorics.core.tensor.resample.MultiDimensionalResampling;
+import org.tensorics.core.tensor.resample.SingleDimensionResampler;
+import org.tensorics.core.tensor.resample.impl.LinearInterpolationResampler;
+import org.tensorics.core.tensor.resample.impl.RepeatingResampler;
+
+public class OngoingFieldAwareResampling&lt;V&gt; {
+
+    private final Tensor&lt;V&gt; tensor;
+    private final MultiDimensionalResampling&lt;V&gt; ordering;
+    private final ExtendedField&lt;V&gt; field;
+
+    private OngoingFieldAwareResampling(Tensor&lt;V&gt; tensor, MultiDimensionalResampling&lt;V&gt; resampling,
+<span class="fc" id="L24">            ExtendedField&lt;V&gt; field) {</span>
+<span class="fc" id="L25">        this.tensor = requireNonNull(tensor, &quot;tensor must not be null&quot;);</span>
+<span class="fc" id="L26">        this.ordering = requireNonNull(resampling, &quot;resampling must not be null&quot;);</span>
+<span class="fc" id="L27">        this.field = requireNonNull(field, &quot;field must not be null&quot;);</span>
+<span class="fc" id="L28">    }</span>
+
+    public static final &lt;C, V&gt; OngoingFieldAwareResampling&lt;V&gt; of(Tensor&lt;V&gt; tensor, Class&lt;C&gt; dimension,
+            SingleDimensionResampler&lt;C, V&gt; resampler, ExtendedField&lt;V&gt; field) {
+<span class="fc" id="L32">        return new OngoingFieldAwareResampling&lt;&gt;(tensor, MultiDimensionalResampling.resample(dimension, resampler),</span>
+                field);
+    }
+
+    public final &lt;C extends Comparable&lt;C&gt;&gt; OngoingFieldAwareResampling&lt;V&gt; repeat(Class&lt;C&gt; dimension) {
+<span class="fc" id="L37">        return repeat(dimension, Comparator.naturalOrder());</span>
+    }
+
+    public final &lt;C&gt; OngoingFieldAwareResampling&lt;V&gt; repeat(Class&lt;C&gt; dimension, Comparator&lt;C&gt; dimensionComparator) {
+<span class="fc" id="L41">        return then(dimension, new RepeatingResampler&lt;&gt;(dimensionComparator));</span>
+    }
+
+    public final &lt;C&gt; OngoingFieldAwareResampling&lt;V&gt; linear(Class&lt;C&gt; dimension, Function&lt;C, V&gt; xConversion) {
+<span class="fc" id="L45">        return then(dimension, new LinearInterpolationResampler&lt;&gt;(field, xConversion));</span>
+    }
+
+    public &lt;C&gt; OngoingFieldAwareResampling&lt;V&gt; then(Class&lt;C&gt; dimension, SingleDimensionResampler&lt;C, V&gt; resampler) {
+<span class="fc" id="L49">        return new OngoingFieldAwareResampling&lt;&gt;(tensor, ordering.then(dimension, resampler), field);</span>
+    }
+
+    /**
+     * NOOP, to be used for more fluent clauses.
+     * 
+     * @return this instance
+     */
+    public OngoingFieldAwareResampling&lt;V&gt; then() {
+<span class="fc" id="L58">        return this;</span>
+    }
+
+    public Tensoric&lt;V&gt; toTensoric() {
+<span class="fc" id="L62">        return ordering.resample(tensor);</span>
+    }
+
+    public final V get(Position position) {
+<span class="nc" id="L66">        return toTensoric().get(position);</span>
+    }
+
+    public final V get(Object... coordinates) {
+<span class="nc" id="L70">        return get(Position.of(coordinates));</span>
+    }
+
+    public final V get(Iterable&lt;?&gt; coordinates) {
+<span class="nc" id="L74">        return get(Position.of(coordinates));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

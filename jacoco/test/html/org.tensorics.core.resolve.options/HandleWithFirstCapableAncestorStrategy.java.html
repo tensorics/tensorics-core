@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HandleWithFirstCapableAncestorStrategy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.resolve.options</a> &gt; <span class="el_source">HandleWithFirstCapableAncestorStrategy.java</span></div><h1>HandleWithFirstCapableAncestorStrategy.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.resolve.options;
+
+import java.util.Set;
+
+import org.tensorics.core.resolve.domain.ExceptionHandlingRequest;
+import org.tensorics.core.resolve.domain.ResolvingException;
+import org.tensorics.core.tree.domain.EditableResolvingContext;
+import org.tensorics.core.tree.domain.ExceptionHandlingNode;
+import org.tensorics.core.tree.walking.Trees;
+
+import com.google.common.reflect.TypeToken;
+
+/**
+ * When this strategy is used in the dispatcher, then the exceptions which appear at some node, are handled in the first
+ * node above which can handle the exception. This handling node is then resolved to an appropriate result and the tree
+ * below is not processed further.
+ * 
+ * @author kfuchsbe
+ */
+<span class="nc" id="L42">public class HandleWithFirstCapableAncestorStrategy extends AbstractExceptionHandlingStrategy {</span>
+
+    /**
+     * Checks to see if there are nodes to handle each exception that occured during the processing. If not a
+     * {@link ResolvingException} is thrown.
+     */
+    @Override
+    public void handleWithRootNodeFailingNodeException(ExceptionHandlingRequest parameterObject) {
+<span class="nc" id="L50">        Set&lt;ExceptionHandlingNode&lt;?&gt;&gt; handlingNodes = Trees.findClosestAncestorNodeFromNodesToRootOfType(</span>
+<span class="nc" id="L51">                parameterObject.getThrowingNode(), parameterObject.getRootNode(),</span>
+<span class="nc" id="L52">                new TypeToken&lt;ExceptionHandlingNode&lt;?&gt;&gt;() {</span>
+                    private static final long serialVersionUID = 1L;
+                });
+
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (handlingNodes.isEmpty()) {</span>
+<span class="nc" id="L57">            throw new ResolvingException(</span>
+                    &quot;No node could be found to handle exception which occured during the processing of node '&quot;
+<span class="nc" id="L59">                            + parameterObject.getThrowingNode() + &quot;'.&quot;,</span>
+<span class="nc" id="L60">                    parameterObject.getException());</span>
+        }
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (ExceptionHandlingNode&lt;?&gt; handlingNode : handlingNodes) {</span>
+<span class="nc" id="L63">            putHandled(parameterObject.getException(), handlingNode, parameterObject.getContext());</span>
+<span class="nc" id="L64">        }</span>
+<span class="nc" id="L65">    }</span>
+
+    private &lt;R&gt; void putHandled(RuntimeException exception, ExceptionHandlingNode&lt;R&gt; handlingNode,
+            EditableResolvingContext context) {
+<span class="nc" id="L69">        R handledErrorResult = handlingNode.handle(exception);</span>
+<span class="nc" id="L70">        context.put(handlingNode, handledErrorResult);</span>
+<span class="nc" id="L71">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

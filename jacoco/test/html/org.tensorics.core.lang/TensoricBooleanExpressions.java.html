@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensoricBooleanExpressions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">TensoricBooleanExpressions.java</span></div><h1>TensoricBooleanExpressions.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2017 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.lang;
+
+import java.util.Arrays;
+
+import org.tensorics.core.booleans.operations.And;
+import org.tensorics.core.booleans.operations.Or;
+import org.tensorics.core.expressions.ConversionOperationExpression;
+import org.tensorics.core.iterable.expressions.IterableExpressionToIterable;
+import org.tensorics.core.tree.domain.Expression;
+
+public final class TensoricBooleanExpressions {
+
+<span class="nc" id="L17">    private static final And AND = new And();</span>
+<span class="nc" id="L18">    private static final Or OR = new Or();</span>
+
+    private TensoricBooleanExpressions() {
+        /* Only static methods */
+    }
+
+    public static Expression&lt;Boolean&gt; or(Expression&lt;? extends Iterable&lt;Boolean&gt;&gt; sources) {
+<span class="nc" id="L25">        return new ConversionOperationExpression&lt;&gt;(OR, sources);</span>
+    }
+
+    @SafeVarargs
+    public static Expression&lt;Boolean&gt; or(Expression&lt;Boolean&gt;... expressions) {
+<span class="nc" id="L30">        return or(Arrays.asList(expressions));</span>
+    }
+
+    public static Expression&lt;Boolean&gt; or(Iterable&lt;? extends Expression&lt;Boolean&gt;&gt; expressions) {
+<span class="nc" id="L34">        Expression&lt;Iterable&lt;Boolean&gt;&gt; booleans = new IterableExpressionToIterable&lt;&gt;(expressions);</span>
+<span class="nc" id="L35">        return or(booleans);</span>
+    }
+
+    public static Expression&lt;Boolean&gt; and(Expression&lt;? extends Iterable&lt;Boolean&gt;&gt; sources) {
+<span class="nc" id="L39">        return new ConversionOperationExpression&lt;&gt;(AND, sources);</span>
+    }
+
+    public static Expression&lt;Boolean&gt; and(Iterable&lt;? extends Expression&lt;Boolean&gt;&gt; expressions) {
+<span class="nc" id="L43">        Expression&lt;Iterable&lt;Boolean&gt;&gt; booleans = new IterableExpressionToIterable&lt;&gt;(expressions);</span>
+<span class="nc" id="L44">        return and(booleans);</span>
+    }
+
+    @SafeVarargs
+    public static Expression&lt;Boolean&gt; and(Expression&lt;Boolean&gt;... expressions) {
+<span class="nc" id="L49">        return and(Arrays.asList(expressions));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

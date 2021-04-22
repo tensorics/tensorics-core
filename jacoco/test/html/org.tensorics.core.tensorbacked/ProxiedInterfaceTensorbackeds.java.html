@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProxiedInterfaceTensorbackeds.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensorbacked</a> &gt; <span class="el_source">ProxiedInterfaceTensorbackeds.java</span></div><h1>ProxiedInterfaceTensorbackeds.java</h1><pre class="source lang-java linenums">package org.tensorics.core.tensorbacked;
+
+import static java.util.Objects.requireNonNull;
+
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.util.JavaVersions;
+
+public final class ProxiedInterfaceTensorbackeds {
+
+    private ProxiedInterfaceTensorbackeds() {
+        /* only static methods */
+    }
+
+    public static &lt;V, T extends Tensorbacked&lt;V&gt;&gt; T create(Class&lt;T&gt; tensorbackedType, Tensor&lt;V&gt; tensor) {
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (!tensorbackedType.isInterface()) {</span>
+<span class="fc" id="L27">            throw new IllegalArgumentException(&quot;The given tensorbacked type '&quot; + tensorbackedType</span>
+                    + &quot;' is not an interface! Therefore, it cannot be instantiated by proxying!&quot;);
+        }
+<span class="fc" id="L30">        return (T) Proxy.newProxyInstance(Tensorbacked.class.getClassLoader(), new Class&lt;?&gt;[] { tensorbackedType },</span>
+                new DelegatingInvocationHandler&lt;&gt;(tensor, tensorbackedType));
+    }
+
+    public static &lt;V, T extends Tensorbacked&lt;V&gt;&gt; Optional&lt;Class&lt;T&gt;&gt; tensorbackedInterfaceFrom(T object) {
+<span class="fc" id="L35">        return invokationHandlerFrom(object).map(h -&gt; (Class&lt;T&gt;) h.intfc);</span>
+    }
+
+    private static Optional&lt;DelegatingInvocationHandler&lt;?, ?&gt;&gt; invokationHandlerFrom(Object object) {
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (!(object instanceof Proxy)) {</span>
+<span class="fc" id="L40">            return Optional.empty();</span>
+        }
+
+<span class="fc" id="L43">        InvocationHandler handler = Proxy.getInvocationHandler(object);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (!(handler instanceof DelegatingInvocationHandler)) {</span>
+<span class="nc" id="L45">            return Optional.empty();</span>
+        }
+
+<span class="fc" id="L48">        return Optional.of((DelegatingInvocationHandler&lt;?, ?&gt;) handler);</span>
+    }
+
+    private final static class DelegatingInvocationHandler&lt;V, T extends Tensorbacked&lt;V&gt;&gt; implements InvocationHandler {
+        private final Tensor&lt;V&gt; delegate;
+        private final Class&lt;T&gt; intfc;
+
+<span class="fc" id="L55">        public DelegatingInvocationHandler(Tensor&lt;V&gt; delegate, Class&lt;T&gt; intfc) {</span>
+<span class="fc" id="L56">            this.delegate = requireNonNull(delegate, &quot;delegate must not be null&quot;);</span>
+<span class="fc" id="L57">            this.intfc = requireNonNull(intfc, &quot;interface must not be null&quot;);</span>
+<span class="fc" id="L58">        }</span>
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            if (method.isDefault()) {</span>
+<span class="fc" id="L64">                MethodCallHandler callHandler = callHandlerFor(intfc, method);</span>
+<span class="fc" id="L65">                return callHandler.invoke(proxy, args);</span>
+            }
+
+<span class="pc bpc" id="L68" title="1 of 4 branches missed.">            if (Tensorbacked.class.equals(method.getDeclaringClass()) &amp;&amp; &quot;tensor&quot;.equals(method.getName())</span>
+<span class="pc bpc" id="L69" title="2 of 4 branches missed.">                    &amp;&amp; (method.getParameterCount() == 0) &amp;&amp; method.getReturnType().isAssignableFrom(Tensor.class)) {</span>
+<span class="fc" id="L70">                return delegate;</span>
+            }
+
+<span class="pc bpc" id="L73" title="3 of 4 branches missed.">            if (&quot;toString&quot;.equals(method.getName()) &amp;&amp; (args == null)) {</span>
+<span class="nc" id="L74">                return toString();</span>
+            }
+<span class="pc bpc" id="L76" title="3 of 4 branches missed.">            if (&quot;hashCode&quot;.equals(method.getName()) &amp;&amp; (args == null)) {</span>
+<span class="nc" id="L77">                return hashCode();</span>
+            }
+<span class="pc bpc" id="L79" title="2 of 4 branches missed.">            if (&quot;equals&quot;.equals(method.getName()) &amp;&amp; (args.length == 1)) {</span>
+<span class="fc" id="L80">                return equals(args[0]);</span>
+            }
+
+<span class="nc" id="L83">            throw new UnsupportedOperationException(&quot;The method &quot; + method + &quot; is not supported by the proxy!&quot;);</span>
+        }
+
+        @Override
+        public int hashCode() {
+<span class="nc" id="L88">            return Objects.hash(delegate, intfc);</span>
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">            if (this == obj) {</span>
+<span class="nc" id="L94">                return true;</span>
+            }
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">            if (obj == null) {</span>
+<span class="nc" id="L97">                return false;</span>
+            }
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (!(obj instanceof Tensorbacked)) {</span>
+<span class="nc" id="L100">                return false;</span>
+            }
+<span class="fc" id="L102">            Optional&lt;DelegatingInvocationHandler&lt;?, ?&gt;&gt; otherIh = invokationHandlerFrom(obj);</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            if (!otherIh.isPresent()) {</span>
+<span class="nc" id="L104">                return false;</span>
+            }
+<span class="fc" id="L106">            DelegatingInvocationHandler&lt;?, ?&gt; other = otherIh.get();</span>
+<span class="pc bpc" id="L107" title="1 of 4 branches missed.">            return Objects.equals(delegate, other.delegate) &amp;&amp; Objects.equals(intfc, other.intfc);</span>
+        }
+
+        @Override
+        public String toString() {
+<span class="nc" id="L112">            return &quot;Tensorbacked [intfc=&quot; + intfc + &quot;, delegate=&quot; + delegate + &quot;]&quot;;</span>
+        }
+    }
+
+    @FunctionalInterface
+    private interface MethodCallHandler {
+        Object invoke(Object proxy, Object[] args) throws Throwable;
+    }
+
+    private static MethodCallHandler callHandlerFor(Class&lt;?&gt; intfc, Method method) {
+<span class="fc" id="L122">        MethodHandle handle = getMethodHandle(intfc, method);</span>
+<span class="fc" id="L123">        return (proxy, args) -&gt; handle.bindTo(proxy).invokeWithArguments(args);</span>
+    }
+
+    private static MethodHandle getMethodHandle(Class&lt;?&gt; intfc, Method method) {
+<span class="fc" id="L127">        Class&lt;?&gt; declaringClass = method.getDeclaringClass();</span>
+
+        /*
+         * XXX: This is not too nice: For some reason, the original code (java) 8 did not run in java 11 anymore.
+         * And vice versa ... what the exact border is where it stopped working was not full checked.
+         * So potentially more research would be needed here.
+         */
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (JavaVersions.isAtLeastJava11()) {</span>
+            try {
+<span class="fc" id="L136">                return MethodHandles.lookup().findSpecial(intfc, method.getName(),</span>
+<span class="fc" id="L137">                        MethodType.methodType(method.getReturnType(), method.getParameterTypes()), intfc);</span>
+<span class="nc" id="L138">            } catch (NoSuchMethodException | IllegalAccessException e) {</span>
+<span class="nc" id="L139">                throw new RuntimeException(e);</span>
+            }
+        } else {
+            try {
+<span class="nc" id="L143">                Constructor&lt;MethodHandles.Lookup&gt; constructor = MethodHandles.Lookup.class</span>
+<span class="nc" id="L144">                        .getDeclaredConstructor(Class.class, int.class);</span>
+<span class="nc" id="L145">                constructor.setAccessible(true);</span>
+
+<span class="nc" id="L147">                return constructor.newInstance(declaringClass, MethodHandles.Lookup.PRIVATE).unreflectSpecial(method,</span>
+                        declaringClass);
+<span class="nc" id="L149">            } catch (IllegalAccessException | NoSuchMethodException | InstantiationException</span>
+                    | InvocationTargetException e) {
+<span class="nc" id="L151">                throw new RuntimeException(e);</span>
+            }
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

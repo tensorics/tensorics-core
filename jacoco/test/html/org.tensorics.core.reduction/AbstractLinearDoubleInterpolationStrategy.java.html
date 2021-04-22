@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractLinearDoubleInterpolationStrategy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.reduction</a> &gt; <span class="el_source">AbstractLinearDoubleInterpolationStrategy.java</span></div><h1>AbstractLinearDoubleInterpolationStrategy.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2015 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.reduction;
+
+import java.util.Comparator;
+import java.util.List;
+
+import org.tensorics.core.tensor.Tensor;
+
+/**
+ * An abstract implementation for the linear interpolation of the {@link Double} {@link Tensor}.
+ * &lt;p&gt;
+ * It returns a value based on the ratio in the comparable (ie. time) domain, between the reference point(t_i) and the
+ * pair of the one before(t_1) and after(t_2) like: &lt;br&gt;
+ * &lt;br&gt;
+ * ratio = (t_i - t_1)/(t_2 - t_1)
+ * &lt;p&gt;
+ * The final interpolated value is: v_i = v(t_1)+(v(t_2)-v(t_1))*ratio.
+ * 
+ * @author agorzaws
+ * @param &lt;C&gt; type of the coordinate, must be the {@link Comparable}
+ * 
+ * @deprecated use {@link LinearInterpolation}
+ */
+@Deprecated
+public abstract class AbstractLinearDoubleInterpolationStrategy&lt;C&gt; extends AbstractInterpolationStrategy&lt;C, Double&gt; {
+
+    public AbstractLinearDoubleInterpolationStrategy(Comparator&lt;C&gt; comparator) {
+<span class="nc" id="L31">        super(comparator);</span>
+<span class="nc" id="L32">    }</span>
+
+    @Override
+    public Double getInterpolatedValue(Tensor&lt;Double&gt; tensorWithTheOnlyOneCoordinateOfC, C coordineteToInterpolate) {
+
+<span class="nc" id="L37">        List&lt;C&gt; orderedList = getOrderedListOfComparableCoordinate(tensorWithTheOnlyOneCoordinateOfC,</span>
+                coordineteToInterpolate);
+<span class="nc" id="L39">        C thePreviousComparable = findIndex(orderedList, coordineteToInterpolate, 0);</span>
+<span class="nc" id="L40">        C theNextComparable = findIndex(orderedList, coordineteToInterpolate, 1);</span>
+
+<span class="nc" id="L42">        Double firstPoint = tensorWithTheOnlyOneCoordinateOfC.get(thePreviousComparable);</span>
+<span class="nc" id="L43">        return firstPoint + (tensorWithTheOnlyOneCoordinateOfC.get(theNextComparable) - firstPoint)</span>
+<span class="nc" id="L44">                * ratio(thePreviousComparable, theNextComparable, coordineteToInterpolate);</span>
+    }
+
+    public abstract double ratio(C previousComparable, C nextComparable, C value);
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

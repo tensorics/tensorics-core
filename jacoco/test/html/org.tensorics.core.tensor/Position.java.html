@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Position.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">Position.java</span></div><h1>Position.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+*
+* This file is part of tensorics.
+* 
+* Copyright (c) 2008-2011, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+* 
+******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor;
+
+import static java.util.Objects.requireNonNull;
+import static org.tensorics.core.tensor.Coordinates.requireValidCoordinates;
+
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.Set;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Interner;
+import com.google.common.collect.Interners;
+
+/**
+ * Defines the position of a value within a tensor in the N-dimensional coordinate space.
+ * 
+ * @author agorzaws
+ */
+public final class Position implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+<span class="fc" id="L47">    private static final Interner&lt;Position&gt; INTERNER = Interners.newWeakInterner();</span>
+
+    /*
+     * NOTE: This has to be after the cachedPositions initialization, because the 'of' method uses it!
+     */
+<span class="fc" id="L52">    private static final Position EMPTY_POSITION = Position.createFrom(Collections.emptySet());</span>
+
+    private ImmutableSet&lt;?&gt; coordinates;
+
+<span class="fc" id="L56">    protected Position(Set&lt;?&gt; coordinates) {</span>
+<span class="fc" id="L57">        this.coordinates = ImmutableSet.copyOf(coordinates);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (Object oneCoordinate : coordinates) {</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            if (oneCoordinate instanceof Position) {</span>
+<span class="fc" id="L60">                throw new IllegalArgumentException(&quot;A position is contained in the collection of coordinates.&quot;</span>
+                        + &quot;This is most-probably a programming mistake and therefore not allowed.&quot;);
+            }
+<span class="fc" id="L63">        }</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Retrieves a position instance for the given coordinates. In order to be a valid set to create a position, the
+     * coordinates must:
+     * &lt;ul&gt;
+     * &lt;li&gt;They must be disjunct in class hierarchy (e.g. one must not inherit from another)
+     * &lt;li&gt;None of them must be an instance of a position
+     * &lt;/ul&gt;
+     * 
+     * @param coordinates the coordinates for which to get the position instance.
+     * @return a position instance with the given coordinates.
+     * @throws IllegalArgumentException in case the coordinates are not a valid set for creating a position.
+     * @throws NullPointerException if the given coordinates are {@code null}
+     */
+    public static Position of(Iterable&lt;?&gt; coordinates) {
+<span class="fc" id="L80">        requireNonNull(coordinates, &quot;coordinates must not be null&quot;);</span>
+<span class="fc" id="L81">        return createFrom(requireValidCoordinates(coordinates));</span>
+    }
+
+    /**
+     * Retrieves a position instance, representing the given coordinates. This is a convenience method to a call to
+     * {@link #of(Iterable)}.
+     * 
+     * @param coordinates the coordinates for which to retrieve a position instance
+     * @return a position instance
+     * @throws IllegalArgumentException in case the coordinates are not a valid set for creating a position.
+     * @throws NullPointerException if the given coordinates array is {@code null}
+     * @see #of(Iterable)
+     */
+    @SafeVarargs
+    public static Position of(Object... coordinates) {
+<span class="fc" id="L96">        requireNonNull(coordinates, &quot;coordinates must not be null&quot;);</span>
+<span class="fc" id="L97">        return of(ImmutableMultiset.copyOf(coordinates));</span>
+    }
+
+    private static Position createFrom(Set&lt;?&gt; coordinates) {
+<span class="fc" id="L101">        return INTERNER.intern(new Position(coordinates));</span>
+    }
+
+    public static Position empty() {
+<span class="fc" id="L105">        return EMPTY_POSITION;</span>
+    }
+
+    public &lt;CS&gt; CS coordinateFor(Class&lt;CS&gt; dimension) {
+<span class="fc" id="L109">        return Coordinates.firstCoordinateOfTyp(coordinates, dimension);</span>
+    }
+
+    public Set&lt;?&gt; coordinates() {
+<span class="fc" id="L113">        return coordinates;</span>
+    }
+
+    /**
+     * Retrieves the dimensions of this position (i.e. the type of the containing coordinates).
+     * &lt;p&gt;
+     * &lt;b&gt;NOTE!&lt;/b&gt; These dimensions may differ from the ones kept in the parent tensor!.
+     * 
+     * @return the types of the coordinates
+     */
+    public Set&lt;Class&lt;?&gt;&gt; dimensionSet() {
+<span class="fc" id="L124">        return Coordinates.getDimensionsFrom(coordinates);</span>
+    }
+
+    /**
+     * Checks if the position is consistent with the given dimensions. Conformity means that the position contains
+     * exactly one coordinate for each dimension in the given set of dimensions (classes of coordinates).
+     * 
+     * @param dimensions the dimensions for which conformity has to be checked.
+     * @return {@code true} if the position is conform, {@code false} if not.
+     */
+    public boolean isConsistentWith(Set&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        Preconditions.checkArgument(dimensions != null, &quot;Argument 'dimensions' must not be null!&quot;);</span>
+<span class="fc" id="L136">        return Positions.areDimensionsConsistentWithCoordinates(dimensions, this);</span>
+    }
+
+    /**
+     * Checks if this position covers the other position, meaning that the other position is a sub position of the
+     * other. In other words, this means that all the coordinates of the other position have to be contained in the
+     * coordinates of this position.
+     * 
+     * @param other the other position to compare with
+     * @return {@code true} if this position covers the other, false otherwise
+     */
+    public boolean covers(Position other) {
+<span class="fc" id="L148">        requireNonNull(other, &quot;other position must not be null&quot;);</span>
+<span class="fc" id="L149">        return this.coordinates.containsAll(other.coordinates);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L154">        return &quot;Position [coordinates=&quot; + coordinates + &quot;]&quot;;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L159">        final int prime = 31;</span>
+<span class="fc" id="L160">        int result = 1;</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        result = prime * result + ((coordinates == null) ? 0 : coordinates.hashCode());</span>
+<span class="fc" id="L162">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L168">            return true;</span>
+        }
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L171">            return false;</span>
+        }
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L174">            return false;</span>
+        }
+<span class="fc" id="L176">        Position other = (Position) obj;</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        if (coordinates == null) {</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">            if (other.coordinates != null) {</span>
+<span class="nc" id="L179">                return false;</span>
+            }
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        } else if (!coordinates.equals(other.coordinates)) {</span>
+<span class="fc" id="L182">            return false;</span>
+        }
+<span class="fc" id="L184">        return true;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

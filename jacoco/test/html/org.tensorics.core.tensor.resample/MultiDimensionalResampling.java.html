@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MultiDimensionalResampling.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.resample</a> &gt; <span class="el_source">MultiDimensionalResampling.java</span></div><h1>MultiDimensionalResampling.java</h1><pre class="source lang-java linenums">package org.tensorics.core.tensor.resample;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.LinkedHashMap;
+
+import org.tensorics.core.tensor.Coordinates;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.Tensoric;
+
+/**
+ * Combines several one-dimensional resamplers and creates the fully resampled object from them. The final resampling is
+ * created by chaining pairs of dimension+resamplers like:
+ * 
+ * &lt;pre&gt;
+ * &lt;code&gt;
+ * MultiDimensionalResampling&amp;#60;V&amp;#62; resampling = MultiDimensionalResampling.resample(Coord1.class, coord1Resampler)
+ *                                                                      .then(Coord2.class, coord2Resampler)
+ *                                                                      [...];
+ * &lt;/code&gt;
+ * &lt;/pre&gt;
+ * 
+ * Note: The order is very relevant here!
+ * &lt;p&gt;
+ * The actual resampled object can finally be created by calling te {@link #resample(Tensor)} method.
+ * 
+ * @see #resample(Class, SingleDimensionResampler)
+ * @see #then(Class, SingleDimensionResampler)
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the tensor values to resample
+ */
+public class MultiDimensionalResampling&lt;V&gt; {
+
+    /* This on purpose has to be a linked hashmap, because the insertion order has to be preserved. */
+    private final LinkedHashMap&lt;Class&lt;?&gt;, SingleDimensionResampler&lt;?, V&gt;&gt; resamplers;
+
+<span class="fc" id="L38">    private MultiDimensionalResampling(LinkedHashMap&lt;Class&lt;?&gt;, SingleDimensionResampler&lt;?, V&gt;&gt; resamplers) {</span>
+<span class="fc" id="L39">        requireNonNull(resamplers, &quot;resamplers must not be null!&quot;);</span>
+
+        /* This should never happen, because of the factory methods. Still we keep the check for the moment. */
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (resamplers.isEmpty()) {</span>
+<span class="nc" id="L43">            throw new IllegalArgumentException(&quot;No resamplers is defined for ordering.&quot;);</span>
+        }
+        /* A new linked hash set is created in the factory methods. Therefore, no additional copying required here. */
+<span class="fc" id="L46">        this.resamplers = resamplers;</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * Starting point for chaining several dimensino-resampler pairs.
+     * 
+     * @param dimension the dimension for which the given resampler shall be applied.
+     * @param resampler the resampler to apply for the given dimension
+     * @return a new (immutable) multidimensional resampling, with exactly one dimension resampled
+     * @throws NullPointerException if one of the given arguments is {@code null}
+     */
+    public static final &lt;C, V&gt; MultiDimensionalResampling&lt;V&gt; resample(Class&lt;C&gt; dimension,
+            SingleDimensionResampler&lt;C, V&gt; resampler) {
+<span class="fc" id="L59">        requireNonNull(dimension, &quot;dimension must not be null.&quot;);</span>
+<span class="fc" id="L60">        requireNonNull(resampler, &quot;resampler must not be null.&quot;);</span>
+
+<span class="fc" id="L62">        LinkedHashMap&lt;Class&lt;?&gt;, SingleDimensionResampler&lt;?, V&gt;&gt; resamplers = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L63">        resamplers.put(dimension, resampler);</span>
+<span class="fc" id="L64">        return new MultiDimensionalResampling&lt;&gt;(resamplers);</span>
+    }
+
+    /**
+     * Creates a new instance of a multidimensional resamplings, containing the resamplers from {@code this}
+     * multidimensional resampling plus the given one.
+     * 
+     * @param dimension the dimension for which the given resampler shall be used
+     * @param dimensionComparator the resampler which shall be used for the given dimension
+     * @return a new multidimensional resampling object, containing all the resamplers of {@code this} object plus the
+     *         given one.
+     */
+    public final &lt;C&gt; MultiDimensionalResampling&lt;V&gt; then(Class&lt;C&gt; dimension,
+            SingleDimensionResampler&lt;C, V&gt; dimensionComparator) {
+<span class="fc" id="L78">        requireNonNull(dimension, &quot;dimension must not be null.&quot;);</span>
+<span class="fc" id="L79">        requireNonNull(dimensionComparator, &quot;dimensionComparator must not be null.&quot;);</span>
+
+<span class="fc" id="L81">        LinkedHashMap&lt;Class&lt;?&gt;, SingleDimensionResampler&lt;?, V&gt;&gt; newResamplers = new LinkedHashMap&lt;&gt;(this.resamplers);</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (newResamplers.containsKey(dimension)) {</span>
+<span class="nc" id="L83">            throw new IllegalArgumentException(&quot;You are trying to add an resampler for the dimension '&quot; + dimension</span>
+                    + &quot;' twice. This is not allowed.&quot;);
+        }
+
+<span class="fc" id="L87">        newResamplers.put(dimension, dimensionComparator);</span>
+<span class="fc" id="L88">        Coordinates.checkClassesRelations(newResamplers.keySet());</span>
+<span class="fc" id="L89">        return new MultiDimensionalResampling&lt;&gt;(newResamplers);</span>
+    }
+
+    /**
+     * Produces a resampled tensoric object out of the given tensor, by applying the resamplers configured in
+     * {@code this} object.
+     * 
+     * @param original the tensor on which the resampling shall be applied
+     * @return a tensoric object, created from the given original tensor with all the resamplers applied
+     */
+    public Tensoric&lt;V&gt; resample(Tensor&lt;V&gt; original) {
+<span class="fc" id="L100">        Tensoric&lt;V&gt; stage = original;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        for (Class&lt;?&gt; dimension : resamplers.keySet()) {</span>
+<span class="fc" id="L102">            stage = newStage(stage, dimension, original.shape());</span>
+<span class="fc" id="L103">        }</span>
+<span class="fc" id="L104">        return stage;</span>
+    }
+
+    private &lt;C&gt; Tensoric&lt;V&gt; newStage(Tensoric&lt;V&gt; prev, Class&lt;C&gt; dimension, Shape originalShape) {
+<span class="fc" id="L108">        return new ResamplingStage&lt;&gt;(originalShape, prev, resamplerFor(dimension), dimension);</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private &lt;C&gt; SingleDimensionResampler&lt;C, V&gt; resamplerFor(Class&lt;C&gt; dimension) {
+<span class="fc" id="L113">        return (SingleDimensionResampler&lt;C, V&gt;) resamplers.get(dimension);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

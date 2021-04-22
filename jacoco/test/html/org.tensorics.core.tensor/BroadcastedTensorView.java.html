@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BroadcastedTensorView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">BroadcastedTensorView.java</span></div><h1>BroadcastedTensorView.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor;
+
+import static org.tensorics.core.tensor.Positions.stripping;
+import static org.tensorics.core.tensor.Shapes.outerProduct;
+
+import org.tensorics.core.tensor.Positions.DimensionStripper;
+
+/**
+ * Lets a tensors appear as a tensor with a bigger shape. The final ('broadcasted') shape of the tensor has more
+ * dimensions as the original tensor and is the outer product of the original shape and an additional shape passed into
+ * the view. The original set and the passed in shape have to be disjunct in dimensions, i.e. there must be no dimension
+ * which appears in both of them.
+ * &lt;p&gt;
+ * The values are broadcasted such that the values will be the same for all coordinates of the new dimensions.
+ * &lt;p&gt;
+ * The resulting view will still be backed by the original tensor. Since the broadcasted shape will never be updated
+ * from the original tensor, the results might be unpredictable, if the original tensor would be mutable.
+ *
+ * @author agorzaws
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the values of the tensor
+ */
+public final class BroadcastedTensorView&lt;V&gt; extends AbstractTensor&lt;V&gt; {
+
+    /** The original (smaller) tensor */
+    private final Tensor&lt;V&gt; originalTensor;
+
+    /** The shape, how the tensor will appear */
+    private final Shape broadcastedShape;
+
+    /**
+     * The stripper instance to be used for the position-transformation from the bigger shape to the original
+     */
+    private final DimensionStripper dimensionStripper;
+
+    /**
+     * Constructs a view of the given original tensor, broadcasted to the additional shape.
+     *
+     * @param originalTensor the original tensor
+     * @param extendingShape the shape by which the original tensor shape has to be enlarged
+     */
+<span class="fc" id="L64">    public BroadcastedTensorView(Tensor&lt;V&gt; originalTensor, Shape extendingShape) {</span>
+<span class="fc" id="L65">        this.originalTensor = originalTensor;</span>
+<span class="fc" id="L66">        this.broadcastedShape = outerProduct(originalTensor.shape(), extendingShape);</span>
+<span class="fc" id="L67">        this.dimensionStripper = stripping(extendingShape.dimensionSet());</span>
+<span class="fc" id="L68">    }</span>
+
+    @Override
+    public V get(Position position) {
+<span class="fc" id="L72">        return originalTensor.get(toOriginal(position));</span>
+    }
+
+    @Override
+    public V get(Object... coordinates) {
+<span class="nc" id="L77">        return get(Position.of(coordinates));</span>
+    }
+
+    private Position toOriginal(Position position) {
+<span class="fc" id="L81">        return dimensionStripper.apply(position);</span>
+    }
+
+    @Override
+    public Shape shape() {
+<span class="fc" id="L86">        return this.broadcastedShape;</span>
+    }
+
+    @Override
+    public Position context() {
+<span class="fc" id="L91">        return originalTensor.context();</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L96">        return &quot;BroadcastedTensorView [originalTensor=&quot; + originalTensor + &quot;, broadcastedShape=&quot; + broadcastedShape</span>
+                + &quot;, dimensionStripper=&quot; + dimensionStripper + &quot;]&quot;;
+    }
+
+    @Override
+    public boolean contains(Position position) {
+<span class="nc" id="L102">        return broadcastedShape.contains(position);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

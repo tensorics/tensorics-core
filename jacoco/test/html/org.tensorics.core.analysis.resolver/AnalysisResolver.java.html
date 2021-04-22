@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnalysisResolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.analysis.resolver</a> &gt; <span class="el_source">AnalysisResolver.java</span></div><h1>AnalysisResolver.java</h1><pre class="source lang-java linenums">// @formatter:off
+/**
+*
+* This file is part of streaming pool (http://www.streamingpool.org).
+*
+* Copyright (c) 2017-present, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
+// @formatter:on
+
+package org.tensorics.core.analysis.resolver;
+
+import static org.tensorics.core.analysis.AssertionStatus.NONAPPLICABLE;
+import static org.tensorics.core.analysis.AssertionStatus.SUCCESSFUL;
+import static org.tensorics.core.analysis.AssertionStatus.fromBooleanSuccessful;
+import static org.tensorics.core.analysis.util.Predicates.not;
+import static org.tensorics.core.resolve.resolvers.Resolvers.contextResolvesAll;
+
+import org.tensorics.core.analysis.AnalysisResult;
+import org.tensorics.core.analysis.AnalysisResult.Builder;
+import org.tensorics.core.analysis.AssertionResult;
+import org.tensorics.core.analysis.AssertionStatus;
+import org.tensorics.core.analysis.expression.AnalysisExpression;
+import org.tensorics.core.analysis.expression.AssertionExpression;
+import org.tensorics.core.resolve.resolvers.AbstractResolver;
+import org.tensorics.core.tree.domain.ResolvingContext;
+
+/**
+ * Resolves an {@link AnalysisExpression} into a {@link AssertionStatus}.
+ * &lt;p&gt;
+ * The status will be {@link AssertionStatus#SUCCESSFUL} if only if all the assertions in the group are
+ * {@link AssertionStatus#SUCCESSFUL}. Otherwise, the status will be {@link AssertionStatus#FAILURE}.
+ *
+ * @see AnalysisExpression
+ * @author acalia, caguiler, kfuchsberger
+ */
+<span class="fc" id="L49">public class AnalysisResolver extends AbstractResolver&lt;AnalysisResult, AnalysisExpression&gt; {</span>
+
+    @Override
+    public boolean canResolve(AnalysisExpression assertionSet, ResolvingContext context) {
+<span class="nc" id="L53">        return contextResolvesAll(assertionSet.getChildren(), context);</span>
+    }
+
+    @Override
+    public AnalysisResult resolve(AnalysisExpression assertionSet, ResolvingContext context) {
+<span class="nc" id="L58">        AssertionStatus overallStatus = overallStatus(assertionSet, context);</span>
+<span class="nc" id="L59">        Builder builder = AnalysisResult.builder(overallStatus);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        for (AssertionExpression assertion : assertionSet.getChildren()) {</span>
+<span class="nc" id="L61">            AssertionResult assertionResult = context.resolvedValueOf(assertion);</span>
+<span class="nc" id="L62">            builder.put(assertion, assertionResult);</span>
+<span class="nc" id="L63">        }</span>
+<span class="nc" id="L64">        return builder.build();</span>
+    }
+
+    private AssertionStatus overallStatus(AnalysisExpression assertionSet, ResolvingContext context) {
+<span class="nc" id="L68">        return fromBooleanSuccessful(assertionSet.getChildren().stream().map(context::resolvedValueOf)</span>
+<span class="nc" id="L69">                .map(AssertionResult::status).filter(not(NONAPPLICABLE::equals)).allMatch(SUCCESSFUL::equals));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

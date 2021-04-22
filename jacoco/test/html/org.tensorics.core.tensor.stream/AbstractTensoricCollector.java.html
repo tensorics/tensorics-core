@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractTensoricCollector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.stream</a> &gt; <span class="el_source">AbstractTensoricCollector.java</span></div><h1>AbstractTensoricCollector.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.stream;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+
+/**
+ * Abstract base class for a stream {@link Collector} which is backed by a map of {@link Position} to an arbitrary
+ * value, from which a {@link Tensor} or {@link Tensorbacked} can be built in the finalization step.
+ * 
+ * @author mihostet
+ * @param &lt;V&gt; stream elements
+ * @param &lt;T&gt; elements of the tensor to be produced
+ * @param &lt;O&gt; output (e.g. {@code Tensor&lt;T&gt;} or {@code Tensorbacked&lt;T&gt;})
+ */
+public abstract class AbstractTensoricCollector&lt;V, T, O&gt; implements Collector&lt;V, Map&lt;Position, T&gt;, O&gt; {
+
+    private final Function&lt;V, Position&gt; positionMapper;
+    private final Function&lt;V, T&gt; valueMapper;
+
+<span class="fc" id="L53">    public AbstractTensoricCollector(Function&lt;V, Position&gt; positionMapper, Function&lt;V, T&gt; valueMapper) {</span>
+<span class="fc" id="L54">        this.positionMapper = positionMapper;</span>
+<span class="fc" id="L55">        this.valueMapper = valueMapper;</span>
+<span class="fc" id="L56">    }</span>
+
+    @Override
+    public Supplier&lt;Map&lt;Position, T&gt;&gt; supplier() {
+<span class="fc" id="L60">        return HashMap::new;</span>
+    }
+
+    @Override
+    public BiConsumer&lt;Map&lt;Position, T&gt;, V&gt; accumulator() {
+<span class="fc" id="L65">        return (map, entry) -&gt; {</span>
+<span class="fc" id="L66">            Position position = positionMapper.apply(entry);</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (map.put(position, valueMapper.apply(entry)) != null) {</span>
+<span class="fc" id="L68">                throw new IllegalStateException(&quot;duplicate entry for position &quot; + position);</span>
+            }
+<span class="fc" id="L70">        };</span>
+    }
+
+    @Override
+    public BinaryOperator&lt;Map&lt;Position, T&gt;&gt; combiner() {
+<span class="fc" id="L75">        return (map1, map2) -&gt; {</span>
+<span class="nc" id="L76">            Map&lt;Position, T&gt; mergedMap = new HashMap&lt;&gt;(map1);</span>
+<span class="nc" id="L77">            mergedMap.putAll(map2);</span>
+<span class="nc" id="L78">            return mergedMap;</span>
+        };
+    }
+
+    @Override
+    public Set&lt;java.util.stream.Collector.Characteristics&gt; characteristics() {
+<span class="fc" id="L84">        return Collections.singleton(Collector.Characteristics.UNORDERED);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

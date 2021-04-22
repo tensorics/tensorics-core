@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BiggestSubTreeDispatcher.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.resolve.engine</a> &gt; <span class="el_source">BiggestSubTreeDispatcher.java</span></div><h1>BiggestSubTreeDispatcher.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.resolve.engine;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.tensorics.core.commons.options.OptionRegistry;
+import org.tensorics.core.resolve.domain.ExceptionHandlingRequest;
+import org.tensorics.core.resolve.options.ExceptionHandlingStrategy;
+import org.tensorics.core.resolve.options.ResolverSelectionStrategy;
+import org.tensorics.core.resolve.options.ResolvingOption;
+import org.tensorics.core.resolve.resolvers.Resolver;
+import org.tensorics.core.resolve.resolvers.ResolverRepository;
+import org.tensorics.core.resolve.resolvers.Resolvers;
+import org.tensorics.core.tree.domain.Contexts;
+import org.tensorics.core.tree.domain.EditableResolvingContext;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.Node;
+import org.tensorics.core.tree.domain.ResolvingContext;
+import org.tensorics.core.tree.walking.SkipNodeAndSubTreesCallback;
+import org.tensorics.core.tree.walking.Trees;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+
+/**
+ * Processes a tree of instruction nodes and tries to resolve the biggest possible subtrees internally in the module.
+ * &lt;p&gt;
+ * The steps of the current algorithm are the following:
+ * &lt;ol&gt;
+ * &lt;li&gt;Check from top to bottom and find all nodes of the tree for which external implementations exist.
+ * &lt;li&gt;Execute all these nodes.
+ * &lt;/ol&gt;
+ * 
+ * @author kfuchsbe
+ */
+public class BiggestSubTreeDispatcher implements Dispatcher {
+
+    private final ResolverRepository resolverRepository;
+
+    /**
+     * Constructor, which requires an Implementation module on which this processor will act on.
+     * 
+     * @param resolverRepository the repository that shall contain all available resolvers.
+     */
+<span class="fc" id="L68">    public BiggestSubTreeDispatcher(ResolverRepository resolverRepository) {</span>
+<span class="fc" id="L69">        this.resolverRepository = resolverRepository;</span>
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public ResolvingContext processTree(Node rootNode, ResolvingContext oldContext,
+            OptionRegistry&lt;ResolvingOption&gt; processingOptions) {
+<span class="fc" id="L75">        ResolverCandidateRepository executableNodes = findResolverCandidates(rootNode, oldContext);</span>
+<span class="fc" id="L76">        return executableNodes.executeNodes(rootNode, processingOptions);</span>
+    }
+
+    /**
+     * Searches for nodes, that can be directly invoked.
+     * 
+     * @param startingNode
+     * @param oldContext
+     * @return an repository which will contain all the resolver candidates
+     */
+    private ResolverCandidateRepository findResolverCandidates(Node startingNode, final ResolvingContext oldContext) {
+
+<span class="fc" id="L88">        final ResolverCandidateRepository repository = new ResolverCandidateRepository(oldContext);</span>
+
+<span class="fc" id="L90">        Trees.walkParentAfterChildren(startingNode, new SkipNodeAndSubTreesCallback() {</span>
+
+            @Override
+            public boolean shallBeSkipped(Node node) {
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">                if (!(node instanceof Expression&lt;?&gt;)) {</span>
+<span class="nc" id="L95">                    throw new IllegalStateException(&quot;Node '&quot; + node + &quot;' is not an expression!&quot;);</span>
+                }
+<span class="fc" id="L97">                return process((Expression&lt;?&gt;) node);</span>
+            }
+
+            private &lt;R&gt; boolean process(Expression&lt;R&gt; expression) {
+<span class="fc" id="L101">                boolean resolved = oldContext.resolves(expression);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">                if (resolved) {</span>
+<span class="fc" id="L103">                    return true;</span>
+                }
+<span class="fc" id="L105">                List&lt;Resolver&lt;R, Expression&lt;R&gt;&gt;&gt; resolvers = resolverRepository.resolversFor(expression);</span>
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">                for (Resolver&lt;R, Expression&lt;R&gt;&gt; resolver : resolvers) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">                    if (resolver.canResolve(expression, oldContext)) {</span>
+<span class="fc" id="L109">                        repository.put(expression, resolver);</span>
+                    }
+<span class="fc" id="L111">                }</span>
+
+<span class="fc bfc" id="L113" title="All 2 branches covered.">                if (repository.resolversFor(expression).isEmpty()</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">                        &amp;&amp; Resolvers.contextResolvesAllNodes(expression.getChildren(), oldContext)) {</span>
+<span class="nc" id="L115">                    throw new IllegalStateException(&quot;No resolvers could be found for node &quot; + expression</span>
+                            + &quot;, while all children are already resolved.&quot;);
+                }
+
+<span class="fc" id="L119">                return repository.containsKey(expression);</span>
+            }
+
+        });
+<span class="fc" id="L123">        return repository;</span>
+    }
+
+    static class ResolverCandidateRepository {
+
+<span class="fc" id="L128">        private final ListMultimap&lt;Expression&lt;?&gt;, Resolver&lt;?, ?&gt;&gt; resolvers = ArrayListMultimap.create();</span>
+        private final ResolvingContext oldContext;
+
+<span class="fc" id="L131">        ResolverCandidateRepository(ResolvingContext oldContext) {</span>
+<span class="fc" id="L132">            this.oldContext = oldContext;</span>
+<span class="fc" id="L133">        }</span>
+
+        private Set&lt;Expression&lt;?&gt;&gt; expressions() {
+<span class="fc" id="L136">            return resolvers.keySet();</span>
+        }
+
+        private &lt;R, E extends Expression&lt;R&gt;&gt; List&lt;Resolver&lt;R, E&gt;&gt; resolversFor(E expression) {
+<span class="fc" id="L140">            List&lt;Resolver&lt;R, E&gt;&gt; castedResolvers = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            for (Resolver&lt;?, ?&gt; resolver : resolvers.get(expression)) {</span>
+                /*
+                 * This cast is safe, since we took care when putting the resolvers
+                 */
+                @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L146">                Resolver&lt;R, E&gt; castedResolver = (Resolver&lt;R, E&gt;) resolver;</span>
+<span class="fc" id="L147">                castedResolvers.add(castedResolver);</span>
+<span class="fc" id="L148">            }</span>
+<span class="fc" id="L149">            return castedResolvers;</span>
+        }
+
+        private &lt;R, E extends Expression&lt;R&gt;&gt; void put(E expression, Resolver&lt;R, E&gt; resolver) {
+<span class="fc" id="L153">            this.resolvers.put(expression, resolver);</span>
+<span class="fc" id="L154">        }</span>
+
+        private boolean containsKey(Expression&lt;?&gt; expression) {
+<span class="fc" id="L157">            return this.resolvers.containsKey(expression);</span>
+        }
+
+        private &lt;R, E extends Expression&lt;R&gt;&gt; void resolveNode(E expression, EditableResolvingContext context,
+                ResolverSelectionStrategy resolverSelection) {
+<span class="fc" id="L162">            List&lt;Resolver&lt;R, E&gt;&gt; resolverCandidates = resolversFor(expression);</span>
+<span class="fc" id="L163">            Resolver&lt;R, E&gt; resolver = resolverSelection.selectResolver(resolverCandidates);</span>
+<span class="fc" id="L164">            context.put(expression, resolver.resolve(expression, oldContext));</span>
+<span class="fc" id="L165">        }</span>
+
+        private ResolvingContext executeNodes(Node rootNode, OptionRegistry&lt;ResolvingOption&gt; options) {
+<span class="fc" id="L168">            EditableResolvingContext context = Contexts.newResolvingContext();</span>
+<span class="fc" id="L169">            ExceptionHandlingStrategy exceptionHandling = options.get(ExceptionHandlingStrategy.class);</span>
+<span class="fc" id="L170">            ResolverSelectionStrategy resolverSetlection = options.get(ResolverSelectionStrategy.class);</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">            for (Expression&lt;?&gt; expression : expressions()) {</span>
+                try {
+<span class="fc" id="L173">                    resolveNode(expression, context, resolverSetlection);</span>
+<span class="fc" id="L174">                } catch (final RuntimeException e) {</span>
+<span class="pc" id="L175">                    exceptionHandling.handleWithRootNodeFailingNodeException(</span>
+<span class="fc" id="L176">                            ExceptionHandlingRequest.builder().withRoot(rootNode).withThrowingNode(expression)</span>
+<span class="fc" id="L177">                                    .withException(e).withContext(context).build());</span>
+<span class="fc" id="L178">                }</span>
+<span class="fc" id="L179">            }</span>
+<span class="fc" id="L180">            return context;</span>
+        }
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

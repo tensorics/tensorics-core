@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractQuantityOperation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.quantity.operations</a> &gt; <span class="el_source">AbstractQuantityOperation.java</span></div><h1>AbstractQuantityOperation.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.quantity.operations;
+
+import java.io.Serializable;
+
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.options.BinaryOperationValidityStrategy;
+import org.tensorics.core.quantity.options.QuantityEnvironment;
+
+import com.google.common.base.Optional;
+
+/**
+ * @author kfuchsbe
+ * @param &lt;V&gt;
+ */
+public class AbstractQuantityOperation&lt;V&gt; implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final QuantityEnvironment&lt;V&gt; mathsEnvironment;
+
+    protected AbstractQuantityOperation(QuantityEnvironment&lt;V&gt; environment) {
+<span class="fc" id="L43">        super();</span>
+<span class="fc" id="L44">        this.mathsEnvironment = environment;</span>
+<span class="fc" id="L45">    }</span>
+
+    protected QuantityEnvironment&lt;V&gt; environment() {
+<span class="fc" id="L48">        return mathsEnvironment;</span>
+    }
+
+    protected boolean validityFor(QuantifiedValue&lt;V&gt; leftOperand, QuantifiedValue&lt;V&gt; rightOperand) {
+<span class="fc" id="L52">        return environment().options().get(BinaryOperationValidityStrategy.class)</span>
+<span class="fc" id="L53">                .validityForBinaryOperation(leftOperand, rightOperand);</span>
+    }
+
+    protected Optional&lt;V&gt; productError(QuantifiedValue&lt;V&gt; leftOperand, QuantifiedValue&lt;V&gt; rightOperand) {
+<span class="fc" id="L57">        return environment().errorPropagation().errorForProductAndDivision(leftOperand, rightOperand);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L62">        final int prime = 31;</span>
+<span class="nc" id="L63">        int result = 1;</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        result = prime * result + ((mathsEnvironment == null) ? 0 : mathsEnvironment.hashCode());</span>
+<span class="nc" id="L65">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L71">            return true;</span>
+        }
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L74">            return false;</span>
+        }
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L77">            return false;</span>
+        }
+<span class="nc" id="L79">        AbstractQuantityOperation&lt;?&gt; other = (AbstractQuantityOperation&lt;?&gt;) obj;</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (mathsEnvironment == null) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (other.mathsEnvironment != null) {</span>
+<span class="nc" id="L82">                return false;</span>
+            }
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        } else if (!mathsEnvironment.equals(other.mathsEnvironment)) {</span>
+<span class="nc" id="L85">            return false;</span>
+        }
+<span class="nc" id="L87">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L92">        return &quot;AbstractQuantityOperation [mathsEnvironment=&quot; + mathsEnvironment + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
