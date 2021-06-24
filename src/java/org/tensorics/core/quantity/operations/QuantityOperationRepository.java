@@ -67,7 +67,7 @@ public class QuantityOperationRepository<S> {
     }
 
     private QuantifiedValue<S> createDimensionless(QuantityEnvironment<S> newEnvironment, S value) {
-        return Tensorics.quantityOf(value, newEnvironment.quantification().one());
+        return Tensorics.quantityOf(value, newEnvironment.quantification().one()).withError(newEnvironment.field().zero());
     }
 
     public BinaryOperation<QuantifiedValue<S>> addition() {

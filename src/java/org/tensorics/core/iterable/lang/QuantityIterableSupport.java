@@ -97,7 +97,7 @@ public class QuantityIterableSupport<V> extends QuantitySupport<V> {
         QuantifiedValue<V> zero = zero();
         Iterator<QuantifiedValue<V>> iterator = values.iterator();
         if (iterator.hasNext()) {
-            zero = Tensorics.quantityOf(zero.value(), iterator.next().unit());
+            zero = Tensorics.quantityOf(zero.value(), iterator.next().unit()).withError(zero.value());
         }
         return zero;
     }
