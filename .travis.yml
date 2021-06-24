@@ -1,26 +1,29 @@
 language: java
+sudo: false
 jdk:
   - openjdk8
-sudo: false
+  - openjdk11
 before_install:
   - chmod +x ./gradlew
 script:
-  - ./gradlew check
+  - ./gradlew check --stacktrace
   - ./gradlew jacocoTestReport
 before_deploy:
   - ./gradlew generateLicenseReport
   - ./gradlew javadoc
-  - mkdir projectpage
-  - cp -r build/reports/* projectpage
-  - cp -r build/docs/* projectpage
-  - cp -r docs/* projectpage
+  - echo $SIGNING_KEY_SECRING_BASE64 | base64 --decode > ./signing.key.secring
+  - export SIGNING_KEY_PATH=./signing.key.secring
+  - mkdir -p projectpage
+  - cp -rv build/reports/* projectpage
+  - cp -rv build/docs/* projectpage
+  - cp -rv docs/* projectpage
 deploy:
   - provider: script
     skip_cleanup: true
-    script: ./gradlew bintrayUpload -Ddeployment=true
+    script: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -DDEPLOYMENT=true
     on:
       tags: true
-      jdk: openjdk8
+      jdk: openjdk11
   - provider: pages
     skip_cleanup: true
     github-token: $GITHUB_TOKEN
@@ -28,6 +31,6 @@ deploy:
     keep-history: false
     on:
       branch: master
-      jdk: openjdk8
+      jdk: openjdk11
 after_success:
   - bash <(curl -s https://codecov.io/bash)

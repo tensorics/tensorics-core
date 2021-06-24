@@ -1,64 +1,21 @@
 buildscript {
-    project.ext.CERN_VM = System.getProperty('CERN_TECHNET_VM') ?: System.getenv('CERN_TECHNET_VM') ?: false
-    project.ext.TRAVIS_CI = System.getProperty('TRAVIS') ?: System.getenv('TRAVIS') ?: false
-    project.ext.DEPLOYMENT = System.getProperty('deployment') ?: false
-    project.ext.VCS_TAG = System.getProperty('TRAVIS_TAG') ?: System.getenv('TRAVIS_TAG')
-    project.ext.POM = [
-            groupId    : 'org.tensorics',
-            artifactId : 'tensorics-core',
-            description: 'Tensorics is a java framework which uses a tensor as a central object. A tensor represents a set of values placed in an N-dimensional space. Wherever you are tempted to use maps of maps, a tensor might be a good choice ;-) Tensorics provides methods to create, transform and performing calculations with those tensors.',
-            developers : [
-                    [
-                            id   : 'kaifox',
-                            name : 'Kajetan Fuchsberger',
-                            email: 'kajetan.fuchsberger@gmail.com'
-                    ],
-                    [
-                            id   : 'agorzawski',
-                            name : 'Arek Gorzawski',
-                            email: 'agorzawski@gmail.com'
-                    ],
-                    [
-                            id   : 'michi42',
-                            name : 'Michi Hostettler',
-                            email: 'michi.hostettler@cern.ch'
-                    ],
-                    [
-                            id   : 'andreacalia',
-                            name : 'Andrea Calia',
-                            email: 'andrea.calia.46@gmail.com'
-                    ]
-            ]]
-    project.ext.INFO = [
-            repo        : 'https://github.com/tensorics/tensorics-core.git',
-            url         : 'http://tensorics.org/',
-            github      : 'https://github.com/tensorics/tensorics-core',
-            githubIssues: 'https://github.com/tensorics/tensorics-core/issues'
-    ]
-    project.ext.BINTRAY = [
-            repo        : 'tensorics-repo',
-            name        : 'org.tensorics:tensorics-core',
-            organization: 'tensorics',
-            userName    : 'tensorics-dev',
-            apiToken    : System.getenv('BINTRAY_API_TOKEN')
-    ]
+    project.ext['CERN_VM'] = System.getProperty('CERN_TECHNET_VM') ?: System.getenv('CERN_TECHNET_VM') ?: project.hasProperty('CERN_TECHNET_VM') ?: false
+    project.ext['DEPLOYMENT'] = System.getProperty('DEPLOYMENT') ?: false
 
     repositories {
-        if (CERN_VM) {
-            maven { url 'http://artifactory.cern.ch/gradle-plugins' }
+        if (project['CERN_VM']) {
             maven { url 'http://artifactory.cern.ch/ds-jcenter' }
             maven { url 'http://artifactory.cern.ch/development' }
+            maven { url 'http://artifactory.cern.ch/gradle-plugins' }
         } else {
-            mavenCentral()
-            jcenter()
-            maven { url 'https://plugins.gradle.org/m2/' }
+            gradlePluginPortal()
         }
     }
+
     dependencies {
-        classpath 'com.netflix.nebula:nebula-publishing-plugin:5.1.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath 'com.github.jk1:gradle-license-report:1.5'
-	}
+        classpath 'io.github.gradle-nexus:publish-plugin:1.0.0'
+    }
 }
 
 apply plugin: 'java'
@@ -66,33 +23,22 @@ apply plugin: 'jacoco'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 
-repositories {
-    if (CERN_VM) {
-            maven { url 'http://artifactory.cern.ch/ds-jcenter' }
-            maven { url 'http://artifactory.cern.ch/development' }
-    } else {
-        mavenCentral()
-        jcenter()
-    }
-}
-
-if (DEPLOYMENT) {
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
-    apply plugin: 'nebula.maven-publish'
-    apply plugin: 'com.jfrog.bintray'
-
-    println 'Applying deployment scripts'
-    apply from: './scripts/bintray-deploy.gradle'
-}
-
-group 'org.tensorics'
+group = project['POM.groupId']
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 
+repositories {
+    if (project['CERN_VM']) {
+        maven { url 'http://artifactory.cern.ch/ds-jcenter' }
+        maven { url 'http://artifactory.cern.ch/development' }
+    } else {
+        mavenCentral()
+    }
+}
+
 dependencies {
     compile 'org.jscience:jscience:4.3.1'
-    compile 'com.google.guava:guava:28.1-jre'
+    compile group: 'com.google.guava', name: 'guava', version: guavaVersion
     compile 'org.hamcrest:hamcrest-all:1.3'
     compile 'org.slf4j:slf4j-api:1.7.25'
 
@@ -104,6 +50,11 @@ dependencies {
     testCompile 'com.openpojo:openpojo:0.8.13'
     testCompile 'org.assertj:assertj-core:3.13.2'
     testCompile 'nl.jqno.equalsverifier:equalsverifier:2.3.1'
+}
+
+wrapper {
+    gradleVersion = '5.4.1'
+    distributionType = Wrapper.DistributionType.ALL
 }
 
 sourceSets {
@@ -119,9 +70,23 @@ sourceSets {
     }
 }
 
-javadoc { options.encoding = "UTF-8" }
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}
 
-task wrapper(type: Wrapper) { gradleVersion = '4.8.1' }
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        xml.destination file("$buildDir/reports/jacoco/report.xml")
+        html.enabled true
+        csv.enabled false
+    }
+}
+
+javadoc { options.encoding = "UTF-8" }
 
 if(!project.tasks.findByName("javadocJar")) {
     task javadocJar(type: Jar) {
@@ -137,16 +102,6 @@ if(!project.tasks.findByName("sourcesJar")) {
     }
 }
 
-artifacts { archives javadocJar, sourcesJar }
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        xml.destination new File("${buildDir}/reports/jacoco/report.xml")
-        html.enabled true
-        csv.enabled false
-    }
-}
 
 eclipse {
     classpath {
@@ -162,13 +117,6 @@ idea {
     }
 }
 
-test {
-    testLogging {
-        events "failed"
-        exceptionFormat "short"
-    }
-}
-
 if (!project['CERN_VM']) {
     println 'Applying licensing report'
     apply plugin: 'com.github.jk1.dependency-license-report'
@@ -177,4 +125,9 @@ if (!project['CERN_VM']) {
         renderers = [this.class.classLoader.loadClass('com.github.jk1.license.render.InventoryHtmlReportRenderer').newInstance()]
         filters = [this.class.classLoader.loadClass('com.github.jk1.license.filter.LicenseBundleNormalizer').newInstance()]
     }
+}
+
+if (project['DEPLOYMENT']) {
+    println 'Applying deployment scripts'
+    apply from: 'https://raw.githubusercontent.com/ossgang/gradle-scripts/master/deployment/deploy-to-maven-central.gradle'
 }
