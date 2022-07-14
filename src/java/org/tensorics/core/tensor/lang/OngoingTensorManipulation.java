@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.tensorics.core.tensor.Coordinates;
@@ -99,6 +100,32 @@ public class OngoingTensorManipulation<V> {
         return tensor.get(coordinates);
     }
 
+    /**
+     * Returns an optional containing the value at the given position in the tensor, if the tensor contains the
+     * position, or an empty optional otherwise. However, if the dimension of the position are incompatible with the
+     * tensor dimensions, then an {@link IllegalArgumentException} is thrown.
+     * 
+     * @param position the position for which the optional value shall be queried.
+     * @return an optional containing the value, if it is contained in the tensor and the dimensions are correct.
+     * @throws IllegalArgumentException if the dimensions of the tensor and the position do not match.
+     */
+    public Optional<V> optional(Position position) {
+        if (tensor.contains(position)) {
+            return Optional.of(get(position));
+        }
+        Set<Class<?>> tensorDimensions = tensor.shape().dimensionSet();
+        if (Positions.areDimensionsConsistentWithCoordinates(tensorDimensions, position)) {
+            return Optional.empty();
+        }
+        String message = "The dimensions of the tensor (" + tensorDimensions
+                + ") do not match the dimensions of the requested position (" + position + ").";
+        throw new IllegalArgumentException(message);
+    }
+
+    public Optional<V> optional(Object... coordinates) {
+        return optional(Position.of(coordinates));
+    }
+
     public <C> List<V> list(List<C> listCoordinateValues, Position otherCoordinates) {
         return listCoordinateValues.stream().map(Position::of)//
                 .map(p -> Positions.union(otherCoordinates, p)) //
@@ -113,7 +140,7 @@ public class OngoingTensorManipulation<V> {
     public <C> Map<C, V> map(Class<C> mapKeyType, Position otherCoordinates) {
         Tensor<V> remaining = extract(otherCoordinates);
         return TensorStreams.tensorEntryStream(remaining)
-                .collect(ImmutableMap.toImmutableMap(e -> e.getKey().coordinateFor(mapKeyType), e-> e.getValue())); //
+                .collect(ImmutableMap.toImmutableMap(e -> e.getKey().coordinateFor(mapKeyType), e -> e.getValue())); //
     }
 
     public <C> Map<C, V> map(Class<C> mapKeyType, Object... otherCoordinates) {
@@ -128,6 +155,10 @@ public class OngoingTensorManipulation<V> {
         return extractTensor(Arrays.asList(coordinates));
     }
 
+    /**
+     * @deprecated use rather {@link #optional(Object...)}.orElse(...);
+     */
+    @Deprecated
     public OngoingEitherGet<V> either(V defaultValue) {
         return new OngoingEitherGet<>(tensor, defaultValue);
     }

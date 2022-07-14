@@ -158,7 +158,6 @@ public class ImmutableTensor<V> extends AbstractTensor<V> implements Mappable<V>
 
     private V findValueOrThrow(Position position) {
         requireNonNull(position, "position must not be null");
-        Positions.areDimensionsConsistentWithCoordinates(shape.dimensionSet(), position);
         V entry = findEntryOrNull(position);
         if (entry == null) {
             String message = "Entry for position '" + position + "' is not contained in this tensor.";
