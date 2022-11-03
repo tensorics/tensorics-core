@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.reflect.TypeToken;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Positions;
 import org.tensorics.core.tensor.Shape;
@@ -63,12 +65,16 @@ public final class TensorbackedInternals {
      * class.
      */
     public static <T extends Tensorbacked<?>> Set<Class<?>> dimensionsOf(Class<T> tensorBackedClass) {
+        return ImmutableSet.copyOf(dimensionListFrom(tensorBackedClass));
+    }
+
+    public static <T extends Tensorbacked<?>> List<Class<?>> dimensionListFrom(Class<T> tensorBackedClass) {
         if (DimtypedTensorbacked.class.isAssignableFrom(tensorBackedClass)) {
             if (tensorBackedClass.isAnnotationPresent(Dimensions.class)) {
                 throw new IllegalArgumentException("No annotation of type '" + Dimensions.class + "' must be present in case " +
                         DimtypedTensorbacked.class + " is implemented. This rule is violated for class " + tensorBackedClass + ".");
             }
-            return DimtypedTypes.dimensionsFrom((Class<? extends DimtypedTensorbacked>) tensorBackedClass);
+            return DimtypedTypes.dimensionListFrom((Class<? extends DimtypedTensorbacked>) tensorBackedClass);
         } else {
             Dimensions dimensionAnnotation = tensorBackedClass.getAnnotation(Dimensions.class);
             if (dimensionAnnotation == null) {
@@ -76,9 +82,10 @@ public final class TensorbackedInternals {
                         "Neither an annotation of type '" + Dimensions.class + "' is present on the class '" + tensorBackedClass
                                 + "', nor does it inherit from " + DimtypedTensorbacked.class + ". Therefore, the dimensions of this tensorbacked type cannot be determined.");
             }
-            return ImmutableSet.copyOf(dimensionAnnotation.value());
+            return ImmutableList.copyOf(dimensionAnnotation.value());
         }
     }
+
 
     /**
      * Creates an instance of a class backed by a tensor.
@@ -153,5 +160,18 @@ public final class TensorbackedInternals {
         builder.putAll(tensor);
         builder.context(tensor.context());
         return builder.build();
+    }
+
+    /**
+     * Determines the type of the value of the given tensorbacked class.
+     *
+     * @param tensorBackedClass the class from which to determine the value type
+     * @param <T>               the type of the tensorbacked
+     * @return the type of the value
+     */
+    public static <V, T extends Tensorbacked<V>> Class<V> valueTypeFrom(Class<T> tensorBackedClass) {
+        TypeToken<T> tbToken = TypeToken.of(tensorBackedClass);
+        TypeToken<?> valueToken = tbToken.resolveType(Tensorbacked.class.getTypeParameters()[0]);
+        return (Class<V>) valueToken.getRawType();
     }
 }

@@ -1,15 +1,19 @@
 package org.tensorics.core.tensorbacked.dimtyped;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.reflect.TypeToken;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.util.stream.Collectors.toSet;
 
 public final class DimtypedTypes {
@@ -63,29 +67,42 @@ public final class DimtypedTypes {
         return Iterables.getOnlyElement(found);
     }
 
-    public static Set<Class<?>> dimensionsFrom(Class<? extends DimtypedTensorbacked> tensorbackedClass) {
+    public static List<Class<?>> dimensionListFrom(Class<? extends DimtypedTensorbacked> tensorbackedClass) {
         Class<? extends DimtypedTensorbacked> coordinateParametrized = coordinateParametrizedSubtypeOf(tensorbackedClass);
         int dimensionality = DIMENSION_PARAMETRIZED_TYPES.get(coordinateParametrized);
 
         TypeToken<?> tt = TypeToken.of(tensorbackedClass);
-        Set<Class<?>> dimensions = IntStream.range(0, dimensionality)
+        List<Class<?>> dimensions = IntStream.range(0, dimensionality)
                 .mapToObj(i -> tt.resolveType(coordinateParametrized.getTypeParameters()[i]))
                 .map(typeToken -> typeToken.getRawType())
-                .collect(toSet());
+                .collect(toImmutableList());
 
+        assertNoObjectDimension(tensorbackedClass, dimensions);
+        assertDistinctDimensionality(coordinateParametrized, dimensions);
+        return dimensions;
+    }
+
+    private static void assertNoObjectDimension(Class<? extends DimtypedTensorbacked> tensorbackedClass, Collection<Class<?>> dimensions) {
         if (dimensions.contains(Object.class)) {
             /* If type parameters are not explicitely defined in a subtype, then they seem to be resolved to Object.class.
                However, this is not what we want for dimensions...            */
             throw new IllegalArgumentException("At least one of the extracted dimensions is '" + Object.class + "'. This is most probably a conceptual error.\n" +
                     "Most probably, the passed in class (" + tensorbackedClass + ") is not a valid subtype with resolvable type parameters.");
         }
-        if (dimensions.size() != dimensionality) {
-            throw new IllegalArgumentException("The size of the set of the retrieved dimensions (size=" + dimensions.size() + ", dimensions=" + dimensions + "), " +
+    }
+
+    private static void assertDistinctDimensionality(Class<? extends DimtypedTensorbacked> coordinateParametrized, Collection<Class<?>> dimensions) {
+        int dimensionality = DIMENSION_PARAMETRIZED_TYPES.get(coordinateParametrized);
+        Collection<Class<?>> distinctDimensions = ImmutableSet.copyOf(dimensions);
+        if (distinctDimensions.size() != dimensionality) {
+            throw new IllegalArgumentException("The size of the set of the retrieved distinct dimensions (size=" + distinctDimensions.size() + ", dimensions=" + distinctDimensions + "), " +
                     "is not equal to the required number of dimensions (" + dimensionality + ") for the parametrized class " + coordinateParametrized + ".\n"
                     + "Probably two dimensions are of the same type?");
         }
-        return dimensions;
+    }
 
+    public static Set<Class<?>> dimensionsFrom(Class<? extends DimtypedTensorbacked> tensorbackedClass) {
+        return ImmutableSet.copyOf(dimensionListFrom(tensorbackedClass));
     }
 
     private static ImmutableSet<Class<? extends DimtypedTensorbacked>> allowedTypes() {
