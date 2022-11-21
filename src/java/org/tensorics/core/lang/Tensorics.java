@@ -124,6 +124,10 @@ public final class Tensorics {
         return ImmutableTensor.builder(dimensions);
     }
 
+    public static <T> TensorbackedScalarBuilder<T, TensorbackedScalar<T>> builderBacked() {
+        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(), TensorbackedScalarBuilder.class, TensorbackedScalar.class);
+    }
+
     public static <C1, T> Tensorbacked1dBuilder<C1, T, Tensorbacked1d<C1, T>> builderBacked(Class<C1> dimension1) {
         return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(dimension1), Tensorbacked1dBuilder.class, Tensorbacked1d.class);
     }
@@ -196,6 +200,13 @@ public final class Tensorics {
      */
     public static <V, TB extends Tensorbacked<V>> SimpleTensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
         return Tensorbackeds.builderFor(tensorbackedClass);
+    }
+
+    /**
+     * @see Tensorbackeds#builderForScalar(Class) 
+     */
+    public static <V, TB extends TensorbackedScalar< V>> TensorbackedScalarBuilder<V, TB> builderForScalar(Class<TB> tensorbackedClass) {
+        return Tensorbackeds.builderForScalar(tensorbackedClass);
     }
 
     /**
@@ -450,7 +461,7 @@ public final class Tensorics {
     }
 
     public static Scalar<QuantifiedValue<Double>> zeroDimensionalOf(double value,
-                                                                          javax.measure.unit.Unit<?> unit) {
+                                                                    javax.measure.unit.Unit<?> unit) {
         QuantifiedValue<Double> quantity = quantityOf(value, unit);
         return scalarOf(quantity);
     }

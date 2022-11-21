@@ -32,17 +32,7 @@ import org.tensorics.core.tensor.lang.OngoingFlattening;
 import org.tensorics.core.tensor.lang.QuantityTensors;
 import org.tensorics.core.tensor.lang.TensorStructurals;
 import org.tensorics.core.tensorbacked.annotation.Dimensions;
-import org.tensorics.core.tensorbacked.dimtyped.DimtypedTensorbackedBuilderImpl;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked1d;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked1dBuilder;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked2d;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked2dBuilder;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked3d;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked3dBuilder;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked4d;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked4dBuilder;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked5d;
-import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked5dBuilder;
+import org.tensorics.core.tensorbacked.dimtyped.*;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
 import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
 import org.tensorics.core.units.Unit;
@@ -73,6 +63,10 @@ public final class Tensorbackeds {
      */
     public static <V, TB extends Tensorbacked<V>> SimpleTensorbackedBuilder<V, TB> builderFor(Class<TB> tensorbackedClass) {
         return new SimpleTensorbackedBuilder<>(tensorbackedClass);
+    }
+
+    public static <V, TB extends TensorbackedScalar< V>> TensorbackedScalarBuilder<V, TB> builderForScalar(Class<TB> tensorbackedClass) {
+        return DimtypedTensorbackedBuilderImpl.immutableBuilderFrom(tensorbackedClass, TensorbackedScalarBuilder.class);
     }
 
     public static <C1, V, TB extends Tensorbacked1d<C1, V>> Tensorbacked1dBuilder<C1, V, TB> builderFor1D(Class<TB> tensorbackedClass) {
