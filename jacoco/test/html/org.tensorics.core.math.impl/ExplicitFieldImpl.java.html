@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExplicitFieldImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.math.impl</a> &gt; <span class="el_source">ExplicitFieldImpl.java</span></div><h1>ExplicitFieldImpl.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.math.impl;
+
+import java.util.Comparator;
+
+import org.tensorics.core.math.BinaryPredicates;
+import org.tensorics.core.math.ExplicitField;
+import org.tensorics.core.math.Operations;
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.math.operations.UnaryOperation;
+import org.tensorics.core.math.predicates.BinaryPredicate;
+import org.tensorics.core.math.structures.ringlike.OrderedField;
+
+/**
+ * @author kfuchsbe
+ * @param &lt;T&gt; the type of the field elements
+ */
+public class ExplicitFieldImpl&lt;T&gt; implements ExplicitField&lt;T&gt; {
+
+    private final OrderedField&lt;T&gt; field;
+    private final BinaryOperation&lt;T&gt; subtractionOperation;
+    private final BinaryOperation&lt;T&gt; divisionOperation;
+    private final T twoValue;
+    private final BinaryPredicate&lt;T&gt; greaterPredicate;
+    private final BinaryPredicate&lt;T&gt; greaterOrEqualPredicate;
+    private final BinaryPredicate&lt;T&gt; lessPredicate;
+    private final BinaryPredicate&lt;T&gt; equalPredicate;
+    private final Comparator&lt;T&gt; comparator;
+
+<span class="fc" id="L51">    public ExplicitFieldImpl(OrderedField&lt;T&gt; field) {</span>
+<span class="fc" id="L52">        this.field = field;</span>
+<span class="fc" id="L53">        subtractionOperation = Operations.inverseBinaryFor(field.additionStructure());</span>
+<span class="fc" id="L54">        divisionOperation = Operations.inverseBinaryFor(field.multiplicationStructure());</span>
+<span class="fc" id="L55">        twoValue = addition().perform(one(), one());</span>
+
+<span class="fc" id="L57">        greaterPredicate = BinaryPredicates.not(field.lessOrEqualPredicate());</span>
+<span class="fc" id="L58">        greaterOrEqualPredicate = BinaryPredicates.invert(field.lessOrEqualPredicate());</span>
+<span class="fc" id="L59">        lessPredicate = BinaryPredicates.not(greaterOrEqualPredicate);</span>
+<span class="fc" id="L60">        equalPredicate = BinaryPredicates.and(field.lessOrEqualPredicate(), greaterOrEqualPredicate);</span>
+
+<span class="fc" id="L62">        this.comparator = (elementA, elementB) -&gt; {</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            if (lessOrEqual().test(elementA, elementB)) {</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">                if (less().test(elementA, elementB)) {</span>
+<span class="fc" id="L65">                    return -1;</span>
+                }
+<span class="nc" id="L67">                return 0;</span>
+            }
+<span class="fc" id="L69">            return 1;</span>
+        };
+<span class="fc" id="L71">    }</span>
+
+    @Override
+    public final BinaryOperation&lt;T&gt; addition() {
+<span class="fc" id="L75">        return field.additionStructure().operation();</span>
+    }
+
+    @Override
+    public final BinaryOperation&lt;T&gt; multiplication() {
+<span class="fc" id="L80">        return field.multiplicationStructure().operation();</span>
+    }
+
+    @Override
+    public final UnaryOperation&lt;T&gt; additiveInversion() {
+<span class="fc" id="L85">        return field.additionStructure().inversion();</span>
+    }
+
+    @Override
+    public UnaryOperation&lt;T&gt; absoluteValue() {
+<span class="fc" id="L90">        return value -&gt; {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (lessOrEqual().test(zero(), value)) {</span>
+<span class="fc" id="L92">                return value;</span>
+            } else {
+<span class="fc" id="L94">                return additiveInversion().perform(value);</span>
+            }
+        };
+    }
+
+    @Override
+    public final BinaryOperation&lt;T&gt; subtraction() {
+<span class="fc" id="L101">        return subtractionOperation;</span>
+    }
+
+    @Override
+    public final T zero() {
+<span class="fc" id="L106">        return field.additionStructure().identity();</span>
+    }
+
+    @Override
+    public final BinaryOperation&lt;T&gt; division() {
+<span class="fc" id="L111">        return divisionOperation;</span>
+    }
+
+    @Override
+    public final UnaryOperation&lt;T&gt; multiplicativeInversion() {
+<span class="fc" id="L116">        return field.multiplicationStructure().inversion();</span>
+    }
+
+    @Override
+    public final T one() {
+<span class="fc" id="L121">        return field.multiplicationStructure().identity();</span>
+    }
+
+    @Override
+    public final T two() {
+<span class="fc" id="L126">        return twoValue;</span>
+    }
+
+    @Override
+    public BinaryPredicate&lt;T&gt; less() {
+<span class="fc" id="L131">        return lessPredicate;</span>
+    }
+
+    @Override
+    public BinaryPredicate&lt;T&gt; lessOrEqual() {
+<span class="fc" id="L136">        return field.lessOrEqualPredicate();</span>
+    }
+
+    @Override
+    public BinaryPredicate&lt;T&gt; equal() {
+<span class="fc" id="L141">        return equalPredicate;</span>
+    }
+
+    @Override
+    public BinaryPredicate&lt;T&gt; greaterOrEqual() {
+<span class="fc" id="L146">        return greaterOrEqualPredicate;</span>
+    }
+
+    @Override
+    public BinaryPredicate&lt;T&gt; greater() {
+<span class="fc" id="L151">        return greaterPredicate;</span>
+    }
+
+    @Override
+    public Comparator&lt;T&gt; comparator() {
+<span class="fc" id="L156">        return comparator;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

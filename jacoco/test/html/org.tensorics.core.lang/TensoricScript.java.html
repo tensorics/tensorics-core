@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensoricScript.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">TensoricScript.java</span></div><h1>TensoricScript.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.lang;
+
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ExpressionIsUnresolvedException;
+import org.tensorics.core.tree.domain.Node;
+
+/**
+ * This class is intended to be subclassed in order to describe calculations with tensorics, which shall be executed at
+ * a later time. This class itself inherits from {@link TensoricExpressionSupport} such that it provides the full
+ * capability of the eDSL.
+ * &lt;p&gt;
+ * To define a script, a field has to be given in the constructor, which describes all the operations which can be
+ * performed on its elements.
+ * &lt;p&gt;
+ * The script logic itself has to be implemented in the {@link #describe()} method. To resolve a script, a
+ * {@link org.tensorics.core.resolve.engine.ResolvingEngine} has to be used.
+ *
+ * @author kfuchsbe
+ * @param &lt;E&gt; the type of the elements of the field on which all the calculations are based on.
+ * @param &lt;T&gt; the type which shall be returned by the script, after it is executed (resolved)
+ */
+public abstract class TensoricScript&lt;E, T&gt; extends TensoricExpressionSupport&lt;E&gt; implements Expression&lt;T&gt;, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private static final boolean RESOLVED = false;
+    private final Expression&lt;T&gt; internalExpression;
+
+    public TensoricScript(EnvironmentImpl&lt;E&gt; environment) {
+<span class="fc" id="L54">        super(environment);</span>
+<span class="fc" id="L55">        internalExpression = describe();</span>
+<span class="fc" id="L56">    }</span>
+
+    protected abstract Expression&lt;T&gt; describe();
+
+    @Override
+    public List&lt;Node&gt; getChildren() {
+<span class="fc" id="L62">        return Collections.&lt;Node&gt; singletonList(internalExpression);</span>
+    }
+
+    @Override
+    public boolean isResolved() {
+<span class="fc" id="L67">        return RESOLVED;</span>
+    }
+
+    @Override
+    public T get() {
+<span class="fc" id="L72">        throw new ExpressionIsUnresolvedException();</span>
+    }
+
+    public Expression&lt;T&gt; getInternalExpression() {
+<span class="fc" id="L76">        return internalExpression;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L81">        final int prime = 31;</span>
+<span class="fc" id="L82">        int result = 1;</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        result = prime * result + ((internalExpression == null) ? 0 : internalExpression.hashCode());</span>
+<span class="fc" id="L84">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L90">            return true;</span>
+        }
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L93">            return false;</span>
+        }
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L96">            return false;</span>
+        }
+<span class="nc" id="L98">        TensoricScript&lt;?, ?&gt; other = (TensoricScript&lt;?, ?&gt;) obj;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (internalExpression == null) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (other.internalExpression != null) {</span>
+<span class="nc" id="L101">                return false;</span>
+            }
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        } else if (!internalExpression.equals(other.internalExpression)) {</span>
+<span class="nc" id="L104">            return false;</span>
+        }
+<span class="nc" id="L106">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L111">        return &quot;TensoricScript [internalExpression=&quot; + internalExpression + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

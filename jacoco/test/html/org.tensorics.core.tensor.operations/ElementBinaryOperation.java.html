@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ElementBinaryOperation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.operations</a> &gt; <span class="el_source">ElementBinaryOperation.java</span></div><h1>ElementBinaryOperation.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.operations;
+
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.commons.options.OptionRegistry;
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.options.BroadcastingStrategy;
+import org.tensorics.core.tensor.options.ShapingStrategy;
+
+/**
+ * A binary operations on tensors which can be decoupled into simple operations on an element of one tensor on the
+ * corresponding element on the second tensor (same position). Because of this simple relation, the operation is fully
+ * defined by a binary operation on individual tensor values.
+ * &lt;p&gt;
+ * To decide on the resulting shape of the tensor, two strategies are used here:
+ * &lt;ul&gt;
+ * &lt;li&gt;{@link BroadcastingStrategy}
+ * &lt;li&gt;{@link ShapingStrategy}
+ * &lt;/ul&gt;
+ *
+ * @author kfuchsbe
+ * @param &lt;V&gt; The type of the tensor values
+ */
+public class ElementBinaryOperation&lt;V&gt; extends ElementBinaryFunction&lt;V, V&gt; implements BinaryOperation&lt;Tensor&lt;V&gt;&gt; {
+    private static final long serialVersionUID = 1L;
+
+    public ElementBinaryOperation(BinaryOperation&lt;V&gt; operation, OptionRegistry&lt;ManipulationOption&gt; optionRegistry) {
+<span class="fc" id="L50">        super(operation, optionRegistry);</span>
+<span class="fc" id="L51">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScalarExpressionSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.scalar.lang</a> &gt; <span class="el_source">ScalarExpressionSupport.java</span></div><h1>ScalarExpressionSupport.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+ * This file is part of tensorics.
+ * &lt;p&gt;
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ * &lt;p&gt;
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * &lt;p&gt;
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * &lt;p&gt;
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.scalar.lang;
+
+import org.tensorics.core.expressions.UnaryOperationExpression;
+import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvedExpression;
+
+/**
+ * Provides starting methods for tensoric eDSL expressions, which create expressions of scalars.
+ *
+ * @param &lt;V&gt; the type of the scalar values (elements of the field on which all the operations are based on)
+ * @author kfuchsbe
+ */
+public class ScalarExpressionSupport&lt;V&gt; {
+
+    private final ExtendedField&lt;V&gt; extendedField;
+
+<span class="fc" id="L38">    public ScalarExpressionSupport(ExtendedField&lt;V&gt; field) {</span>
+<span class="fc" id="L39">        this.extendedField = field;</span>
+<span class="fc" id="L40">    }</span>
+
+    public final Expression&lt;V&gt; negativeOf(V element) {
+<span class="nc" id="L43">        return negativeOf(ResolvedExpression.of(element));</span>
+    }
+
+    public final Expression&lt;V&gt; negativeOf(Expression&lt;V&gt; element) {
+<span class="nc" id="L47">        return new UnaryOperationExpression&lt;&gt;(this.field().additiveInversion(), element);</span>
+    }
+
+    public final Expression&lt;V&gt; inverseOf(V element) {
+<span class="nc" id="L51">        return inverseOf(ResolvedExpression.of(element));</span>
+    }
+
+    public final Expression&lt;V&gt; inverseOf(Expression&lt;V&gt; element) {
+<span class="nc" id="L55">        return new UnaryOperationExpression&lt;&gt;(this.field().multiplicativeInversion(), element);</span>
+    }
+
+    protected ExtendedField&lt;V&gt; field() {
+<span class="fc" id="L59">        return this.extendedField;</span>
+    }
+
+    public final V zero() {
+<span class="nc" id="L63">        return this.field().zero();</span>
+    }
+
+    public final V two() {
+<span class="nc" id="L67">        return this.field().two();</span>
+    }
+
+    public final V one() {
+<span class="nc" id="L71">        return this.field().one();</span>
+    }
+
+    public Expression&lt;V&gt; squareRootOf(V value) {
+<span class="nc" id="L75">        return squareRootOf(ResolvedExpression.of(value));</span>
+    }
+
+    public Expression&lt;V&gt; squareRootOf(Expression&lt;V&gt; value) {
+<span class="nc" id="L79">        return calculate(value).root(ResolvedExpression.of(two()));</span>
+    }
+
+    public Expression&lt;V&gt; squareOf(V value) {
+<span class="nc" id="L83">        return squareOf(ResolvedExpression.of(value));</span>
+    }
+
+    public Expression&lt;V&gt; squareOf(Expression&lt;V&gt; value) {
+<span class="nc" id="L87">        return calculate(value).toThePowerOf(ResolvedExpression.of(two()));</span>
+    }
+
+    public OngoingDeferredBinaryOperation&lt;V&gt; calculate(V left) {
+<span class="fc" id="L91">        return calculate(ResolvedExpression.of(left));</span>
+    }
+
+    public OngoingDeferredBinaryOperation&lt;V&gt; calculate(Expression&lt;V&gt; left) {
+<span class="fc" id="L95">        return new OngoingDeferredBinaryOperation&lt;&gt;(extendedField, left);</span>
+    }
+
+    public OngoingDeferredBinaryPredicate&lt;V&gt; testIf(Expression&lt;V&gt; expression) {
+<span class="fc" id="L99">        return new OngoingDeferredBinaryPredicate&lt;&gt;(extendedField, expression);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

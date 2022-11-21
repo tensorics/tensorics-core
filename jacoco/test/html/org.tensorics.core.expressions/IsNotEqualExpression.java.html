@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IsNotEqualExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.expressions</a> &gt; <span class="el_source">IsNotEqualExpression.java</span></div><h1>IsNotEqualExpression.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2016 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.expressions;
+
+import static java.lang.String.format;
+
+import org.tensorics.core.math.predicates.IsNotEqualTo;
+import org.tensorics.core.tree.domain.Expression;
+
+public class IsNotEqualExpression&lt;T&gt; extends BinaryPredicateExpression&lt;T&gt; {
+    private static final long serialVersionUID = 1L;
+
+    public IsNotEqualExpression(Expression&lt;T&gt; left, Expression&lt;T&gt; right) {
+<span class="nc" id="L16">        super(new IsNotEqualTo&lt;&gt;(), left, right);</span>
+<span class="nc" id="L17">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L21">        return format(&quot;%s is not equal to %s&quot;, getLeft(), getRight());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingInterpolation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.lang</a> &gt; <span class="el_source">OngoingInterpolation.java</span></div><h1>OngoingInterpolation.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2015 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.tensor.lang;
+
+import java.util.function.Function;
+
+import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.reduction.AbstractInterpolationStrategy;
+import org.tensorics.core.reduction.InterpolatedSlicing;
+import org.tensorics.core.reduction.InterpolationStrategy;
+import org.tensorics.core.reduction.LinearInterpolation;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorReduction;
+
+/**
+ * @author agorzaws
+ * @param &lt;E&gt;
+ * @param &lt;C&gt;
+ */
+public class OngoingInterpolation&lt;E, C&gt; {
+
+    private final Tensor&lt;E&gt; tensor;
+    private final C slicePosition;
+    private final Class&lt;C&gt; dimension;
+
+<span class="fc" id="L28">    public OngoingInterpolation(C slicePosition, Tensor&lt;E&gt; tensor, Class&lt;C&gt; dimension) {</span>
+<span class="fc" id="L29">        this.tensor = tensor;</span>
+<span class="fc" id="L30">        this.slicePosition = slicePosition;</span>
+<span class="fc" id="L31">        this.dimension = dimension;</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Defines the interpolation strategy. &lt;br&gt;
+     * See {@link AbstractInterpolationStrategy} and its extension.
+     *
+     * @param strategy to use
+     * @return slicing result with interpolation between the missing comparable coordinates.
+     */
+    public Tensor&lt;E&gt; interpolatingWith(InterpolationStrategy&lt;C, E&gt; strategy) {
+<span class="fc" id="L42">        return new TensorReduction&lt;&gt;(dimension, new InterpolatedSlicing&lt;&gt;(slicePosition, strategy, tensor))</span>
+<span class="fc" id="L43">                .apply(tensor);</span>
+    }
+    
+    /**
+     * Uses a linear interpolation
+     * @param field the field to interpolate in (values of the tensor)
+     * @param fieldMapper a mapper from coordinates to field elements
+     * @return
+     */
+    public Tensor&lt;E&gt; withLinearInterpolation(ExtendedField&lt;E&gt; field, Function&lt;C,E&gt; fieldMapper) {
+<span class="fc" id="L53">    	return interpolatingWith(new LinearInterpolation&lt;&gt;(field, fieldMapper));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

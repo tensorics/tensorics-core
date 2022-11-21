@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UnaryOperationExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.expressions</a> &gt; <span class="el_source">UnaryOperationExpression.java</span></div><h1>UnaryOperationExpression.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.expressions;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.tensorics.core.math.operations.UnaryOperation;
+import org.tensorics.core.tree.domain.AbstractDeferredExpression;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.Node;
+
+import com.google.common.collect.ImmutableList;
+
+/**
+ * An unresolved expression, which can be resolved by a corresponding resolver by evaluating an unary operation. The
+ * information it contains for the resolver, are the operation itself and an expression for the single operand on whose
+ * resolved result the unary operation shall be performed.
+ *
+ * @author kfuchsbe
+ * @param &lt;T&gt; the type of the unary operand on which to perform the unary operation
+ */
+public class UnaryOperationExpression&lt;T&gt; extends AbstractDeferredExpression&lt;T&gt; implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final UnaryOperation&lt;T&gt; operation;
+    private final Expression&lt;T&gt; operand;
+
+    public UnaryOperationExpression(UnaryOperation&lt;T&gt; operation, Expression&lt;T&gt; operand) {
+<span class="nc" id="L51">        super();</span>
+<span class="nc" id="L52">        this.operation = checkNotNull(operation, &quot;Operation must not be null!&quot;);</span>
+<span class="nc" id="L53">        this.operand = checkNotNull(operand, &quot;Operand must not be null!&quot;);</span>
+<span class="nc" id="L54">    }</span>
+
+    public UnaryOperation&lt;T&gt; getOperation() {
+<span class="nc" id="L57">        return operation;</span>
+    }
+
+    public Expression&lt;T&gt; getOperand() {
+<span class="nc" id="L61">        return operand;</span>
+    }
+
+    @Override
+    public List&lt;Node&gt; getChildren() {
+<span class="nc" id="L66">        return ImmutableList.&lt;Node&gt; of(operand);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L71">        final int prime = 31;</span>
+<span class="nc" id="L72">        int result = 1;</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        result = prime * result + ((operand == null) ? 0 : operand.hashCode());</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        result = prime * result + ((operation == null) ? 0 : operation.hashCode());</span>
+<span class="nc" id="L75">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L81">            return true;</span>
+        }
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L84">            return false;</span>
+        }
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L87">            return false;</span>
+        }
+<span class="nc" id="L89">        UnaryOperationExpression&lt;?&gt; other = (UnaryOperationExpression&lt;?&gt;) obj;</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (operand == null) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">            if (other.operand != null) {</span>
+<span class="nc" id="L92">                return false;</span>
+            }
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        } else if (!operand.equals(other.operand)) {</span>
+<span class="nc" id="L95">            return false;</span>
+        }
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (operation == null) {</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (other.operation != null) {</span>
+<span class="nc" id="L99">                return false;</span>
+            }
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        } else if (!operation.equals(other.operation)) {</span>
+<span class="nc" id="L102">            return false;</span>
+        }
+<span class="nc" id="L104">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L109">        return &quot;UnaryOperationExpression [operation=&quot; + operation + &quot;, operand=&quot; + operand + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

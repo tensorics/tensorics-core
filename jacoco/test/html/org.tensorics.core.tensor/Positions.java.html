@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Positions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">Positions.java</span></div><h1>Positions.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.tensor;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toSet;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
+import com.google.common.collect.ImmutableSetMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+import com.google.common.collect.Sets.SetView;
+
+/**
+ * Contains utility methods for position objects.
+ *
+ * @author kfuchsbe
+ */
+public final class Positions {
+
+    /**
+     * private constructor to avoid instantiation
+     */
+    private Positions() {
+        /* Only static methods */
+    }
+
+    /**
+     * Constructs a position, whose coordinates are the union of the coordinates of the two individual positions. This
+     * is only correctly defined, if the two given positions do not have any dimensional overlap (i.e. Any coordinate of
+     * a certain type (class) is only present in either the left or the right position.)
+     *
+     * @param left the first position to use construct the union position
+     * @param right the second position to construct the union position
+     * @return a position, which contains the union of the coordinates of the two input positions.
+     * @throws NullPointerException if one of the arguments is {@code null}
+     * @throws IllegalArgumentException if the given aguments have an overlap of dimensions and therefor the union of
+     *             the position is not well defined
+     */
+    public static Position union(Position left, Position right) {
+<span class="fc" id="L74">        checkNotNull(left, &quot;left position must not be null.&quot;);</span>
+<span class="fc" id="L75">        checkNotNull(right, &quot;right position must not be null.&quot;);</span>
+<span class="fc" id="L76">        checkArgument(Sets.intersection(left.dimensionSet(), right.dimensionSet()).isEmpty(),</span>
+                &quot;Positions have overlapping dimensions. It is not possible to create the union of them.&quot;);
+<span class="fc" id="L78">        SetView&lt;Object&gt; coordinates = Sets.union(left.coordinates(), right.coordinates());</span>
+<span class="fc" id="L79">        return Position.of(coordinates);</span>
+    }
+
+    /**
+     * Copies the given positions to a set, to be sure that each element is contained only once
+     *
+     * @param positions the positions, which shall be ensured that they are unique
+     * @return a set of unique positions
+     */
+    public static Set&lt;Position&gt; unique(Iterable&lt;Position&gt; positions) {
+<span class="fc" id="L89">        return ImmutableSet.copyOf(positions);</span>
+    }
+
+    /**
+     * Factory method for a dimension stripper.
+     *
+     * @param dimensionsToStrip the dimensions which shall be stripped from the positions passed to the stripper.
+     * @return a function object that can strip the given dimensions from positions.
+     */
+    public static Positions.DimensionStripper stripping(final Set&lt;? extends Class&lt;?&gt;&gt; dimensionsToStrip) {
+<span class="fc" id="L99">        return new Positions.DimensionStripper(dimensionsToStrip);</span>
+    }
+
+    /**
+     * Factory method for a dimension stripper with one dimension to strip only
+     *
+     * @param dimensionsToStrip the dimension to strip
+     * @return a dimension stripper stripping exactly one dimension
+     * @see #stripping(Set)
+     */
+    public static Positions.DimensionStripper stripping(Class&lt;?&gt; dimensionsToStrip) {
+<span class="fc" id="L110">        return new Positions.DimensionStripper(ImmutableSet.of(dimensionsToStrip));</span>
+    }
+
+    /**
+     * Convenience delegation method to {@link #stripping(Class)}, for a bit more fluent syntax.
+     *
+     * @param dimensionsToStrip the dimension to strip
+     * @return a dimension stripper stripping exactly one dimension
+     * @see #stripping(Class)
+     */
+    public static Positions.DimensionStripper strip(Class&lt;?&gt; dimensionsToStrip) {
+<span class="fc" id="L121">        return stripping(dimensionsToStrip);</span>
+    }
+
+    /**
+     * A functional object to transform positions to other positions with the dimensions stripped as given in the
+     * constructor.
+     *
+     * @author kaifox
+     */
+    public static class DimensionStripper implements Function&lt;Position, Position&gt; {
+
+        private final Set&lt;? extends Class&lt;?&gt;&gt; dimensionsToStrip;
+
+<span class="fc" id="L134">        DimensionStripper(Set&lt;? extends Class&lt;?&gt;&gt; dimensionsToStrip) {</span>
+<span class="fc" id="L135">            this.dimensionsToStrip = ImmutableSet.copyOf(dimensionsToStrip);</span>
+<span class="fc" id="L136">        }</span>
+
+        @Override
+        public Position apply(Position position) {
+<span class="fc" id="L140">            Builder&lt;Object&gt; builder = ImmutableSet.builder();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            for (Object coordinate : position.coordinates()) {</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">                if (!dimensionsToStrip.stream().anyMatch(dts -&gt; dts.isInstance(coordinate))) {</span>
+<span class="fc" id="L143">                    builder.add(coordinate);</span>
+                }
+<span class="fc" id="L145">            }</span>
+<span class="fc" id="L146">            return Position.of(builder.build());</span>
+        }
+
+        public Position from(Position position) {
+<span class="fc" id="L150">            return apply(position);</span>
+        }
+
+    }
+
+    /**
+     * Checks if the given position is conform with the given coordinate and throws an exception, if not.
+     *
+     * @param position the position for which to check the consistency
+     * @param dimensions the dimensions for which the conformity has to be verified.
+     * @throws IllegalArgumentException if the position is not conform
+     * @see Position#isConsistentWith(Set)
+     */
+    public static void assertConsistentDimensions(Position position, Set&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        if (!position.isConsistentWith(dimensions)) {</span>
+<span class="fc" id="L165">            throw new IllegalArgumentException(</span>
+                    &quot;The given coordinates are not consistent with the dimensions of the tensor! position='&quot; + position
+                            + &quot;'; required dimensions='&quot; + dimensions + &quot;'.&quot;);
+        }
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Searches if given position coordinates match acceptable dimensions.
+     *
+     * @param dimensions
+     * @param position
+     * @return
+     */
+    public static boolean areDimensionsConsistentWithCoordinates(Set&lt;Class&lt;?&gt;&gt; dimensions, Position position) {
+<span class="fc" id="L179">        requireNonNull(dimensions, &quot;dimensions must not be null!&quot;);</span>
+<span class="fc" id="L180">        requireNonNull(position, &quot;position must not be null!&quot;);</span>
+<span class="fc" id="L181">        return areDimensionsConsistent(dimensions, position.dimensionSet());</span>
+    }
+
+    public static boolean areDimensionsConsistent(Set&lt;Class&lt;?&gt;&gt; dimensions, Set&lt;Class&lt;?&gt;&gt; positionCoordinatesToCheck) {
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        if (dimensions.equals(positionCoordinatesToCheck)) {</span>
+<span class="fc" id="L186">            return true;</span>
+        }
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        if (positionCoordinatesToCheck.size() != dimensions.size()) {</span>
+<span class="fc" id="L189">            return false;</span>
+        }
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        for (Class&lt;?&gt; one : positionCoordinatesToCheck) {</span>
+<span class="fc" id="L192">            Coordinates.checkClassRelations(one, dimensions);</span>
+<span class="fc" id="L193">        }</span>
+<span class="fc" id="L194">        return true;</span>
+    }
+
+    /**
+     * Combines the both positions of the pair in such a way, that for each coordinate of the types given in the given
+     * set of dimensions have to be
+     * &lt;ul&gt;
+     * &lt;li&gt;either present in both positions of the pair, and then have to be the same
+     * &lt;li&gt;or be present in only one of the both positions
+     * &lt;/ul&gt;
+     *
+     * @param pair the pair, whose dimensions should be united
+     * @param targetDimensions the dimension in which the positions shall be united
+     * @return a new position, containing the coordinates of the pair, merged by the above rules
+     */
+    /* Similar to union ... maybe to be unified at some point */
+    public static Position combineDimensions(PositionPair pair, Set&lt;Class&lt;?&gt;&gt; targetDimensions) {
+<span class="nc" id="L211">        Position left = pair.left();</span>
+<span class="nc" id="L212">        Position right = pair.right();</span>
+<span class="nc" id="L213">        return combineDimensions(left, right, targetDimensions);</span>
+    }
+
+    /**
+     * Combines the both positions in such a way, that for each coordinate of the types given in the given set of
+     * dimensions have to be
+     * &lt;ul&gt;
+     * &lt;li&gt;either present in both positions of the pair, and then have to be the same
+     * &lt;li&gt;or be present in only one of the both positions
+     * &lt;/ul&gt;
+     *
+     * @param left the first of the two positions, whose dimensions should be united
+     * @param right the second of the two positions whose dimensions should be combined
+     * @param targetDimensions the dimension in which the positions shall be united
+     * @return a new position, with the coordinates merged according to the above rules
+     */
+    public static Position combineDimensions(Position left, Position right, Set&lt;Class&lt;?&gt;&gt; targetDimensions) {
+<span class="fc" id="L230">        ImmutableSet.Builder&lt;Object&gt; builder = ImmutableSet.builder();</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        for (Class&lt;?&gt; dimension : targetDimensions) {</span>
+<span class="fc" id="L232">            Object leftCoordinate = left.coordinateFor(dimension);</span>
+<span class="fc" id="L233">            Object rightCoordinate = right.coordinateFor(dimension);</span>
+<span class="pc bpc" id="L234" title="1 of 4 branches missed.">            if (Objects.equal(leftCoordinate, rightCoordinate) || oneIsNull(leftCoordinate, rightCoordinate)) {</span>
+<span class="fc" id="L235">                builder.add(MoreObjects.firstNonNull(leftCoordinate, rightCoordinate));</span>
+            } else {
+<span class="nc" id="L237">                throw new IllegalArgumentException(</span>
+                        &quot;Coordinates for dimension '&quot; + dimension + &quot;' are neither the same in both positions (&quot; + left
+                                + &quot; and &quot; + right + &quot;), nor present only in one. Cannot consistently combine.&quot;);
+            }
+<span class="fc" id="L241">        }</span>
+<span class="fc" id="L242">        return Position.of(builder.build());</span>
+    }
+
+    public static &lt;T&gt; boolean oneIsNull(T left, T right) {
+<span class="pc bpc" id="L246" title="1 of 4 branches missed.">        return ((left == null) || (right == null));</span>
+    }
+
+    /**
+     * Combines all position pairs into positions containing the given dimensions and returns a map from the combined
+     * positions to the original position pairs.
+     *
+     * @param positionPairs the position pairs to combine the final positions
+     * @param targetDimensions the dimensions in which to combine the positions
+     * @return a map from the combined dimensions to the original pairs
+     */
+    public static ImmutableSetMultimap&lt;Position, PositionPair&gt; combineAll(Set&lt;PositionPair&gt; positionPairs,
+            Set&lt;Class&lt;?&gt;&gt; targetDimensions) {
+<span class="nc" id="L259">        ImmutableSetMultimap.Builder&lt;Position, PositionPair&gt; builder = ImmutableSetMultimap.builder();</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">        for (PositionPair pair : positionPairs) {</span>
+<span class="nc" id="L261">            builder.put(combineDimensions(pair, targetDimensions), pair);</span>
+<span class="nc" id="L262">        }</span>
+<span class="nc" id="L263">        return builder.build();</span>
+    }
+
+    public static Multimap&lt;Position, Position&gt; mapByStripping(Iterable&lt;Position&gt; positions,
+            Set&lt;Class&lt;?&gt;&gt; dimensionsToStrip) {
+<span class="fc" id="L268">        DimensionStripper stripper = stripping(dimensionsToStrip);</span>
+<span class="fc" id="L269">        ImmutableMultimap.Builder&lt;Position, Position&gt; builder = ImmutableMultimap.builder();</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        for (Position position : positions) {</span>
+<span class="fc" id="L271">            builder.put(stripper.apply(position), position);</span>
+<span class="fc" id="L272">        }</span>
+<span class="fc" id="L273">        return builder.build();</span>
+    }
+
+    /**
+     * Extracts the provided class of the coordinate from the set of the positions.
+     *
+     * @param positions
+     * @param ofClass a class of the coordinate to be extracted
+     * @return a set of the extracted coordinates from provided positions
+     */
+    public static &lt;T&gt; Set&lt;T&gt; coordinatesOfType(Set&lt;Position&gt; positions, Class&lt;T&gt; ofClass) {
+<span class="fc" id="L284">        Set&lt;T&gt; toReturn = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        for (Position onePosition : positions) {</span>
+<span class="fc" id="L286">            T coordinate = onePosition.coordinateFor(ofClass);</span>
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">            if (coordinate != null) {</span>
+<span class="fc" id="L288">                toReturn.add(coordinate);</span>
+            }
+<span class="fc" id="L290">        }</span>
+<span class="fc" id="L291">        return toReturn;</span>
+    }
+
+    /**
+     * Returns all positions which can be built from all combinations of the values of the given enum classes.
+     *
+     * @param enumClasses the enum classes from which to get the values from
+     * @return positions containing all possible combinations of enum values
+     */
+    @SafeVarargs
+    public static Iterable&lt;Position&gt; cartesianProduct(Class&lt;? extends Enum&lt;?&gt;&gt;... enumClasses) {
+<span class="nc" id="L302">        return cartesianProduct(checkedToSet(enumClasses));</span>
+    }
+
+    /**
+     * Returns one position for each value of the given enum. Functionally, this is equivalent to
+     * {@link #cartesianProduct(Class...)} with only one class given.
+     *
+     * @param enumClass the class of the enum from which to take the values as coordinates
+     * @return an iterable of positions, containing the values oif the given enum class as (one-dimensional) positions.
+     */
+    public static Iterable&lt;Position&gt; from(Class&lt;? extends Enum&lt;?&gt;&gt; enumClass) {
+<span class="nc" id="L313">        return cartesianProduct(enumClass);</span>
+    }
+
+    /**
+     * Returns all positions which can be built from the values of the passed in classes that are assumed to be enum
+     * classes. This is basically the runtime-checked version of {@link #cartesianProduct(Class...)}
+     *
+     * @param enumClasses the enum classes from which to get their values
+     * @return an iterable containing the positions which are constructed from the values of the enums
+     * @throws IllegalArgumentException in case not all clases are enums
+     */
+    public static Iterable&lt;Position&gt; cartesianEnumProduct(Class&lt;?&gt;... enumClasses) {
+<span class="nc" id="L325">        return cartesianEnumProduct(checkedToSet(enumClasses));</span>
+    }
+
+    /**
+     * Returns all positions which can be built from all combinations of the values of the given enum classes.
+     *
+     * @param enumClasses the enums whose values will be used to create the positions
+     * @return an iterable with positions containing all possible combinations of the enum values
+     */
+    public static Iterable&lt;Position&gt; cartesianProduct(Set&lt;Class&lt;? extends Enum&lt;?&gt;&gt;&gt; enumClasses) {
+<span class="nc" id="L335">        List&lt;Set&lt;?&gt;&gt; valueSets = enumClasses.stream().map(c -&gt; ImmutableSet.copyOf(c.getEnumConstants()))</span>
+<span class="nc" id="L336">                .collect(Collectors.toList());</span>
+<span class="nc" id="L337">        return cartesianProduct(valueSets);</span>
+    }
+
+    /**
+     * Returns all positions which can be built from the values of the passed in classes that are assumed to be enum
+     * classes. This is basically the runtime-checked version of {@link #cartesianProduct(Set)}
+     *
+     * @param classes the enum classes from which to get their values
+     * @return an iterable containing the positions which are constructed from the values of the enums
+     * @throws IllegalArgumentException in case not all clases are enums
+     */
+    public static Iterable&lt;Position&gt; cartesianEnumProduct(Set&lt;Class&lt;?&gt;&gt; classes) {
+<span class="nc" id="L349">        return cartesianProduct(checkedToEnumClassSet(classes));</span>
+    }
+
+    private static Set&lt;Class&lt;? extends Enum&lt;?&gt;&gt;&gt; checkedToEnumClassSet(Set&lt;Class&lt;?&gt;&gt; classes) {
+<span class="nc" id="L353">        Set&lt;Class&lt;? extends Enum&lt;?&gt;&gt;&gt; enumClasses = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">        for (Class&lt;?&gt; aClass : classes) {</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">            if (!aClass.isEnum()) {</span>
+<span class="nc" id="L356">                throw new IllegalArgumentException(&quot;All provided classes have to be enum classes. However (at least) &quot;</span>
+<span class="nc" id="L357">                        + aClass.getCanonicalName() + &quot;is not!&quot;);</span>
+            }
+            @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L360">            Class&lt;? extends Enum&lt;?&gt;&gt; enumClass = (Class&lt;? extends Enum&lt;?&gt;&gt;) aClass;</span>
+<span class="nc" id="L361">            enumClasses.add(enumClass);</span>
+<span class="nc" id="L362">        }</span>
+<span class="nc" id="L363">        return enumClasses;</span>
+    }
+
+    private static &lt;T&gt; Set&lt;T&gt; checkedToSet(T[] enumClasses) {
+<span class="nc" id="L367">        Set&lt;T&gt; classesSet = ImmutableSet.copyOf(enumClasses);</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">        if (classesSet.size() != enumClasses.length) {</span>
+<span class="nc" id="L369">            throw new IllegalArgumentException(&quot;The number of passed in classes is &quot; + enumClasses.length</span>
+<span class="nc" id="L370">                    + &quot;, but there seem to be only &quot; + classesSet.size() + &quot;different ones.&quot;);</span>
+        }
+<span class="nc" id="L372">        return classesSet;</span>
+    }
+
+    /**
+     * Returns all positions which can be built from all combinations of all the coordinates.
+     *
+     * @param coordinateSets the sets of coordinates. Note: The types of the set elements have to be different!
+     * @return a set of positions, containing all possible combinations
+     */
+    public static Set&lt;Position&gt; cartesianProduct(Iterable&lt;Set&lt;?&gt;&gt; coordinateSets) {
+<span class="nc" id="L382">        Set&lt;List&lt;Object&gt;&gt; cartesianProduct = Sets.cartesianProduct(ImmutableList.copyOf(coordinateSets));</span>
+<span class="nc" id="L383">        return cartesianProduct.stream().map(l -&gt; Position.of(new HashSet&lt;&gt;(l))).collect(toSet());</span>
+    }
+
+    public static &lt;T&gt; Set&lt;Position&gt; from(Collection&lt;T&gt; coordinates) {
+<span class="nc" id="L387">        return coordinates.stream().map(t -&gt; Position.of(t)).collect(toSet());</span>
+    }
+
+    public static &lt;T&gt; Set&lt;Position&gt; from(T... coordinates) {
+<span class="nc" id="L391">        return from(ImmutableSet.copyOf(coordinates));</span>
+    }
+
+    /**
+     * Returns a position which contains the coordinates which are contained in the left position but not in the right
+     * position. The right position might also contain coordinates not contained in the left position, which are simply
+     * ignored.
+     *
+     * @param left the position from which the coordinates of the right position shall be substracted
+     * @param right the position whose coordinates shall be substracted from the left position
+     * @return a position containing all coordinates from the left position, which are not present in the right position
+     */
+    public static Position difference(Position left, Position right) {
+<span class="nc" id="L404">        SetView&lt;?&gt; diffCoordinates = Sets.difference(left.coordinates(), right.coordinates());</span>
+<span class="nc" id="L405">        return Position.of(diffCoordinates);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

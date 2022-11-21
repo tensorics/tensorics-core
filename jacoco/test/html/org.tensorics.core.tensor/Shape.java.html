@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Shape.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">Shape.java</span></div><h1>Shape.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.google.common.collect.ImmutableSet;
+
+/**
+ * Defines the shape of a tensor. This implies all the positions for which the tensor stores values.
+ * &lt;p&gt;
+ * This class is immutable
+ * 
+ * @author kfuchsbe
+ */
+public final class Shape implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+<span class="fc" id="L44">    private static final Shape EMPTY_SHAPE = of();</span>
+<span class="fc" id="L45">    private static final Shape ZERO_DIMENSIONAL_SHAPE = of(Position.empty());</span>
+
+    private final Set&lt;? extends Class&lt;?&gt;&gt; dimensions;
+    private final Set&lt;Position&gt; positions;
+
+    Shape(Builder builder) {
+<span class="fc" id="L51">        this(ImmutableSet.copyOf(builder.dimensions), ImmutableSet.copyOf(builder.setBuilder.build()));</span>
+<span class="fc" id="L52">    }</span>
+
+<span class="fc" id="L54">    Shape(Set&lt;? extends Class&lt;?&gt;&gt; dimensions, Set&lt;Position&gt; positions) {</span>
+<span class="fc" id="L55">        this.dimensions = dimensions;</span>
+<span class="fc" id="L56">        this.positions = positions;</span>
+<span class="fc" id="L57">    }</span>
+
+    /**
+     * Retrieves all the positions which are available in a tensor for this shape.
+     * 
+     * @return an immutable set of the positions for a tensor of this shape.
+     */
+    public Set&lt;Position&gt; positionSet() {
+<span class="fc" id="L65">        return new HashSet&lt;&gt;(this.positions);</span>
+    }
+
+    /**
+     * Retrieves all the dimensions of this shape.
+     * 
+     * @return the dimensions
+     */
+    public Set&lt;Class&lt;?&gt;&gt; dimensionSet() {
+<span class="fc" id="L74">        return new HashSet&lt;&gt;(this.dimensions);</span>
+    }
+
+    /**
+     * Returns the number of dimensions of a tensor of this shape. Other words are 'rank' or 'order' of the tensor. This
+     * has to be consistent with the size of the collections returned by {@link #dimensionSet()};
+     * 
+     * @return the number of dimensions of the tensor (rank, order)
+     */
+    public int dimensionality() {
+<span class="fc" id="L84">        return this.dimensions.size();</span>
+    }
+
+    /**
+     * Returns the number of entries of a tensor of this shape. This has to be consistent with the size of the
+     * collection returned by {@link #positionSet()};
+     * 
+     * @return the number of positions.
+     */
+    public int size() {
+<span class="fc" id="L94">        return this.positions.size();</span>
+    }
+
+    /**
+     * returns {@code true} if this shape contains at least all the positions of the the other.
+     * 
+     * @param other the set which to compare to.
+     * @return {@code true} if the other shape is covered, {@code false} otherwise.
+     */
+    public boolean covers(Shape other) {
+<span class="fc" id="L104">        return this.positions.containsAll(other.positionSet());</span>
+    }
+
+    /**
+     * Returns {@code true} if the shape contains the given position, {@code false} otherwise.
+     * 
+     * @param position the position to be checked
+     * @return {@code true} if the position is contained in the shape, {@code false} otherwise.
+     */
+    public boolean contains(Position position) {
+<span class="fc" id="L114">        return this.positions.contains(position);</span>
+    }
+
+    /**
+     * Convenience method for {@link #contains(Position)}, with the position constructed from the given coordinates.
+     * 
+     * @param coordinates the coordinates which represent the position to be checked
+     * @return {@code true} if the position represented by the given coordinates is contained in the shape,
+     *         {@code false} otherwise.
+     */
+    public boolean contains(Object... coordinates) {
+<span class="nc" id="L125">        return contains(Position.of(coordinates));</span>
+    }
+
+    /**
+     * returns {@code true} if this shape has the same dimensions as the other shape.
+     * 
+     * @param other the other shape with which to compare this shape
+     * @return {@code true} if the dimensions are the same, {@code false} otherwise
+     */
+    public boolean hasSameDimensionsAs(Shape other) {
+<span class="nc" id="L135">        return this.dimensionSet().equals(other.dimensionSet());</span>
+    }
+
+    /**
+     * Creates a new builder for a shape. The dimensions of the resulting shape will be retrieved from the first
+     * position that will be added. If no elements will be added the resulting shape will have zero dimensions.
+     * 
+     * @return a new builder for a shape.
+     */
+    public static Builder builder() {
+<span class="fc" id="L145">        return new Builder();</span>
+    }
+
+    /**
+     * Creates a new builder for a shape with predefined dimensions.
+     * 
+     * @param dimensions the dimensions for the new shape
+     * @return the builder with predefined dimensions
+     */
+    public static Builder builder(Set&lt;? extends Class&lt;?&gt;&gt; dimensions) {
+<span class="fc" id="L155">        return new Builder(dimensions);</span>
+    }
+
+    /**
+     * Directly creates a shape using the given dimensions and positions. The consistency of dimensions and positions is
+     * not checked! Thus this is only for internal use.
+     * 
+     * @param dimensions the dimensions for the shape
+     * @param positions the positions of the shape
+     * @return a new shape instance
+     */
+    public static Shape viewOf(Set&lt;? extends Class&lt;?&gt;&gt; dimensions, Set&lt;Position&gt; positions) {
+<span class="fc" id="L167">        return new Shape(dimensions, positions);</span>
+    }
+
+    /**
+     * Creates a shape from the given set of positions. The dimensions (types of coordinates) are taken from the first
+     * element in the provided iterable. If the given positions do not correspond to the same dimensions, then an
+     * {@link IllegalArgumentException} will be thrown.
+     * 
+     * @param positions the positions which shall be used for the new shape
+     * @return a new shape, containing the given positions
+     * @throws IllegalArgumentException if the dimensions of the individual positions are not consistent.
+     * @deprecated Using this method to construct a shape guesses the dimensionality from the passed positions.
+     */
+    @Deprecated
+    public static Shape of(Iterable&lt;Position&gt; positions) {
+<span class="fc" id="L182">        return builder().addAll(positions).build();</span>
+    }
+
+    /**
+     * This is a convenience method to be used instead of {@link #of(Iterable)}.
+     * 
+     * @param positions the positions for the new shape
+     * @return a new shape containing the given positions
+     * @see #of(Iterable)
+     * @throws IllegalArgumentException if the dimensions of the positions are inconsistent
+     * @deprecated Using this method to construct a shape guesses the dimensionality from the passed positions.
+     */
+    @SafeVarargs
+    @Deprecated
+    public static Shape of(Position... positions) {
+<span class="fc" id="L197">        return of(Arrays.asList(positions));</span>
+    }
+
+    /**
+     * Creates a shape from the given set of positions and dimensions (types of coordinates). If the given positions do
+     * not correspond to the same dimensions, then an {@link IllegalArgumentException} will be thrown.
+     * 
+     * @param dimensions the dimensions for the new shape
+     * @param positions the positions which shall be used for the new shape
+     * @return a new shape, containing the given positions
+     * @throws IllegalArgumentException if the dimensions of the individual positions are not consistent.
+     */
+    public static Shape of(Set&lt;Class&lt;?&gt;&gt; dimensions, Iterable&lt;Position&gt; positions) {
+<span class="fc" id="L210">        return builder(dimensions).addAll(positions).build();</span>
+    }
+
+    /**
+     * This is a convenience method to be used instead of {@link #of(Set,Iterable)}.
+     * 
+     * @param dimensions the dimensions for the new shape
+     * @param positions the positions for the new shape
+     * @return a new shape containing the given positions
+     * @see #of(Iterable)
+     * @throws IllegalArgumentException if the dimensions of the positions are inconsistent
+     */
+    @SafeVarargs
+    public static Shape of(Set&lt;Class&lt;?&gt;&gt; dimensions, Position... positions) {
+<span class="fc" id="L224">        return of(dimensions, Arrays.asList(positions));</span>
+    }
+
+    /**
+     * Returns an empty shape with no dimensions and no positions. The returned shape is equal to the shape of an zero
+     * dimensional tensor. It is further equivalent to the call to {@code of()} (with no arguments). However, using this
+     * method is preferred, since no unnecessary instances are created this way.
+     * 
+     * @return an empty shape
+     */
+    public static Shape empty() {
+<span class="fc" id="L235">        return EMPTY_SHAPE;</span>
+    }
+
+    /**
+     * Returns a shape corresponding to a zero-dimensional tensor with one entry (an empty position).
+     * 
+     * @return a shape corresponding to a zero - dimensional tensor with one entry (at {@link Position#empty()})
+     */
+    public static Shape zeroDimensional() {
+<span class="fc" id="L244">        return ZERO_DIMENSIONAL_SHAPE;</span>
+    }
+
+    /**
+     * Extracts the provided class of the coordinate from the provided shape.
+     * 
+     * @param ofClass a class of the coordinate to be extracted
+     * @return a set of the extracted coordinates from provided shape
+     */
+    public &lt;T&gt; Set&lt;T&gt; coordinatesOfType(Class&lt;T&gt; ofClass) {
+<span class="fc" id="L254">        return Positions.coordinatesOfType(positions, ofClass);</span>
+    }
+
+    /**
+     * The builder for a tensor shape. It has to be instantiated with a set of dimensions and provides methods to add
+     * positions to the shape. It is only allowed to add positions which provide exactly one coordinate per dimension as
+     * given in the constructor of the builder. To create a shape finally, the {@link #build()} method has to be called.
+     * &lt;p&gt;
+     * This class is not thread safe!
+     * 
+     * @author kfuchsbe
+     */
+    public static final class Builder {
+
+<span class="fc" id="L268">        private Set&lt;Class&lt;?&gt;&gt; dimensions = Collections.emptySet();</span>
+<span class="fc" id="L269">        private boolean dimensionsDefined = false;</span>
+<span class="fc" id="L270">        private final ImmutableSet.Builder&lt;Position&gt; setBuilder = ImmutableSet.builder();</span>
+
+<span class="fc" id="L272">        Builder() {</span>
+            /* Nothing to do, just make the constructor package private */
+<span class="fc" id="L274">        }</span>
+
+<span class="fc" id="L276">        Builder(Set&lt;? extends Class&lt;?&gt;&gt; dimensions) {</span>
+<span class="fc" id="L277">            setDimensionsIfUndefined(dimensions);</span>
+<span class="fc" id="L278">        }</span>
+
+        public Builder add(Position position) {
+<span class="fc" id="L281">            setDimensionsIfUndefined(position.dimensionSet());</span>
+<span class="fc" id="L282">            Positions.assertConsistentDimensions(position, dimensions);</span>
+<span class="fc" id="L283">            this.setBuilder.add(position);</span>
+<span class="fc" id="L284">            return this;</span>
+        }
+
+        public Builder addAll(Iterable&lt;Position&gt; positions) {
+<span class="fc bfc" id="L288" title="All 2 branches covered.">            for (Position position : positions) {</span>
+<span class="fc" id="L289">                add(position);</span>
+<span class="fc" id="L290">            }</span>
+<span class="fc" id="L291">            return this;</span>
+        }
+
+        public Shape build() {
+<span class="fc" id="L295">            return new Shape(this);</span>
+        }
+
+        private void setDimensionsIfUndefined(Set&lt;? extends Class&lt;?&gt;&gt; dimensions) {
+<span class="fc bfc" id="L299" title="All 2 branches covered.">            if (!dimensionsDefined) {</span>
+<span class="fc" id="L300">                this.dimensions = ImmutableSet.copyOf(dimensions);</span>
+<span class="fc" id="L301">                this.dimensionsDefined = true;</span>
+            }
+<span class="fc" id="L303">        }</span>
+
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L310">            return true;</span>
+        }
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L313">            return false;</span>
+        }
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L316">            return false;</span>
+        }
+<span class="fc" id="L318">        Shape other = (Shape) obj;</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">        if (dimensions == null) {</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">            if (other.dimensions != null) {</span>
+<span class="nc" id="L321">                return false;</span>
+            }
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">        } else if (!dimensions.equals(other.dimensions)) {</span>
+<span class="nc" id="L324">            return false;</span>
+        }
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">        if (positions == null) {</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">            if (other.positions != null) {</span>
+<span class="nc" id="L328">                return false;</span>
+            }
+<span class="fc bfc" id="L330" title="All 2 branches covered.">        } else if (!positions.equals(other.positions)) {</span>
+<span class="fc" id="L331">            return false;</span>
+        }
+<span class="fc" id="L333">        return true;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L338">        final int prime = 31;</span>
+<span class="fc" id="L339">        int result = 1;</span>
+<span class="pc bpc" id="L340" title="1 of 2 branches missed.">        result = prime * result + ((dimensions == null) ? 0 : dimensions.hashCode());</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">        result = prime * result + ((positions == null) ? 0 : positions.hashCode());</span>
+<span class="fc" id="L342">        return result;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L347">        return &quot;Shape [dimensions=&quot; + dimensions + &quot;, #positions=&quot; + positions.size() + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

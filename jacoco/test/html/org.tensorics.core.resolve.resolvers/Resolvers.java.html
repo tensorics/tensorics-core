@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Resolvers.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.resolve.resolvers</a> &gt; <span class="el_source">Resolvers.java</span></div><h1>Resolvers.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.resolve.resolvers;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.tensorics.core.analysis.resolver.AnalysisResolver;
+import org.tensorics.core.analysis.resolver.AssertionResolver;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.Node;
+import org.tensorics.core.tree.domain.ResolvingContext;
+
+/**
+ * Provides utility methods to construct repositories of resolvers
+ * 
+ * @author kfuchsbe
+ */
+public final class Resolvers {
+
+    private Resolvers() {
+        /* Only static methods */
+    }
+
+    public static ResolverRepository defaultRepository() {
+<span class="fc" id="L47">        List&lt;Resolver&lt;?, ?&gt;&gt; resolvers = createDefaultResolvers();</span>
+<span class="fc" id="L48">        return repositoryWithResolvers(resolvers);</span>
+    }
+
+    public static ResolverRepository defaultRepositoryWithAdditional(Resolver&lt;?, ?&gt;... resolvers) {
+<span class="fc" id="L52">        List&lt;Resolver&lt;?, ?&gt;&gt; allResolvers = createDefaultResolvers();</span>
+<span class="fc" id="L53">        allResolvers.addAll(Arrays.asList(resolvers));</span>
+<span class="fc" id="L54">        return repositoryWithResolvers(allResolvers);</span>
+    }
+
+    private static ResolverRepository repositoryWithResolvers(List&lt;Resolver&lt;?, ?&gt;&gt; resolvers) {
+<span class="fc" id="L58">        ListBackedResolverRepository repository = new ListBackedResolverRepository();</span>
+<span class="fc" id="L59">        repository.setResolvers(resolvers);</span>
+<span class="fc" id="L60">        return repository;</span>
+    }
+
+    private static List&lt;Resolver&lt;?, ?&gt;&gt; createDefaultResolvers() {
+<span class="fc" id="L64">        List&lt;Resolver&lt;?, ?&gt;&gt; resolvers = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L65">        resolvers.add(new UnaryOperationResolver&lt;&gt;());</span>
+<span class="fc" id="L66">        resolvers.add(new BinaryOperationResolver&lt;&gt;());</span>
+<span class="fc" id="L67">        resolvers.add(new CreationOperationResolver&lt;&gt;());</span>
+<span class="fc" id="L68">        resolvers.add(new TensoricScriptResolver&lt;&gt;());</span>
+<span class="fc" id="L69">        resolvers.add(new ConversionOperationResolver&lt;&gt;());</span>
+<span class="fc" id="L70">        resolvers.add(new BinaryPredicateResolver&lt;&gt;());</span>
+<span class="fc" id="L71">        resolvers.add(new BinaryPredicateIterableResolver&lt;&gt;());</span>
+<span class="fc" id="L72">        resolvers.add(new FunctionalExpressionResolver&lt;&gt;());</span>
+<span class="fc" id="L73">        resolvers.add(new IterableExpressionToIterableResolver&lt;&gt;());</span>
+<span class="fc" id="L74">        resolvers.add(new IterableResolvingExpressionResolver&lt;&gt;());</span>
+<span class="fc" id="L75">        resolvers.add(new PickResolver&lt;&gt;());</span>
+<span class="fc" id="L76">        resolvers.add(new PredicateConditionResolver&lt;&gt;());</span>
+<span class="fc" id="L77">        resolvers.add(new AnalysisResolver());</span>
+<span class="fc" id="L78">        resolvers.add(new AssertionResolver());</span>
+<span class="fc" id="L79">        return resolvers;</span>
+    }
+
+    public static final boolean contextResolvesAll(List&lt;? extends Expression&lt;?&gt;&gt; expressions,
+            ResolvingContext context) {
+<span class="fc" id="L84">        return expressions.stream().allMatch(context::resolves);</span>
+    }
+
+    public static final boolean contextResolvesAllNodes(List&lt;? extends Node&gt; expressions, ResolvingContext context) {
+        /* XXX ugly cast */
+<span class="fc" id="L89">        return expressions.stream().map(n -&gt; (Expression&lt;?&gt;) n).allMatch(context::resolves);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

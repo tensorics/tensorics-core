@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnalysisExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.analysis.expression</a> &gt; <span class="el_source">AnalysisExpression.java</span></div><h1>AnalysisExpression.java</h1><pre class="source lang-java linenums">// @formatter:off
+/**
+*
+* This file is part of streaming pool (http://www.streamingpool.org).
+*
+* Copyright (c) 2017-present, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
+// @formatter:on
+
+package org.tensorics.core.analysis.expression;
+
+import java.util.Collection;
+import java.util.List;
+
+import org.tensorics.core.analysis.AnalysisResult;
+import org.tensorics.core.analysis.resolver.AnalysisResolver;
+import org.tensorics.core.tree.domain.AbstractDeferredExpression;
+
+import com.google.common.collect.ImmutableList;
+
+/**
+ * A group of assertions that are evaluated altogether. The strategy is defined in the {@link AnalysisResolver}.
+ *
+ * @see AnalysisResolver
+ * @author acalia, caguiler, kfuchsberger
+ */
+public class AnalysisExpression extends AbstractDeferredExpression&lt;AnalysisResult&gt; {
+    private static final long serialVersionUID = 1L;
+
+    private final List&lt;AssertionExpression&gt; assertions;
+
+<span class="nc" id="L45">    public AnalysisExpression(Collection&lt;AssertionExpression&gt; assertions) {</span>
+<span class="nc" id="L46">        this.assertions = ImmutableList.copyOf(assertions);</span>
+<span class="nc" id="L47">    }</span>
+
+    @Override
+    public final List&lt;AssertionExpression&gt; getChildren() {
+<span class="nc" id="L51">        return assertions;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L56">        final int prime = 31;</span>
+<span class="nc" id="L57">        int result = 1;</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        result = prime * result + ((assertions == null) ? 0 : assertions.hashCode());</span>
+<span class="nc" id="L59">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L65">            return true;</span>
+        }
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L68">            return false;</span>
+        }
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L71">            return false;</span>
+        }
+<span class="nc" id="L73">        AnalysisExpression other = (AnalysisExpression) obj;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (assertions == null) {</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (other.assertions != null) {</span>
+<span class="nc" id="L76">                return false;</span>
+            }
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        } else if (!assertions.equals(other.assertions)) {</span>
+<span class="nc" id="L79">            return false;</span>
+        }
+<span class="nc" id="L81">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L86">        return &quot;AssertionGroupExpression [assertions=&quot; + assertions + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

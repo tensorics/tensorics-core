@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuantityOperationRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.quantity.operations</a> &gt; <span class="el_source">QuantityOperationRepository.java</span></div><h1>QuantityOperationRepository.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.quantity.operations;
+
+import java.util.function.BiFunction;
+
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.math.operations.UnaryOperation;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.options.QuantityEnvironment;
+import org.tensorics.core.units.Unit;
+
+/**
+ * A repository for operations on quantified values. This way, one instance of each can be re-used all the times.
+ *
+ * @author kfuchsbe
+ * @param &lt;S&gt; the type of the scalar values (elements of the field)
+ */
+public class QuantityOperationRepository&lt;S&gt; {
+
+    private final QuantityAddition&lt;S&gt; quantityAddition;
+    private final QuantitySubtraction&lt;S&gt; quantitySubtraction;
+    private final QuantityMultiplication&lt;S&gt; quantityMultiplication;
+    private final QuantityDivision&lt;S&gt; quantityDivision;
+    private final QuantityAdditiveInversion&lt;S&gt; quantityAdditiveInversion;
+    private final QuantityAbsoluteValue&lt;S&gt; quantityAbsoluteValue;
+    private final QuantityMultiplicativeInversion&lt;S&gt; quantityMultiplicativeInversion;
+
+    private final QuantifiedValue&lt;S&gt; zeroOfUnitOne;
+    private final QuantifiedValue&lt;S&gt; oneOfUnitOne;
+    private final QuantifiedValue&lt;S&gt; twoOfUnitOne;
+    private final QuantityEnvironment&lt;S&gt; mathsEnvironment;
+
+<span class="fc" id="L55">    public QuantityOperationRepository(QuantityEnvironment&lt;S&gt; environment) {</span>
+<span class="fc" id="L56">        this.mathsEnvironment = environment;</span>
+<span class="fc" id="L57">        this.quantityAddition = new QuantityAddition&lt;&gt;(environment);</span>
+<span class="fc" id="L58">        this.quantitySubtraction = new QuantitySubtraction&lt;&gt;(environment);</span>
+<span class="fc" id="L59">        this.quantityAdditiveInversion = new QuantityAdditiveInversion&lt;&gt;(environment);</span>
+<span class="fc" id="L60">        this.quantityAbsoluteValue = new QuantityAbsoluteValue&lt;&gt;(environment);</span>
+<span class="fc" id="L61">        this.quantityMultiplication = new QuantityMultiplication&lt;&gt;(environment);</span>
+<span class="fc" id="L62">        this.quantityDivision = new QuantityDivision&lt;&gt;(environment);</span>
+<span class="fc" id="L63">        this.quantityMultiplicativeInversion = new QuantityMultiplicativeInversion&lt;&gt;(environment);</span>
+<span class="fc" id="L64">        this.zeroOfUnitOne = createDimensionless(environment, environment.field().zero());</span>
+<span class="fc" id="L65">        this.oneOfUnitOne = createDimensionless(environment, environment.field().one());</span>
+<span class="fc" id="L66">        this.twoOfUnitOne = quantityAddition.perform(oneOfUnitOne, oneOfUnitOne);</span>
+<span class="fc" id="L67">    }</span>
+
+    private QuantifiedValue&lt;S&gt; createDimensionless(QuantityEnvironment&lt;S&gt; newEnvironment, S value) {
+<span class="fc" id="L70">        return Tensorics.quantityOf(value, newEnvironment.quantification().one()).withError(newEnvironment.field().zero());</span>
+    }
+
+    public BinaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; addition() {
+<span class="fc" id="L74">        return quantityAddition;</span>
+    }
+
+    public UnaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; additiveInversion() {
+<span class="fc" id="L78">        return this.quantityAdditiveInversion;</span>
+    }
+
+    public UnaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; absoluteValue() {
+<span class="fc" id="L82">        return this.quantityAbsoluteValue;</span>
+    }
+
+    public BinaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; subtraction() {
+<span class="fc" id="L86">        return quantitySubtraction;</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; zero() {
+<span class="fc" id="L90">        return zeroOfUnitOne;</span>
+    }
+
+    public BinaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; multiplication() {
+<span class="fc" id="L94">        return quantityMultiplication;</span>
+    }
+
+    public BinaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; power() {
+<span class="fc" id="L98">        return quantifiedBinaryOperationFrom(environment().field().power(), environment().quantification()::power);</span>
+    }
+
+    public BinaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; root() {
+<span class="fc" id="L102">        return quantifiedBinaryOperationFrom(environment().field().root(), environment().quantification()::root);</span>
+    }
+
+    private BinaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; quantifiedBinaryOperationFrom(BinaryOperation&lt;S&gt; operation,
+            BiFunction&lt;Unit, S, Unit&gt; unitOperation) {
+<span class="fc" id="L107">        return new QuantityBinaryOperationImpl&lt;&gt;(mathsEnvironment, operation, unitOperation);</span>
+    }
+
+    public BinaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; division() {
+<span class="fc" id="L111">        return quantityDivision;</span>
+    }
+
+    public UnaryOperation&lt;QuantifiedValue&lt;S&gt;&gt; multiplicativeInversion() {
+<span class="nc" id="L115">        return this.quantityMultiplicativeInversion;</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; one() {
+<span class="fc" id="L119">        return oneOfUnitOne;</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; two() {
+<span class="fc" id="L123">        return twoOfUnitOne;</span>
+    }
+
+    public QuantityEnvironment&lt;S&gt; environment() {
+<span class="fc" id="L127">        return mathsEnvironment;</span>
+    }
+
+    private static final class QuantityBinaryOperationImpl&lt;S&gt; extends QuantityBinaryOperation&lt;S&gt; {
+        private static final long serialVersionUID = 1L;
+
+        private final BiFunction&lt;Unit, S, Unit&gt; unitOperation;
+
+        protected QuantityBinaryOperationImpl(QuantityEnvironment&lt;S&gt; environment,
+                BinaryOperation&lt;S&gt; scalarBinaryOperation, BiFunction&lt;Unit, S, Unit&gt; unitOperation) {
+<span class="fc" id="L137">            super(environment, scalarBinaryOperation);</span>
+<span class="fc" id="L138">            this.unitOperation = unitOperation;</span>
+<span class="fc" id="L139">        }</span>
+
+        @Override
+        public QuantifiedValue&lt;S&gt; perform(QuantifiedValue&lt;S&gt; left, QuantifiedValue&lt;S&gt; right) {
+<span class="fc" id="L143">            S value = operation().perform(left.value(), right.value());</span>
+<span class="fc" id="L144">            Unit unit = unitOperation.apply(left.unit(), right.value());</span>
+            // FIXME: For the moment I am disregarding error propagation...
+<span class="fc" id="L146">            return Tensorics.quantityOf(value, unit).withValidity(validityFor(left, right));</span>
+        }
+
+        @Override
+        public int hashCode() {
+<span class="nc" id="L151">            final int prime = 31;</span>
+<span class="nc" id="L152">            int result = super.hashCode();</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">            result = prime * result + ((unitOperation == null) ? 0 : unitOperation.hashCode());</span>
+<span class="nc" id="L154">            return result;</span>
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+<span class="nc bnc" id="L159" title="All 2 branches missed.">            if (this == obj) {</span>
+<span class="nc" id="L160">                return true;</span>
+            }
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (!super.equals(obj)) {</span>
+<span class="nc" id="L163">                return false;</span>
+            }
+<span class="nc bnc" id="L165" title="All 2 branches missed.">            if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L166">                return false;</span>
+            }
+<span class="nc" id="L168">            QuantityBinaryOperationImpl&lt;?&gt; other = (QuantityBinaryOperationImpl&lt;?&gt;) obj;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            if (unitOperation == null) {</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                if (other.unitOperation != null) {</span>
+<span class="nc" id="L171">                    return false;</span>
+                }
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            } else if (!unitOperation.equals(other.unitOperation)) {</span>
+<span class="nc" id="L174">                return false;</span>
+            }
+<span class="nc" id="L176">            return true;</span>
+        }
+
+        @Override
+        public String toString() {
+<span class="nc" id="L181">            return &quot;QuantityBinaryOperationImpl [unitOperation=&quot; + unitOperation + &quot;]&quot;;</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

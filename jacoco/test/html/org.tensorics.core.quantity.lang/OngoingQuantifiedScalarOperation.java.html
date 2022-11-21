@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingQuantifiedScalarOperation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.quantity.lang</a> &gt; <span class="el_source">OngoingQuantifiedScalarOperation.java</span></div><h1>OngoingQuantifiedScalarOperation.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.quantity.lang;
+
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.operations.QuantityOperationRepository;
+import org.tensorics.core.units.JScienceUnit;
+import org.tensorics.core.units.Unit;
+
+/**
+ * Part of the tensoric fluent API that provides methods to describe the right hand part of binary operations on
+ * quantified scalars.
+ * 
+ * @author kfuchsbe
+ * @param &lt;S&gt; the type of the scalar values (elements of the field on which all the operations are based on)
+ */
+public class OngoingQuantifiedScalarOperation&lt;S&gt; {
+
+    private final QuantifiedValue&lt;S&gt; left;
+    private final QuantityOperationRepository&lt;S&gt; pseudoField;
+
+    public OngoingQuantifiedScalarOperation(QuantifiedValue&lt;S&gt; left, QuantityOperationRepository&lt;S&gt; pseudoField) {
+<span class="fc" id="L44">        super();</span>
+<span class="fc" id="L45">        this.left = left;</span>
+<span class="fc" id="L46">        this.pseudoField = pseudoField;</span>
+<span class="fc" id="L47">    }</span>
+
+    public QuantifiedValue&lt;S&gt; plus(S rightValue, Unit rightUnit) {
+<span class="nc" id="L50">        return plus(Tensorics.quantityOf(rightValue, rightUnit));</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; minus(S rightValue, Unit rightUnit) {
+<span class="nc" id="L54">        return minus(Tensorics.quantityOf(rightValue, rightUnit));</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; plus(S rightValue, javax.measure.unit.Unit&lt;?&gt; rightUnit) {
+<span class="fc" id="L58">        return plus(Tensorics.quantityOf(rightValue, JScienceUnit.of(rightUnit)));</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; minus(S rightValue, javax.measure.unit.Unit&lt;?&gt; rightUnit) {
+<span class="fc" id="L62">        return minus(Tensorics.quantityOf(rightValue, JScienceUnit.of(rightUnit)));</span>
+    }
+
+    /*
+     * methods using our scalars
+     */
+
+    public QuantifiedValue&lt;S&gt; plus(QuantifiedValue&lt;S&gt; right) {
+<span class="fc" id="L70">        return pseudoField.addition().perform(left, right);</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; minus(QuantifiedValue&lt;S&gt; right) {
+<span class="fc" id="L74">        return pseudoField.subtraction().perform(left, right);</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; times(S rightValue, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="fc" id="L78">        return times(Tensorics.quantityOf(rightValue, JScienceUnit.of(unit)));</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; dividedBy(S rightValue, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="fc" id="L82">        return dividedBy(Tensorics.quantityOf(rightValue, JScienceUnit.of(unit)));</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; times(QuantifiedValue&lt;S&gt; right) {
+<span class="fc" id="L86">        return pseudoField.multiplication().perform(left, right);</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; dividedBy(QuantifiedValue&lt;S&gt; right) {
+<span class="fc" id="L90">        return pseudoField.division().perform(left, right);</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; toThePowerOf(QuantifiedValue&lt;S&gt; rightValue) {
+<span class="fc" id="L94">        return pseudoField.power().perform(left, rightValue);</span>
+    }
+
+    public QuantifiedValue&lt;S&gt; root(QuantifiedValue&lt;S&gt; rightValue) {
+<span class="fc" id="L98">        return pseudoField.root().perform(left, rightValue);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

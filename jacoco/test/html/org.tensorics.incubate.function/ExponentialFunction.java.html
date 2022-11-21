@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExponentialFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.incubate.function</a> &gt; <span class="el_source">ExponentialFunction.java</span></div><h1>ExponentialFunction.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.incubate.function;
+
+import static javax.measure.unit.Unit.ONE;
+
+import javax.measure.quantity.Dimensionless;
+import javax.measure.quantity.Quantity;
+
+import org.jscience.physics.amount.Amount;
+import org.tensorics.core.tensor.Tensor;
+
+import com.google.common.base.Preconditions;
+
+/**
+ * @author agorzaws
+ * @param &lt;QX&gt; type of arguments
+ * @param &lt;QY&gt; type of values
+ */
+public class ExponentialFunction&lt;QX extends Quantity, QY extends Quantity&gt;
+        implements AnalyticalFunction&lt;Amount&lt;QX&gt;, Amount&lt;QY&gt;&gt; {
+
+    private final Amount&lt;QX&gt; inverseExpConst;
+    private final Amount&lt;QY&gt; amplitude;
+
+<span class="fc" id="L46">    ExponentialFunction(Builder&lt;QX, QY&gt; builder) {</span>
+<span class="fc" id="L47">        this.amplitude = builder.amplitude;</span>
+<span class="fc" id="L48">        this.inverseExpConst = builder.inverseExpConst;</span>
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        Preconditions.checkArgument(amplitude != null, &quot;Argument '&quot; + &quot;amplitude&quot; + &quot;' must not be null!&quot;);</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        Preconditions.checkArgument(inverseExpConst != null,</span>
+                &quot;Argument '&quot; + &quot;inverseExponentialConstant&quot; + &quot;' must not be null!&quot;);
+<span class="fc" id="L53">    }</span>
+
+    @Override
+    public Amount&lt;QY&gt; getY(Amount&lt;QX&gt; xValue) {
+        /* cast is safe since x and inverseExpConst are the same Dimension */
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L59">        Amount&lt;Dimensionless&gt; divisionResult = (Amount&lt;Dimensionless&gt;) xValue.divide(inverseExpConst);</span>
+<span class="fc" id="L60">        return amplitude.times(Math.exp(divisionResult.doubleValue(ONE)));</span>
+    }
+
+    @Override
+    public String toText() {
+<span class="nc" id="L65">        return &quot;[y = A * exp(x / B)]&quot;;</span>
+    }
+
+    public Amount&lt;QY&gt; getAmplitude() {
+<span class="fc" id="L69">        return amplitude;</span>
+    }
+
+    public Amount&lt;QX&gt; getInverseExponentialConstant() {
+<span class="nc" id="L73">        return inverseExpConst;</span>
+    }
+
+    /**
+     * An builder for an exponentional functions that uses jscience amounts.
+     * 
+     * @author agorzaws
+     * @param &lt;QX&gt; the type of quantity in X direction
+     * @param &lt;QY&gt; the type of quantity in Y direction
+     */
+    public static final class Builder&lt;QX extends Quantity, QY extends Quantity&gt; {
+
+        private Amount&lt;QX&gt; inverseExpConst;
+        private Amount&lt;QY&gt; amplitude;
+
+<span class="fc" id="L88">        Builder() {</span>
+            /*
+             * package private constructor to allow instantion only from the factory method
+             */
+<span class="fc" id="L92">        }</span>
+
+        public Builder&lt;QX, QY&gt; withAmplitude(Amount&lt;QY&gt; newAmplitude) {
+<span class="fc" id="L95">            this.amplitude = newAmplitude;</span>
+<span class="fc" id="L96">            return this;</span>
+        }
+
+        public Builder&lt;QX, QY&gt; withInverseExponentialConstant(Amount&lt;QX&gt; newInverseExpConst) {
+<span class="fc" id="L100">            this.inverseExpConst = newInverseExpConst;</span>
+<span class="fc" id="L101">            return this;</span>
+        }
+
+        public ExponentialFunction&lt;QX, QY&gt; build() {
+<span class="fc" id="L105">            return new ExponentialFunction&lt;&gt;(this);</span>
+        }
+    }
+
+    public static &lt;QX extends Quantity, QY extends Quantity&gt; Builder&lt;QX, QY&gt; builder() {
+<span class="fc" id="L110">        return new Builder&lt;&gt;();</span>
+    }
+
+    public Tensor&lt;Amount&lt;QY&gt;&gt; tensor() {
+<span class="nc" id="L114">        throw new UnsupportedOperationException(&quot;Cannot get a discrete tensor from analytical function&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

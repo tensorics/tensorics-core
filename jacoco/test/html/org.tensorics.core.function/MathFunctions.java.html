@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MathFunctions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.function</a> &gt; <span class="el_source">MathFunctions.java</span></div><h1>MathFunctions.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.function;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.function.interpolation.InterpolationStrategy;
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.reduction.ToFunctions;
+import org.tensorics.core.tensor.Tensor;
+
+import com.google.common.base.Preconditions;
+
+/**
+ * Provides utility method for transforming {@link MathFunction}s
+ * 
+ * @author caguiler, kfuchsbe
+ */
+<span class="nc" id="L41">public class MathFunctions {</span>
+
+    public static &lt;X, Y&gt; Tensor&lt;DiscreteFunction&lt;X, Y&gt;&gt; functionsFrom(Tensor&lt;Y&gt; tensor, Class&lt;X&gt; dimensionClass) {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        Preconditions.checkArgument(tensor.shape().dimensionality() &gt;= 1, &quot;tensor must contain at least one dimension&quot;);</span>
+<span class="fc" id="L45">        return Tensorics.from(tensor).reduce(dimensionClass).by(new ToFunctions&lt;&gt;());</span>
+    }
+
+    public static &lt;X, Y&gt; DiscreteFunction&lt;X, Y&gt; functionFrom1DTensor(Tensor&lt;Y&gt; tensor, Class&lt;X&gt; dimensionClass) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        Preconditions.checkArgument(tensor.shape().dimensionality() == 1, &quot;tensor must be one-dimensional&quot;);</span>
+<span class="fc" id="L50">        return functionsFrom(tensor, dimensionClass).get();</span>
+    }
+
+    public static &lt;X, Y&gt; InterpolatedFunction&lt;X, Y&gt; interpolated(DiscreteFunction&lt;X, Y&gt; function,
+            InterpolationStrategy&lt;Y&gt; strategy, Conversion&lt;X, Y&gt; conversion, Comparator&lt;X&gt; comparator) {
+<span class="fc" id="L55">        return new DefaultInterpolatedFunction&lt;&gt;(function, strategy, conversion, comparator);</span>
+    }
+
+    public static &lt;X, Y&gt; Collection&lt;Y&gt; yValuesOf(DiscreteFunction&lt;X, Y&gt; function) {
+<span class="fc" id="L59">        Preconditions.checkNotNull(function, &quot;function cannot be null!&quot;);</span>
+<span class="fc" id="L60">        return function.definedXValues().stream().map(function::apply).collect(Collectors.toList());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

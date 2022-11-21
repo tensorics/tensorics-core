@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensorSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.lang</a> &gt; <span class="el_source">TensorSupport.java</span></div><h1>TensorSupport.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.lang;
+
+import org.tensorics.core.commons.options.Environment;
+import org.tensorics.core.iterable.lang.ScalarIterableSupport;
+import org.tensorics.core.math.operations.BinaryFunction;
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.ElementBinaryFunction;
+import org.tensorics.core.tensor.operations.ElementBinaryOperation;
+import org.tensorics.core.tensor.operations.ElementUnaryOperation;
+import org.tensorics.core.tensor.operations.SingleValueTensorCreationOperation;
+
+/**
+ * Extends the usage of fields by operations defined on tensors
+ * 
+ * @author kfuchsbe, agorzaws
+ * @param &lt;V&gt; the type of the elements of the tensor(ic)
+ */
+public class TensorSupport&lt;V&gt; extends ScalarIterableSupport&lt;V&gt; {
+
+    private final Environment&lt;V&gt; environment;
+
+    public TensorSupport(Environment&lt;V&gt; environment) {
+<span class="fc" id="L47">        super(environment.field());</span>
+<span class="fc" id="L48">        this.environment = environment;</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Allows to perform calculation on given tensoric.
+     * 
+     * @param tensoric to calculate with.
+     * @return expression to calculate.
+     */
+    public final &lt;C&gt; OngoingTensorOperation&lt;C, V&gt; calculate(Tensor&lt;V&gt; tensoric) {
+<span class="fc" id="L58">        return new OngoingTensorOperation&lt;&gt;(environment, tensoric);</span>
+    }
+
+    /**
+     * returns a ZERO value {@link Tensor} for given {@link Shape}.
+     * 
+     * @param shape to use.
+     * @return a {@link Tensor} of given {@link Shape} filled with 0.0;
+     */
+    public Tensor&lt;V&gt; zeros(Shape shape) {
+<span class="nc" id="L68">        return new SingleValueTensorCreationOperation&lt;V&gt;(shape, environment.field().zero()).perform();</span>
+    }
+
+    /**
+     * returns a IDENTITY value {@link Tensor} for given {@link Shape}.
+     * 
+     * @param shape to use.
+     * @return a {@link Tensor} of given {@link Shape} filled with field identities;
+     */
+    public Tensor&lt;V&gt; ones(Shape shape) {
+<span class="nc" id="L78">        return new SingleValueTensorCreationOperation&lt;V&gt;(shape, environment.field().one()).perform();</span>
+    }
+
+    /**
+     * @param tensor to use.s
+     * @return a {@link Tensor} with field inverse values
+     */
+    public Tensor&lt;V&gt; elementInverseOf(Tensor&lt;V&gt; tensor) {
+<span class="nc" id="L86">        return new ElementUnaryOperation&lt;V&gt;(environment.field().multiplicativeInversion()).perform(tensor);</span>
+    }
+
+    /**
+     * @param tensor to use
+     * @return a {@link Tensor} of negative values
+     */
+    public Tensor&lt;V&gt; negativeOf(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L94">        return new ElementUnaryOperation&lt;V&gt;(environment.field().additiveInversion()).perform(tensor);</span>
+    }
+
+    /**
+     * Starting clause for a fluent expression to resample a tensor, using structural resamplings (e.g. repeating), but
+     * also field aware resamplings (e.g. linear interpolation). For example:
+     * 
+     * &lt;pre&gt;
+     * &lt;code&gt;
+     * Tensoric&amp;#60;Double&amp;#62; resampled = resample(aDoubleTensor)
+     *                           .repeat(String.class)
+     *                           .then().linear(Integer.class, Integer::doubleValue)
+     *                           .toTensoric();
+     * &lt;/code&gt;
+     * &lt;/pre&gt;
+     * 
+     * Note: The order of the options is important, as the resampling will be performed in the given order!
+     * &lt;p&gt;
+     * For options which do not require a field, see the version in {@link TensorStructurals#resample(Tensor)}.
+     * 
+     * @param tensor the tensor to be resampled
+     * @return an object to define further the strategy for resampling.
+     */
+    public OngoingFieldAwareResamplingStart&lt;V&gt; resample(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L118">        return new OngoingFieldAwareResamplingStart&lt;&gt;(tensor, environment.field());</span>
+    }
+
+    public &lt;S&gt; Tensor&lt;S&gt; elementwise(BinaryOperation&lt;S&gt; operation, Tensor&lt;S&gt; left, Tensor&lt;S&gt; right) {
+<span class="nc" id="L122">        return new ElementBinaryOperation&lt;&gt;(operation, environment.options()).perform(left, right);</span>
+    }
+
+    public &lt;S, R&gt; Tensor&lt;R&gt; elementwise(BinaryFunction&lt;S, R&gt; operation, Tensor&lt;S&gt; left, Tensor&lt;S&gt; right) {
+<span class="nc" id="L126">        return new ElementBinaryFunction&lt;&gt;(operation, environment.options()).perform(left, right);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Trees.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tree.walking</a> &gt; <span class="el_source">Trees.java</span></div><h1>Trees.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tree.walking;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.tensorics.core.tree.domain.Node;
+import org.tensorics.core.tree.domain.Path;
+import org.tensorics.core.tree.domain.RebuildableNode;
+import org.tensorics.core.tree.domain.RebuildingContext;
+import org.tensorics.core.tree.domain.RebuildingContextImpl;
+
+import com.google.common.reflect.TypeToken;
+
+/**
+ * Provides utility methods to walk through a tree of {@link Node}s.
+ * 
+ * @author kfuchsbe, agorzaws
+ */
+public final class Trees {
+
+<span class="fc" id="L47">    private static final TreeWalker PARENT_AFTER_CHILDREN_WALKER = new ParentAfterChildrenWalker();</span>
+
+    /**
+     * private constructor to avoid instantiation
+     */
+    private Trees() {
+        /* only static methods */
+    }
+
+    /**
+     * Traverses the tree, starting from the given node in a way, such that all children are visited before the parent
+     * node is visited. It allows to provide a callback which will be called at different points of the traversal,
+     * depending on the implemented interfaces of the callback.
+     * 
+     * @see TreeWalker
+     * @param startingNode the node which should be considered as the root node for the walk-through
+     * @param callback the callback which will be called at certain points of the traversal, depending on the interfaces
+     *            which are implemented by the callback.
+     * @see NodeCallback
+     */
+    public static void walkParentAfterChildren(Node startingNode, NodeCallback callback) {
+<span class="fc" id="L68">        PARENT_AFTER_CHILDREN_WALKER.walk(startingNode, callback);</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Retrieves the content of the given subtree. All children will be returned in the list, before the parent is
+     * returned.
+     * 
+     * @param rootNode The node which shall be taken as root of the tree.
+     * @return a list containing all nodes of the tree, where all the children are put before their common parent node.
+     */
+    public static List&lt;Node&gt; subTreeContent(Node rootNode) {
+<span class="fc" id="L79">        final List&lt;Node&gt; content = new ArrayList&lt;Node&gt;();</span>
+<span class="fc" id="L80">        PARENT_AFTER_CHILDREN_WALKER.walk(rootNode, new EveryNodeCallback() {</span>
+            @Override
+            public void onEvery(Node node) {
+<span class="fc" id="L83">                content.add(node);</span>
+<span class="fc" id="L84">            }</span>
+        });
+<span class="fc" id="L86">        return content;</span>
+    }
+
+    /**
+     * Searches in the tree for paths between the two given nodes. The direction of the path will be from the childNode
+     * to the ancestor. The childNode will be the first element of each path and the given ancestor node the last
+     * element.
+     * 
+     * @param childNode the node from which the paths to be found shall start
+     * @param ancestorNode the ancestor node, which will be the end node of each path
+     * @return all the paths from childNode to ancestorNode
+     */
+    public static List&lt;Path&gt; getPathsFromChildToAncestor(final Node childNode, final Node ancestorNode) {
+<span class="fc" id="L99">        final List&lt;Path&gt; paths = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (childNode.equals(ancestorNode)) {</span>
+<span class="fc" id="L101">            paths.add(new Path(Arrays.asList(childNode)));</span>
+<span class="fc" id="L102">            return paths;</span>
+        }
+
+<span class="fc" id="L105">        walkParentAfterChildren(ancestorNode, new StepUpCallback() {</span>
+
+            @Override
+            public void onStepUpFromChildToParent(Node child, Node parent) {
+<span class="fc bfc" id="L109" title="All 2 branches covered.">                if (childNode.equals(child)) {</span>
+<span class="fc" id="L110">                    Path newPath = new Path();</span>
+<span class="fc" id="L111">                    newPath.add(child);</span>
+<span class="fc" id="L112">                    newPath.add(parent);</span>
+<span class="fc" id="L113">                    paths.add(newPath);</span>
+                }
+
+<span class="fc bfc" id="L116" title="All 2 branches covered.">                for (Path path : paths) {</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">                    if (child.equals(getLastElement(path))) {</span>
+<span class="fc" id="L118">                        path.add(parent);</span>
+                    }
+<span class="fc" id="L120">                }</span>
+<span class="fc" id="L121">            }</span>
+
+            private Node getLastElement(Path curentPath) {
+<span class="fc" id="L124">                List&lt;Node&gt; nodeList = curentPath.getPath();</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                if (!nodeList.isEmpty()) {</span>
+<span class="fc" id="L126">                    return nodeList.get(nodeList.size() - 1);</span>
+                }
+<span class="nc" id="L128">                return null;</span>
+            }
+
+        });
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (paths.isEmpty()) {</span>
+<span class="fc" id="L133">            throw new PathDoesNotExistException(childNode, ancestorNode);</span>
+        }
+<span class="fc" id="L135">        return paths;</span>
+    }
+
+    /**
+     * Searches for all bottom nodes of the tree. Bottom nodes are those, which are furthest away from the startingNode
+     * on a given branch. (In other words, those with no more children)
+     * 
+     * @param startingNode the node which shall be used as root of the tree.
+     * @return a list of all the nodes which are at the bottom of the tree (i.e. which have no children).
+     */
+    public static Collection&lt;Node&gt; findBottomNodes(Node startingNode) {
+<span class="fc" id="L146">        final Set&lt;Node&gt; bottomNodes = new HashSet&lt;Node&gt;();</span>
+<span class="fc" id="L147">        walkParentAfterChildren(startingNode, new BottomNodeCallback() {</span>
+            @Override
+            public void onBottom(Node node) {
+<span class="fc" id="L150">                bottomNodes.add(node);</span>
+<span class="fc" id="L151">            }</span>
+        });
+<span class="fc" id="L153">        return bottomNodes;</span>
+    }
+
+    /**
+     * Rebuilds the tree by taking elements from given context.
+     * 
+     * @param rootNode the root node of the tree
+     * @param rebuildingContext the context containing the elements needed for rebuilding of the tree
+     * @return a new root node of rebuilt tree
+     */
+    public static &lt;T extends Node&gt; T rebuildTree(T rootNode, final RebuildingContext rebuildingContext) {
+<span class="nc" id="L164">        final RebuildingContext newRebuildingContext = new RebuildingContextImpl(rebuildingContext);</span>
+<span class="nc" id="L165">        walkParentAfterChildren(rootNode, new EveryNodeCallback() {</span>
+            @Override
+            public void onEvery(Node node) {
+<span class="nc bnc" id="L168" title="All 4 branches missed.">                if ((node instanceof RebuildableNode) &amp;&amp; (!newRebuildingContext.containsUpdated(node))) {</span>
+<span class="nc" id="L169">                    newRebuildingContext.put(node,</span>
+<span class="nc" id="L170">                            ((RebuildableNode&lt;?&gt;) node).rebuildWithNewChildren(newRebuildingContext));</span>
+                }
+<span class="nc" id="L172">            }</span>
+        });
+<span class="nc" id="L174">        return newRebuildingContext.getUpdatedOrSame(rootNode);</span>
+    }
+
+    /**
+     * walks through the tree, starting from the given rootNode and collects all the nodes which implement the given
+     * class. The given class is not restricted to s subclass of a node, because it could potentially be a marker
+     * interface. However, the returned set will implement both, Node and the queried type.
+     * 
+     * @param rootNode the node from which to start the search
+     * @param nodeClassToFind the class of the nodes to find
+     * @return a set of all found nodes, which implement the given class
+     */
+    public static &lt;T&gt; Set&lt;T&gt; findNodesOfClass(Node rootNode, final Class&lt;T&gt; nodeClassToFind) {
+<span class="fc" id="L187">        final Set&lt;T&gt; foundNodes = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L188">        walkParentAfterChildren(rootNode, new EveryNodeCallback() {</span>
+            @Override
+            public void onEvery(Node node) {
+<span class="fc bfc" id="L191" title="All 2 branches covered.">                if (nodeClassToFind.isInstance(node)) {</span>
+<span class="fc" id="L192">                    foundNodes.add(nodeClassToFind.cast(node));</span>
+                }
+<span class="fc" id="L194">            }</span>
+        });
+<span class="fc" id="L196">        return foundNodes;</span>
+    }
+
+    /**
+     * walks through the tree, starting from the given rootNode and collects the highest node which implement the given
+     * class.
+     * 
+     * @param rootNode the node from which to start the search
+     * @param nodeClassToFind the class of the nodes to find
+     * @return a set of one found Node, which implement the given class
+     */
+    public static &lt;T extends Node&gt; Set&lt;? extends T&gt; findHighestNodeOfClass(final Node rootNode,
+            final Class&lt;T&gt; nodeClassToFind) {
+<span class="nc" id="L209">        final Set&lt;T&gt; foundNodes = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L210">        walkParentAfterChildren(rootNode, new EveryNodeCallback() {</span>
+            @Override
+            public void onEvery(Node node) {
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                if (nodeClassToFind.isInstance(node)) {</span>
+<span class="nc" id="L214">                    foundNodes.clear();</span>
+<span class="nc" id="L215">                    foundNodes.add(nodeClassToFind.cast(node));</span>
+                }
+<span class="nc" id="L217">            }</span>
+        });
+<span class="nc" id="L219">        return foundNodes;</span>
+    }
+
+    /**
+     * Searches ancestor nodes which match the given {@link TypeToken} (taking into account all generic parameters!),
+     * starting from the given child not while using the tree as defined by the given rootNode. This is eg. used for
+     * finding nodes, that can handle Exceptions. If the child node id not part of the tree then an empty set is
+     * returned. If there exist paths between the two nodes, then it is enforced, that in this paths a matching node is
+     * found. If this is not the case, an exception will be thrown. If the same node is found in different paths, then
+     * the corresponding node is only contained once in the set.
+     * 
+     * @param childNode the node for which the closest ancestors shall be found.
+     * @param rootNode the node which defines the root of the tree.
+     * @param nodeToken the token, against which the nodes are matched.
+     * @return a set of {@link Node} containing for each path the closest {@link Node} that match the given
+     *         {@link TypeToken}
+     * @throws NoMatchingNodeFoundException if there exists a path, that does not contain a matching node.
+     */
+    public static &lt;T extends Node&gt; Set&lt;T&gt; findClosestAncestorNodeFromNodesToRootOfType(Node childNode, Node rootNode,
+            TypeToken&lt;T&gt; nodeToken) throws NoMatchingNodeFoundException {
+<span class="fc" id="L239">        List&lt;Path&gt; paths = getPathsFromChildToAncestor(childNode, rootNode);</span>
+
+<span class="fc" id="L241">        Set&lt;T&gt; toReturn = new HashSet&lt;T&gt;();</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        for (Path path : paths) {</span>
+<span class="fc" id="L243">            T foundNode = findFirstNodeOfType(path.getPath(), nodeToken);</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">            if (foundNode == null) {</span>
+<span class="fc" id="L245">                throw new NoMatchingNodeFoundException(</span>
+                        &quot;No matching node was found for at least one path. This is not allowed.&quot;);
+            }
+<span class="fc" id="L248">            toReturn.add(foundNode);</span>
+<span class="fc" id="L249">        }</span>
+<span class="fc" id="L250">        return toReturn;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private static &lt;T&gt; T findFirstNodeOfType(List&lt;Node&gt; currentPath, TypeToken&lt;T&gt; nodeToken) {
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        for (Node actualCheckedNode : currentPath) {</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">            if (nodeToken.isSupertypeOf(actualCheckedNode.getClass())) {</span>
+<span class="fc" id="L257">                return (T) actualCheckedNode;</span>
+            }
+<span class="fc" id="L259">        }</span>
+<span class="fc" id="L260">        return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

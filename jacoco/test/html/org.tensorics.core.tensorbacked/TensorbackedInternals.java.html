@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensorbackedInternals.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensorbacked</a> &gt; <span class="el_source">TensorbackedInternals.java</span></div><h1>TensorbackedInternals.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensorbacked;
+
+import static java.util.stream.Collectors.toList;
+import static org.tensorics.core.util.InstantiatorType.CONSTRUCTOR;
+import static org.tensorics.core.util.Instantiators.instantiatorFor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.reflect.TypeToken;
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.tensor.Positions;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensorbacked.annotation.Dimensions;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Streams;
+import org.tensorics.core.tensorbacked.dimtyped.DimtypedTensorbacked;
+import org.tensorics.core.tensorbacked.dimtyped.DimtypedTypes;
+
+/**
+ * This class gives an access to the methods for {@link Tensorbacked} object support.
+ *
+ * @author agorzaws, kfuchsbe
+ */
+public final class TensorbackedInternals {
+
+    private TensorbackedInternals() {
+        /* Only static methods */
+    }
+
+    /**
+     * Retrieves the dimensions from the given class inheriting from tensor backed. This is done by inspecting the
+     * {@link Dimensions} annotation.
+     *
+     * @param tensorBackedClass the class for which to determine the dimensions
+     * @return the set of dimensions (classses of coordinates) which are required to create an instance of the given
+     * class.
+     */
+    public static &lt;T extends Tensorbacked&lt;?&gt;&gt; Set&lt;Class&lt;?&gt;&gt; dimensionsOf(Class&lt;T&gt; tensorBackedClass) {
+<span class="fc" id="L68">        return ImmutableSet.copyOf(dimensionListFrom(tensorBackedClass));</span>
+    }
+
+    public static &lt;T extends Tensorbacked&lt;?&gt;&gt; List&lt;Class&lt;?&gt;&gt; dimensionListFrom(Class&lt;T&gt; tensorBackedClass) {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (DimtypedTensorbacked.class.isAssignableFrom(tensorBackedClass)) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (tensorBackedClass.isAnnotationPresent(Dimensions.class)) {</span>
+<span class="fc" id="L74">                throw new IllegalArgumentException(&quot;No annotation of type '&quot; + Dimensions.class + &quot;' must be present in case &quot; +</span>
+                        DimtypedTensorbacked.class + &quot; is implemented. This rule is violated for class &quot; + tensorBackedClass + &quot;.&quot;);
+            }
+<span class="fc" id="L77">            return DimtypedTypes.dimensionListFrom((Class&lt;? extends DimtypedTensorbacked&gt;) tensorBackedClass);</span>
+        } else {
+<span class="fc" id="L79">            Dimensions dimensionAnnotation = tensorBackedClass.getAnnotation(Dimensions.class);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (dimensionAnnotation == null) {</span>
+<span class="fc" id="L81">                throw new IllegalArgumentException(</span>
+                        &quot;Neither an annotation of type '&quot; + Dimensions.class + &quot;' is present on the class '&quot; + tensorBackedClass
+                                + &quot;', nor does it inherit from &quot; + DimtypedTensorbacked.class + &quot;. Therefore, the dimensions of this tensorbacked type cannot be determined.&quot;);
+            }
+<span class="fc" id="L85">            return ImmutableList.copyOf(dimensionAnnotation.value());</span>
+        }
+    }
+
+
+    /**
+     * Creates an instance of a class backed by a tensor.
+     *
+     * @param tensorBackedClass the type of the class for which to create an instance.
+     * @param tensor            the tensor to back the instance
+     * @return a new instance of the given class, backed by the given tensor
+     */
+    public static &lt;V, T extends Tensorbacked&lt;V&gt;&gt; T createBackedByTensor(Class&lt;T&gt; tensorBackedClass, Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L98">        Tensor&lt;V&gt; dimensionAdjustedTensor = ensureExactTensorbackedDimensions(tensorBackedClass, tensor);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (tensorBackedClass.isInterface()) {</span>
+<span class="fc" id="L100">            return ProxiedInterfaceTensorbackeds.create(tensorBackedClass, dimensionAdjustedTensor);</span>
+        } else {
+<span class="fc" id="L102">            return createByConstructor(tensorBackedClass, dimensionAdjustedTensor);</span>
+        }
+    }
+
+    private static &lt;V, T extends Tensorbacked&lt;V&gt;&gt; T createByConstructor(Class&lt;T&gt; tensorBackedClass, Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L107">        return instantiatorFor(tensorBackedClass).ofType(CONSTRUCTOR).withArgumentType(Tensor.class).create(tensor);</span>
+    }
+
+    static &lt;T extends Tensorbacked&lt;V&gt;, V&gt; void verifyDimensions(Class&lt;T&gt; tensorBackedClass, Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L111">        Set&lt;Class&lt;?&gt;&gt; targetDimensions = dimensionsOf(tensorBackedClass);</span>
+<span class="fc" id="L112">        Set&lt;Class&lt;?&gt;&gt; tensorDimensions = tensor.shape().dimensionSet();</span>
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (!Positions.areDimensionsConsistent(targetDimensions, tensorDimensions)) {</span>
+<span class="fc" id="L115">            throw new IllegalArgumentException(&quot;Dimensions of tensorbacked target class (&quot; + targetDimensions</span>
+                    + &quot;) do not match dimensions of given tensor (&quot; + tensorDimensions + &quot;). Cannot create tensorbacked object.&quot;);
+        }
+<span class="fc" id="L118">    }</span>
+
+    public static &lt;S&gt; Iterable&lt;Tensor&lt;S&gt;&gt; tensorsOf(Iterable&lt;? extends Tensorbacked&lt;S&gt;&gt; tensorbackeds) {
+<span class="fc" id="L121">        List&lt;Tensor&lt;S&gt;&gt; tensors = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        for (Tensorbacked&lt;S&gt; tensorbacked : tensorbackeds) {</span>
+<span class="fc" id="L123">            tensors.add(tensorbacked.tensor());</span>
+<span class="fc" id="L124">        }</span>
+<span class="fc" id="L125">        return tensors;</span>
+    }
+
+    public static final &lt;TB extends Tensorbacked&lt;?&gt;&gt; Iterable&lt;Shape&gt; shapesOf(Iterable&lt;TB&gt; tensorbackeds) {
+<span class="nc" id="L129">        return Streams.stream(tensorbackeds).map(tb -&gt; tb.tensor().shape()).collect(toList());</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public static final &lt;V, TB extends Tensorbacked&lt;V&gt;&gt; Class&lt;TB&gt; classOf(TB tensorBacked) {
+<span class="fc" id="L134">        Optional&lt;Class&lt;TB&gt;&gt; proxiedInterface = ProxiedInterfaceTensorbackeds.tensorbackedInterfaceFrom(tensorBacked);</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (proxiedInterface.isPresent()) {</span>
+<span class="fc" id="L136">            return proxiedInterface.get();</span>
+        }
+<span class="fc" id="L138">        return (Class&lt;TB&gt;) tensorBacked.getClass();</span>
+    }
+
+    /*
+     * This method ensures that the tensorbacked will have exactly the dimensions as annotatet, even if e.g. a tensor
+     * with subclass dimensions is passed in.
+     *
+     * NB: For the moment the same calls are kept in the abstract tensorbacked... However, they could potentially be removed,
+     *  except we assume that somebody calls this constructor directly...?
+     */
+    public static &lt;TB extends Tensorbacked&lt;E&gt;, E&gt; Tensor&lt;E&gt; ensureExactTensorbackedDimensions(Class&lt;TB&gt; tensorbackedClass, Tensor&lt;E&gt; tensor) {
+<span class="fc" id="L149">        verifyDimensions(tensorbackedClass, tensor);</span>
+<span class="fc" id="L150">        Set&lt;Class&lt;?&gt;&gt; annotatedDimensions = dimensionsOf(tensorbackedClass);</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (annotatedDimensions.equals(tensor.shape().dimensionSet())) {</span>
+<span class="fc" id="L152">            return tensor;</span>
+        } else {
+<span class="nc" id="L154">            return copyWithDimensions(tensor, annotatedDimensions);</span>
+        }
+    }
+
+    private static &lt;E&gt; Tensor&lt;E&gt; copyWithDimensions(Tensor&lt;E&gt; tensor, Set&lt;Class&lt;?&gt;&gt; annotatedDimensions) {
+<span class="nc" id="L159">        TensorBuilder&lt;E&gt; builder = Tensorics.builder(annotatedDimensions);</span>
+<span class="nc" id="L160">        builder.putAll(tensor);</span>
+<span class="nc" id="L161">        builder.context(tensor.context());</span>
+<span class="nc" id="L162">        return builder.build();</span>
+    }
+
+    /**
+     * Determines the type of the value of the given tensorbacked class.
+     *
+     * @param tensorBackedClass the class from which to determine the value type
+     * @param &lt;T&gt;               the type of the tensorbacked
+     * @return the type of the value
+     */
+    public static &lt;V, T extends Tensorbacked&lt;V&gt;&gt; Class&lt;V&gt; valueTypeFrom(Class&lt;T&gt; tensorBackedClass) {
+<span class="fc" id="L173">        TypeToken&lt;T&gt; tbToken = TypeToken.of(tensorBackedClass);</span>
+<span class="fc" id="L174">        TypeToken&lt;?&gt; valueToken = tbToken.resolveType(Tensorbacked.class.getTypeParameters()[0]);</span>
+<span class="fc" id="L175">        return (Class&lt;V&gt;) valueToken.getRawType();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoContraDimensionPair.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.variance</a> &gt; <span class="el_source">CoContraDimensionPair.java</span></div><h1>CoContraDimensionPair.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.variance;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+/**
+ * Represents a pair of dimensions, related to two different tensors (left, right), where either one has to be the
+ * covariant equivalent to the second contravariant dimension.
+ * 
+ * @author kfuchsbe
+ */
+public final class CoContraDimensionPair {
+
+    private final Class&lt;?&gt; leftDimension;
+    private final Class&lt;?&gt; rightDimension;
+
+    private CoContraDimensionPair(Class&lt;?&gt; leftDimension, Class&lt;?&gt; rightDimension) {
+<span class="fc" id="L40">        super();</span>
+<span class="fc" id="L41">        checkNotNull(leftDimension, &quot;left dimension must not be null.&quot;);</span>
+<span class="fc" id="L42">        checkNotNull(rightDimension, &quot;right dimension must not be null.&quot;);</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (!Covariants.isCoContraPair(leftDimension, rightDimension)) {</span>
+<span class="fc" id="L44">            throw new IllegalArgumentException(&quot;The dimensions [&quot; + leftDimension + &quot;,&quot; + rightDimension</span>
+                    + &quot;] do not form a co- and contravariant pair.&quot;);
+        }
+<span class="fc" id="L47">        this.leftDimension = leftDimension;</span>
+<span class="fc" id="L48">        this.rightDimension = rightDimension;</span>
+<span class="fc" id="L49">    }</span>
+
+    public static CoContraDimensionPair ofLeftRight(Class&lt;?&gt; leftDimension, Class&lt;?&gt; rightDimension) {
+<span class="fc" id="L52">        return new CoContraDimensionPair(leftDimension, rightDimension);</span>
+    }
+
+    public Class&lt;?&gt; left() {
+<span class="fc" id="L56">        return leftDimension;</span>
+    }
+
+    public Class&lt;?&gt; right() {
+<span class="fc" id="L60">        return rightDimension;</span>
+    }
+
+    /**
+     * Retrieves the covariant part of the pair, no matter if it is left or right
+     * 
+     * @return the covariant part
+     */
+    public Class&lt;?&gt; covariant() {
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (Covariants.isCovariant(leftDimension)) {</span>
+<span class="fc" id="L70">            return leftDimension;</span>
+        }
+<span class="fc" id="L72">        return rightDimension;</span>
+    }
+
+    /**
+     * Retrieves the contravariant part of the pair, no matter if it is left or right
+     * 
+     * @return the contravariant part
+     */
+    public Class&lt;?&gt; contravariant() {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (Covariants.isContravariant(leftDimension)) {</span>
+<span class="fc" id="L82">            return leftDimension;</span>
+        }
+<span class="fc" id="L84">        return rightDimension;</span>
+    }
+
+    public Object toLeft(Object rightCoordinate) {
+<span class="nc" id="L88">        return convertFromTo(rightCoordinate, rightDimension, leftDimension);</span>
+    }
+
+    public Object toRight(Object leftCoordinate) {
+<span class="fc" id="L92">        return convertFromTo(leftCoordinate, leftDimension, rightDimension);</span>
+    }
+
+    private Object convertFromTo(Object coordinate, Class&lt;?&gt; fromDimension, Class&lt;?&gt; toDimension) {
+<span class="fc" id="L96">        checkArgument(fromDimension.isInstance(coordinate),</span>
+                &quot;The coordinate {} is not compatible with the dimension {}. Cannot convert.&quot;, //
+                coordinate, fromDimension);
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (Covariants.isCovariant(fromDimension)) {</span>
+<span class="fc" id="L100">            Covariant&lt;?&gt; covariant = (Covariant&lt;?&gt;) coordinate;</span>
+<span class="fc" id="L101">            return covariant.get();</span>
+        } else {
+            @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L104">            Class&lt;? extends Covariant&lt;Object&gt;&gt; covariantClass = (Class&lt;? extends Covariant&lt;Object&gt;&gt;) toDimension;</span>
+<span class="fc" id="L105">            return Covariants.instantiatorFor(covariantClass).create(coordinate);</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

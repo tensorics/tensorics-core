@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ElementBinaryFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.operations</a> &gt; <span class="el_source">ElementBinaryFunction.java</span></div><h1>ElementBinaryFunction.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.tensor.operations;
+
+import java.io.Serializable;
+import java.util.Collections;
+
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.commons.options.OptionRegistry;
+import org.tensorics.core.math.operations.BinaryFunction;
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorPair;
+import org.tensorics.core.tensor.options.BroadcastingStrategy;
+import org.tensorics.core.tensor.options.ContextPropagationStrategy;
+import org.tensorics.core.tensor.options.ShapingStrategy;
+
+public class ElementBinaryFunction&lt;V, R&gt; implements BinaryFunction&lt;Tensor&lt;V&gt;, Tensor&lt;R&gt;&gt;, Serializable {
+
+    private static final long serialVersionUID = 1L;
+    protected final BinaryFunction&lt;V, R&gt; operation;
+    protected final OptionRegistry&lt;ManipulationOption&gt; optionRegistry;
+
+    public ElementBinaryFunction(BinaryFunction&lt;V, R&gt; operation, OptionRegistry&lt;ManipulationOption&gt; optionRegistry) {
+<span class="fc" id="L47">        super();</span>
+<span class="fc" id="L48">        this.operation = operation;</span>
+<span class="fc" id="L49">        this.optionRegistry = optionRegistry;</span>
+<span class="fc" id="L50">    }</span>
+
+    @Override
+    public Tensor&lt;R&gt; perform(Tensor&lt;V&gt; left, Tensor&lt;V&gt; right) {
+<span class="fc" id="L54">        TensorPair&lt;V&gt; broadcastedPair = broadcast(left, right);</span>
+<span class="fc" id="L55">        Shape resultingShape = shape(broadcastedPair);</span>
+<span class="fc" id="L56">        Position resultingContext = contextLeftRight(left, right);</span>
+<span class="fc" id="L57">        return performOperation(broadcastedPair.left(), broadcastedPair.right(), resultingShape, resultingContext);</span>
+    }
+
+    private Position contextLeftRight(Tensor&lt;V&gt; left, Tensor&lt;V&gt; right) {
+<span class="fc" id="L61">        ContextPropagationStrategy strategy = optionRegistry.get(ContextPropagationStrategy.class);</span>
+<span class="fc" id="L62">        return strategy.contextForLeftRight(left.context(), right.context());</span>
+    }
+
+    private Tensor&lt;R&gt; performOperation(Tensor&lt;V&gt; left, Tensor&lt;V&gt; right, Shape resultingShape,
+            Position resultingContext) {
+<span class="fc" id="L67">        Builder&lt;R&gt; tensorBuilder = ImmutableTensor.builder(resultingShape.dimensionSet());</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (Position position : resultingShape.positionSet()) {</span>
+<span class="fc" id="L69">            tensorBuilder.put(position, operation.perform(left.get(position), right.get(position)));</span>
+<span class="fc" id="L70">        }</span>
+<span class="fc" id="L71">        tensorBuilder.context(resultingContext);</span>
+<span class="fc" id="L72">        return tensorBuilder.build();</span>
+    }
+
+    private Shape shape(TensorPair&lt;V&gt; broadcasted) {
+<span class="fc" id="L76">        ShapingStrategy strategy = optionRegistry.get(ShapingStrategy.class);</span>
+<span class="fc" id="L77">        return strategy.shapeLeftRight(broadcasted.left(), broadcasted.right());</span>
+    }
+
+    private TensorPair&lt;V&gt; broadcast(Tensor&lt;V&gt; left, Tensor&lt;V&gt; right) {
+<span class="fc" id="L81">        BroadcastingStrategy broadcastingStrategy = optionRegistry.get(BroadcastingStrategy.class);</span>
+<span class="fc" id="L82">        return broadcastingStrategy.broadcast(left, right, Collections.&lt;Class&lt;?&gt;&gt; emptySet());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L87">        final int prime = 31;</span>
+<span class="nc" id="L88">        int result = 1;</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        result = prime * result + ((operation == null) ? 0 : operation.hashCode());</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        result = prime * result + ((optionRegistry == null) ? 0 : optionRegistry.hashCode());</span>
+<span class="nc" id="L91">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L97">            return true;</span>
+        }
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L100">            return false;</span>
+        }
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L103">            return false;</span>
+        }
+<span class="nc" id="L105">        ElementBinaryFunction&lt;?, ?&gt; other = (ElementBinaryFunction&lt;?, ?&gt;) obj;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (operation == null) {</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (other.operation != null) {</span>
+<span class="nc" id="L108">                return false;</span>
+            }
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        } else if (!operation.equals(other.operation)) {</span>
+<span class="nc" id="L111">            return false;</span>
+        }
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (optionRegistry == null) {</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            if (other.optionRegistry != null) {</span>
+<span class="nc" id="L115">                return false;</span>
+            }
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        } else if (!optionRegistry.equals(other.optionRegistry)) {</span>
+<span class="nc" id="L118">            return false;</span>
+        }
+<span class="nc" id="L120">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L125">        return &quot;ElementBinaryFunction [operation=&quot; + operation + &quot;, optionRegistry=&quot; + optionRegistry + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

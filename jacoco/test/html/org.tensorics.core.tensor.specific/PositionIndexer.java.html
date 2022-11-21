@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PositionIndexer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.specific</a> &gt; <span class="el_source">PositionIndexer.java</span></div><h1>PositionIndexer.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.tensor.specific;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.tensorics.core.tensor.Position;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+
+/**
+ * Encapsulates the mapping positions to integer indizes, which allow to address entries within an array.
+ * 
+ * @author kaifox
+ */
+public final class PositionIndexer {
+
+    private final Map&lt;Class&lt;?&gt;, Map&lt;?, Integer&gt;&gt; mapping;
+    private final Map&lt;Class&lt;?&gt;, Integer&gt; dimensionFactors;
+    private final int size;
+
+<span class="fc" id="L49">    PositionIndexer(Builder builder) {</span>
+<span class="fc" id="L50">        builder.checkBoundary();</span>
+<span class="fc" id="L51">        this.mapping = builder.createMapping();</span>
+<span class="fc" id="L52">        this.dimensionFactors = builder.createFactors();</span>
+<span class="fc" id="L53">        this.size = (int) builder.arrayDimension();</span>
+<span class="fc" id="L54">    }</span>
+
+    public int indexFor(Position position) {
+<span class="fc" id="L57">        Preconditions.checkArgument(position.dimensionSet().equals(mapping.keySet()),</span>
+                &quot;Dimensions of the position do not match the dimensions available in the mapping.&quot;);
+<span class="fc" id="L59">        int index = 0;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (Entry&lt;Class&lt;?&gt;, Integer&gt; factor : dimensionFactors.entrySet()) {</span>
+<span class="fc" id="L61">            Class&lt;?&gt; dimension = factor.getKey();</span>
+<span class="fc" id="L62">            Object coordinate = position.coordinateFor(dimension);</span>
+<span class="fc" id="L63">            index += (mapping.get(dimension).get(coordinate) * factor.getValue());</span>
+<span class="fc" id="L64">        }</span>
+<span class="fc" id="L65">        return index;</span>
+    }
+
+    public Set&lt;Position&gt; allPositions() {
+<span class="nc" id="L69">        ImmutableSet.Builder&lt;Position&gt; builder = ImmutableSet.builder();</span>
+<span class="nc" id="L70">        Set&lt;List&lt;Object&gt;&gt; allCombinations = Sets.cartesianProduct(coordinateSets());</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        for (List&lt;Object&gt; coordinates : allCombinations) {</span>
+<span class="nc" id="L72">            builder.add(Position.of(coordinates));</span>
+<span class="nc" id="L73">        }</span>
+<span class="nc" id="L74">        return builder.build();</span>
+    }
+
+    private List&lt;Set&lt;?&gt;&gt; coordinateSets() {
+<span class="nc" id="L78">        List&lt;Set&lt;?&gt;&gt; sets = new ArrayList&lt;Set&lt;?&gt;&gt;();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        for (Map&lt;?, Integer&gt; map : mapping.values()) {</span>
+<span class="nc" id="L80">            sets.add(map.keySet());</span>
+<span class="nc" id="L81">        }</span>
+<span class="nc" id="L82">        return sets;</span>
+    }
+
+    public static Builder builder() {
+<span class="fc" id="L86">        return new Builder();</span>
+    }
+
+    public int arraySize() {
+<span class="nc" id="L90">        return size;</span>
+    }
+
+    public Set&lt;Class&lt;?&gt;&gt; dimensions() {
+<span class="nc" id="L94">        return mapping.keySet();</span>
+    }
+
+    /**
+     * The builder for a position indexer.
+     * 
+     * @author kfuchsbe
+     */
+    public static class Builder {
+
+<span class="fc" id="L104">        private final Map&lt;Class&lt;?&gt;, Set&lt;?&gt;&gt; coordinates = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L106">        Builder() {</span>
+            /* only created from within the class */
+<span class="fc" id="L108">        }</span>
+
+        public &lt;C&gt; Builder put(Class&lt;C&gt; dimension, Set&lt;C&gt; newCoordinates) {
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            Preconditions.checkArgument(!this.coordinates.containsKey(dimension),</span>
+                    &quot;The dimension '&quot; + dimension + &quot;' is already present. Setting twice is not allowed.&quot;);
+<span class="fc" id="L113">            this.coordinates.put(dimension, newCoordinates);</span>
+<span class="fc" id="L114">            return this;</span>
+        }
+
+        public PositionIndexer build() {
+<span class="fc" id="L118">            return new PositionIndexer(this);</span>
+        }
+
+        private void checkBoundary() {
+<span class="fc" id="L122">            long totalNumberOfEntries = arrayDimension();</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            if (totalNumberOfEntries &gt; Integer.MAX_VALUE) {</span>
+<span class="nc" id="L124">                throw new TooLargeForArrayException(&quot;The total number of array entries (&quot; + totalNumberOfEntries</span>
+                        + &quot;) would exceed Integer.MAX_VALUE (&quot; + Integer.MAX_VALUE
+                        + &quot;). Therefore the entries cannot be stored in a simmple array&quot;);
+            }
+<span class="fc" id="L128">        }</span>
+
+        private long arrayDimension() {
+<span class="fc" id="L131">            long totalNumberOfEntries = 1;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">            for (Set&lt;?&gt; oneDimensionCoords : this.coordinates.values()) {</span>
+<span class="fc" id="L133">                totalNumberOfEntries *= oneDimensionCoords.size();</span>
+<span class="fc" id="L134">            }</span>
+<span class="fc" id="L135">            return totalNumberOfEntries;</span>
+        }
+
+        public Map&lt;Class&lt;?&gt;, Map&lt;?, Integer&gt;&gt; createMapping() {
+<span class="fc" id="L139">            ImmutableMap.Builder&lt;Class&lt;?&gt;, Map&lt;?, Integer&gt;&gt; builder = ImmutableMap.builder();</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">            for (Entry&lt;Class&lt;?&gt;, Set&lt;?&gt;&gt; entry : coordinates.entrySet()) {</span>
+<span class="fc" id="L141">                builder.put(entry.getKey(), createIndex(entry.getValue()));</span>
+<span class="fc" id="L142">            }</span>
+<span class="fc" id="L143">            return builder.build();</span>
+        }
+
+        private Map&lt;?, Integer&gt; createIndex(Set&lt;?&gt; value) {
+<span class="fc" id="L147">            ImmutableMap.Builder&lt;Object, Integer&gt; builder = ImmutableMap.builder();</span>
+<span class="fc" id="L148">            int count = 0;</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">            for (Object element : value) {</span>
+<span class="fc" id="L150">                builder.put(element, count);</span>
+<span class="fc" id="L151">                count++;</span>
+<span class="fc" id="L152">            }</span>
+<span class="fc" id="L153">            return builder.build();</span>
+        }
+
+        private Map&lt;Class&lt;?&gt;, Integer&gt; createFactors() {
+<span class="fc" id="L157">            ImmutableMap.Builder&lt;Class&lt;?&gt;, Integer&gt; builder = ImmutableMap.builder();</span>
+            /*
+             * We use a long here, because an int could run out of bounds in the last iteration
+             */
+<span class="fc" id="L161">            long factor = 1;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">            for (Entry&lt;Class&lt;?&gt;, Set&lt;?&gt;&gt; entry : coordinates.entrySet()) {</span>
+<span class="fc" id="L163">                builder.put(entry.getKey(), (int) factor);</span>
+<span class="fc" id="L164">                factor *= entry.getValue().size();</span>
+<span class="fc" id="L165">            }</span>
+<span class="fc" id="L166">            return builder.build();</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

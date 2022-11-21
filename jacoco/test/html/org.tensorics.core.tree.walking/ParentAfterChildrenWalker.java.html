@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ParentAfterChildrenWalker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tree.walking</a> &gt; <span class="el_source">ParentAfterChildrenWalker.java</span></div><h1>ParentAfterChildrenWalker.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tree.walking;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Collection;
+
+import org.tensorics.core.tree.domain.Node;
+
+/**
+ * Walks the tree in the order, that first all children are visited and afterwards the parent.
+ * 
+ * @author kfuchsbe, maudrain
+ */
+<span class="fc" id="L36">public class ParentAfterChildrenWalker implements TreeWalker {</span>
+
+    @Override
+    public final void walk(Node node, NodeCallback callback) {
+<span class="fc" id="L40">        doWalk(node, callback);</span>
+<span class="fc" id="L41">    }</span>
+
+    private void doWalk(Node node, NodeCallback callback) {
+<span class="fc" id="L44">        checkNotNull(node, &quot;Node must not be null!&quot;);</span>
+<span class="fc" id="L45">        checkNotNull(callback, &quot;Callback must not be null!&quot;);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (shallBeSkipped(node, callback)) {</span>
+<span class="fc" id="L47">            return;</span>
+        }
+
+<span class="fc" id="L50">        Collection&lt;? extends Node&gt; children = checkNotNull(node.getChildren(),</span>
+                &quot;Children of node '&quot; + node + &quot;' must not be null!&quot;);
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (children.isEmpty()) {</span>
+<span class="fc" id="L53">            onBottomNode(node, callback);</span>
+        } else {
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            for (Node childNode : children) {</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">                if (!shallBeSkippedWalkDown(node, childNode, callback)) {</span>
+<span class="fc" id="L57">                    doWalk(childNode, callback);</span>
+<span class="fc" id="L58">                    onStepUp(node, callback, childNode);</span>
+                }
+<span class="fc" id="L60">            }</span>
+        }
+
+<span class="fc" id="L63">        onEveryNode(node, callback);</span>
+
+<span class="fc" id="L65">    }</span>
+
+    private void onStepUp(Node node, NodeCallback callback, Node childNode) {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (callback instanceof StepUpCallback) {</span>
+<span class="fc" id="L69">            ((StepUpCallback) callback).onStepUpFromChildToParent(childNode, node);</span>
+        }
+<span class="fc" id="L71">    }</span>
+
+    private void onBottomNode(Node node, NodeCallback callback) {
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (callback instanceof BottomNodeCallback) {</span>
+<span class="fc" id="L75">            ((BottomNodeCallback) callback).onBottom(node);</span>
+        }
+<span class="fc" id="L77">    }</span>
+
+    private void onEveryNode(Node node, NodeCallback callback) {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (callback instanceof EveryNodeCallback) {</span>
+<span class="fc" id="L81">            ((EveryNodeCallback) callback).onEvery(node);</span>
+        }
+<span class="fc" id="L83">    }</span>
+
+    private boolean shallBeSkipped(Node node, NodeCallback callback) {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (callback instanceof SkipNodeAndSubTreesCallback) {</span>
+<span class="fc" id="L87">            return ((SkipNodeAndSubTreesCallback) callback).shallBeSkipped(node);</span>
+        }
+<span class="fc" id="L89">        return false;</span>
+    }
+
+    private boolean shallBeSkippedWalkDown(Node parent, Node child, NodeCallback callback) {
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (callback instanceof SkipStepDownCallback) {</span>
+<span class="nc" id="L94">            return ((SkipStepDownCallback) callback).shallSkipStepDownFromParentToChild(parent, child);</span>
+        }
+<span class="fc" id="L96">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

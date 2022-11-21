@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tensorics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">Tensorics.java</span></div><h1>Tensorics.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.lang;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import org.tensorics.core.math.ExtendedField;
+import org.tensorics.core.quantity.ImmutableQuantifiedValue;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.tensor.ImmutableScalar;
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Scalar;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensorbacked.dimtyped.*;
+import org.tensorics.core.tensor.lang.OngoingCompletion;
+import org.tensorics.core.tensor.lang.OngoingFlattening;
+import org.tensorics.core.tensor.lang.OngoingResamplingStart;
+import org.tensorics.core.tensor.lang.OngoingTensorFiltering;
+import org.tensorics.core.tensor.lang.OngoingTensorManipulation;
+import org.tensorics.core.tensor.lang.QuantityTensors;
+import org.tensorics.core.tensor.lang.TensorStructurals;
+import org.tensorics.core.tensor.operations.TensorInternals;
+import org.tensorics.core.tensor.stream.TensorStreams;
+import org.tensorics.core.tensorbacked.OngoingTensorbackedCompletion;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.SimpleTensorbackedBuilder;
+import org.tensorics.core.tensorbacked.Tensorbackeds;
+import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedConstruction;
+import org.tensorics.core.tensorbacked.lang.OngoingTensorbackedFiltering;
+import org.tensorics.core.units.JScienceUnit;
+import org.tensorics.core.units.Unit;
+
+import com.google.common.base.Optional;
+
+/**
+ * The main entry point for constructing and structural manipulation of tensorics. If mathematical operations are
+ * required, then you should either inherit from {@link TensoricSupport} (or one of its convenience implementations) or
+ * use the {@link #using(ExtendedField)} method (only recommended for one-liners).
+ * &lt;p&gt;
+ * Additional utilities for supporting classes can be found in the corresponding utility classes. E.g.
+ * &lt;ul&gt;
+ * &lt;li&gt;{@link org.tensorics.core.tensor.Positions}
+ * &lt;li&gt;{@link org.tensorics.core.tensor.Shapes}
+ * &lt;li&gt;{@link QuantityTensors}
+ * &lt;li&gt;{@link Tensorbackeds}
+ * &lt;/ul&gt;
+ *
+ * @author kfuchsbe, agorzaws, mihostet
+ */
+public final class Tensorics {
+
+    /**
+     * private constructor to avoid instantiation
+     */
+    private Tensorics() {
+        /* only static methods */
+    }
+
+    /**
+     * Creates an instance of a 'support' type class, which provides methods as starting points for the 'fluent' API for
+     * tensor manipulation.
+     *
+     * @param field the (mathematical construct) field which defines the operations for the tensor elements.
+     * @param &lt;E&gt;   the types of values in the field
+     * @return a tensoric support, which provides the starting methods for the tensoric fluent API.
+     */
+    public static &lt;E&gt; TensoricSupport&lt;E&gt; using(ExtendedField&lt;E&gt; field) {
+<span class="fc" id="L99">        return new TensoricSupport&lt;&gt;(EnvironmentImpl.of(field, ManipulationOptions.defaultOptions(field)));</span>
+    }
+
+    public static &lt;E&gt; Tensor&lt;E&gt; merge(Iterable&lt;Tensor&lt;E&gt;&gt; tensors) {
+<span class="nc" id="L103">        return TensorStructurals.merge(tensors);</span>
+    }
+
+    /**
+     * @see TensorStructurals#mergeContextIntoShape(Tensor)
+     */
+    public static &lt;E&gt; Tensor&lt;E&gt; mergeContextIntoShape(Tensor&lt;E&gt; tensor) {
+<span class="fc" id="L110">        return TensorStructurals.mergeContextIntoShape(tensor);</span>
+    }
+
+    /**
+     * @see ImmutableTensor#builder(Iterable)
+     */
+    public static &lt;T&gt; TensorBuilder&lt;T&gt; builder(Iterable&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc" id="L117">        return ImmutableTensor.builder(dimensions);</span>
+    }
+
+    /**
+     * @see ImmutableTensor#builder(Class...)
+     */
+    public static &lt;T&gt; TensorBuilder&lt;T&gt; builder(Class&lt;?&gt;... dimensions) {
+<span class="fc" id="L124">        return ImmutableTensor.builder(dimensions);</span>
+    }
+
+    public static &lt;T&gt; TensorbackedScalarBuilder&lt;T, TensorbackedScalar&lt;T&gt;&gt; builderBacked() {
+<span class="nc" id="L128">        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(), TensorbackedScalarBuilder.class, TensorbackedScalar.class);</span>
+    }
+
+    public static &lt;C1, T&gt; Tensorbacked1dBuilder&lt;C1, T, Tensorbacked1d&lt;C1, T&gt;&gt; builderBacked(Class&lt;C1&gt; dimension1) {
+<span class="nc" id="L132">        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(dimension1), Tensorbacked1dBuilder.class, Tensorbacked1d.class);</span>
+    }
+
+    public static &lt;C1, C2, T&gt; Tensorbacked2dBuilder&lt;C1, C2, T, Tensorbacked2d&lt;C1, C2, T&gt;&gt; builderBacked(Class&lt;C1&gt; d1, Class&lt;C2&gt; d2) {
+<span class="fc" id="L136">        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2), Tensorbacked2dBuilder.class, Tensorbacked2d.class);</span>
+    }
+
+    public static &lt;C1, C2, C3, T&gt; Tensorbacked3dBuilder&lt;C1, C2, C3, T, Tensorbacked3d&lt;C1, C2, C3, T&gt;&gt; builderBacked(Class&lt;C1&gt; d1, Class&lt;C2&gt; d2, Class&lt;C3&gt; d3) {
+<span class="fc" id="L140">        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3), Tensorbacked3dBuilder.class, Tensorbacked3d.class);</span>
+    }
+
+    public static &lt;C1, C2, C3, C4, T&gt; Tensorbacked4dBuilder&lt;C1, C2, C3, C4, T, Tensorbacked4d&lt;C1, C2, C3, C4, T&gt;&gt; builderBacked(Class&lt;C1&gt; d1, Class&lt;C2&gt; d2, Class&lt;C3&gt; d3, Class&lt;C4&gt; d4) {
+<span class="fc" id="L144">        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4), Tensorbacked4dBuilder.class, Tensorbacked4d.class);</span>
+    }
+
+    public static &lt;C1, C2, C3, C4, C5, T&gt; Tensorbacked5dBuilder&lt;C1, C2, C3, C4, C5, T, Tensorbacked5d&lt;C1, C2, C3, C4, C5, T&gt;&gt; builderBacked(Class&lt;C1&gt; d1, Class&lt;C2&gt; d2, Class&lt;C3&gt; d3, Class&lt;C4&gt; d4, Class&lt;C5&gt; d5) {
+<span class="fc" id="L148">        return DimtypedTensorbackedBuilderImpl.from(ImmutableTensor.builder(d1, d2, d3, d4, d5), Tensorbacked5dBuilder.class, Tensorbacked5d.class);</span>
+    }
+
+    /**
+     * @see ImmutableTensor#fromMap(Iterable, Map)
+     */
+    public static &lt;T&gt; Tensor&lt;T&gt; fromMap(Iterable&lt;Class&lt;?&gt;&gt; dimensions, Map&lt;Position, T&gt; map) {
+<span class="fc" id="L155">        return ImmutableTensor.fromMap(dimensions, map);</span>
+    }
+
+    /**
+     * @see ImmutableTensor#copyOf(Tensor)
+     */
+    public static &lt;T&gt; Tensor&lt;T&gt; copyOf(Tensor&lt;T&gt; tensor) {
+<span class="fc" id="L162">        return ImmutableTensor.copyOf(tensor);</span>
+    }
+
+    /**
+     * @see ImmutableTensor#builderFrom(Tensor)
+     */
+    public static &lt;T&gt; TensorBuilder&lt;T&gt; builderFrom(Tensor&lt;T&gt; tensor) {
+<span class="nc" id="L169">        return ImmutableTensor.builderFrom(tensor);</span>
+    }
+
+    /**
+     * @see ImmutableScalar#of(Object)
+     */
+    public static &lt;T&gt; ImmutableScalar&lt;T&gt; scalarOf(T value) {
+<span class="fc" id="L176">        return ImmutableScalar.of(value);</span>
+    }
+
+    /**
+     * @see ImmutableQuantifiedValue#of(Object, Unit)
+     */
+    public static &lt;V&gt; ImmutableQuantifiedValue&lt;V&gt; quantityOf(V value, Unit unit) {
+<span class="fc" id="L183">        return ImmutableQuantifiedValue.of(value, unit);</span>
+    }
+
+    /**
+     * Convenience method to create a quantity directly from a jscience base.
+     *
+     * @param value the of the quantity
+     * @param unit  the base of the quantity
+     * @return a new instance of the quantity
+     * @see Tensorics#quantityOf(Object, Unit)
+     */
+    public static &lt;V&gt; ImmutableQuantifiedValue&lt;V&gt; quantityOf(V value, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="fc" id="L195">        return quantityOf(value, JScienceUnit.of(unit));</span>
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor(Class)
+     */
+    public static &lt;V, TB extends Tensorbacked&lt;V&gt;&gt; SimpleTensorbackedBuilder&lt;V, TB&gt; builderFor(Class&lt;TB&gt; tensorbackedClass) {
+<span class="fc" id="L202">        return Tensorbackeds.builderFor(tensorbackedClass);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#builderForScalar(Class) 
+     */
+    public static &lt;V, TB extends TensorbackedScalar&lt; V&gt;&gt; TensorbackedScalarBuilder&lt;V, TB&gt; builderForScalar(Class&lt;TB&gt; tensorbackedClass) {
+<span class="nc" id="L209">        return Tensorbackeds.builderForScalar(tensorbackedClass);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor1D(Class)
+     */
+    public static &lt;C1, V, TB extends Tensorbacked1d&lt;C1, V&gt;&gt; Tensorbacked1dBuilder&lt;C1, V, TB&gt; builderFor1D(Class&lt;TB&gt; tensorbackedClass) {
+<span class="fc" id="L216">        return Tensorbackeds.builderFor1D(tensorbackedClass);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor2D(Class)
+     */
+    public static &lt;C1, C2, V, TB extends Tensorbacked2d&lt;C1, C2, V&gt;&gt; Tensorbacked2dBuilder&lt;C1, C2, V, TB&gt; builderFor2D(Class&lt;TB&gt; tensorbackedClass) {
+<span class="nc" id="L223">        return Tensorbackeds.builderFor2D(tensorbackedClass);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor3D(Class)
+     */
+    public static &lt;C1, C2, C3, V, TB extends Tensorbacked3d&lt;C1, C2, C3, V&gt;&gt; Tensorbacked3dBuilder&lt;C1, C2, C3, V, TB&gt; builderFor3D(Class&lt;TB&gt; tensorbackedClass) {
+<span class="nc" id="L230">        return Tensorbackeds.builderFor3D(tensorbackedClass);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor4D(Class)
+     */
+    public static &lt;C1, C2, C3, C4, V, TB extends Tensorbacked4d&lt;C1, C2, C3, C4, V&gt;&gt; Tensorbacked4dBuilder&lt;C1, C2, C3, C4, V, TB&gt; builderFor4D(Class&lt;TB&gt; tensorbackedClass) {
+<span class="nc" id="L237">        return Tensorbackeds.builderFor4D(tensorbackedClass);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#builderFor5D(Class)
+     */
+    public static &lt;C1, C2, C3, C4, C5, V, TB extends Tensorbacked5d&lt;C1, C2, C3, C4, C5, V&gt;&gt; Tensorbacked5dBuilder&lt;C1, C2, C3, C4, C5, V, TB&gt; builderFor5D(Class&lt;TB&gt; tensorbackedClass) {
+<span class="nc" id="L244">        return Tensorbackeds.builderFor5D(tensorbackedClass);</span>
+    }
+
+
+    /**
+     * @see Tensorbackeds#sizeOf(Tensorbacked)
+     */
+    public static &lt;TB extends Tensorbacked&lt;?&gt;&gt; int sizeOf(TB tensorbacked) {
+<span class="fc" id="L252">        return Tensorbackeds.sizeOf(tensorbacked);</span>
+    }
+
+    public static int sizeOf(Tensor&lt;?&gt; tensor) {
+<span class="nc" id="L256">        return tensor.shape().size();</span>
+    }
+
+    /**
+     * @see Tensorbackeds#dimensionalityOf(Tensorbacked)
+     */
+    public static &lt;TB extends Tensorbacked&lt;?&gt;&gt; int dimensionalityOf(TB tensorbacked) {
+<span class="fc" id="L263">        return Tensorbackeds.dimensionalityOf(tensorbacked);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#empty(Class)
+     */
+    public static &lt;V, TB extends Tensorbacked&lt;V&gt;&gt; TB empty(Class&lt;TB&gt; tensorbackedClass) {
+<span class="nc" id="L270">        return Tensorbackeds.empty(tensorbackedClass);</span>
+    }
+
+    public static &lt;V&gt; Tensor&lt;V&gt; empty(Iterable&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="nc" id="L274">        return ImmutableTensor.&lt;V&gt;builder(dimensions).build();</span>
+    }
+
+    public static &lt;V&gt; Tensor&lt;V&gt; empty(Class&lt;?&gt;... dimensions) {
+<span class="nc" id="L278">        return ImmutableTensor.&lt;V&gt;builder(dimensions).build();</span>
+    }
+
+    /**
+     * @see Tensorbackeds#validitiesOf(Tensorbacked)
+     */
+    public static &lt;S&gt; Tensor&lt;Boolean&gt; validitiesOf(Tensorbacked&lt;QuantifiedValue&lt;S&gt;&gt; tensorbacked) {
+<span class="nc" id="L285">        return Tensorbackeds.validitiesOf(tensorbacked);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#valuesOf(Tensorbacked)
+     */
+    public static &lt;S&gt; Tensor&lt;S&gt; valuesOf(Tensorbacked&lt;QuantifiedValue&lt;S&gt;&gt; tensorbacked) {
+<span class="nc" id="L292">        return Tensorbackeds.valuesOf(tensorbacked);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#errorsOf(Tensorbacked)
+     */
+    public static &lt;S&gt; Tensor&lt;Optional&lt;S&gt;&gt; errorsOf(Tensorbacked&lt;QuantifiedValue&lt;S&gt;&gt; tensorbacked) {
+<span class="nc" id="L299">        return Tensorbackeds.errorsOf(tensorbacked);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#positionsOf(Tensorbacked)
+     */
+    public static Set&lt;Position&gt; positionsOf(Tensorbacked&lt;?&gt; tensorbacked) {
+<span class="nc" id="L306">        return Tensorbackeds.positionsOf(tensorbacked);</span>
+    }
+
+    /**
+     * @deprecated use renamed method {@link #quantityTensorOf(Tensor, Unit)}
+     */
+    @Deprecated
+    public static &lt;S&gt; Tensor&lt;QuantifiedValue&lt;S&gt;&gt; convertToQuantified(Tensor&lt;S&gt; tensor, Unit unit) {
+<span class="nc" id="L314">        return QuantityTensors.quantityTensorOf(tensor, unit);</span>
+    }
+
+    /**
+     * @see QuantityTensors#quantityTensorOf(Tensor, Unit)
+     */
+    public static &lt;S&gt; Tensor&lt;QuantifiedValue&lt;S&gt;&gt; quantityTensorOf(Tensor&lt;S&gt; tensor, Unit unit) {
+<span class="nc" id="L321">        return QuantityTensors.quantityTensorOf(tensor, unit);</span>
+    }
+
+    /**
+     * @see QuantityTensors#quantityTensorOf(Tensor, javax.measure.unit.Unit)
+     */
+    public static &lt;S&gt; Tensor&lt;QuantifiedValue&lt;S&gt;&gt; quantityTensorOf(Tensor&lt;S&gt; tensor, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="nc" id="L328">        return QuantityTensors.quantityTensorOf(tensor, JScienceUnit.of(unit));</span>
+    }
+
+    /**
+     * @see QuantityTensors#unitOf(Tensor)
+     */
+    public static &lt;S&gt; Unit unitOf(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; tensor) {
+<span class="nc" id="L335">        return QuantityTensors.unitOf(tensor);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#unitOf(Tensorbacked)
+     */
+    public static &lt;S&gt; Unit unitOf(Tensorbacked&lt;QuantifiedValue&lt;S&gt;&gt; tensorbacked) {
+<span class="nc" id="L342">        return Tensorbackeds.unitOf(tensorbacked);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#shapeOf(Tensorbacked)
+     */
+    public static Shape shapeOf(Tensorbacked&lt;?&gt; tensorbacked) {
+<span class="nc" id="L349">        return Tensorbackeds.shapeOf(tensorbacked);</span>
+    }
+
+    public static Set&lt;Class&lt;?&gt;&gt; dimensionsOf(Tensorbacked&lt;?&gt; tensorbacked) {
+<span class="nc" id="L353">        return Tensorbackeds.shapeOf(tensorbacked).dimensionSet();</span>
+    }
+
+    /**
+     * @see TensorStructurals#from(Tensor)
+     */
+    public static &lt;V&gt; OngoingTensorManipulation&lt;V&gt; from(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L360">        return TensorStructurals.from(tensor);</span>
+    }
+
+    public static &lt;V&gt; OngoingTensorManipulation&lt;V&gt; from(Tensorbacked&lt;V&gt; tensorbacked) {
+<span class="nc" id="L364">        return TensorStructurals.from(tensorbacked.tensor());</span>
+    }
+
+    public static Set&lt;Class&lt;?&gt;&gt; dimensionsOf(Tensor&lt;?&gt; tensor) {
+<span class="nc" id="L368">        return tensor.shape().dimensionSet();</span>
+    }
+
+    public static Set&lt;Position&gt; positionsOf(Tensor&lt;?&gt; tensor) {
+<span class="nc" id="L372">        return tensor.shape().positionSet();</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;Boolean&gt; validitiesOf(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; tensor) {
+<span class="nc" id="L376">        return QuantityTensors.validitiesOf(tensor);</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; valuesOf(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; tensor) {
+<span class="nc" id="L380">        return QuantityTensors.valuesOf(tensor);</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;Optional&lt;S&gt;&gt; errorsOf(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; tensor) {
+<span class="nc" id="L384">        return QuantityTensors.errorsOf(tensor);</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; errorsOfOr(Tensor&lt;QuantifiedValue&lt;S&gt;&gt; tensor, S defaultValue) {
+<span class="nc" id="L388">        return QuantityTensors.errorsOfOr(tensor, defaultValue);</span>
+    }
+
+    public static &lt;S&gt; OngoingFlattening&lt;S&gt; flatten(Tensor&lt;S&gt; tensor) {
+<span class="nc" id="L392">        return TensorStructurals.flatten(tensor);</span>
+    }
+
+    public static &lt;S&gt; OngoingFlattening&lt;S&gt; flatten(Tensorbacked&lt;S&gt; tensorbacked) {
+<span class="nc" id="L396">        return Tensorbackeds.flatten(tensorbacked);</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; sameValues(Shape shape, S value) {
+<span class="nc" id="L400">        return TensorInternals.sameValues(shape, value);</span>
+    }
+
+    /**
+     * @deprecated use {@link #tensor(Shape, Supplier)}
+     */
+    @Deprecated
+    public static &lt;S&gt; Tensor&lt;S&gt; createFrom(Shape shape, Supplier&lt;S&gt; supplier) {
+<span class="nc" id="L408">        return tensor(shape, supplier);</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; tensor(Shape shape, Supplier&lt;S&gt; supplier) {
+<span class="nc" id="L412">        return TensorInternals.createFrom(shape, supplier);</span>
+    }
+
+    /**
+     * @deprecated use {@link #tensor(Shape, Function)}
+     */
+    @Deprecated
+    public static &lt;S&gt; Tensor&lt;S&gt; createFrom(Shape shape, Function&lt;Position, S&gt; function) {
+<span class="nc" id="L420">        return tensor(shape, function);</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; tensor(Shape shape, Function&lt;Position, S&gt; function) {
+<span class="nc" id="L424">        return TensorInternals.createFrom(shape, function);</span>
+    }
+
+    public static &lt;S&gt; OngoingCompletion&lt;S&gt; complete(Tensor&lt;S&gt; tensor) {
+<span class="fc" id="L428">        return TensorStructurals.complete(tensor);</span>
+    }
+
+    /**
+     * @deprecated use {@link #map(Tensor, BiFunction)} instead
+     */
+    @Deprecated
+    public static &lt;S, T&gt; Tensor&lt;T&gt; transformEntries(Tensor&lt;S&gt; tensor, Function&lt;Entry&lt;Position, S&gt;, T&gt; function) {
+<span class="nc" id="L436">        return TensorStructurals.transformEntries(tensor, function);</span>
+    }
+
+    public static &lt;S, T&gt; Tensor&lt;T&gt; map(Tensor&lt;S&gt; tensor, Function&lt;S, T&gt; function) {
+<span class="nc" id="L440">        return TensorStructurals.transformScalars(tensor, function);</span>
+    }
+
+    public static &lt;S, T&gt; Tensor&lt;T&gt; map(Tensor&lt;S&gt; tensor, BiFunction&lt;Position, S, T&gt; function) {
+<span class="nc" id="L444">        return TensorStructurals.transformScalars(tensor, function);</span>
+    }
+
+    public static &lt;S&gt; void forEach(Tensorbacked&lt;S&gt; tensorBacked, Consumer&lt;S&gt; consumer) {
+<span class="nc" id="L448">        forEach(tensorBacked.tensor(), consumer);</span>
+<span class="nc" id="L449">    }</span>
+
+    public static &lt;S&gt; void forEach(Tensorbacked&lt;S&gt; tensorBacked, BiConsumer&lt;Position, S&gt; consumer) {
+<span class="nc" id="L452">        forEach(tensorBacked.tensor(), consumer);</span>
+<span class="nc" id="L453">    }</span>
+
+    public static &lt;S&gt; void forEach(Tensor&lt;S&gt; tensor, Consumer&lt;S&gt; consumer) {
+<span class="nc" id="L456">        TensorStructurals.consumeScalars(tensor, consumer);</span>
+<span class="nc" id="L457">    }</span>
+
+    public static &lt;S&gt; void forEach(Tensor&lt;S&gt; tensor, BiConsumer&lt;Position, S&gt; consumer) {
+<span class="nc" id="L460">        TensorStructurals.consumeScalars(tensor, consumer);</span>
+<span class="nc" id="L461">    }</span>
+
+    public static Scalar&lt;QuantifiedValue&lt;Double&gt;&gt; zeroDimensionalOf(double value,
+                                                                    javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="nc" id="L465">        QuantifiedValue&lt;Double&gt; quantity = quantityOf(value, unit);</span>
+<span class="nc" id="L466">        return scalarOf(quantity);</span>
+    }
+
+    public static Scalar&lt;QuantifiedValue&lt;Double&gt;&gt; zeroDimensionalOf(double value, Unit unit) {
+<span class="nc" id="L470">        QuantifiedValue&lt;Double&gt; quantity = quantityOf(value, unit);</span>
+<span class="nc" id="L471">        return scalarOf(quantity);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#tensorsOf(Iterable)
+     */
+    public static &lt;S&gt; Iterable&lt;Tensor&lt;S&gt;&gt; tensorsOf(Iterable&lt;? extends Tensorbacked&lt;S&gt;&gt; tensorbackeds) {
+<span class="nc" id="L478">        return Tensorbackeds.tensorsOf(tensorbackeds);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#construct(Class)
+     */
+    public static &lt;V, TB extends Tensorbacked&lt;V&gt;&gt; OngoingTensorbackedConstruction&lt;V, TB&gt; construct(
+            Class&lt;TB&gt; tensorbackedClass) {
+<span class="nc" id="L486">        return Tensorbackeds.construct(tensorbackedClass);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#stripContext(Tensorbacked)
+     */
+    public static &lt;V, TB extends Tensorbacked&lt;V&gt;&gt; TB stripContext(TB tensorbacked) {
+<span class="nc" id="L493">        return Tensorbackeds.stripContext(tensorbacked);</span>
+    }
+
+    /**
+     * @see TensorStructurals#stripContext(Tensor)
+     */
+    public static &lt;S&gt; Tensor&lt;S&gt; stripContext(Tensor&lt;S&gt; tensor) {
+<span class="nc" id="L500">        return TensorStructurals.stripContext(tensor);</span>
+    }
+
+    /**
+     * @see TensorStructurals#filter(Tensor)
+     */
+    public static &lt;S&gt; OngoingTensorFiltering&lt;S&gt; filter(Tensor&lt;S&gt; tensor) {
+<span class="nc" id="L507">        return TensorStructurals.filter(tensor);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#filter(Tensorbacked)
+     */
+    public static &lt;V, TB extends Tensorbacked&lt;V&gt;&gt; OngoingTensorbackedFiltering&lt;V, TB&gt; filter(TB tensorbacked) {
+<span class="nc" id="L514">        return Tensorbackeds.filter(tensorbacked);</span>
+    }
+
+    public static &lt;S&gt; Tensor&lt;S&gt; setContext(Tensor&lt;S&gt; tensor, Position context) {
+<span class="nc" id="L518">        return TensorStructurals.setContext(tensor, context);</span>
+    }
+
+    public static &lt;V, TB extends Tensorbacked&lt;V&gt;&gt; TB setContext(TB tensorbacked, Position context) {
+<span class="nc" id="L522">        return Tensorbackeds.setContext(tensorbacked, context);</span>
+    }
+
+    /**
+     * @see TensorStreams#tensorEntryStream(Tensor)
+     */
+    public static &lt;S&gt; Stream&lt;Map.Entry&lt;Position, S&gt;&gt; stream(Tensor&lt;S&gt; tensor) {
+<span class="fc" id="L529">        return TensorStreams.tensorEntryStream(tensor);</span>
+    }
+
+    /**
+     * @see TensorStreams#tensorEntryStream(Tensor)
+     */
+    public static &lt;S&gt; Stream&lt;Map.Entry&lt;Position, S&gt;&gt; stream(Tensorbacked&lt;S&gt; tensorBacked) {
+<span class="nc" id="L536">        return TensorStreams.tensorEntryStream(tensorBacked.tensor());</span>
+    }
+
+    /**
+     * @see Tensorbackeds#shapeOf(Tensorbacked)
+     */
+    public static &lt;TB extends Tensorbacked&lt;?&gt;&gt; Iterable&lt;Shape&gt; shapesOf(Iterable&lt;TB&gt; tensorbackeds) {
+<span class="nc" id="L543">        return Tensorbackeds.shapesOf(tensorbackeds);</span>
+    }
+
+    /**
+     * @see Tensorbackeds#complete(Tensorbacked)
+     */
+    public static &lt;S, TB extends Tensorbacked&lt;S&gt;&gt; OngoingTensorbackedCompletion&lt;TB, S&gt; complete(TB tensorbacked) {
+<span class="nc" id="L550">        return Tensorbackeds.complete(tensorbacked);</span>
+    }
+
+    /**
+     * @see TensorInternals#mapFrom(Tensor)
+     */
+    public static &lt;V&gt; Map&lt;Position, V&gt; mapFrom(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L557">        return TensorInternals.mapFrom(tensor);</span>
+    }
+
+    /**
+     * @see Position#of(Iterable)
+     */
+    public static Position at(Iterable&lt;?&gt; coordinates) {
+<span class="fc" id="L564">        return Position.of(coordinates);</span>
+    }
+
+    /**
+     * @see Position#of(Object...)
+     */
+    public static Position at(Object... coordinates) {
+<span class="fc" id="L571">        return Position.of(coordinates);</span>
+    }
+
+    /**
+     * @see TensorStructurals#resample(Tensor)
+     */
+    public static &lt;V&gt; OngoingResamplingStart&lt;V&gt; resample(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L578">        return TensorStructurals.resample(tensor);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

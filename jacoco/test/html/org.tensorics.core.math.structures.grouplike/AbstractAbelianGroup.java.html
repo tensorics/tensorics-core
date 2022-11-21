@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractAbelianGroup.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.math.structures.grouplike</a> &gt; <span class="el_source">AbstractAbelianGroup.java</span></div><h1>AbstractAbelianGroup.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2017 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.math.structures.grouplike;
+
+import java.io.Serializable;
+
+import org.tensorics.core.math.operations.CommutativeAssociativeOperation;
+import org.tensorics.core.math.operations.UnaryOperation;
+
+public class AbstractAbelianGroup&lt;E&gt; implements AbelianGroup&lt;E&gt;, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final CommutativeAssociativeOperation&lt;E&gt; operation;
+    private final E identity;
+    private final UnaryOperation&lt;E&gt; inversion;
+
+<span class="fc" id="L19">    public AbstractAbelianGroup(CommutativeAssociativeOperation&lt;E&gt; operation, E identity, UnaryOperation&lt;E&gt; inversion) {</span>
+<span class="fc" id="L20">        this.operation = operation;</span>
+<span class="fc" id="L21">        this.identity = identity;</span>
+<span class="fc" id="L22">        this.inversion = inversion;</span>
+<span class="fc" id="L23">    }</span>
+
+    @Override
+    public CommutativeAssociativeOperation&lt;E&gt; operation() {
+<span class="fc" id="L27">        return this.operation;</span>
+    }
+
+    @Override
+    public E identity() {
+<span class="fc" id="L32">        return this.identity;</span>
+    }
+
+    @Override
+    public UnaryOperation&lt;E&gt; inversion() {
+<span class="fc" id="L37">        return this.inversion;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L42">        final int prime = 31;</span>
+<span class="fc" id="L43">        int result = 1;</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        result = prime * result + ((identity == null) ? 0 : identity.hashCode());</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        result = prime * result + ((inversion == null) ? 0 : inversion.hashCode());</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        result = prime * result + ((operation == null) ? 0 : operation.hashCode());</span>
+<span class="fc" id="L47">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L53">            return true;</span>
+        }
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L56">            return false;</span>
+        }
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L59">            return false;</span>
+        }
+<span class="nc" id="L61">        AbstractAbelianGroup&lt;?&gt; other = (AbstractAbelianGroup&lt;?&gt;) obj;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (identity == null) {</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (other.identity != null) {</span>
+<span class="nc" id="L64">                return false;</span>
+            }
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        } else if (!identity.equals(other.identity)) {</span>
+<span class="nc" id="L67">            return false;</span>
+        }
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (inversion == null) {</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (other.inversion != null) {</span>
+<span class="nc" id="L71">                return false;</span>
+            }
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        } else if (!inversion.equals(other.inversion)) {</span>
+<span class="nc" id="L74">            return false;</span>
+        }
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (operation == null) {</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            if (other.operation != null) {</span>
+<span class="nc" id="L78">                return false;</span>
+            }
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        } else if (!operation.equals(other.operation)) {</span>
+<span class="nc" id="L81">            return false;</span>
+        }
+<span class="nc" id="L83">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L88">        return &quot;AbstractAbelianGroup [operation=&quot; + operation + &quot;, identity=&quot; + identity + &quot;, inversion=&quot; + inversion</span>
+                + &quot;]&quot;;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

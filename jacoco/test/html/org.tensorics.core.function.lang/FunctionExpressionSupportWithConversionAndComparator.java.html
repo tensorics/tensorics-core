@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FunctionExpressionSupportWithConversionAndComparator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.function.lang</a> &gt; <span class="el_source">FunctionExpressionSupportWithConversionAndComparator.java</span></div><h1>FunctionExpressionSupportWithConversionAndComparator.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.function.lang;
+
+import java.util.Comparator;
+
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.commons.options.Environment;
+import org.tensorics.core.function.DiscreteFunction;
+import org.tensorics.core.function.expressions.DiscreteFunctionToIterableExpression;
+import org.tensorics.core.function.operations.CodomainExtraction;
+import org.tensorics.core.iterable.lang.ScalarIterableExpressionSupport;
+import org.tensorics.core.tree.domain.Expression;
+
+/**
+ * Provides utility methods for acting on expressions of {@link DiscreteFunction}s from X to Y.
+ * &lt;p&gt;
+ * The type of the values of the discrete function codomain is also the type of the values of the field.
+ * 
+ * @author caguiler
+ * @param &lt;X&gt; the type of the independent variable (input) of the discrete function
+ * @param &lt;Y&gt; the type of the dependent variable (output) of the discrete function and the type of the scalar values
+ *            (elements of the field) on which to operate
+ */
+public class FunctionExpressionSupportWithConversionAndComparator&lt;X, Y&gt; extends ScalarIterableExpressionSupport&lt;Y&gt; {
+
+    private final Environment&lt;Y&gt; environment;
+    private final CodomainExtraction&lt;Y&gt; codomainExtraction;
+    private final Conversion&lt;X, Y&gt; conversion;
+    private final Comparator&lt;X&gt; comparator;
+
+    FunctionExpressionSupportWithConversionAndComparator(Environment&lt;Y&gt; environment, Conversion&lt;X, Y&gt; conversion,
+            Comparator&lt;X&gt; comparator) {
+<span class="fc" id="L54">        super(environment.field());</span>
+<span class="fc" id="L55">        this.environment = environment;</span>
+<span class="fc" id="L56">        this.conversion = conversion;</span>
+<span class="fc" id="L57">        this.comparator = comparator;</span>
+<span class="fc" id="L58">        codomainExtraction = new CodomainExtraction&lt;&gt;();</span>
+<span class="fc" id="L59">    }</span>
+
+    public final OngoingDeferredDiscreteFunctionBinaryOperation&lt;X, Y&gt; calculateF(
+            Expression&lt;DiscreteFunction&lt;X, Y&gt;&gt; expression) {
+<span class="fc" id="L63">        return new OngoingDeferredDiscreteFunctionBinaryOperation&lt;&gt;(environment, expression, conversion, comparator);</span>
+    }
+
+    public final &lt;Z&gt; Expression&lt;Y&gt; averageOfF(Expression&lt;DiscreteFunction&lt;Z, Y&gt;&gt; function) {
+<span class="fc" id="L67">        return averageOf(yValuesAsIterableExpression(function));</span>
+    }
+
+    public final &lt;Z&gt; Expression&lt;Y&gt; rmsOfF(Expression&lt;DiscreteFunction&lt;Z, Y&gt;&gt; function) {
+<span class="fc" id="L71">        return rmsOf(yValuesAsIterableExpression(function));</span>
+    }
+
+    public final &lt;Z&gt; Expression&lt;Y&gt; stdOfF(Expression&lt;DiscreteFunction&lt;Z, Y&gt;&gt; function) {
+<span class="fc" id="L75">        return stdOf(yValuesAsIterableExpression(function));</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private &lt;Z&gt; Expression&lt;Iterable&lt;Y&gt;&gt; yValuesAsIterableExpression(
+            Expression&lt;? super DiscreteFunction&lt;Z, Y&gt;&gt; function) {
+<span class="fc" id="L81">        return new DiscreteFunctionToIterableExpression&lt;&gt;(codomainExtraction,</span>
+                (Expression&lt;DiscreteFunction&lt;?, Y&gt;&gt;) function);
+    }
+
+    /**
+     * Only used by subclasses
+     * 
+     * @return the {@link Environment} of this {@link FunctionSupportWithConversionAndComparator}
+     */
+    protected Environment&lt;Y&gt; environment() {
+<span class="nc" id="L91">        return environment;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

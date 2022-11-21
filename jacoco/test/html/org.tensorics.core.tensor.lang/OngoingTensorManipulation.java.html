@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingTensorManipulation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.lang</a> &gt; <span class="el_source">OngoingTensorManipulation.java</span></div><h1>OngoingTensorManipulation.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.lang;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import org.tensorics.core.tensor.Coordinates;
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Positions;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
+import org.tensorics.core.tensor.stream.TensorStreams;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+
+/**
+ * Part of the tensoric fluent API which provides methods to describe misc manipulations on a given tensor.
+ *
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the values of the tensor
+ */
+public class OngoingTensorManipulation&lt;V&gt; {
+
+    private final Tensor&lt;V&gt; tensor;
+
+    OngoingTensorManipulation(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L59">        super();</span>
+<span class="fc" id="L60">        this.tensor = tensor;</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Extracts from the tensor only those elements where the values in the given mask is {@code true}. The resulting
+     * tensors will then have the same dimensionality as the original tensor, but will only have that many elements as
+     * there are {@code true} elements in the mask tensor.
+     *
+     * @param mask the mask which determines which elements shall be present in the new tensor.
+     * @return A tensor which will contain only those elements which have {@code true} flags in the mask
+     */
+    public Tensor&lt;V&gt; extractWhereTrue(Tensor&lt;Boolean&gt; mask) {
+<span class="fc" id="L72">        Builder&lt;V&gt; tensorBuilder = ImmutableTensor.builder(tensor.shape().dimensionSet());</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (java.util.Map.Entry&lt;Position, V&gt; entry : TensorInternals.mapFrom(tensor).entrySet()) {</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            if (mask.get(entry.getKey()).booleanValue()) {</span>
+<span class="fc" id="L75">                tensorBuilder.put(entry.getKey(), entry.getValue());</span>
+            }
+<span class="fc" id="L77">        }</span>
+<span class="fc" id="L78">        return tensorBuilder.build();</span>
+    }
+
+    /**
+     * Retrieves all the unique coordinates of the given type.
+     *
+     * @param coordinateType the type of the coordinate to extract
+     * @return a set of extracted coordinates
+     */
+    public &lt;C1&gt; Set&lt;C1&gt; extractCoordinatesOfType(Class&lt;C1&gt; coordinateType) {
+<span class="fc" id="L88">        Set&lt;C1&gt; toReturn = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (Position position : tensor.shape().positionSet()) {</span>
+<span class="fc" id="L90">            toReturn.add(Coordinates.firstCoordinateOfTyp(position.coordinates(), coordinateType));</span>
+<span class="fc" id="L91">        }</span>
+<span class="fc" id="L92">        return toReturn;</span>
+    }
+
+    public V get(Position position) {
+<span class="fc" id="L96">        return tensor.get(position);</span>
+    }
+
+    public V get(Object... coordinates) {
+<span class="fc" id="L100">        return tensor.get(coordinates);</span>
+    }
+
+    /**
+     * Returns an optional containing the value at the given position in the tensor, if the tensor contains the
+     * position, or an empty optional otherwise. However, if the dimension of the position are incompatible with the
+     * tensor dimensions, then an {@link IllegalArgumentException} is thrown.
+     * 
+     * @param position the position for which the optional value shall be queried.
+     * @return an optional containing the value, if it is contained in the tensor and the dimensions are correct.
+     * @throws IllegalArgumentException if the dimensions of the tensor and the position do not match.
+     */
+    public Optional&lt;V&gt; optional(Position position) {
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if (tensor.contains(position)) {</span>
+<span class="fc" id="L114">            return Optional.of(get(position));</span>
+        }
+<span class="fc" id="L116">        Set&lt;Class&lt;?&gt;&gt; tensorDimensions = tensor.shape().dimensionSet();</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (Positions.areDimensionsConsistentWithCoordinates(tensorDimensions, position)) {</span>
+<span class="fc" id="L118">            return Optional.empty();</span>
+        }
+<span class="fc" id="L120">        String message = &quot;The dimensions of the tensor (&quot; + tensorDimensions</span>
+                + &quot;) do not match the dimensions of the requested position (&quot; + position + &quot;).&quot;;
+<span class="fc" id="L122">        throw new IllegalArgumentException(message);</span>
+    }
+
+    public Optional&lt;V&gt; optional(Object... coordinates) {
+<span class="fc" id="L126">        return optional(Position.of(coordinates));</span>
+    }
+
+    public &lt;C&gt; List&lt;V&gt; list(List&lt;C&gt; listCoordinateValues, Position otherCoordinates) {
+<span class="nc" id="L130">        return listCoordinateValues.stream().map(Position::of)//</span>
+<span class="nc" id="L131">                .map(p -&gt; Positions.union(otherCoordinates, p)) //</span>
+<span class="nc" id="L132">                .map(p -&gt; get(p))//</span>
+<span class="nc" id="L133">                .collect(toImmutableList());</span>
+    }
+
+    public &lt;C&gt; List&lt;V&gt; list(List&lt;C&gt; listCoordinateValues, Object... otherCoordinates) {
+<span class="nc" id="L137">        return list(listCoordinateValues, Position.of(otherCoordinates));</span>
+    }
+
+    public &lt;C&gt; Map&lt;C, V&gt; map(Class&lt;C&gt; mapKeyType, Position otherCoordinates) {
+<span class="nc" id="L141">        Tensor&lt;V&gt; remaining = extract(otherCoordinates);</span>
+<span class="nc" id="L142">        return TensorStreams.tensorEntryStream(remaining)</span>
+<span class="nc" id="L143">                .collect(ImmutableMap.toImmutableMap(e -&gt; e.getKey().coordinateFor(mapKeyType), e -&gt; e.getValue())); //</span>
+    }
+
+    public &lt;C&gt; Map&lt;C, V&gt; map(Class&lt;C&gt; mapKeyType, Object... otherCoordinates) {
+<span class="nc" id="L147">        return map(mapKeyType, Position.of(otherCoordinates));</span>
+    }
+
+    public Tensor&lt;V&gt; extract(Position position) {
+<span class="fc" id="L151">        return extractTensor(position.coordinates());</span>
+    }
+
+    public Tensor&lt;V&gt; extract(Object... coordinates) {
+<span class="fc" id="L155">        return extractTensor(Arrays.asList(coordinates));</span>
+    }
+
+    /**
+     * @deprecated use rather {@link #optional(Object...)}.orElse(...);
+     */
+    @Deprecated
+    public OngoingEitherGet&lt;V&gt; either(V defaultValue) {
+<span class="nc" id="L163">        return new OngoingEitherGet&lt;&gt;(tensor, defaultValue);</span>
+    }
+
+    private Tensor&lt;V&gt; extractTensor(Collection&lt;?&gt; coordinates) {
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        checkArgument(coordinates != null, &quot;Argument 'coordinates' must not be null!&quot;);</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (Object coordinate : coordinates) {</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">            checkArgument(coordinate != null, &quot;given coordinate must not be null!&quot;);</span>
+<span class="fc" id="L170">        }</span>
+<span class="fc" id="L171">        Tensor&lt;V&gt; slice = tensor;</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        for (Object coordinate : coordinates) {</span>
+<span class="fc" id="L173">            slice = slice(slice, coordinate);</span>
+<span class="fc" id="L174">        }</span>
+<span class="fc" id="L175">        return slice;</span>
+    }
+
+    private static final &lt;C, E&gt; Tensor&lt;E&gt; slice(Tensor&lt;E&gt; tensor, C coordinate) {
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        checkArgument(coordinate != null, &quot;Argument '&quot; + &quot;coordinate&quot; + &quot;' must not be null!&quot;);</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">        checkArgument(!(coordinate instanceof Position), &quot;It is not allowed that a coordinate is of type position! &quot;</span>
+                + &quot;Most probably this is a programming mistake ;-)&quot;);
+
+        /*
+         * TODO: write a nice test for this and probably have a method in shape to map dimensions
+         */
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L187">        Class&lt;C&gt; dimension = (Class&lt;C&gt;) coordinate.getClass();</span>
+<span class="fc" id="L188">        Class&lt;? super C&gt; correctDimension = Coordinates.mapToAnEntry(dimension, tensor.shape().dimensionSet());</span>
+
+<span class="fc" id="L190">        return TensorStructurals.from(tensor).reduce(correctDimension).bySlicingAt(coordinate);</span>
+    }
+
+    public &lt;C&gt; OngoingDimensionReduction&lt;C, V&gt; reduce(Class&lt;C&gt; dimension) {
+<span class="fc" id="L194">        return new OngoingDimensionReduction&lt;&gt;(tensor, dimension);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

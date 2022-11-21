@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Reflections.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.util</a> &gt; <span class="el_source">Reflections.java</span></div><h1>Reflections.java</h1><pre class="source lang-java linenums">// @formatter:off
+/**
+*
+* This file is part of streaming pool (http://www.streamingpool.org).
+*
+* Copyright (c) 2017-present, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
+// @formatter:on
+
+package org.tensorics.core.util;
+
+import static java.lang.String.format;
+import static java.lang.reflect.Modifier.isFinal;
+import static java.lang.reflect.Modifier.isPublic;
+import static java.lang.reflect.Modifier.isStatic;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.annotations.Beta;
+
+@Beta
+<span class="nc" id="L49">public class Reflections {</span>
+
+<span class="fc" id="L51">    private static final Logger LOGGER = LoggerFactory.getLogger(Reflections.class);</span>
+
+    public static final Object invokeUnchecked(Object object, Method getter) {
+        try {
+<span class="nc" id="L55">            return getter.invoke(object);</span>
+<span class="nc" id="L56">        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {</span>
+<span class="nc" id="L57">            throw new RuntimeException(&quot;Invocation of getter '&quot; + getter.getName() + &quot;' resulted in an exception.&quot;, e);</span>
+        }
+    }
+
+    public static List&lt;Method&gt; declaredGetters(Object object) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        return Arrays.stream(object.getClass().getDeclaredMethods()).filter(m -&gt; (m.getParameterCount() == 0))</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                .filter(m -&gt; !m.getReturnType().equals(Void.TYPE)).filter(m -&gt; Modifier.isPublic(m.getModifiers()))</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                .filter(m -&gt; !Modifier.isStatic(m.getModifiers())).collect(toList());</span>
+    }
+
+    public static final void verifyAllDeclaredGettersReturnSomething(Object object) {
+<span class="nc" id="L68">        List&lt;Method&gt; getters = declaredGetters(object);</span>
+
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        for (Method getter : getters) {</span>
+<span class="nc" id="L71">            Object value = invokeUnchecked(object, getter);</span>
+<span class="nc" id="L72">            requireNonNull(value, &quot;value from getter '&quot; + getter.getName() + &quot;' must not be null!&quot;);</span>
+<span class="nc" id="L73">        }</span>
+<span class="nc" id="L74">    }</span>
+
+    public static Object valueOfField(Field field, Object target) {
+        try {
+<span class="nc" id="L78">            return field.get(target);</span>
+<span class="nc" id="L79">        } catch (IllegalArgumentException | IllegalAccessException e) {</span>
+<span class="nc" id="L80">            throw new RuntimeException(format(&quot;Exception getting the field %s of object %s&quot;, field, target), e);</span>
+        }
+    }
+
+    public static boolean isPublicField(Field field) {
+<span class="nc" id="L85">        return Modifier.isPublic(field.getModifiers());</span>
+    }
+
+    public static boolean isFinalField(Field field) {
+<span class="nc" id="L89">        return Modifier.isFinal(field.getModifiers());</span>
+    }
+
+    public static boolean isStaticField(Field field) {
+<span class="nc" id="L93">        return Modifier.isStatic(field.getModifiers());</span>
+    }
+
+    public static boolean isPublicConstant(Field field) {
+<span class="fc" id="L97">        final int modifiers = field.getModifiers();</span>
+<span class="pc bpc" id="L98" title="3 of 6 branches missed.">        return isStatic(modifiers) &amp;&amp; isFinal(modifiers) &amp;&amp; isPublic(modifiers);</span>
+    }
+
+    public static boolean isSerialVersionUid(Field field) {
+<span class="fc" id="L102">        return &quot;serialVersionUID&quot;.equals(field.getName());</span>
+    }
+
+    public static Object valueOfStaticField(Field field) {
+        try {
+<span class="nc" id="L107">            return field.get(null);</span>
+<span class="nc" id="L108">        } catch (IllegalArgumentException | IllegalAccessException e) {</span>
+<span class="nc" id="L109">            throw new RuntimeException(format(&quot;Cannot get the value of the field %s&quot;, field), e);</span>
+        }
+    }
+
+    public static Optional&lt;Object&gt; optionalValueOfStaticField(Field field) {
+        try {
+<span class="fc" id="L115">            return Optional.ofNullable(field.get(null));</span>
+<span class="nc" id="L116">        } catch (Throwable e) {</span>
+<span class="nc" id="L117">            LOGGER.warn(&quot;Cannot get the value of the field {}. Ignoring it. Throwable message was: {}.&quot;, field,</span>
+<span class="nc" id="L118">                    e.getMessage());</span>
+<span class="nc" id="L119">            return Optional.empty();</span>
+        }
+    }
+
+    public static Set&lt;Field&gt; constantsFrom(Class&lt;?&gt; constantsContainer) {
+<span class="fc" id="L124">        return Stream.of(constantsContainer.getFields()).distinct().filter(Reflections::isPublicConstant)</span>
+<span class="fc" id="L125">                .collect(Collectors.toSet());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

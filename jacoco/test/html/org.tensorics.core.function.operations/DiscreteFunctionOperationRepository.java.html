@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DiscreteFunctionOperationRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.function.operations</a> &gt; <span class="el_source">DiscreteFunctionOperationRepository.java</span></div><h1>DiscreteFunctionOperationRepository.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.function.operations;
+
+import java.util.Comparator;
+
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.commons.options.Environment;
+
+/**
+ * &lt;p&gt;
+ * Contains instances of operations on discrete functions, based on an environment and with a conversion.
+ * &lt;p&gt;
+ * The main purpose is to be able to re-use the instances of the operations, in order to avoid to have to re-create them
+ * all the time.
+ * 
+ * @author caguiler
+ * @param &lt;X&gt; the type of the independent variable (input) of the discrete function
+ * @param &lt;Y&gt; the type of the dependent variable (output)of the discrete function and type of the elements of the
+ *            environment on which the operations are based.
+ */
+public class DiscreteFunctionOperationRepository&lt;X, Y&gt; {
+
+    private final DiscreteFunctionAddition&lt;X, Y&gt; addition;
+    private final DiscreteFunctionSubtraction&lt;X, Y&gt; subtraction;
+    private final DiscreteFunctionMultiplication&lt;X, Y&gt; multiplication;
+    private final DiscreteFunctionDivision&lt;X, Y&gt; division;
+
+    public DiscreteFunctionOperationRepository(Environment&lt;Y&gt; environment, Conversion&lt;X, Y&gt; conversion,
+<span class="fc" id="L49">            Comparator&lt;X&gt; comparator) {</span>
+<span class="fc" id="L50">        addition = new DiscreteFunctionAddition&lt;&gt;(environment, conversion, comparator);</span>
+<span class="fc" id="L51">        subtraction = new DiscreteFunctionSubtraction&lt;&gt;(environment, conversion, comparator);</span>
+<span class="fc" id="L52">        multiplication = new DiscreteFunctionMultiplication&lt;&gt;(environment, conversion, comparator);</span>
+<span class="fc" id="L53">        division = new DiscreteFunctionDivision&lt;&gt;(environment, conversion, comparator);</span>
+<span class="fc" id="L54">    }</span>
+
+    public DiscreteFunctionAddition&lt;X, Y&gt; addition() {
+<span class="fc" id="L57">        return addition;</span>
+    }
+
+    public DiscreteFunctionSubtraction&lt;X, Y&gt; subtraction() {
+<span class="fc" id="L61">        return subtraction;</span>
+    }
+
+    public DiscreteFunctionMultiplication&lt;X, Y&gt; multiplication() {
+<span class="fc" id="L65">        return multiplication;</span>
+    }
+
+    public DiscreteFunctionDivision&lt;X, Y&gt; division() {
+<span class="fc" id="L69">        return division;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

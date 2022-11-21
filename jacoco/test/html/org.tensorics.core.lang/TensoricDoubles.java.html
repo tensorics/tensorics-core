@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensoricDoubles.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">TensoricDoubles.java</span></div><h1>TensoricDoubles.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.lang;
+
+import org.tensorics.core.commons.lang.OngoingBinaryOperation;
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
+import org.tensorics.core.math.operations.BinaryFunction;
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarBinaryPredicate;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarConversion;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
+import org.tensorics.core.quantity.lang.OngoingQuantityValueExtraction;
+import org.tensorics.core.quantity.options.ConfidenceLevel;
+import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.OngoingFieldAwareResamplingStart;
+import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
+import org.tensorics.core.tensor.lang.OngoingQuantityTensorValueExtraction;
+import org.tensorics.core.tensor.lang.OngoingTensorOperation;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.lang.OngoingQuantifiedTensorBackedOperation;
+import org.tensorics.core.tensorbacked.lang.OngoingTensorBackedOperation;
+import org.tensorics.core.units.Unit;
+
+/**
+ * Provides delegate methods to a static instance of a {@code TensoricSupport&lt;Double&gt;}. This is for convenience
+ * purposes, so that a simple calculation does not have to inherit from the support class, but can statically import
+ * methods from this class.
+ *
+ * @author kfuchsbe
+ */
+public final class TensoricDoubles {
+
+<span class="fc" id="L56">    private static final TensoricDoubleSupport SUPPORT = new TensoricDoubleSupport();</span>
+    // private static final TensoricsDoubleExpressionSupport EXPRESSION_SUPPORT = new
+    // TensoricsDoubleExpressionSupport();
+
+    private TensoricDoubles() {
+        /* only static methods */
+    }
+
+    public static final OngoingBinaryOperation&lt;Double&gt; calculate(Double operand) {
+<span class="nc" id="L65">        return SUPPORT.calculate(operand);</span>
+    }
+
+    public static final Double avarageOf(Iterable&lt;Double&gt; values) {
+<span class="nc" id="L69">        return SUPPORT.avarageOf(values);</span>
+    }
+
+    public static final Double negativeOf(Double element) {
+<span class="nc" id="L73">        return SUPPORT.negativeOf(element);</span>
+    }
+
+    public static final Double inverseOf(Double element) {
+<span class="nc" id="L77">        return SUPPORT.inverseOf(element);</span>
+    }
+
+    public static final Double sizeOf(Iterable&lt;Double&gt; values) {
+<span class="nc" id="L81">        return SUPPORT.sizeOf(values);</span>
+    }
+
+    public static final Double zero() {
+<span class="nc" id="L85">        return SUPPORT.zero();</span>
+    }
+
+    public static final Double two() {
+<span class="nc" id="L89">        return SUPPORT.two();</span>
+    }
+
+    public static final Double one() {
+<span class="nc" id="L93">        return SUPPORT.one();</span>
+    }
+
+    public static final Double countOf(int number) {
+<span class="nc" id="L97">        return SUPPORT.countOf(number);</span>
+    }
+
+    public static final Double sumOf(Iterable&lt;Double&gt; values) {
+<span class="nc" id="L101">        return SUPPORT.sumOf(values);</span>
+    }
+
+    public static final Double rmsOf(Iterable&lt;Double&gt; values) {
+<span class="nc" id="L105">        return SUPPORT.rmsOf(values);</span>
+    }
+
+    public static final Double squareRootOf(Double value) {
+<span class="nc" id="L109">        return SUPPORT.squareRootOf(value);</span>
+    }
+
+    public static final Double squareOf(Double value) {
+<span class="nc" id="L113">        return SUPPORT.squareOf(value);</span>
+    }
+
+    public static final &lt;C&gt; OngoingTensorOperation&lt;C, Double&gt; calculate(Tensor&lt;Double&gt; tensoric) {
+<span class="fc" id="L117">        return SUPPORT.calculate(tensoric);</span>
+    }
+
+    public static final Double sumOfSquaresOf(Iterable&lt;Double&gt; values) {
+<span class="nc" id="L121">        return SUPPORT.sumOfSquaresOf(values);</span>
+    }
+
+    public static final &lt;C&gt; Tensor&lt;Double&gt; zeros(Shape shape) {
+<span class="nc" id="L125">        return SUPPORT.zeros(shape);</span>
+    }
+
+    public static final &lt;C&gt; Tensor&lt;Double&gt; ones(Shape shape) {
+<span class="nc" id="L129">        return SUPPORT.ones(shape);</span>
+    }
+
+    public static final &lt;C&gt; Tensor&lt;Double&gt; elementInverseOf(Tensor&lt;Double&gt; tensor) {
+<span class="nc" id="L133">        return SUPPORT.elementInverseOf(tensor);</span>
+    }
+
+    public static final &lt;C&gt; Tensor&lt;Double&gt; negativeOf(Tensor&lt;Double&gt; tensor) {
+<span class="nc" id="L137">        return SUPPORT.negativeOf(tensor);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; averageOfQ(Iterable&lt;QuantifiedValue&lt;Double&gt;&gt; values) {
+<span class="fc" id="L141">        return SUPPORT.averageOfQ(values);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; rmsOfQ(Iterable&lt;QuantifiedValue&lt;Double&gt;&gt; values) {
+<span class="fc" id="L145">        return SUPPORT.rmsOfQ(values);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; varOfQ(Iterable&lt;QuantifiedValue&lt;Double&gt;&gt; values) {
+<span class="fc" id="L149">        return SUPPORT.varOfQ(values);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; stdOfQ(Iterable&lt;QuantifiedValue&lt;Double&gt;&gt; values) {
+<span class="fc" id="L153">        return SUPPORT.stdOfQ(values);</span>
+    }
+
+    public static final OngoingQuantifiedTensorOperation&lt;Double&gt; calculateQ(Tensor&lt;QuantifiedValue&lt;Double&gt;&gt; left) {
+<span class="nc" id="L157">        return SUPPORT.calculateQ(left);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; sizeOfQ(Iterable&lt;QuantifiedValue&lt;Double&gt;&gt; values) {
+<span class="nc" id="L161">        return SUPPORT.sizeOfQ(values);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; valueOf(Double value, Unit unit) {
+<span class="fc" id="L165">        return SUPPORT.valueOf(value, unit);</span>
+    }
+
+    public static final OngoingQuantifiedScalarOperation&lt;Double&gt; calculate(Double value,
+            javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="nc" id="L170">        return SUPPORT.calculate(value, unit);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; sumOfQ(Iterable&lt;QuantifiedValue&lt;Double&gt;&gt; values) {
+<span class="nc" id="L174">        return SUPPORT.sumOfQ(values);</span>
+    }
+
+    public static final OngoingQuantifiedScalarOperation&lt;Double&gt; calculate(QuantifiedValue&lt;Double&gt; scalar) {
+<span class="nc" id="L178">        return SUPPORT.calculate(scalar);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; negativeOf(QuantifiedValue&lt;Double&gt; element) {
+<span class="nc" id="L182">        return SUPPORT.negativeOf(element);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; inverseOf(QuantifiedValue&lt;Double&gt; element) {
+<span class="nc" id="L186">        return SUPPORT.inverseOf(element);</span>
+    }
+
+    public static final &lt;TB extends Tensorbacked&lt;Double&gt;&gt; TB negativeOf(TB tensorBacked) {
+<span class="nc" id="L190">        return SUPPORT.negativeOf(tensorBacked);</span>
+    }
+
+    public static final &lt;TB extends Tensorbacked&lt;Double&gt;&gt; OngoingTensorBackedOperation&lt;TB, Double&gt; calculate(
+            TB tensorBacked) {
+<span class="fc" id="L195">        return SUPPORT.calculate(tensorBacked);</span>
+    }
+
+    public static final &lt;TB extends Tensorbacked&lt;QuantifiedValue&lt;Double&gt;&gt;&gt; TB negativeOfQ(TB tensorBacked) {
+<span class="nc" id="L199">        return SUPPORT.negativeOfQ(tensorBacked);</span>
+    }
+
+    public static final &lt;QTB extends Tensorbacked&lt;QuantifiedValue&lt;Double&gt;&gt;&gt; OngoingQuantifiedTensorBackedOperation&lt;QTB, Double&gt; calculateQ(
+            QTB left) {
+<span class="nc" id="L204">        return SUPPORT.calculateQ(left);</span>
+    }
+
+    public static final OngoingScalarBinaryPredicate&lt;Double&gt; testIf(Double left) {
+<span class="nc" id="L208">        return SUPPORT.testIf(left);</span>
+    }
+
+    public static final OngoingQuantifiedScalarBinaryPredicate&lt;Double&gt; testIf(QuantifiedValue&lt;Double&gt; left) {
+<span class="fc" id="L212">        return SUPPORT.testIf(left);</span>
+    }
+
+    public static final Double absoluteValueOf(Double value) {
+<span class="nc" id="L216">        return SUPPORT.absoluteValueOf(value);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; absoluteValueOf(QuantifiedValue&lt;Double&gt; value) {
+<span class="fc" id="L220">        return SUPPORT.absoluteValueOf(value);</span>
+    }
+
+    public static final &lt;S, R&gt; Tensor&lt;R&gt; elementwise(BinaryFunction&lt;S, R&gt; operation, Tensor&lt;S&gt; left, Tensor&lt;S&gt; right) {
+<span class="nc" id="L224">        return SUPPORT.elementwise(operation, left, right);</span>
+    }
+
+    public static final Tensor&lt;Double&gt; elementwise(BinaryOperation&lt;Double&gt; operation, Tensor&lt;Double&gt; left,
+            Tensor&lt;Double&gt; right) {
+<span class="nc" id="L229">        return SUPPORT.elementwise(operation, left, right);</span>
+    }
+
+    public static final QuantifiedValue&lt;Double&gt; valueOf(Double value, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="nc" id="L233">        return SUPPORT.valueOf(value, unit);</span>
+    }
+
+    public static final OngoingQuantityValueExtraction&lt;Double&gt; valueOf(QuantifiedValue&lt;Double&gt; quantity) {
+<span class="nc" id="L237">        return SUPPORT.valueOf(quantity);</span>
+    }
+
+    public static final OngoingQuantityIterableValueExtraction&lt;Double&gt; valuesOfI(
+            Iterable&lt;QuantifiedValue&lt;Double&gt;&gt; quantities) {
+<span class="nc" id="L242">        return SUPPORT.valuesOfI(quantities);</span>
+    }
+
+    public static final ConfidenceLevel&lt;Double&gt; confidenceLevelOf(Double confidenceLevel) {
+<span class="fc" id="L246">        return SUPPORT.confidenceLevelOf(confidenceLevel);</span>
+    }
+
+    public static final TensoricSupport&lt;Double&gt; with(ManipulationOption newOption) {
+<span class="fc" id="L250">        return SUPPORT.with(newOption);</span>
+    }
+
+    public static final OngoingQuantityIterableValueExtraction&lt;Double&gt; valuesOf(
+            Iterable&lt;QuantifiedValue&lt;Double&gt;&gt; quantities) {
+<span class="nc" id="L255">        return SUPPORT.valuesOf(quantities);</span>
+    }
+
+    public static final OngoingQuantifiedScalarConversion&lt;Double&gt; convert(QuantifiedValue&lt;Double&gt; value) {
+<span class="nc" id="L259">        return SUPPORT.convert(value);</span>
+    }
+
+    public static final OngoingQuantityTensorValueExtraction&lt;Double&gt; valuesOf(Tensor&lt;QuantifiedValue&lt;Double&gt;&gt; tensor) {
+<span class="fc" id="L263">        return SUPPORT.valuesOf(tensor);</span>
+    }
+
+    public static final Double averageOf(Iterable&lt;Double&gt; values) {
+<span class="nc" id="L267">        return SUPPORT.averageOf(values);</span>
+    }
+
+    public static final Double varOf(Iterable&lt;Double&gt; values) {
+<span class="nc" id="L271">        return SUPPORT.varOf(values);</span>
+    }
+
+    public static final Double stdOf(Iterable&lt;Double&gt; values) {
+<span class="nc" id="L275">        return SUPPORT.stdOf(values);</span>
+    }
+
+    public static final OngoingFieldAwareResamplingStart&lt;Double&gt; resample(Tensor&lt;Double&gt; tensor) {
+<span class="fc" id="L279">        return SUPPORT.resample(tensor);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

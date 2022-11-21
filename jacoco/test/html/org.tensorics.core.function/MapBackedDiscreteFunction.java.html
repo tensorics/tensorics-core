@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapBackedDiscreteFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.function</a> &gt; <span class="el_source">MapBackedDiscreteFunction.java</span></div><h1>MapBackedDiscreteFunction.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.function;
+
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import com.google.common.collect.ImmutableMap;
+
+/**
+ * Implementation of {@link DiscreteFunction} backed by a {@link Map}
+ * 
+ * @author caguiler
+ * @see DiscreteFunction
+ * @param &lt;X&gt; the type of the values in x-direction (Independent variable)
+ * @param &lt;Y&gt; the type of the values in y-direction (Dependent variable)
+ */
+public class MapBackedDiscreteFunction&lt;X, Y&gt; implements DiscreteFunction&lt;X, Y&gt;, Serializable {
+    private static final long serialVersionUID = 1L;
+    private final ImmutableMap&lt;X, Y&gt; function;
+
+<span class="fc" id="L44">    MapBackedDiscreteFunction(Builder&lt;X, Y&gt; builder) {</span>
+<span class="fc" id="L45">        this.function = builder.mapBuilder.build();</span>
+<span class="fc" id="L46">    }</span>
+
+    @Override
+    public Y apply(X input) {
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (!function.containsKey(input)) {</span>
+<span class="fc" id="L51">            throw new IllegalDiscreteFunctionUsageException(&quot;No value can be found for given argument: &quot; + input);</span>
+        }
+
+<span class="fc" id="L54">        return function.get(input);</span>
+    }
+
+    public static final &lt;X, Y&gt; DiscreteFunction&lt;X, Y&gt; fromMap(Map&lt;? extends X, ? extends Y&gt; function) {
+<span class="fc" id="L58">        return MapBackedDiscreteFunction.&lt;X, Y&gt; builder().putAll(function).build();</span>
+    }
+
+    @Override
+    public Set&lt;X&gt; definedXValues() {
+<span class="fc" id="L63">        return function.keySet();</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        return 31 + ((function == null) ? 0 : function.hashCode());</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L74">            return true;</span>
+        }
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L77">            return false;</span>
+        }
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (!(obj instanceof MapBackedDiscreteFunction)) {</span>
+<span class="nc" id="L80">            return false;</span>
+        }
+        @SuppressWarnings(&quot;rawtypes&quot;)
+<span class="fc" id="L83">        MapBackedDiscreteFunction other = (MapBackedDiscreteFunction) obj;</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (function == null) {</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (other.function != null) {</span>
+<span class="nc" id="L86">                return false;</span>
+            }
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        } else if (!function.equals(other.function)) {</span>
+<span class="fc" id="L89">            return false;</span>
+        }
+<span class="fc" id="L91">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L96">        return &quot;MapBackedDiscreteFunction [function=&quot; + function + &quot;]&quot;;</span>
+    }
+
+    /**
+     * The builder for the function based on a map. This class provides methods to add values to the function.
+     * 
+     * @author kfuchsbe, caguiler
+     * @param &lt;X&gt; the type of the independent variable (input)
+     * @param &lt;Y&gt; the type of the dependent variable (output)
+     */
+    public static final class Builder&lt;X, Y&gt; implements DiscreteFunctionBuilder&lt;X, Y&gt; {
+
+<span class="fc" id="L108">        private final ImmutableMap.Builder&lt;X, Y&gt; mapBuilder = ImmutableMap.builder();</span>
+
+<span class="fc" id="L110">        Builder() {</span>
+            /* Should only be instantiated from the static method */
+<span class="fc" id="L112">        }</span>
+
+        public DiscreteFunctionBuilder&lt;X, Y&gt; put(Entry&lt;? extends X, ? extends Y&gt; entry) {
+<span class="nc" id="L115">            mapBuilder.put(entry);</span>
+<span class="nc" id="L116">            return this;</span>
+        }
+
+        @Override
+        public DiscreteFunctionBuilder&lt;X, Y&gt; put(X key, Y value) {
+<span class="fc" id="L121">            mapBuilder.put(key, value);</span>
+<span class="fc" id="L122">            return this;</span>
+        }
+
+        public DiscreteFunctionBuilder&lt;X, Y&gt; putAll(Map&lt;? extends X, ? extends Y&gt; values) {
+<span class="fc" id="L126">            mapBuilder.putAll(values);</span>
+<span class="fc" id="L127">            return this;</span>
+        }
+
+        @Override
+        public MapBackedDiscreteFunction&lt;X, Y&gt; build() {
+<span class="fc" id="L132">            return new MapBackedDiscreteFunction&lt;&gt;(this);</span>
+        }
+    }
+
+    public static final &lt;X, Y&gt; Builder&lt;X, Y&gt; builder() {
+<span class="fc" id="L137">        return new Builder&lt;&gt;();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmutableTensor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">ImmutableTensor.java</span></div><h1>ImmutableTensor.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+*
+* This file is part of tensorics.
+*
+* Copyright (c) 2008-2011, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor;
+
+import static java.util.Objects.requireNonNull;
+import static org.tensorics.core.tensor.Coordinates.requireValidDimensions;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultiset;
+
+/**
+ * Default Implementation of {@link Tensor}.
+ * &lt;p&gt;
+ * By constraint of creation it holds a map of {@link Position} of certain type to values of type T, such that ALL
+ * Positions contains the same number and type of coordinates. Number and type of coordinates can be accessed and
+ * explored via {@link Shape}.
+ * &lt;p&gt;
+ * There is a special type of Tensor that has ZERO dimensiality. Can be obtained via factory method.
+ * &lt;p&gt;
+ * {@link ImmutableTensor} is immutable.
+ * &lt;p&gt;
+ * The toString() method does not print all the tensor entries.
+ *
+ * @author agorzaws, kfuchsbe
+ * @param &lt;V&gt; type of values in Tensor.
+ */
+public class ImmutableTensor&lt;V&gt; extends AbstractTensor&lt;V&gt; implements Mappable&lt;V&gt;, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private static final int TOSTRING_BUFFER_SIZE = 64;
+    private static final int POSITION_TO_DISPLAY = 10;
+    private final Map&lt;Position, V&gt; entries;
+    private final Shape shape; // NOSONAR
+    private final Position context; // NOSONAR
+
+    /**
+     * Package-private constructor to be called from builder
+     *
+     * @param builder to be used when {@link ImmutableTensor} is created.
+     */
+<span class="fc" id="L68">    ImmutableTensor(Builder&lt;V&gt; builder) {</span>
+<span class="fc" id="L69">        this.entries = builder.createEntriesMap();</span>
+<span class="fc" id="L70">        this.shape = Shape.viewOf(builder.dimensions(), this.entries.keySet());</span>
+<span class="fc" id="L71">        this.context = builder.context();</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Returns a builder for an {@link ImmutableTensor}. As argument it takes set of class of coordinates which
+     * represent the dimensions of the tensor.
+     *
+     * @param dimensions a set of classes that can later be used as coordinates for the tensor entries.
+     * @return a builder for {@link ImmutableTensor}
+     * @param &lt;T&gt; type of values in Tensor.
+     */
+    public static final &lt;T&gt; Builder&lt;T&gt; builder(Iterable&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc" id="L83">        return new Builder&lt;&gt;(requireValidDimensions(ImmutableMultiset.copyOf(dimensions)));</span>
+    }
+
+    /**
+     * Returns a builder for an {@link ImmutableTensor}. The dimensions (classes of coordinates) of the future tensor
+     * have to be given as arguments here.
+     *
+     * @param dimensions the dimensions of the tensor to create
+     * @return a builder for an immutable tensor
+     * @param &lt;T&gt; the type of values of the tensor
+     */
+    public static final &lt;T&gt; Builder&lt;T&gt; builder(Class&lt;?&gt;... dimensions) {
+<span class="fc" id="L95">        return new Builder&lt;&gt;(requireValidDimensions(ImmutableMultiset.copyOf(dimensions)));</span>
+    }
+
+    /**
+     * Creates a tensor from the given map, where the map has to contain the positions as keys and the values as values.
+     *
+     * @param dimensions the desired dimensions of the tensor. This has to be consistent with the position - keys in the
+     *            map.
+     * @param map the map from which to construct a tensor
+     * @return a new immutable tensor
+     */
+    public static final &lt;T&gt; Tensor&lt;T&gt; fromMap(Iterable&lt;Class&lt;?&gt;&gt; dimensions, Map&lt;Position, T&gt; map) {
+<span class="fc" id="L107">        Builder&lt;T&gt; builder = builder(dimensions);</span>
+<span class="fc" id="L108">        builder.putAll(map);</span>
+<span class="fc" id="L109">        return builder.build();</span>
+    }
+
+    /**
+     * Creates an immutable copy of the given tensor.
+     *
+     * @param tensor the tensor whose element to copy
+     * @return new immutable Tensor
+     */
+    public static final &lt;T&gt; Tensor&lt;T&gt; copyOf(Tensor&lt;T&gt; tensor) {
+<span class="fc" id="L119">        return builderFrom(tensor).build();</span>
+    }
+
+    /**
+     * Returns a builder for an {@link ImmutableTensor} which is initiliased with the given {@link ImmutableTensor}.
+     *
+     * @param tensor a Tensor with which the {@link Builder} is initialized
+     * @return a {@link Builder} for an {@link ImmutableTensor}
+     * @param &lt;T&gt; type of values in Tensor.
+     */
+    public static &lt;T&gt; Builder&lt;T&gt; builderFrom(Tensor&lt;T&gt; tensor) {
+<span class="fc" id="L130">        Builder&lt;T&gt; builder = builder(tensor.shape().dimensionSet());</span>
+<span class="fc" id="L131">        builder.putAll(tensor);</span>
+<span class="fc" id="L132">        builder.context(tensor.context());</span>
+<span class="fc" id="L133">        return builder;</span>
+    }
+
+    @Override
+    public V get(Position position) {
+<span class="fc" id="L138">        return findValueOrThrow(position);</span>
+    }
+
+    @Override
+    public Position context() {
+<span class="fc" id="L143">        return this.context;</span>
+    }
+
+    @Override
+    public Map&lt;Position, V&gt; asMap() {
+        /*
+         * the internal map is already immutable and does not need to be copied
+         */
+<span class="fc" id="L151">        return entries;</span>
+    }
+
+    @Override
+    public Shape shape() {
+<span class="fc" id="L156">        return this.shape;</span>
+    }
+
+    private V findValueOrThrow(Position position) {
+<span class="fc" id="L160">        requireNonNull(position, &quot;position must not be null&quot;);</span>
+<span class="fc" id="L161">        V entry = findEntryOrNull(position);</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (entry == null) {</span>
+<span class="fc" id="L163">            String message = &quot;Entry for position '&quot; + position + &quot;' is not contained in this tensor.&quot;;</span>
+<span class="fc" id="L164">            Set&lt;Class&lt;?&gt;&gt; tensorDimensions = this.shape.dimensionSet();</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">            if (Positions.areDimensionsConsistentWithCoordinates(tensorDimensions, position)) {</span>
+<span class="fc" id="L166">                throw new NoSuchElementException(message);</span>
+            } else {
+<span class="fc" id="L168">                message += &quot;\nThe dimensions of the tensor (&quot; + tensorDimensions</span>
+                        + &quot;) do not match the dimensions of the requested position (&quot; + position + &quot;).&quot;;
+<span class="fc" id="L170">                throw new IllegalArgumentException(message);</span>
+            }
+        }
+<span class="fc" id="L173">        return entry;</span>
+    }
+
+    private V findEntryOrNull(Position position) {
+<span class="fc" id="L177">        return this.entries.get(position);</span>
+    }
+
+    /**
+     * A builder for an immutable tensor.
+     *
+     * @author kfuchsbe
+     * @param &lt;V&gt; the type of the values to be added
+     */
+    public static final class Builder&lt;V&gt; extends AbstractTensorBuilder&lt;V&gt; {
+
+<span class="fc" id="L188">        private final Map&lt;Position, V&gt; entries = new HashMap&lt;&gt;();</span>
+
+        Builder(Set&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc" id="L191">            super(dimensions);</span>
+<span class="fc" id="L192">        }</span>
+
+        /**
+         * Builds the entries map as an {@link ImmutableMap}.
+         *
+         * @return
+         */
+        public Map&lt;Position, V&gt; createEntriesMap() {
+<span class="fc" id="L200">            return ImmutableMap.&lt;Position, V&gt; builder().putAll(entries).build();</span>
+        }
+
+        /**
+         * Builds an {@link ImmutableTensor} from all elements put before.
+         *
+         * @return an {@link ImmutableTensor}.
+         */
+        @Override
+        public ImmutableTensor&lt;V&gt; build() {
+<span class="fc" id="L210">            return new ImmutableTensor&lt;V&gt;(this);</span>
+        }
+
+        @Override
+        protected void putIt(Position position, V value) {
+<span class="fc" id="L215">            this.entries.put(position, value);</span>
+<span class="fc" id="L216">        }</span>
+
+
+
+        @Override
+        public TensorBuilder&lt;V&gt; remove(Position position) {
+<span class="nc" id="L222">            entries.remove(position);</span>
+<span class="nc" id="L223">            return this;</span>
+        }
+
+
+    }
+
+    /**
+     * When printing the tensor content output is automatically not larger then N ant the beginning and N at the end of
+     * the Tensor entries.
+     */
+    @Override
+    public String toString() {
+<span class="fc" id="L235">        StringBuffer buffer = new StringBuffer(TOSTRING_BUFFER_SIZE);</span>
+<span class="fc" id="L236">        int totalSize = this.shape.positionSet().size();</span>
+<span class="fc" id="L237">        int index = 1;</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        for (Position position : this.shape.positionSet()) {</span>
+<span class="fc bfc" id="L239" title="All 4 branches covered.">            if (index &lt; POSITION_TO_DISPLAY || index &gt; totalSize - POSITION_TO_DISPLAY) {</span>
+<span class="fc" id="L240">                buffer.append(position + &quot;=(&quot; + get(position) + &quot;), &quot;);</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">            } else if (index == POSITION_TO_DISPLAY) {</span>
+<span class="fc" id="L242">                buffer.append(&quot;.. [&quot; + (totalSize - 2 * POSITION_TO_DISPLAY) + &quot; skipped entries] .. , &quot;);</span>
+            }
+<span class="fc" id="L244">            index++;</span>
+<span class="fc" id="L245">        }</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">        if (buffer.length() &gt; 1) {</span>
+<span class="fc" id="L247">            buffer.setLength(buffer.length() - 2);</span>
+        }
+<span class="fc" id="L249">        return Coordinates.dimensionsWithoutClassPath(this) + &quot;, Content:{&quot; + buffer + &quot;}&quot;;</span>
+    }
+
+    @Override
+    public boolean contains(Position position) {
+<span class="fc" id="L254">        return this.shape.contains(position);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

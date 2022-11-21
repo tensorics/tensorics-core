@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DimtypedTypes.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensorbacked.dimtyped</a> &gt; <span class="el_source">DimtypedTypes.java</span></div><h1>DimtypedTypes.java</h1><pre class="source lang-java linenums">package org.tensorics.core.tensorbacked.dimtyped;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.reflect.TypeToken;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.stream.Collectors.toSet;
+
+public final class DimtypedTypes {
+
+<span class="fc" id="L21">    private static final ImmutableMap&lt;Class&lt;? extends DimtypedTensorbacked&gt;, Integer&gt; DIMENSION_PARAMETRIZED_TYPES = ImmutableMap.&lt;Class&lt;? extends DimtypedTensorbacked&gt;, Integer&gt;builder()</span>
+<span class="fc" id="L22">            .put(TensorbackedScalar.class, 0) //</span>
+<span class="fc" id="L23">            .put(Tensorbacked1d.class, 1)</span>
+<span class="fc" id="L24">            .put(Tensorbacked2d.class, 2)</span>
+<span class="fc" id="L25">            .put(Tensorbacked3d.class, 3)</span>
+<span class="fc" id="L26">            .put(Tensorbacked4d.class, 4)</span>
+<span class="fc" id="L27">            .put(Tensorbacked5d.class, 5)</span>
+<span class="fc" id="L28">            .build();</span>
+
+    private DimtypedTypes() {
+        /* only static methods */
+    }
+
+
+    /**
+     * Retrieves the single parametrized type (contained in {@link #DIMENSION_PARAMETRIZED_TYPES}), which is implemented by the
+     * given subclass of {@link DimtypedTensorbacked}. If none or mor than one implemented interfaces are found,
+     * then corresponding exceptions are thrown.
+     *
+     * @param subClass a subclass of {@link DimtypedTensorbacked}, for which the parametrized subclass has to be found.
+     * @return the class which is parametrized by the coordinate types.
+     * @throws NoSuchElementException   in case no well known parametrized subtype can be found
+     * @throws IllegalArgumentException in case more than one well known parametrized subtype is found
+     */
+    public static Class&lt;? extends DimtypedTensorbacked&gt; coordinateParametrizedSubtypeOf(Class&lt;? extends DimtypedTensorbacked&gt; subClass) {
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (allowedTypes().contains(subClass)) {</span>
+<span class="fc" id="L47">            throw new IllegalArgumentException(&quot;A dimtyped tensorbacked must be a SUBTYPE of exactly one of the following interfaces with concrete type parameters in order to be able to resolve the dimensions: \n &quot; + allowedTypes() + &quot;.\n&quot; +</span>
+                    &quot;However, this is not the case for the given class '&quot; + subClass + &quot;'.&quot;);
+
+        }
+<span class="fc" id="L51">        Set&lt;Class&lt;? extends DimtypedTensorbacked&gt;&gt; found = allowedTypes().stream()</span>
+<span class="fc" id="L52">                .filter(c -&gt; c.isAssignableFrom(subClass))</span>
+<span class="fc" id="L53">                .collect(toSet());</span>
+
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (found.isEmpty()) {</span>
+<span class="fc" id="L56">            throw new NoSuchElementException(&quot;A dimtyped tensorbacked must implement exactly one of the following interfaces: \n &quot; + allowedTypes() + &quot;\n&quot; +</span>
+                    &quot;However, none was found in '&quot; + subClass + &quot;'. If this is happening while extending tensorics by additional tensorbacked types, &quot; +
+                    &quot;consider adding the new type within the class '&quot; + DimtypedTypes.class + &quot;'&quot;);
+        }
+
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (found.size() &gt; 1) {</span>
+<span class="fc" id="L62">            throw new IllegalArgumentException(&quot;A dimtyped tensorbacked must implement exactly one of the following interfaces: \n &quot; + allowedTypes() + &quot;\n&quot; +</span>
+                    &quot;However, more than one were found in '&quot; + subClass + &quot;'.\nThe found types are: &quot; + found);
+
+        }
+
+<span class="fc" id="L67">        return Iterables.getOnlyElement(found);</span>
+    }
+
+    public static List&lt;Class&lt;?&gt;&gt; dimensionListFrom(Class&lt;? extends DimtypedTensorbacked&gt; tensorbackedClass) {
+<span class="fc" id="L71">        Class&lt;? extends DimtypedTensorbacked&gt; coordinateParametrized = coordinateParametrizedSubtypeOf(tensorbackedClass);</span>
+<span class="fc" id="L72">        int dimensionality = DIMENSION_PARAMETRIZED_TYPES.get(coordinateParametrized);</span>
+
+<span class="fc" id="L74">        TypeToken&lt;?&gt; tt = TypeToken.of(tensorbackedClass);</span>
+<span class="fc" id="L75">        List&lt;Class&lt;?&gt;&gt; dimensions = IntStream.range(0, dimensionality)</span>
+<span class="fc" id="L76">                .mapToObj(i -&gt; tt.resolveType(coordinateParametrized.getTypeParameters()[i]))</span>
+<span class="fc" id="L77">                .map(typeToken -&gt; typeToken.getRawType())</span>
+<span class="fc" id="L78">                .collect(toImmutableList());</span>
+
+<span class="fc" id="L80">        assertNoObjectDimension(tensorbackedClass, dimensions);</span>
+<span class="fc" id="L81">        assertDistinctDimensionality(coordinateParametrized, dimensions);</span>
+<span class="fc" id="L82">        return dimensions;</span>
+    }
+
+    private static void assertNoObjectDimension(Class&lt;? extends DimtypedTensorbacked&gt; tensorbackedClass, Collection&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (dimensions.contains(Object.class)) {</span>
+            /* If type parameters are not explicitely defined in a subtype, then they seem to be resolved to Object.class.
+               However, this is not what we want for dimensions...            */
+<span class="fc" id="L89">            throw new IllegalArgumentException(&quot;At least one of the extracted dimensions is '&quot; + Object.class + &quot;'. This is most probably a conceptual error.\n&quot; +</span>
+                    &quot;Most probably, the passed in class (&quot; + tensorbackedClass + &quot;) is not a valid subtype with resolvable type parameters.&quot;);
+        }
+<span class="fc" id="L92">    }</span>
+
+    private static void assertDistinctDimensionality(Class&lt;? extends DimtypedTensorbacked&gt; coordinateParametrized, Collection&lt;Class&lt;?&gt;&gt; dimensions) {
+<span class="fc" id="L95">        int dimensionality = DIMENSION_PARAMETRIZED_TYPES.get(coordinateParametrized);</span>
+<span class="fc" id="L96">        Collection&lt;Class&lt;?&gt;&gt; distinctDimensions = ImmutableSet.copyOf(dimensions);</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (distinctDimensions.size() != dimensionality) {</span>
+<span class="fc" id="L98">            throw new IllegalArgumentException(&quot;The size of the set of the retrieved distinct dimensions (size=&quot; + distinctDimensions.size() + &quot;, dimensions=&quot; + distinctDimensions + &quot;), &quot; +</span>
+                    &quot;is not equal to the required number of dimensions (&quot; + dimensionality + &quot;) for the parametrized class &quot; + coordinateParametrized + &quot;.\n&quot;
+                    + &quot;Probably two dimensions are of the same type?&quot;);
+        }
+<span class="fc" id="L102">    }</span>
+
+    public static Set&lt;Class&lt;?&gt;&gt; dimensionsFrom(Class&lt;? extends DimtypedTensorbacked&gt; tensorbackedClass) {
+<span class="fc" id="L105">        return ImmutableSet.copyOf(dimensionListFrom(tensorbackedClass));</span>
+    }
+
+    private static ImmutableSet&lt;Class&lt;? extends DimtypedTensorbacked&gt;&gt; allowedTypes() {
+<span class="fc" id="L109">        return DIMENSION_PARAMETRIZED_TYPES.keySet();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

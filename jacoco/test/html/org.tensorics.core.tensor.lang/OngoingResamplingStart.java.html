@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingResamplingStart.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.lang</a> &gt; <span class="el_source">OngoingResamplingStart.java</span></div><h1>OngoingResamplingStart.java</h1><pre class="source lang-java linenums">package org.tensorics.core.tensor.lang;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Comparator;
+
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.resample.impl.RepeatingResampler;
+
+public class OngoingResamplingStart&lt;V&gt; {
+
+    private final Tensor&lt;V&gt; tensor;
+
+<span class="fc" id="L14">    public OngoingResamplingStart(Tensor&lt;V&gt; tensor) {</span>
+<span class="fc" id="L15">        this.tensor = requireNonNull(tensor, &quot;tensor must not be null&quot;);</span>
+<span class="fc" id="L16">    }</span>
+
+    public &lt;T&gt; OngoingResampling&lt;V&gt; repeat(Class&lt;T&gt; dimension, Comparator&lt;T&gt; dimensionComparator) {
+<span class="fc" id="L19">        return OngoingResampling.of(tensor, dimension, new RepeatingResampler&lt;&gt;(dimensionComparator));</span>
+    }
+
+    public &lt;T extends Comparable&lt;T&gt;&gt; OngoingResampling&lt;V&gt; repeat(Class&lt;T&gt; dimension) {
+<span class="fc" id="L23">        return repeat(dimension, Comparator.naturalOrder());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

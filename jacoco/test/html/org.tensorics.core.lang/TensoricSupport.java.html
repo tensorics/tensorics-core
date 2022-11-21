@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensoricSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">TensoricSupport.java</span></div><h1>TensoricSupport.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.lang;
+
+import org.tensorics.core.commons.lang.OngoingBinaryOperation;
+import org.tensorics.core.commons.options.ManipulationOption;
+import org.tensorics.core.iterable.lang.OngoingQuantityIterableValueExtraction;
+import org.tensorics.core.math.operations.BinaryFunction;
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarBinaryPredicate;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarConversion;
+import org.tensorics.core.quantity.lang.OngoingQuantifiedScalarOperation;
+import org.tensorics.core.quantity.lang.OngoingQuantityValueExtraction;
+import org.tensorics.core.quantity.options.ConfidenceLevel;
+import org.tensorics.core.quantity.options.ImmutableConfidenceLevel;
+import org.tensorics.core.scalar.lang.OngoingScalarBinaryPredicate;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.OngoingFieldAwareResamplingStart;
+import org.tensorics.core.tensor.lang.OngoingQuantifiedTensorOperation;
+import org.tensorics.core.tensor.lang.OngoingQuantityTensorValueExtraction;
+import org.tensorics.core.tensor.lang.OngoingTensorOperation;
+import org.tensorics.core.tensor.lang.QuantityTensorSupport;
+import org.tensorics.core.tensor.lang.TensorSupport;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.lang.OngoingQuantifiedTensorBackedOperation;
+import org.tensorics.core.tensorbacked.lang.OngoingTensorBackedOperation;
+import org.tensorics.core.tensorbacked.lang.QuantityTensorbackedSupport;
+import org.tensorics.core.tensorbacked.lang.TensorbackedSupport;
+import org.tensorics.core.units.Unit;
+
+/**
+ * The main start point for expressions of the tensoric eDSL. Gives access to the quantified versions of the operations
+ * and the basic tensor operations. &lt;br&gt;
+ * &lt;b&gt;NOTE!&lt;/b&gt;&lt;br&gt;
+ * Contains delegation methods only!
+ *
+ * @author kfuchsbe, agorzaws
+ * @param &lt;V&gt; The type of the values of the scalars (elements of the field on which all the operations are based on)
+ */
+public class TensoricSupport&lt;V&gt; {
+
+    private final TensorSupport&lt;V&gt; tensoricFieldUsage;
+    private final QuantityTensorSupport&lt;V&gt; quantifiedTensoricFieldUsage;
+    private final QuantityTensorbackedSupport&lt;V&gt; quantifiedTensorbackedSupport;
+    private final TensorbackedSupport&lt;V&gt; tensorbackedSupport;
+    private final EnvironmentImpl&lt;V&gt; environment;
+
+<span class="fc" id="L70">    public TensoricSupport(EnvironmentImpl&lt;V&gt; environment) {</span>
+<span class="fc" id="L71">        this.environment = environment;</span>
+<span class="fc" id="L72">        this.tensoricFieldUsage = new TensorSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L73">        this.quantifiedTensoricFieldUsage = new QuantityTensorSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L74">        this.tensorbackedSupport = new TensorbackedSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L75">        this.quantifiedTensorbackedSupport = new QuantityTensorbackedSupport&lt;&gt;(environment);</span>
+<span class="fc" id="L76">    }</span>
+
+    public OngoingBinaryOperation&lt;V&gt; calculate(V operand) {
+<span class="nc" id="L79">        return tensoricFieldUsage.calculate(operand);</span>
+    }
+
+    public final V avarageOf(Iterable&lt;V&gt; values) {
+<span class="nc" id="L83">        return tensoricFieldUsage.averageOf(values);</span>
+    }
+
+    public final V negativeOf(V element) {
+<span class="nc" id="L87">        return tensoricFieldUsage.negativeOf(element);</span>
+    }
+
+    public final V inverseOf(V element) {
+<span class="nc" id="L91">        return tensoricFieldUsage.inverseOf(element);</span>
+    }
+
+    public final V sizeOf(Iterable&lt;V&gt; values) {
+<span class="nc" id="L95">        return tensoricFieldUsage.sizeOf(values);</span>
+    }
+
+    public final V zero() {
+<span class="nc" id="L99">        return tensoricFieldUsage.zero();</span>
+    }
+
+    public final V two() {
+<span class="nc" id="L103">        return tensoricFieldUsage.two();</span>
+    }
+
+    public final V one() {
+<span class="nc" id="L107">        return tensoricFieldUsage.one();</span>
+    }
+
+    public V countOf(int number) {
+<span class="nc" id="L111">        return tensoricFieldUsage.countOf(number);</span>
+    }
+
+    public final V sumOf(Iterable&lt;V&gt; values) {
+<span class="nc" id="L115">        return tensoricFieldUsage.sumOf(values);</span>
+    }
+
+    public V rmsOf(Iterable&lt;V&gt; values) {
+<span class="nc" id="L119">        return tensoricFieldUsage.rmsOf(values);</span>
+    }
+
+    public V squareRootOf(V value) {
+<span class="nc" id="L123">        return tensoricFieldUsage.squareRootOf(value);</span>
+    }
+
+    public V squareOf(V value) {
+<span class="nc" id="L127">        return tensoricFieldUsage.squareOf(value);</span>
+    }
+
+    public final &lt;C&gt; OngoingTensorOperation&lt;C, V&gt; calculate(Tensor&lt;V&gt; tensoric) {
+<span class="fc" id="L131">        return tensoricFieldUsage.calculate(tensoric);</span>
+    }
+
+    public V sumOfSquaresOf(Iterable&lt;V&gt; values) {
+<span class="nc" id="L135">        return tensoricFieldUsage.sumOfSquaresOf(values);</span>
+    }
+
+    public &lt;C&gt; Tensor&lt;V&gt; zeros(Shape shape) {
+<span class="nc" id="L139">        return tensoricFieldUsage.zeros(shape);</span>
+    }
+
+    public &lt;C&gt; Tensor&lt;V&gt; ones(Shape shape) {
+<span class="nc" id="L143">        return tensoricFieldUsage.ones(shape);</span>
+    }
+
+    public &lt;C&gt; Tensor&lt;V&gt; elementInverseOf(Tensor&lt;V&gt; tensor) {
+<span class="nc" id="L147">        return tensoricFieldUsage.elementInverseOf(tensor);</span>
+    }
+
+    public &lt;C&gt; Tensor&lt;V&gt; negativeOf(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L151">        return tensoricFieldUsage.negativeOf(tensor);</span>
+    }
+
+    public final QuantifiedValue&lt;V&gt; averageOfQ(Iterable&lt;QuantifiedValue&lt;V&gt;&gt; values) {
+<span class="fc" id="L155">        return quantifiedTensoricFieldUsage.averageOf(values);</span>
+    }
+
+    public final QuantifiedValue&lt;V&gt; rmsOfQ(Iterable&lt;QuantifiedValue&lt;V&gt;&gt; values) {
+<span class="fc" id="L159">        return quantifiedTensoricFieldUsage.rmsOf(values);</span>
+    }
+
+    public final QuantifiedValue&lt;V&gt; varOfQ(Iterable&lt;QuantifiedValue&lt;V&gt;&gt; values) {
+<span class="fc" id="L163">        return quantifiedTensoricFieldUsage.varOf(values);</span>
+    }
+
+    public final QuantifiedValue&lt;V&gt; stdOfQ(Iterable&lt;QuantifiedValue&lt;V&gt;&gt; values) {
+<span class="fc" id="L167">        return quantifiedTensoricFieldUsage.stdOf(values);</span>
+    }
+
+    public OngoingQuantifiedTensorOperation&lt;V&gt; calculateQ(Tensor&lt;QuantifiedValue&lt;V&gt;&gt; left) {
+<span class="nc" id="L171">        return quantifiedTensoricFieldUsage.calculate(left);</span>
+    }
+
+    public QuantifiedValue&lt;V&gt; valueOf(V value, Unit unit) {
+<span class="fc" id="L175">        return quantifiedTensoricFieldUsage.valueOf(value, unit);</span>
+    }
+
+    public OngoingQuantifiedScalarOperation&lt;V&gt; calculate(V value, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="nc" id="L179">        return quantifiedTensoricFieldUsage.calculate(value, unit);</span>
+    }
+
+    public OngoingQuantifiedScalarOperation&lt;V&gt; calculate(QuantifiedValue&lt;V&gt; scalar) {
+<span class="fc" id="L183">        return quantifiedTensoricFieldUsage.calculate(scalar);</span>
+    }
+
+    public QuantifiedValue&lt;V&gt; negativeOf(QuantifiedValue&lt;V&gt; element) {
+<span class="nc" id="L187">        return quantifiedTensoricFieldUsage.negativeOf(element);</span>
+    }
+
+    public QuantifiedValue&lt;V&gt; inverseOf(QuantifiedValue&lt;V&gt; element) {
+<span class="nc" id="L191">        return quantifiedTensoricFieldUsage.inverseOf(element);</span>
+    }
+
+    public QuantifiedValue&lt;V&gt; valueOf(V value, javax.measure.unit.Unit&lt;?&gt; unit) {
+<span class="nc" id="L195">        return quantifiedTensoricFieldUsage.valueOf(value, unit);</span>
+    }
+
+    public &lt;TB extends Tensorbacked&lt;V&gt;&gt; TB negativeOf(TB tensorBacked) {
+<span class="fc" id="L199">        return tensorbackedSupport.negativeOf(tensorBacked);</span>
+    }
+
+    public final &lt;TB extends Tensorbacked&lt;V&gt;&gt; OngoingTensorBackedOperation&lt;TB, V&gt; calculate(TB tensorBacked) {
+<span class="fc" id="L203">        return tensorbackedSupport.calculate(tensorBacked);</span>
+    }
+
+    public &lt;TB extends Tensorbacked&lt;QuantifiedValue&lt;V&gt;&gt;&gt; TB negativeOfQ(TB tensorBacked) {
+<span class="fc" id="L207">        return quantifiedTensorbackedSupport.negativeOf(tensorBacked);</span>
+    }
+
+    public &lt;QTB extends Tensorbacked&lt;QuantifiedValue&lt;V&gt;&gt;&gt; OngoingQuantifiedTensorBackedOperation&lt;QTB, V&gt; calculateQ(
+            QTB left) {
+<span class="fc" id="L212">        return quantifiedTensorbackedSupport.calculate(left);</span>
+    }
+
+    public OngoingScalarBinaryPredicate&lt;V&gt; testIf(V left) {
+<span class="nc" id="L216">        return tensoricFieldUsage.testIf(left);</span>
+    }
+
+    public OngoingQuantifiedScalarBinaryPredicate&lt;V&gt; testIf(QuantifiedValue&lt;V&gt; left) {
+<span class="fc" id="L220">        return quantifiedTensoricFieldUsage.testIf(left);</span>
+    }
+
+    public V absoluteValueOf(V value) {
+<span class="nc" id="L224">        return tensoricFieldUsage.absoluteValueOf(value);</span>
+    }
+
+    public QuantifiedValue&lt;V&gt; absoluteValueOf(QuantifiedValue&lt;V&gt; value) {
+<span class="fc" id="L228">        return quantifiedTensoricFieldUsage.absoluteValueOf(value);</span>
+    }
+
+    public &lt;S, R&gt; Tensor&lt;R&gt; elementwise(BinaryFunction&lt;S, R&gt; operation, Tensor&lt;S&gt; left, Tensor&lt;S&gt; right) {
+<span class="nc" id="L232">        return tensoricFieldUsage.elementwise(operation, left, right);</span>
+    }
+
+    public Tensor&lt;V&gt; elementwise(BinaryOperation&lt;V&gt; operation, Tensor&lt;V&gt; left, Tensor&lt;V&gt; right) {
+<span class="nc" id="L236">        return tensoricFieldUsage.elementwise(operation, left, right);</span>
+    }
+
+    public OngoingQuantityValueExtraction&lt;V&gt; valueOf(QuantifiedValue&lt;V&gt; quantity) {
+<span class="nc" id="L240">        return quantifiedTensoricFieldUsage.valueOf(quantity);</span>
+    }
+
+    public final OngoingQuantityIterableValueExtraction&lt;V&gt; valuesOfI(Iterable&lt;QuantifiedValue&lt;V&gt;&gt; quantities) {
+<span class="nc" id="L244">        return quantifiedTensoricFieldUsage.valuesOf(quantities);</span>
+    }
+
+    public final OngoingQuantityTensorValueExtraction&lt;V&gt; valuesOf(Tensor&lt;QuantifiedValue&lt;V&gt;&gt; tensor) {
+<span class="fc" id="L248">        return quantifiedTensoricFieldUsage.valuesOf(tensor);</span>
+    }
+
+    public final QuantifiedValue&lt;V&gt; sizeOfQ(Iterable&lt;QuantifiedValue&lt;V&gt;&gt; values) {
+<span class="nc" id="L252">        return quantifiedTensoricFieldUsage.sizeOf(values);</span>
+    }
+
+    public final QuantifiedValue&lt;V&gt; sumOfQ(Iterable&lt;QuantifiedValue&lt;V&gt;&gt; values) {
+<span class="nc" id="L256">        return quantifiedTensoricFieldUsage.sumOf(values);</span>
+    }
+
+    public final OngoingQuantityIterableValueExtraction&lt;V&gt; valuesOf(Iterable&lt;QuantifiedValue&lt;V&gt;&gt; quantities) {
+<span class="nc" id="L260">        return quantifiedTensoricFieldUsage.valuesOf(quantities);</span>
+    }
+
+    public OngoingQuantifiedScalarConversion&lt;V&gt; convert(QuantifiedValue&lt;V&gt; value) {
+<span class="nc" id="L264">        return quantifiedTensoricFieldUsage.convert(value);</span>
+    }
+
+    public TensoricSupport&lt;V&gt; with(ManipulationOption newOption) {
+<span class="fc" id="L268">        return new TensoricSupport&lt;&gt;(environment.with(newOption));</span>
+    }
+
+    public ConfidenceLevel&lt;V&gt; confidenceLevelOf(V confidenceLevel) {
+<span class="fc" id="L272">        return new ImmutableConfidenceLevel&lt;&gt;(confidenceLevel);</span>
+    }
+
+    public final V averageOf(Iterable&lt;V&gt; values) {
+<span class="nc" id="L276">        return tensoricFieldUsage.averageOf(values);</span>
+    }
+
+    public V varOf(Iterable&lt;V&gt; values) {
+<span class="nc" id="L280">        return tensoricFieldUsage.varOf(values);</span>
+    }
+
+    public V stdOf(Iterable&lt;V&gt; values) {
+<span class="nc" id="L284">        return tensoricFieldUsage.stdOf(values);</span>
+    }
+
+    public OngoingFieldAwareResamplingStart&lt;V&gt; resample(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L288">        return tensoricFieldUsage.resample(tensor);</span>
+    }
+
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

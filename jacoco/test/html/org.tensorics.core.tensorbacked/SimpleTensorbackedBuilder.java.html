@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpleTensorbackedBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensorbacked</a> &gt; <span class="el_source">SimpleTensorbackedBuilder.java</span></div><h1>SimpleTensorbackedBuilder.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensorbacked;
+
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.createBackedByTensor;
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.dimensionsOf;
+
+import java.util.Map;
+import java.util.Set;
+
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+
+/**
+ * A builder for tensor backed objects, which takes care that only positions which are compatible with the dimensions of
+ * the foreseen underlaying tensor are put into it. Internally, it uses a builder for a tensor, to which most of the
+ * methods are delegated. At build time, the tensor is encapsulated in the according tensor backed class.
+ * &lt;p&gt;
+ * This class is not thread safe.
+ *
+ * @param &lt;V&gt;  the type of the values of the tensor (and thus also the tensor backed object)
+ * @param &lt;TB&gt; the type of the tensor backed object
+ * @author kfuchsbe
+ */
+public class SimpleTensorbackedBuilder&lt;V, TB extends Tensorbacked&lt;V&gt;&gt; implements TensorbackedBuilder&lt;V, TB&gt; {
+
+    private final Class&lt;TB&gt; tensorbackedClass;
+    private final ImmutableTensor.Builder&lt;V&gt; tensorBuilder;
+
+    /**
+     * Constructor for the builder, which takes the target class of the tensorbacked as an argument. Will only be
+     * instantiated by the neighbouring utility class. Therefore it is package private.
+     */
+<span class="fc" id="L55">    SimpleTensorbackedBuilder(Class&lt;TB&gt; tensorbackedClass) {</span>
+<span class="fc" id="L56">        this.tensorbackedClass = tensorbackedClass;</span>
+<span class="fc" id="L57">        this.tensorBuilder = ImmutableTensor.builder(dimensionsOf(tensorbackedClass));</span>
+<span class="fc" id="L58">    }</span>
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; put(java.util.Map.Entry&lt;Position, V&gt; entry) {
+<span class="fc" id="L61">        tensorBuilder.put(entry);</span>
+<span class="fc" id="L62">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; put(Position position, V value) {
+<span class="fc" id="L66">        tensorBuilder.put(position, value);</span>
+<span class="fc" id="L67">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; putAll(Set&lt;java.util.Map.Entry&lt;Position, V&gt;&gt; entries) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (java.util.Map.Entry&lt;Position, V&gt; entry : entries) {</span>
+<span class="fc" id="L72">            tensorBuilder.put(entry);</span>
+<span class="fc" id="L73">        }</span>
+<span class="fc" id="L74">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; putAll(Position position, Map&lt;Position, V&gt; entries) {
+<span class="nc" id="L78">        tensorBuilder.putAll(position, entries);</span>
+<span class="nc" id="L79">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; putAll(Position position, Tensor&lt;V&gt; tensor) {
+<span class="nc" id="L83">        tensorBuilder.putAll(position, tensor);</span>
+<span class="nc" id="L84">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; putAll(Position position, Tensorbacked&lt;V&gt; tensorbacked) {
+<span class="nc" id="L88">        tensorBuilder.putAll(position, tensorbacked.tensor());</span>
+<span class="nc" id="L89">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; putAll(TB tensorBacked) {
+<span class="nc" id="L93">        tensorBuilder.putAll(tensorBacked.tensor());</span>
+<span class="nc" id="L94">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; putAll(Tensor&lt;V&gt; tensor) {
+<span class="nc" id="L98">        tensorBuilder.putAll(tensor);</span>
+<span class="nc" id="L99">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; putAll(Map&lt;Position, V&gt; newEntries) {
+<span class="nc" id="L103">        tensorBuilder.putAll(newEntries);</span>
+<span class="nc" id="L104">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; remove(Position position) {
+<span class="nc" id="L108">        tensorBuilder.remove(position);</span>
+<span class="nc" id="L109">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; context(Position context) {
+<span class="nc" id="L113">        tensorBuilder.context(context);</span>
+<span class="nc" id="L114">        return this;</span>
+    }
+
+    public final SimpleTensorbackedBuilder&lt;V, TB&gt; context(Object... coordinates) {
+<span class="nc" id="L118">        return this.context(Position.of(coordinates));</span>
+    }
+
+    /**
+     * Builds the tensor backed object, after all the content is set.
+     *
+     * @return a new instance of the tensor backed object, containing all the data as described after instantiating the
+     * builder.
+     */
+    public TB build() {
+<span class="fc" id="L128">        return createBackedByTensor(tensorbackedClass, tensorBuilder.build());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

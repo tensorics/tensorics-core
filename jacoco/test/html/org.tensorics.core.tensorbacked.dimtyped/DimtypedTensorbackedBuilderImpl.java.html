@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DimtypedTensorbackedBuilderImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensorbacked.dimtyped</a> &gt; <span class="el_source">DimtypedTensorbackedBuilderImpl.java</span></div><h1>DimtypedTensorbackedBuilderImpl.java</h1><pre class="source lang-java linenums">package org.tensorics.core.tensorbacked.dimtyped;
+
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.TensorBuilder;
+import org.tensorics.core.tensorbacked.*;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+
+import static java.util.Objects.requireNonNull;
+
+public class DimtypedTensorbackedBuilderImpl&lt;V, TB extends DimtypedTensorbacked&lt;V&gt;, B extends DimtypedTensorbackedBuilder&lt;V, TB, B&gt;&gt; implements DimtypedTensorbackedBuilder&lt;V, TB, B&gt; {
+
+    private final TensorBuilder&lt;V&gt; delegate;
+    private final Class&lt;TB&gt; tensorbackedType;
+    private final B proxy;
+
+<span class="fc" id="L25">    private DimtypedTensorbackedBuilderImpl(TensorBuilder&lt;V&gt; delegate, Class&lt;B&gt; tensorBuilderType, Class&lt;TB&gt; tensorType) {</span>
+<span class="fc" id="L26">        this.delegate = requireNonNull(delegate, &quot;delegate must not be null&quot;);</span>
+<span class="fc" id="L27">        this.proxy = proxy(tensorBuilderType);</span>
+<span class="fc" id="L28">        this.tensorbackedType = requireNonNull(tensorType, &quot;tensorbackedType must not be null&quot;);</span>
+<span class="fc" id="L29">    }</span>
+
+    public static &lt;V, T extends DimtypedTensorbacked&lt;V&gt;, B extends DimtypedTensorbackedBuilder&lt;V, T, B&gt;&gt; B from(TensorBuilder&lt;V&gt; delegate, Class&lt;B&gt; tensorBuilderType, Class&lt;T&gt; tensorType) {
+<span class="fc" id="L32">        return new DimtypedTensorbackedBuilderImpl&lt;&gt;(delegate, tensorBuilderType, tensorType).proxy;</span>
+    }
+
+    public static &lt;V, TB extends DimtypedTensorbacked&lt;V&gt;, B extends DimtypedTensorbackedBuilder&lt;V, TB, B&gt;&gt; B immutableBuilderFrom(Class&lt;TB&gt; tensorbackedClass, Class&lt;B&gt; builderClass) {
+<span class="fc" id="L36">        ImmutableTensor.Builder&lt;V&gt; tensorBuilder = ImmutableTensor.builder(Tensorbackeds.dimensionsOf(tensorbackedClass));</span>
+<span class="fc" id="L37">        return from(tensorBuilder, builderClass, tensorbackedClass);</span>
+    }
+
+
+    @Override
+    public TB build() {
+<span class="fc" id="L43">        return ProxiedInterfaceTensorbackeds.create(tensorbackedType, delegate.build());</span>
+    }
+
+    @Override
+    public B context(Position context) {
+<span class="nc" id="L48">        this.delegate.context(context);</span>
+<span class="nc" id="L49">        return proxy;</span>
+    }
+
+    @Override
+    public B context(Object... coordinates) {
+<span class="nc" id="L54">        this.delegate.context(coordinates);</span>
+<span class="nc" id="L55">        return proxy;</span>
+    }
+
+
+    @Override
+    public B putAll(Tensor&lt;V&gt; tensor) {
+<span class="nc" id="L61">        delegate.putAll(tensor);</span>
+<span class="nc" id="L62">        return proxy;</span>
+    }
+
+    @Override
+    public B putAll(Position position, Tensor&lt;V&gt; tensor) {
+<span class="nc" id="L67">        delegate.putAll(position, tensor);</span>
+<span class="nc" id="L68">        return proxy;</span>
+    }
+
+    @Override
+    public B putAll(Position position, Tensorbacked&lt;V&gt; tensorbacked) {
+<span class="nc" id="L73">        delegate.putAll(position, tensorbacked.tensor());</span>
+<span class="nc" id="L74">        return proxy;</span>
+    }
+
+    @Override
+    public B putAll(TB tensorBacked) {
+<span class="nc" id="L79">        delegate.putAll(tensorBacked.tensor());</span>
+<span class="nc" id="L80">        return proxy;</span>
+    }
+
+    @Override
+    public B put(Position position, V value) {
+<span class="fc" id="L85">        delegate.put(position, value);</span>
+<span class="fc" id="L86">        return proxy;</span>
+    }
+
+    @Override
+    public B putAll(Set&lt;Map.Entry&lt;Position, V&gt;&gt; entries) {
+<span class="nc" id="L91">        delegate.putAll(entries);</span>
+<span class="nc" id="L92">        return proxy;</span>
+    }
+
+    @Override
+    public B put(Map.Entry&lt;Position, V&gt; entry) {
+<span class="nc" id="L97">        delegate.put(entry);</span>
+<span class="nc" id="L98">        return proxy;</span>
+    }
+
+    @Override
+    public B remove(Position position) {
+<span class="nc" id="L103">        delegate.remove(position);</span>
+<span class="nc" id="L104">        return proxy;</span>
+    }
+
+    @Override
+    public B putAll(Map&lt;Position, V&gt; newEntries) {
+<span class="nc" id="L109">        delegate.putAll(newEntries);</span>
+<span class="nc" id="L110">        return proxy;</span>
+    }
+
+    @Override
+    public B putAll(Position position, Map&lt;Position, V&gt; map) {
+<span class="nc" id="L115">        delegate.putAll(position, map);</span>
+<span class="nc" id="L116">        return proxy;</span>
+    }
+
+
+    private B proxy(Class&lt;B&gt; tensorBuilderType) {
+<span class="fc" id="L121">        return (B) Proxy.newProxyInstance(DimtypedTensorbackedBuilderImpl.class.getClassLoader(), new Class&lt;?&gt;[]{tensorBuilderType}, new DelegatingInvocationHandler&lt;&gt;(tensorBuilderType, this));</span>
+
+    }
+
+    private final static class DelegatingInvocationHandler&lt;V, B extends TensorbackedBuilder&lt;V, ?&gt;&gt; implements InvocationHandler {
+        private final B delegate;
+        private final Class&lt;?&gt; tensorBuilderType;
+
+<span class="fc" id="L129">        public DelegatingInvocationHandler(Class&lt;?&gt; tensorBuilderType, B delegate) {</span>
+<span class="fc" id="L130">            this.tensorBuilderType = requireNonNull(tensorBuilderType, &quot;tensorBuilderType must not be null&quot;);</span>
+<span class="fc" id="L131">            this.delegate = requireNonNull(delegate, &quot;delegate must not be null&quot;);</span>
+<span class="fc" id="L132">        }</span>
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (tensorBuilderType.equals(method.getDeclaringClass())) {</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                if (&quot;put&quot;.equals(method.getName())) {</span>
+<span class="fc" id="L138">                    Object[] coordinates = Arrays.copyOf(args, args.length - 1);</span>
+<span class="fc" id="L139">                    Object value = args[args.length - 1];</span>
+<span class="fc" id="L140">                    delegate.put(Position.of(coordinates), (V) value);</span>
+<span class="fc" id="L141">                    return proxy;</span>
+                } else {
+<span class="nc" id="L143">                    throw new UnsupportedOperationException(&quot;The method &quot; + method + &quot; is not supported by the proxy!&quot;);</span>
+                }
+            }
+
+            try {
+<span class="fc" id="L148">                return method.invoke(delegate, args);</span>
+<span class="nc" id="L149">            } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L150">                throw e.getCause();</span>
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

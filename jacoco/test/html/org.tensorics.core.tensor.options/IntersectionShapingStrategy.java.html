@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IntersectionShapingStrategy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.options</a> &gt; <span class="el_source">IntersectionShapingStrategy.java</span></div><h1>IntersectionShapingStrategy.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.options;
+
+import static org.tensorics.core.tensor.Shapes.intersection;
+
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Tensor;
+
+/**
+ * A strategy for shaping tensors resulting from binary (element wise) operations, which just takes the intersection of
+ * both shapes. This means that the resulting shape will be such, that it will only contain positions which are
+ * contained in both incoming shapes.
+ * &lt;p&gt;
+ * Example: &lt;blockquote&gt;
+ * 
+ * &lt;pre&gt;
+ * Shape result = shapeLeftRight(Shape.of(POS_A, POS_B), Shape.of(POS_B, POS_C));
+ * result.equals(Shape.of(POS_B)); // would be true
+ * &lt;/pre&gt;
+ * 
+ * &lt;/blockquote&gt;
+ * 
+ * @author agorzaws, kfuchsbe
+ */
+public class IntersectionShapingStrategy implements ShapingStrategy {
+
+<span class="fc" id="L48">    private static final IntersectionShapingStrategy INSTANCE = new IntersectionShapingStrategy();</span>
+
+    /**
+     * Avoids more then one instance. Use method {@link #get()} the get the instance.
+     */
+    private IntersectionShapingStrategy() {
+        /* private constructor to avoid instantiation */
+    }
+
+    public static IntersectionShapingStrategy get() {
+<span class="fc" id="L58">        return INSTANCE;</span>
+    }
+
+    @Override
+    public &lt;C&gt; Shape shapeLeftRight(Tensor&lt;?&gt; left, Tensor&lt;?&gt; right) {
+<span class="fc" id="L63">        return intersection(left.shape(), right.shape());</span>
+    }
+
+    @Override
+    public Class&lt;ShapingStrategy&gt; getMarkerInterface() {
+<span class="fc" id="L68">        return ShapingStrategy.class;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

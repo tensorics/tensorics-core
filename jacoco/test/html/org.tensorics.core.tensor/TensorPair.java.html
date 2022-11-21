@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensorPair.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor</a> &gt; <span class="el_source">TensorPair.java</span></div><h1>TensorPair.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
+
+import org.tensorics.core.commons.util.AbstractPair;
+import org.tensorics.core.commons.util.ValuePair;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+
+/**
+ * A pair of tensors which are used together in several occasions.
+ * 
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the values of the tensors
+ */
+public final class TensorPair&lt;V&gt; extends AbstractPair&lt;Tensor&lt;V&gt;&gt; {
+
+    /**
+     * Private constructor to enforce the usage of the factory method.
+     * 
+     * @param leftTensor the left tensor of the pair
+     * @param rightTensor the right tensor of the pair
+     * @throws NullPointerException if one of the arguments is {@code null}
+     */
+    private TensorPair(Tensor&lt;V&gt; leftTensor, Tensor&lt;V&gt; rightTensor) {
+<span class="fc" id="L57">        super(checkNotNull(leftTensor, &quot;leftTensor must not be null&quot;),</span>
+<span class="fc" id="L58">                checkNotNull(rightTensor, &quot;rightTensor must not be null&quot;));</span>
+<span class="fc" id="L59">    }</span>
+
+    public static &lt;V&gt; TensorPair&lt;V&gt; fromLeftRight(Tensor&lt;V&gt; leftTensor, Tensor&lt;V&gt; rightTensor) {
+<span class="fc" id="L62">        return new TensorPair&lt;V&gt;(leftTensor, rightTensor);</span>
+    }
+
+    /**
+     * Retrieves a pair of values from the two tensors. The left position in the given pair is used to access the left
+     * tensor and the right position to access the right tensor. The given position pair must not be null and non-null
+     * values have to be present in the tensors. In all other cases, exceptions will be thrown.
+     * 
+     * @param positionPair the pair of positions for which the values have to be retrieved
+     * @return a pair of values, if they exist in the tensors
+     * @throws NullPointerException if the given position pair is null or one of the values, retrieved from the tensors
+     *             is {@code null}
+     */
+    public ValuePair&lt;V&gt; get(PositionPair positionPair) {
+<span class="fc" id="L76">        checkNotNull(positionPair, &quot;positionPair must not be null&quot;);</span>
+<span class="fc" id="L77">        V left = left().get(positionPair.left());</span>
+<span class="fc" id="L78">        V right = right().get(positionPair.right());</span>
+        /*
+         * No need to check explicitely for non-null, the ValuePair will do the job
+         */
+<span class="fc" id="L82">        return ValuePair.fromLeftRight(left, right);</span>
+    }
+
+    /**
+     * Extracts all the value pairs of the tensor pair, according to the given iterable of position pairs. The returned
+     * list will contain all the value pairs in the order of the position pairs.
+     * 
+     * @param positionPairs the position pairs for which the value pairs have to be extracte
+     * @return a list, containing all the pairs retrieved from the two tensors
+     * @throws NullPointerException if the given positionPairs are {@code null}, or no values are contained for at least
+     *             one of the positions.
+     */
+    public List&lt;ValuePair&lt;V&gt;&gt; getAll(Iterable&lt;PositionPair&gt; positionPairs) {
+<span class="fc" id="L95">        Preconditions.checkNotNull(positionPairs, &quot;positionPairs must not be null&quot;);</span>
+<span class="fc" id="L96">        Builder&lt;ValuePair&lt;V&gt;&gt; builder = ImmutableList.builder();</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        for (PositionPair positionPair : positionPairs) {</span>
+<span class="fc" id="L98">            builder.add(get(positionPair));</span>
+<span class="fc" id="L99">        }</span>
+<span class="fc" id="L100">        return builder.build();</span>
+    }
+
+    /**
+     * Extracts pairs of values, according to the given multimap of position pairs and returns them again as a multimap.
+     * The map will contain the same keys as the input map and as values all the values indexed by the given position
+     * pairs (values of the input map). It is assumed that values exist in the tensors for all given positions. If this
+     * is not the case, then an exception will be thrown. The returned value will be a {@link ListMultimap}, because it
+     * is easily possible that the returned value pairs are the same for different keys.
+     * 
+     * @param positionPairs a multimap K: pairs of positions for which to retrieve the values
+     * @return a multimap K: pairs of values, extracted from the tensor pair
+     */
+    public &lt;K&gt; ListMultimap&lt;K, ValuePair&lt;V&gt;&gt; mapValues(Multimap&lt;K, PositionPair&gt; positionPairs) {
+<span class="fc" id="L114">        ImmutableListMultimap.Builder&lt;K, ValuePair&lt;V&gt;&gt; builder = ImmutableListMultimap.builder();</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (Entry&lt;K, Collection&lt;PositionPair&gt;&gt; entry : positionPairs.asMap().entrySet()) {</span>
+<span class="fc" id="L116">            builder.putAll(entry.getKey(), getAll(entry.getValue()));</span>
+<span class="fc" id="L117">        }</span>
+<span class="fc" id="L118">        return builder.build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingMapOut.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.operations</a> &gt; <span class="el_source">OngoingMapOut.java</span></div><h1>OngoingMapOut.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+*
+* This file is part of tensorics.
+* 
+* Copyright (c) 2008-2011, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+* 
+******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.operations;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
+
+/**
+ * Provides methods to describe how to produce a map out of a tensor.
+ * &lt;p&gt;
+ * This is part of a tensoric-internal fluent API
+ * 
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of values of the tensor
+ */
+public final class OngoingMapOut&lt;V&gt; {
+    private final Tensor&lt;V&gt; tensor;
+
+<span class="fc" id="L52">    public OngoingMapOut(Tensor&lt;V&gt; tensor) {</span>
+<span class="fc" id="L53">        this.tensor = tensor;</span>
+<span class="fc" id="L54">    }</span>
+
+    public &lt;C1&gt; Tensor&lt;Map&lt;C1, V&gt;&gt; inDirectionOf(Class&lt;? extends C1&gt; dimension) {
+<span class="fc" id="L57">        Builder&lt;Map&lt;C1, V&gt;&gt; tensorBuilder = ImmutableTensor</span>
+<span class="fc" id="L58">                .builder(OngoingMapOut.dimensionsExcept(tensor.shape().dimensionSet(), dimension));</span>
+
+<span class="fc" id="L60">        tensorBuilder.context(tensor.context()); // XXX IS this correct?</span>
+
+<span class="fc" id="L62">        Multimap&lt;Set&lt;?&gt;, Entry&lt;Position, V&gt;&gt; fullEntries = groupBy(TensorInternals.mapFrom(tensor).entrySet(),</span>
+                dimension);
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (Set&lt;?&gt; key : fullEntries.keySet()) {</span>
+<span class="fc" id="L65">            Map&lt;C1, V&gt; values = mapByDimension(fullEntries.get(key), dimension);</span>
+<span class="fc" id="L66">            tensorBuilder.put(Position.of(key), values);</span>
+<span class="fc" id="L67">        }</span>
+<span class="fc" id="L68">        return tensorBuilder.build();</span>
+    }
+
+    private static &lt;C, C1 extends C&gt; Set&lt;?&gt; coordinatesExcept(Collection&lt;?&gt; coordinates, Class&lt;C1&gt; dimension) {
+<span class="fc" id="L72">        ImmutableSet.Builder&lt;Object&gt; builder = ImmutableSet.builder();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (Object coordinate : coordinates) {</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            if (!dimension.isInstance(coordinate)) {</span>
+<span class="fc" id="L75">                builder.add(coordinate);</span>
+            }
+<span class="fc" id="L77">        }</span>
+<span class="fc" id="L78">        return builder.build();</span>
+    }
+
+    private static &lt;C, C1 extends C&gt; Set&lt;Class&lt;?&gt;&gt; dimensionsExcept(Set&lt;Class&lt;?&gt;&gt; dimensions, Class&lt;C1&gt; dimension) {
+<span class="fc" id="L82">        Set&lt;Class&lt;?&gt;&gt; toReturn = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (Class&lt;?&gt; oneDimension : dimensions) {</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">            if (!oneDimension.equals(dimension)) {</span>
+<span class="fc" id="L85">                toReturn.add(oneDimension);</span>
+            }
+<span class="fc" id="L87">        }</span>
+<span class="fc" id="L88">        return toReturn;</span>
+    }
+
+    private static &lt;C, C1 extends C, T&gt; Map&lt;C1, T&gt; mapByDimension(Collection&lt;Entry&lt;Position, T&gt;&gt; entries,
+            Class&lt;? extends C1&gt; dimension) {
+<span class="fc" id="L93">        ImmutableMap.Builder&lt;C1, T&gt; valuesBuilder = ImmutableMap.builder();</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        for (Entry&lt;Position, T&gt; entry : entries) {</span>
+<span class="fc" id="L95">            C1 coordinateFor = entry.getKey().coordinateFor(dimension);</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">            if (coordinateFor == null) {</span>
+<span class="nc" id="L97">                throw new IllegalArgumentException(</span>
+<span class="nc" id="L98">                        &quot;Cannot operate with [&quot; + dimension + &quot;] while having only &quot; + entry.getKey());</span>
+            }
+<span class="fc" id="L100">            valuesBuilder.put(coordinateFor, entry.getValue());</span>
+<span class="fc" id="L101">        }</span>
+<span class="fc" id="L102">        return valuesBuilder.build();</span>
+    }
+
+    private static &lt;T, C, C1 extends C&gt; Multimap&lt;Set&lt;?&gt;, Entry&lt;Position, T&gt;&gt; groupBy(
+            Iterable&lt;Entry&lt;Position, T&gt;&gt; entries, Class&lt;C1&gt; dimension) {
+<span class="fc" id="L107">        ImmutableMultimap.Builder&lt;Set&lt;?&gt;, Entry&lt;Position, T&gt;&gt; fullEntriesBuilder = ImmutableMultimap.builder();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        for (Entry&lt;Position, T&gt; entry : entries) {</span>
+<span class="fc" id="L109">            Collection&lt;?&gt; coordinates = entry.getKey().coordinates();</span>
+<span class="fc" id="L110">            fullEntriesBuilder.put(OngoingMapOut.coordinatesExcept(coordinates, dimension), entry);</span>
+<span class="fc" id="L111">        }</span>
+<span class="fc" id="L112">        return fullEntriesBuilder.build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

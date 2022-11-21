@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CaseMatchings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.util.chains</a> &gt; <span class="el_source">CaseMatchings.java</span></div><h1>CaseMatchings.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2017 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.util.chains;
+
+import static com.google.common.collect.ImmutableSortedMap.toImmutableSortedMap;
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Function.identity;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Iterables;
+import com.google.common.reflect.Invokable;
+
+public final class CaseMatchings {
+
+<span class="fc" id="L31">    private static final Logger LOGGER = LoggerFactory.getLogger(CaseMatchings.class);</span>
+
+<span class="fc" id="L33">    private static final Comparator&lt;Class&lt;?&gt;&gt; SUBTYPE_BEFORE_SUPERTYPE = (Class&lt;?&gt; o1, Class&lt;?&gt; o2) -&gt; {</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (o1.equals(o2)) {</span>
+<span class="nc" id="L35">            return 0;</span>
+        }
+<span class="pc bpc" id="L37" title="1 of 4 branches missed.">        if (o2.isAssignableFrom(o1) &amp;&amp; !o1.isAssignableFrom(o2)) {</span>
+<span class="fc" id="L38">            return -1;</span>
+        }
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">        if (o1.isAssignableFrom(o2) &amp;&amp; !o2.isAssignableFrom(o1)) {</span>
+<span class="fc" id="L41">            return 1;</span>
+        }
+<span class="fc" id="L43">        return o1.getName().compareTo(o2.getName());</span>
+    };
+
+    private static final String REPR_METHOD_NAME = &quot;repr&quot;;
+
+    private CaseMatchings() {
+        /* Only static methods */
+    }
+
+    public static final &lt;T, R, CT&gt; ClassDispatcher&lt;T, R, CT&gt; from(Class&lt;R&gt; returnType, Class&lt;CT&gt; caseBranchClass) {
+<span class="fc" id="L53">        return from(returnType, caseBranchClass, new ClassInstantiator&lt;&gt;(caseBranchClass));</span>
+    }
+
+    public static final &lt;T, R, CT&gt; ClassDispatcher&lt;T, R, CT&gt; from(Class&lt;R&gt; returnType, Class&lt;CT&gt; caseBranchClass,
+            Supplier&lt;CT&gt; instanceSupplier) {
+<span class="fc" id="L58">        Set&lt;Invokable&lt;CT, ?&gt;&gt; dispatchingMethods = methods(caseBranchClass);</span>
+<span class="fc" id="L59">        assertValidReprMethods(dispatchingMethods, returnType);</span>
+<span class="fc" id="L60">        return new ClassDispatcher&lt;&gt;(caseBranchClass, instanceSupplier, sortByHierarchy(dispatchingMethods));</span>
+    }
+
+    private static &lt;CT, R&gt; Class&lt;?&gt; typeOfOnlyParameter(Invokable&lt;CT, R&gt; invokable) {
+<span class="fc" id="L64">        return Iterables.getOnlyElement(invokable.getParameters()).getType().getRawType();</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private static &lt;T&gt; Set&lt;Invokable&lt;T, ?&gt;&gt; methods(Class&lt;T&gt; caseBranchClass) {
+        // @formatter:off
+<span class="fc" id="L70">        return Arrays.stream(caseBranchClass.getDeclaredMethods())</span>
+<span class="fc" id="L71">                .map(m -&gt; (Invokable&lt;T, ?&gt;) Invokable.from(m))</span>
+                /* Somehow in the following code a method reverence (Invokable::isPublic) 
+                 * does not work. Not understood.*/
+<span class="fc" id="L74">                .filter(i -&gt; i.isPublic())</span>
+                /* static methods are not excluded. They work.*/
+<span class="fc" id="L76">                .collect(Collectors.toSet());</span>
+        // @formatter:on
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private static &lt;T, R&gt; SortedMap&lt;Class&lt;?&gt;, Invokable&lt;T, R&gt;&gt; sortByHierarchy(Set&lt;Invokable&lt;T, ?&gt;&gt; methods) {
+<span class="fc" id="L82">        return methods.stream().map(i -&gt; (Invokable&lt;T, R&gt;) i).collect(</span>
+<span class="fc" id="L83">                toImmutableSortedMap(SUBTYPE_BEFORE_SUPERTYPE, CaseMatchings::typeOfOnlyParameter, identity()));</span>
+    }
+
+    private static &lt;T, R&gt; void assertValidReprMethods(Set&lt;Invokable&lt;T, ?&gt;&gt; methods, Class&lt;R&gt; returnType) {
+<span class="fc" id="L87">        Set&lt;Invokable&lt;T, ?&gt;&gt; invalidMethods = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (Invokable&lt;T, ?&gt; method : methods) {</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            if ((!method.getReturnType().isSubtypeOf(returnType)) //</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">                    || (method.getParameters().size() != 1) //</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                    || !REPR_METHOD_NAME.equals(method.getName())) {</span>
+<span class="fc" id="L92">                invalidMethods.add(method);</span>
+            }
+<span class="fc" id="L94">        }</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        if (!invalidMethods.isEmpty()) {</span>
+<span class="fc" id="L96">            throw new IllegalArgumentException(</span>
+                    &quot;All public methods in a representer class &quot; + &quot;must fulfill the following contract:\n&quot; //
+                            + &quot;*) name=='&quot; + REPR_METHOD_NAME + &quot;'\n&quot; //
+                            + &quot;*) one single parameter\n&quot; //
+                            + &quot;*) All the same return type (&quot; + returnType + &quot; in this case)\n&quot; //
+                            + &quot;The following methods do not fulfill this contract: &quot; + invalidMethods);
+        }
+<span class="fc" id="L103">    }</span>
+
+    public static final class ClassDispatcher&lt;T, R, CT&gt; implements BiFunction&lt;T, Function&lt;Object, R&gt;, R&gt; {
+
+        private final Supplier&lt;CT&gt; instanceSupplier;
+        private final Class&lt;CT&gt; representerClass;
+        private final SortedMap&lt;Class&lt;?&gt;, Invokable&lt;CT, R&gt;&gt; methods;
+
+        public ClassDispatcher(Class&lt;CT&gt; representerClass, Supplier&lt;CT&gt; instanceSupplier,
+<span class="fc" id="L112">                SortedMap&lt;Class&lt;?&gt;, Invokable&lt;CT, R&gt;&gt; methods) {</span>
+<span class="fc" id="L113">            this.instanceSupplier = requireNonNull(instanceSupplier, &quot;instanceSupplier must not be null&quot;);</span>
+<span class="fc" id="L114">            this.representerClass = requireNonNull(representerClass, &quot;representerClass must not be null&quot;);</span>
+<span class="fc" id="L115">            this.methods = requireNonNull(methods, &quot;dispatchingMethods must not be null&quot;);</span>
+<span class="fc" id="L116">            assertSupplierCreatesInstancesWhenRecursive();</span>
+<span class="fc" id="L117">        }</span>
+
+        private void assertSupplierCreatesInstancesWhenRecursive() {
+<span class="fc" id="L120">            CT firstInstance = instanceSupplier.get();</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (firstInstance instanceof AbstractRecursiveRepresenter) {</span>
+<span class="fc" id="L122">                CT secondInstance = instanceSupplier.get();</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">                if (firstInstance == secondInstance) {</span>
+<span class="nc" id="L124">                    throw new IllegalStateException(&quot;The provided supplier '&quot; + instanceSupplier + &quot;' for class '&quot;</span>
+<span class="nc" id="L125">                            + representerClass.getCanonicalName() + &quot;' seems not creat new instances on each call. &quot;</span>
+                            + &quot;This is forbidden if the instances inherit from '&quot;
+<span class="nc" id="L127">                            + AbstractRecursiveRepresenter.class.getSimpleName()</span>
+                            + &quot;' (which is the case), because each instance gets a recursion callback injected, &quot;
+                            + &quot;which would result in a non-threadsafe situation if instances would be reused.&quot;);
+                }
+            }
+<span class="fc" id="L132">        }</span>
+
+        @Override
+        public R apply(T t, Function&lt;Object, R&gt; callback) {
+<span class="fc" id="L136">            Objects.requireNonNull(callback, &quot;recursionCallback must not be null.&quot;);</span>
+<span class="fc" id="L137">            CT instanceToDispatchTo = newInstance(callback);</span>
+
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">            for (Entry&lt;Class&lt;?&gt;, Invokable&lt;CT, R&gt;&gt; entry : this.methods.entrySet()) {</span>
+<span class="fc" id="L140">                Class&lt;?&gt; parameterType = entry.getKey();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">                if (parameterType.isInstance(t)) {</span>
+<span class="fc" id="L142">                    Invokable&lt;CT, R&gt; invokable = entry.getValue();</span>
+                    try {
+<span class="fc" id="L144">                        R result = invokable.invoke(instanceToDispatchTo, t);</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">                        if (result != null) {</span>
+<span class="fc" id="L146">                            return result;</span>
+                        }
+<span class="nc" id="L148">                    } catch (Exception e) {</span>
+<span class="nc" id="L149">                        LOGGER.warn(&quot;Could not invoke {}.&quot;, invokable, e);</span>
+<span class="nc" id="L150">                    }</span>
+                }
+<span class="fc" id="L152">            }</span>
+
+<span class="nc" id="L154">            return null;</span>
+        }
+
+        private CT newInstance(Function&lt;Object, R&gt; callback) {
+<span class="fc" id="L158">            CT instance = instanceSupplier.get();</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">            if (instance instanceof AbstractRecursiveRepresenter) {</span>
+                /*
+                 * NOTE: indeed, the following cast is not *fully* safe: the type parameter in the abstract representer
+                 * does not enforce any type of the return type of any of the repr methods. However, it would make no
+                 * sense for the implementer, because he could not successfully use the recursion ... So not safe, but
+                 * left here until we have a better idea ;-)
+                 */
+                @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L167">                AbstractRecursiveRepresenter&lt;R&gt; castedMatching = (AbstractRecursiveRepresenter&lt;R&gt;) instance;</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">                if (castedMatching.recursion != null) {</span>
+<span class="nc" id="L169">                    throw new IllegalArgumentException(&quot;The instance provided by supplier '&quot; + instanceSupplier</span>
+                            + &quot;' provided an instance which is a child of '&quot;
+<span class="nc" id="L171">                            + AbstractRecursiveRepresenter.class.getSimpleName()</span>
+                            + &quot;', has already a non-null value for the recursion field. &quot;
+                            + &quot;This might be a hint that the supplier reuses instances. &quot;
+                            + &quot;However, the supplier MUST provide a new instance at each call.&quot;);
+                }
+<span class="fc" id="L176">                castedMatching.recursion = callback;</span>
+            }
+<span class="fc" id="L178">            return instance;</span>
+        }
+
+    }
+
+    private static class ClassInstantiator&lt;CT&gt; implements Supplier&lt;CT&gt; {
+
+        private final Class&lt;CT&gt; classToInstantiate;
+
+<span class="fc" id="L187">        public ClassInstantiator(Class&lt;CT&gt; classToInstantiate) {</span>
+<span class="fc" id="L188">            this.classToInstantiate = requireNonNull(classToInstantiate, &quot;classToInstantiate must not be null&quot;);</span>
+<span class="fc" id="L189">        }</span>
+
+        @Override
+        public CT get() {
+            try {
+<span class="fc" id="L194">                return classToInstantiate.newInstance();</span>
+<span class="nc" id="L195">            } catch (IllegalAccessException | InstantiationException e) {</span>
+<span class="nc" id="L196">                throw new RuntimeException(&quot;Class '&quot; + classToInstantiate + &quot;' could not be instantiated.&quot;, e);</span>
+            }
+        }
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

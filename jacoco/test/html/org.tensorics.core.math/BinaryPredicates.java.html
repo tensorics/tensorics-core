@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BinaryPredicates.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.math</a> &gt; <span class="el_source">BinaryPredicates.java</span></div><h1>BinaryPredicates.java</h1><pre class="source lang-java linenums">// @formatter:off
+/*******************************************************************************
+ * This file is part of tensorics.
+ * &lt;p&gt;
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ * &lt;p&gt;
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * &lt;p&gt;
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * &lt;p&gt;
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.math;
+
+import org.tensorics.core.math.predicates.BinaryPredicate;
+
+/**
+ * Provides utility methods for binary predicates
+ *
+ * @author kfuchsbe
+ */
+public final class BinaryPredicates {
+
+    private BinaryPredicates() {
+        /* only static methods */
+    }
+
+    /**
+     * Negates the given binary predicate. Thus, the {@link BinaryPredicate#test(Object, Object)} will return the
+     * logically negated value of the original. For example, if the predicate is {@code '&lt;='}, then this method will
+     * transform the predicate {@code (a &lt;= b) to !(a &lt;= b)}, which is equivalent to {@code (a &gt; b)}.
+     *
+     * @param original the original predicate.
+     * @return
+     */
+    public static &lt;T&gt; BinaryPredicate&lt;T&gt; not(BinaryPredicate&lt;T&gt; original) {
+<span class="fc" id="L45">        return new NegatedBinaryPredicateView&lt;&gt;(original);</span>
+    }
+
+    /**
+     * Inverts the given binary predicate. Thus, if e.g. the predicate is {@code '&lt;='}, then this method will transform
+     * the predicate {@code (a &lt;= b)} to {@code (a &gt;= b)}.
+     *
+     * @param original the original predicate.
+     * @return the inverted predicate.
+     */
+    public static &lt;T&gt; BinaryPredicate&lt;T&gt; invert(BinaryPredicate&lt;T&gt; original) {
+<span class="fc" id="L56">        return new InvertedBinaryPredicateView&lt;&gt;(original);</span>
+    }
+
+    /**
+     * Returns a logical 'and' combination of the two binary predicates. Thus, the resulting predicate will only be
+     * fulfilled as soon as both predicate test methods return true.
+     *
+     * @param leftPredicate the first predicate which shall be part of the and condition
+     * @param rightPredicate the second predicate which shall be part of the and condition
+     * @return a predicate which represents a logical 'AND' between the two predicates
+     */
+    public static &lt;T&gt; BinaryPredicate&lt;T&gt; and(BinaryPredicate&lt;T&gt; leftPredicate, BinaryPredicate&lt;T&gt; rightPredicate) {
+<span class="fc" id="L68">        return new AndBinaryPredicateView&lt;&gt;(leftPredicate, rightPredicate);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

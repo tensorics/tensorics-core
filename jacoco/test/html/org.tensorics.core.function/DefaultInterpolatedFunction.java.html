@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultInterpolatedFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.function</a> &gt; <span class="el_source">DefaultInterpolatedFunction.java</span></div><h1>DefaultInterpolatedFunction.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+package org.tensorics.core.function;
+
+import java.util.Comparator;
+import java.util.Set;
+
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.function.interpolation.InterpolationStrategy;
+
+import com.google.common.base.Preconditions;
+
+/**
+ * Encodes a {@link InterpolatedFunction} as a combination of a {@link DiscreteFunction} plus an
+ * {@link InterpolationStrategy}.
+ * &lt;p&gt;
+ * The obtaining of y-values associated with x-values not defined by the {@link DiscreteFunction} is delegated to the
+ * {@link InterpolationStrategy}.
+ * 
+ * @author caguiler
+ * @param &lt;X&gt; the type of the independent variable must be comparable. Otherwise is not possible to interpolate.
+ * @see InterpolatedFunction
+ */
+public class DefaultInterpolatedFunction&lt;X, Y&gt; implements InterpolatedFunction&lt;X, Y&gt; {
+
+    private final DiscreteFunction&lt;X, Y&gt; backingFunction;
+    private final InterpolationStrategy&lt;Y&gt; strategy;
+    private final Conversion&lt;X, Y&gt; conversion;
+    private Comparator&lt;X&gt; comparator;
+
+    public DefaultInterpolatedFunction(DiscreteFunction&lt;X, Y&gt; function, InterpolationStrategy&lt;Y&gt; strategy,
+<span class="fc" id="L51">            Conversion&lt;X, Y&gt; conversion, Comparator&lt;X&gt; comparator) {</span>
+<span class="fc" id="L52">        this.backingFunction = Preconditions.checkNotNull(function, &quot;function cannot be null&quot;);</span>
+<span class="fc" id="L53">        this.strategy = Preconditions.checkNotNull(strategy, &quot;strategy cannot be null&quot;);</span>
+<span class="fc" id="L54">        this.conversion = Preconditions.checkNotNull(conversion, &quot;conversion cannot be null&quot;);</span>
+<span class="fc" id="L55">        this.comparator = Preconditions.checkNotNull(comparator, &quot;comparator cannot be null&quot;);</span>
+<span class="fc" id="L56">    }</span>
+
+    @Override
+    public Y apply(X input) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (definedXValues().contains(input)) {</span>
+<span class="fc" id="L61">            return backingFunction.apply(input);</span>
+        }
+<span class="fc" id="L63">        return strategy.interpolate(input, backingFunction, conversion, comparator);</span>
+    }
+
+    @Override
+    public Set&lt;X&gt; definedXValues() {
+<span class="fc" id="L68">        return backingFunction.definedXValues();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

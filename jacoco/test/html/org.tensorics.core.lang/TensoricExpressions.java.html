@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensoricExpressions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.lang</a> &gt; <span class="el_source">TensoricExpressions.java</span></div><h1>TensoricExpressions.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2016 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.lang;
+
+import static java.lang.String.format;
+
+import java.util.List;
+
+import org.tensorics.core.expressions.LatestOfExpression;
+import org.tensorics.core.functional.FiniteArgumentFunction;
+import org.tensorics.core.functional.Func1;
+import org.tensorics.core.functional.Func2;
+import org.tensorics.core.functional.Func3;
+import org.tensorics.core.functional.Func4;
+import org.tensorics.core.functional.Func5;
+import org.tensorics.core.functional.Func6;
+import org.tensorics.core.functional.Func7;
+import org.tensorics.core.functional.Func8;
+import org.tensorics.core.functional.Func9;
+import org.tensorics.core.functional.FuncN;
+import org.tensorics.core.functional.expressions.FunctionalExpression;
+import org.tensorics.core.tree.domain.Expression;
+import org.tensorics.core.tree.domain.ResolvedExpression;
+
+import com.google.common.collect.ImmutableList;
+
+public final class TensoricExpressions {
+
+    private TensoricExpressions() {
+        /* Only static methods */
+    }
+
+    // TODO zero argument case?
+    // TODO N argument case?
+
+    public static &lt;T&gt; OngoingLambdaExpressionCreation&lt;Func1&lt;T, ?&gt;&gt; use(Expression&lt;T&gt; t1) {
+<span class="nc" id="L39">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1);</span>
+    }
+
+    public static &lt;T1, T2&gt; OngoingLambdaExpressionCreation&lt;Func2&lt;T1, T2, ?&gt;&gt; use(Expression&lt;T1&gt; t1, Expression&lt;T2&gt; t2) {
+<span class="nc" id="L43">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1, t2);</span>
+    }
+
+    public static &lt;T1, T2, T3&gt; OngoingLambdaExpressionCreation&lt;Func3&lt;T1, T2, T3, ?&gt;&gt; use(Expression&lt;T1&gt; t1,
+            Expression&lt;T2&gt; t2, Expression&lt;T3&gt; t3) {
+<span class="fc" id="L48">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1, t2, t3);</span>
+    }
+
+    public static &lt;T1, T2, T3, T4&gt; OngoingLambdaExpressionCreation&lt;Func4&lt;T1, T2, T3, T4, ?&gt;&gt; use(Expression&lt;T1&gt; t1,
+            Expression&lt;T2&gt; t2, Expression&lt;T3&gt; t3, Expression&lt;T4&gt; t4) {
+<span class="nc" id="L53">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1, t2, t3, t4);</span>
+    }
+
+    public static &lt;T1, T2, T3, T4, T5&gt; OngoingLambdaExpressionCreation&lt;Func5&lt;T1, T2, T3, T4, T5, ?&gt;&gt; use(
+            Expression&lt;T1&gt; t1, Expression&lt;T2&gt; t2, Expression&lt;T3&gt; t3, Expression&lt;T4&gt; t4, Expression&lt;T5&gt; t5) {
+<span class="nc" id="L58">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1, t2, t3, t4, t5);</span>
+    }
+
+    public static &lt;T1, T2, T3, T4, T5, T6&gt; OngoingLambdaExpressionCreation&lt;Func6&lt;T1, T2, T3, T4, T5, T6, ?&gt;&gt; use(
+            Expression&lt;T1&gt; t1, Expression&lt;T2&gt; t2, Expression&lt;T3&gt; t3, Expression&lt;T4&gt; t4, Expression&lt;T5&gt; t5,
+            Expression&lt;T6&gt; t6) {
+<span class="nc" id="L64">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1, t2, t3, t4, t5, t6);</span>
+    }
+
+    public static &lt;T1, T2, T3, T4, T5, T6, T7&gt; OngoingLambdaExpressionCreation&lt;Func7&lt;T1, T2, T3, T4, T5, T6, T7, ?&gt;&gt; use(
+            Expression&lt;T1&gt; t1, Expression&lt;T2&gt; t2, Expression&lt;T3&gt; t3, Expression&lt;T4&gt; t4, Expression&lt;T5&gt; t5,
+            Expression&lt;T6&gt; t6, Expression&lt;T7&gt; t7) {
+<span class="nc" id="L70">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1, t2, t3, t4, t5, t6, t7);</span>
+    }
+
+    public static &lt;T1, T2, T3, T4, T5, T6, T7, T8&gt; OngoingLambdaExpressionCreation&lt;Func8&lt;T1, T2, T3, T4, T5, T6, T7, T8, ?&gt;&gt; use(
+            Expression&lt;T1&gt; t1, Expression&lt;T2&gt; t2, Expression&lt;T3&gt; t3, Expression&lt;T4&gt; t4, Expression&lt;T5&gt; t5,
+            Expression&lt;T6&gt; t6, Expression&lt;T7&gt; t7, Expression&lt;T8&gt; t8) {
+<span class="nc" id="L76">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1, t2, t3, t4, t5, t6, t7, t8);</span>
+    }
+
+    public static &lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt; OngoingLambdaExpressionCreation&lt;Func9&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, ?&gt;&gt; use(
+            Expression&lt;T1&gt; t1, Expression&lt;T2&gt; t2, Expression&lt;T3&gt; t3, Expression&lt;T4&gt; t4, Expression&lt;T5&gt; t5,
+            Expression&lt;T6&gt; t6, Expression&lt;T7&gt; t7, Expression&lt;T8&gt; t8, Expression&lt;T9&gt; t9) {
+<span class="nc" id="L82">        return new OngoingLambdaExpressionCreation&lt;&gt;(t1, t2, t3, t4, t5, t6, t7, t8, t9);</span>
+    }
+
+    public static class OngoingLambdaExpressionCreation&lt;F extends FiniteArgumentFunction&lt;?&gt;&gt; {
+        private final List&lt;Expression&lt;?&gt;&gt; arguments;
+
+<span class="fc" id="L88">        public OngoingLambdaExpressionCreation(Expression&lt;?&gt;... arguments) {</span>
+<span class="fc" id="L89">            this.arguments = ImmutableList.copyOf(arguments);</span>
+<span class="fc" id="L90">        }</span>
+
+        @SuppressWarnings(&quot;unchecked&quot;)
+        public &lt;R&gt; Expression&lt;R&gt; in(F function) {
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">            if (arguments.size() != function.numberOfArgs()) {</span>
+<span class="nc" id="L95">                throw new IllegalStateException(format(</span>
+                        &quot;The number of arguments for the function '%s' does not match the given arguments. &quot;
+                                + &quot;Required %s but was %s. &quot;
+                                + &quot;This should never happen, do not instantiate this class directly.&quot;,
+<span class="nc" id="L99">                        function, function.numberOfArgs(), arguments.size()));</span>
+            }
+<span class="fc" id="L101">            return new FunctionalExpression&lt;&gt;(arguments, (FuncN&lt;R&gt;) function.toFuncN());</span>
+        }
+
+    }
+
+    public static &lt;T&gt; Expression&lt;T&gt; lastOf(Expression&lt;? extends Iterable&lt;T&gt;&gt; source) {
+<span class="nc" id="L107">        return LatestOfExpression.latestOf(source);</span>
+    }
+
+    public static &lt;T&gt; OngoingBasicDeferredBinaryPredicate&lt;T&gt; testIf(Expression&lt;T&gt; left) {
+<span class="nc" id="L111">        return new OngoingBasicDeferredBinaryPredicate&lt;&gt;(left);</span>
+    }
+
+    public static &lt;T&gt; OngoingBasicDeferredBinaryPredicate&lt;T&gt; testIf(T left) {
+<span class="nc" id="L115">        return testIf(ResolvedExpression.of(left));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

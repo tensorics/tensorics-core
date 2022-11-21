@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OperandPair.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.quantity.options</a> &gt; <span class="el_source">OperandPair.java</span></div><h1>OperandPair.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.quantity.options;
+
+import java.io.Serializable;
+
+import org.tensorics.core.quantity.ErronousValue;
+import org.tensorics.core.units.Unit;
+
+/**
+ * Represents a pair of values which have a common base. This is mainly used as internal container for further
+ * calculations.
+ * 
+ * @author kfuchsbe
+ * @param &lt;V&gt; the type of the numerical scalar values
+ * @param &lt;U&gt; the type of the base
+ */
+public final class OperandPair&lt;V, U extends Unit&gt; implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final ErronousValue&lt;V&gt; leftOperand;
+    private final ErronousValue&lt;V&gt; rightOperand;
+    private final U commonUnit;
+
+    private OperandPair(ErronousValue&lt;V&gt; left, ErronousValue&lt;V&gt; right, U unit) {
+<span class="fc" id="L46">        super();</span>
+<span class="fc" id="L47">        this.leftOperand = left;</span>
+<span class="fc" id="L48">        this.rightOperand = right;</span>
+<span class="fc" id="L49">        this.commonUnit = unit;</span>
+<span class="fc" id="L50">    }</span>
+
+    public static &lt;V, U extends Unit&gt; OperandPair&lt;V, U&gt; ofLeftRightUnit(ErronousValue&lt;V&gt; left, ErronousValue&lt;V&gt; right,
+            U unit) {
+<span class="fc" id="L54">        return new OperandPair&lt;V, U&gt;(left, right, unit);</span>
+    }
+
+    public ErronousValue&lt;V&gt; left() {
+<span class="fc" id="L58">        return leftOperand;</span>
+    }
+
+    public ErronousValue&lt;V&gt; right() {
+<span class="fc" id="L62">        return rightOperand;</span>
+    }
+
+    public U unit() {
+<span class="fc" id="L66">        return commonUnit;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L72">            return true;</span>
+        }
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L75">            return false;</span>
+        }
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L78">            return false;</span>
+        }
+<span class="nc" id="L80">        OperandPair&lt;?, ?&gt; other = (OperandPair&lt;?, ?&gt;) obj;</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (leftOperand == null) {</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (other.leftOperand != null) {</span>
+<span class="nc" id="L83">                return false;</span>
+            }
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        } else if (!leftOperand.equals(other.leftOperand)) {</span>
+<span class="nc" id="L86">            return false;</span>
+        }
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (rightOperand == null) {</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (other.rightOperand != null) {</span>
+<span class="nc" id="L90">                return false;</span>
+            }
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        } else if (!rightOperand.equals(other.rightOperand)) {</span>
+<span class="nc" id="L93">            return false;</span>
+        }
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (commonUnit == null) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (other.commonUnit != null) {</span>
+<span class="nc" id="L97">                return false;</span>
+            }
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        } else if (!commonUnit.equals(other.commonUnit)) {</span>
+<span class="nc" id="L100">            return false;</span>
+        }
+<span class="nc" id="L102">        return true;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L107">        final int prime = 31;</span>
+<span class="nc" id="L108">        int result = 1;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        result = prime * result + ((leftOperand == null) ? 0 : leftOperand.hashCode());</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        result = prime * result + ((rightOperand == null) ? 0 : rightOperand.hashCode());</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        result = prime * result + ((commonUnit == null) ? 0 : commonUnit.hashCode());</span>
+<span class="nc" id="L112">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

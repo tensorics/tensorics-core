@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractQuantityStatisticPredicate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.quantity.conditions</a> &gt; <span class="el_source">AbstractQuantityStatisticPredicate.java</span></div><h1>AbstractQuantityStatisticPredicate.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.quantity.conditions;
+
+import java.io.Serializable;
+
+import org.tensorics.core.fields.doubles.DoubleStatistics;
+import org.tensorics.core.math.Cheating;
+import org.tensorics.core.math.predicates.BinaryPredicate;
+import org.tensorics.core.quantity.ImmutableQuantifiedValue;
+import org.tensorics.core.quantity.QuantifiedValue;
+import org.tensorics.core.quantity.operations.QuantitySubtraction;
+import org.tensorics.core.quantity.options.QuantityEnvironment;
+import org.tensorics.core.scalar.lang.ScalarSupport;
+
+/**
+ * Base class for quantity conditions based on statistical tests. This class provides utility methods to implementations
+ * for doing calculations and statistics based on the values (mean) and the errors of quantities.
+ *
+ * @author mihostet
+ * @param &lt;S&gt; the value type
+ */
+public abstract class AbstractQuantityStatisticPredicate&lt;S&gt; extends ScalarSupport&lt;S&gt;
+        implements BinaryPredicate&lt;QuantifiedValue&lt;S&gt;&gt;, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    protected final QuantityEnvironment&lt;S&gt; mathsEnvironment;
+
+    protected AbstractQuantityStatisticPredicate(QuantityEnvironment&lt;S&gt; environment) {
+<span class="fc" id="L50">        super(environment.field());</span>
+<span class="fc" id="L51">        this.mathsEnvironment = environment;</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Evaluate the inverse Gaussian Cumulative Distribution Function and return the result as an element of the backing
+     * field. This method uses {@link Cheating} for the time being.
+     *
+     * @param value
+     * @return
+     */
+    protected S inverseGaussianCumulativeDistributionFunction(S value) {
+        @SuppressWarnings(&quot;deprecation&quot;)
+<span class="fc" id="L63">        final Cheating&lt;S&gt; cheating = mathsEnvironment.field().cheating();</span>
+<span class="fc" id="L64">        return cheating</span>
+<span class="fc" id="L65">                .fromDouble(DoubleStatistics.inverseGaussianCumulativeDistributionFunction(cheating.toDouble(value)));</span>
+    }
+
+    /**
+     * Calculates the difference of two quantities (including error propagation)
+     *
+     * @param left left operand
+     * @param right right operand
+     * @return the difference as a quantity
+     */
+    protected QuantifiedValue&lt;S&gt; subtractQuantities(QuantifiedValue&lt;S&gt; left, QuantifiedValue&lt;S&gt; right) {
+<span class="fc" id="L76">        return (new QuantitySubtraction&lt;S&gt;(mathsEnvironment)).perform(left, right);</span>
+    }
+
+    /**
+     * Calculate the z-test z value for the difference of the two values (number of sigmas the difference of the mean
+     * values is away from zero)
+     *
+     * @param left the left operand
+     * @param right the right operand
+     * @return the z value
+     */
+    protected S zTestValueForDifference(QuantifiedValue&lt;S&gt; left, QuantifiedValue&lt;S&gt; right) {
+<span class="fc" id="L88">        final QuantifiedValue&lt;S&gt; leftWithError = ImmutableQuantifiedValue.of(left.value(), left.unit())</span>
+<span class="fc" id="L89">                .withError(left.error().or(zero()));</span>
+<span class="fc" id="L90">        final QuantifiedValue&lt;S&gt; rightWithError = ImmutableQuantifiedValue.of(right.value(), right.unit())</span>
+<span class="fc" id="L91">                .withError(right.error().or(zero()));</span>
+<span class="fc" id="L92">        final QuantifiedValue&lt;S&gt; difference = subtractQuantities(leftWithError, rightWithError);</span>
+
+<span class="fc" id="L94">        return calculate(difference.value()).dividedBy(difference.error().get());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L99">        final int prime = 31;</span>
+<span class="nc" id="L100">        int result = 1;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        result = prime * result + ((mathsEnvironment == null) ? 0 : mathsEnvironment.hashCode());</span>
+<span class="nc" id="L102">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L108">            return true;</span>
+        }
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L111">            return false;</span>
+        }
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L114">            return false;</span>
+        }
+<span class="nc" id="L116">        AbstractQuantityStatisticPredicate&lt;?&gt; other = (AbstractQuantityStatisticPredicate&lt;?&gt;) obj;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (mathsEnvironment == null) {</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            if (other.mathsEnvironment != null) {</span>
+<span class="nc" id="L119">                return false;</span>
+            }
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        } else if (!mathsEnvironment.equals(other.mathsEnvironment)) {</span>
+<span class="nc" id="L122">            return false;</span>
+        }
+<span class="nc" id="L124">        return true;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L129">        return &quot;AbstractQuantityStatisticPredicate [mathsEnvironment=&quot; + mathsEnvironment + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

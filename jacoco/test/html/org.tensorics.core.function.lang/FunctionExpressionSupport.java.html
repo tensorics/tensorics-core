@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FunctionExpressionSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.function.lang</a> &gt; <span class="el_source">FunctionExpressionSupport.java</span></div><h1>FunctionExpressionSupport.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2016, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.function.lang;
+
+import java.util.Comparator;
+
+import org.tensorics.core.commons.operations.Conversion;
+import org.tensorics.core.commons.operations.Conversions;
+import org.tensorics.core.commons.options.Environment;
+import org.tensorics.core.function.DiscreteFunction;
+
+/**
+ * Specialisation of {@link FunctionExpressionSupportWithConversionAndComparator} for expressions of
+ * {@link DiscreteFunction}s from Y to Y.
+ * 
+ * @author caguiler
+ * @param &lt;Y&gt; the type of the independent variable (input) and dependent variable (output) of the discrete function and
+ *            the type of the scalar values (elements of the field) on which to operate
+ */
+public class FunctionExpressionSupport&lt;Y&gt; extends FunctionExpressionSupportWithConversionAndComparator&lt;Y, Y&gt; {
+
+    public FunctionExpressionSupport(Environment&lt;Y&gt; environment) {
+<span class="fc" id="L43">        super(environment, Conversions.identity(), environment.field().comparator());</span>
+<span class="fc" id="L44">    }</span>
+
+    /***
+     * @param conversion defines how to transform a value of X type to Y type
+     * @return a {@link FunctionExpressionSupportWithConversionAndComparator} with a given {@link Conversion} set
+     */
+    public final &lt;X&gt; FunctionExpressionSupportWithConversionAndComparator&lt;X, Y&gt; withConversionAndComparator(
+            Conversion&lt;X, Y&gt; conversion, Comparator&lt;X&gt; comparator) {
+<span class="nc" id="L52">        return new FunctionExpressionSupportWithConversionAndComparator&lt;&gt;(environment(), conversion, comparator);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

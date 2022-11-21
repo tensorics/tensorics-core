@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensorStructurals.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensor.lang</a> &gt; <span class="el_source">TensorStructurals.java</span></div><h1>TensorStructurals.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ *
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensor.lang;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.tensor.ImmutableTensor;
+import org.tensorics.core.tensor.ImmutableTensor.Builder;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Shape;
+import org.tensorics.core.tensor.Shapes;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.TensorInternals;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
+
+/**
+ * Structural manipulations of tensors (which do not require any knowledge about the mathematical behaviour of the
+ * elements).
+ *
+ * @author kfuchsbe, mihostet
+ */
+public final class TensorStructurals {
+
+    /**
+     * Private constructor to avoid instantiation
+     */
+    private TensorStructurals() {
+        /* only static methods */
+    }
+
+    public static &lt;V&gt; OngoingTensorManipulation&lt;V&gt; from(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L64">        return new OngoingTensorManipulation&lt;&gt;(tensor);</span>
+    }
+
+    /**
+     * Merges the given set of the Tensors based on information in their context and dimensions. This operation is only
+     * possible, if the following preconditions are fulfilled:
+     * &lt;ul&gt;
+     * &lt;li&gt;The contexts of all the tensors have THE SAME dimensions AND&lt;/li&gt;
+     * &lt;li&gt;The dimensions of all the tensors are THE SAME (first found tensor dimension is taken as an reference)&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @param tensors to be merged.
+     * @return a merged tensor.
+     * @throws IllegalArgumentException if zero or one tensor is put to be merged OR if tensors dimensionality and their
+     *             context positions dimensionality is not equal OR tensor context is empty.
+     */
+    public static &lt;E&gt; Tensor&lt;E&gt; merge(Iterable&lt;Tensor&lt;E&gt;&gt; tensors) {
+<span class="pc bpc" id="L81" title="1 of 4 branches missed.">        if (Iterables.isEmpty(tensors) || (Iterables.size(tensors) == 1)) {</span>
+<span class="fc" id="L82">            throw new IllegalArgumentException(&quot;Cannot merge empty or one element list of tensors!&quot;);</span>
+        }
+<span class="fc" id="L84">        Tensor&lt;E&gt; firstTensor = tensors.iterator().next();</span>
+<span class="fc" id="L85">        Set&lt;Class&lt;?&gt;&gt; refDimensionSet = firstTensor.shape().dimensionSet();</span>
+<span class="fc" id="L86">        Position refContextPosition = firstTensor.context();</span>
+<span class="fc" id="L87">        Set&lt;Class&lt;?&gt;&gt; outcomeDimensionSet = new HashSet&lt;&gt;(refDimensionSet);</span>
+<span class="fc" id="L88">        Set&lt;Class&lt;?&gt;&gt; dimensionSet = refContextPosition.dimensionSet();</span>
+        //        if (dimensionSet.isEmpty()) {
+        //            throw new IllegalArgumentException(&quot;Cannot merge tensors with empty context!&quot;);
+        //        }
+<span class="fc" id="L92">        outcomeDimensionSet.addAll(dimensionSet);</span>
+<span class="fc" id="L93">        Builder&lt;E&gt; tensorBuilder = ImmutableTensor.builder(outcomeDimensionSet);</span>
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (Tensor&lt;E&gt; oneTensor : tensors) {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            if (TensorStructurals.isValidInTermsOfDimensions(oneTensor, refDimensionSet,</span>
+<span class="fc" id="L97">                    refContextPosition.dimensionSet())) {</span>
+<span class="fc" id="L98">                tensorBuilder.putAll(oneTensor.context(), oneTensor);</span>
+            } else {
+<span class="fc" id="L100">                throw new IllegalArgumentException(</span>
+                        &quot;One of the tensors in the provided list does not fit the others on dimensions.&quot;
+                                + &quot; Cannot continiue merging&quot; + oneTensor);
+            }
+<span class="fc" id="L104">        }</span>
+<span class="fc" id="L105">        return tensorBuilder.build();</span>
+    }
+
+    /**
+     * Checks if the provided tensor has: the same dimension as the reference dimensions, equal number of them, as well
+     * as equal number of Context Position dimension and referenceContext Position and their dimensionality.
+     *
+     * @param tensor the tensor to check
+     * @param refDimensions the dimensions that the tensor should have
+     * @param refContextDimensions the context position the context dimensions, to which the tensor shall be compatible
+     * @return {@code true} if the conditions are fulfilled, {@code false} if not.
+     */
+    private static &lt;E&gt; boolean isValidInTermsOfDimensions(Tensor&lt;E&gt; tensor, Set&lt;Class&lt;?&gt;&gt; refDimensions,
+            Set&lt;Class&lt;?&gt;&gt; refContextDimensions) {
+<span class="fc" id="L119">        Set&lt;Class&lt;?&gt;&gt; tensorDimensionSet = tensor.shape().dimensionSet();</span>
+<span class="fc" id="L120">        Set&lt;Class&lt;?&gt;&gt; contextPositionDimensionSet = tensor.context().dimensionSet();</span>
+<span class="pc bpc" id="L121" title="1 of 4 branches missed.">        return (tensorDimensionSet.equals(refDimensions) &amp;&amp; contextPositionDimensionSet.equals(refContextDimensions));</span>
+    }
+
+    public static &lt;S&gt; OngoingFlattening&lt;S&gt; flatten(Tensor&lt;S&gt; tensor) {
+<span class="nc" id="L125">        return new OngoingFlattening&lt;&gt;(tensor);</span>
+    }
+
+    public static &lt;S&gt; OngoingCompletion&lt;S&gt; complete(Tensor&lt;S&gt; tensor) {
+<span class="fc" id="L129">        return new OngoingCompletion&lt;&gt;(tensor);</span>
+    }
+
+    public static &lt;S, T&gt; Tensor&lt;T&gt; transformEntries(Tensor&lt;S&gt; tensor, Function&lt;Entry&lt;Position, S&gt;, T&gt; function) {
+<span class="nc" id="L133">        Builder&lt;T&gt; builder = ImmutableTensor.builder(tensor.shape().dimensionSet());</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        for (Entry&lt;Position, S&gt; entry : TensorInternals.mapFrom(tensor).entrySet()) {</span>
+<span class="nc" id="L135">            builder.put(entry.getKey(), function.apply(entry));</span>
+<span class="nc" id="L136">        }</span>
+<span class="nc" id="L137">        return builder.build();</span>
+    }
+
+    public static &lt;S, T&gt; Tensor&lt;T&gt; transformScalars(Tensor&lt;S&gt; tensor, Function&lt;S, T&gt; function) {
+<span class="nc" id="L141">        Builder&lt;T&gt; builder = ImmutableTensor.builder(tensor.shape().dimensionSet());</span>
+<span class="nc" id="L142">        builder.context(tensor.context());</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        for (Entry&lt;Position, S&gt; entry : TensorInternals.mapFrom(tensor).entrySet()) {</span>
+<span class="nc" id="L144">            builder.put(entry.getKey(), function.apply(entry.getValue()));</span>
+<span class="nc" id="L145">        }</span>
+<span class="nc" id="L146">        return builder.build();</span>
+    }
+
+    public static &lt;S, T&gt; Tensor&lt;T&gt; transformScalars(Tensor&lt;S&gt; tensor, BiFunction&lt;Position, S, T&gt; function) {
+<span class="nc" id="L150">        Builder&lt;T&gt; builder = ImmutableTensor.builder(tensor.shape().dimensionSet());</span>
+<span class="nc" id="L151">        builder.context(tensor.context());</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        for (Entry&lt;Position, S&gt; entry : TensorInternals.mapFrom(tensor).entrySet()) {</span>
+<span class="nc" id="L153">            builder.put(entry.getKey(), function.apply(entry.getKey(), entry.getValue()));</span>
+<span class="nc" id="L154">        }</span>
+<span class="nc" id="L155">        return builder.build();</span>
+    }
+
+    public static &lt;S&gt; void consumeScalars(Tensor&lt;S&gt; tensor, Consumer&lt;S&gt; consumer) {
+<span class="nc" id="L159">        Tensorics.stream(tensor).map(Map.Entry::getValue).forEach(consumer);</span>
+<span class="nc" id="L160">    }</span>
+
+    public static &lt;S&gt; void consumeScalars(Tensor&lt;S&gt; tensor, BiConsumer&lt;Position, S&gt; consumer) {
+<span class="nc" id="L163">        Tensorics.stream(tensor).forEach(e -&gt; consumer.accept(e.getKey(), e.getValue()));</span>
+<span class="nc" id="L164">    }</span>
+
+    public static &lt;S&gt; Tensor&lt;S&gt; stripContext(Tensor&lt;S&gt; tensor) {
+<span class="nc" id="L167">        Builder&lt;S&gt; builder = ImmutableTensor.builder(tensor.shape().dimensionSet());</span>
+<span class="nc" id="L168">        builder.putAll(tensor);</span>
+<span class="nc" id="L169">        return builder.build();</span>
+    }
+
+    public static &lt;V&gt; Tensor&lt;V&gt; mergeContextIntoShape(Tensor&lt;V&gt; tensor) {
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (tensor.context().coordinates().isEmpty()) {</span>
+<span class="nc" id="L174">            throw new IllegalArgumentException(&quot;an empty context can't be merged into the positions&quot;);</span>
+        }
+<span class="fc" id="L176">        Builder&lt;V&gt; builder = ImmutableTensor</span>
+<span class="fc" id="L177">                .builder(Sets.union(tensor.shape().dimensionSet(), tensor.context().dimensionSet()));</span>
+<span class="fc" id="L178">        builder.putAll(tensor.context(), tensor);</span>
+<span class="fc" id="L179">        return builder.build();</span>
+    }
+
+    public static &lt;V&gt; Tensor&lt;V&gt; setContext(Tensor&lt;V&gt; tensor, Position context) {
+<span class="nc" id="L183">        Builder&lt;V&gt; builder = ImmutableTensor.builder(tensor.shape().dimensionSet());</span>
+<span class="nc" id="L184">        builder.context(context);</span>
+<span class="nc" id="L185">        builder.putAll(tensor);</span>
+<span class="nc" id="L186">        return builder.build();</span>
+    }
+
+    public static &lt;V&gt; OngoingTensorFiltering&lt;V&gt; filter(Tensor&lt;V&gt; tensor) {
+<span class="nc" id="L190">        return new OngoingTensorFiltering&lt;&gt;(tensor);</span>
+    }
+
+    public static &lt;V&gt; Tensor&lt;V&gt; completeWith(Tensor&lt;V&gt; tensor, Tensor&lt;V&gt; second) {
+<span class="fc" id="L194">        checkNotNull(second, &quot;second tensor must not be null&quot;);</span>
+
+<span class="fc" id="L196">        Builder&lt;V&gt; builder = ImmutableTensor.builder(tensor.shape().dimensionSet());</span>
+<span class="fc" id="L197">        builder.context(tensor.context());</span>
+
+<span class="fc" id="L199">        Shape shape = Shapes.union(tensor.shape(), second.shape());</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        for (Position position : shape.positionSet()) {</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">            if (tensor.shape().contains(position)) {</span>
+<span class="fc" id="L202">                builder.put(position, tensor.get(position));</span>
+            } else {
+<span class="fc" id="L204">                builder.put(position, second.get(position));</span>
+            }
+<span class="fc" id="L206">        }</span>
+<span class="fc" id="L207">        return builder.build();</span>
+    }
+
+    /**
+     * Starting point for a fluent clause to describe resampling in one or more dimensions. This resampling only
+     * provides options which do not require the knowledge of a field. For example:
+     *
+     * &lt;pre&gt;
+     * &lt;code&gt;
+     * Tensoric&amp;#60;V&amp;#62; resampled = resample(aTensor)
+     *                           .repeat(Integer.class)
+     *                           .then().repeat(String.class)
+     *                           .toTensoric();
+     * &lt;/code&gt;
+     * &lt;/pre&gt;
+     *
+     * Note: The order of the options is important, as the resampling will be performed in the given order!
+     * &lt;p&gt;
+     * For options which require a field, (e.g. linear interpolation), see the version in
+     * {@link TensorSupport#resample(Tensor)}.
+     *
+     * @param tensor the tensor to be resampled
+     * @return an object to define further the strategy for resampling.
+     */
+    public static &lt;V&gt; OngoingResamplingStart&lt;V&gt; resample(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L232">        return new OngoingResamplingStart&lt;&gt;(tensor);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TensorIsCloseTo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.testing.hamcrest</a> &gt; <span class="el_source">TensorIsCloseTo.java</span></div><h1>TensorIsCloseTo.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.testing.hamcrest;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.tensorics.core.tensor.Position;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.lang.TensorSupport;
+
+/**
+ * A hamcrest matcher for base tests, that matches a values of a tensor to be within a certain tolerance compared to the
+ * values of a reference (expected) tensor. Further, the shapes of the two tensors have to be equal (conform with the
+ * {@link org.tensorics.core.tensor.Shape#equals(Object)} method).
+ * 
+ * @author kfuchsbe
+ * @param &lt;S&gt; the s
+ * @see org.tensorics.core.tensor.Shape
+ * @see org.tensorics.core.math.structures.ringlike.Field
+ */
+public class TensorIsCloseTo&lt;S&gt; extends TypeSafeDiagnosingMatcher&lt;Tensor&lt;S&gt;&gt; {
+
+    private final TensorSupport&lt;S&gt; support;
+    private final Tensor&lt;S&gt; expected;
+    private final S tolerance;
+
+    public TensorIsCloseTo(TensorSupport&lt;S&gt; tensoricSupport, Tensor&lt;S&gt; value, S tolerance) {
+<span class="fc" id="L55">        super();</span>
+<span class="fc" id="L56">        this.support = checkNotNull(tensoricSupport, &quot;tensoricSupport must not be null&quot;);</span>
+<span class="fc" id="L57">        this.expected = checkNotNull(value, &quot;expected must not be null&quot;);</span>
+<span class="fc" id="L58">        this.tolerance = checkNotNull(tolerance, &quot;tolerance must not be null&quot;);</span>
+<span class="fc" id="L59">        checkArgument(support.testIf(tolerance).isGreaterOrEqualTo(support.zero()), &quot;Tolerance must be positive.&quot;);</span>
+<span class="fc" id="L60">    }</span>
+
+    @Override
+    public void describeTo(Description description) {
+<span class="nc" id="L64">        description.appendText(&quot;within &quot; + tolerance + &quot; close to other tensor.&quot;);</span>
+<span class="nc" id="L65">    }</span>
+
+    @Override
+    protected boolean matchesSafely(Tensor&lt;S&gt; valueToAssert, Description mismatchDescription) {
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (!valueToAssert.shape().equals(expected.shape())) {</span>
+<span class="fc" id="L70">            mismatchDescription.appendText(&quot;Shapes are not equal!&quot;);</span>
+<span class="fc" id="L71">            return false;</span>
+        }
+
+<span class="fc" id="L74">        Map&lt;Position, Mismatch&lt;S&gt;&gt; mismatches = mismatches(valueToAssert);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (!mismatches.isEmpty()) {</span>
+<span class="fc" id="L76">            mismatchDescription.appendText(&quot;the following mismatches were detected (position -&gt; value):\n&quot;);</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">            for (Entry&lt;Position, Mismatch&lt;S&gt;&gt; entry : mismatches.entrySet()) {</span>
+<span class="fc" id="L78">                Mismatch&lt;S&gt; mismatch = entry.getValue();</span>
+<span class="fc" id="L79">                mismatchDescription.appendText(</span>
+<span class="fc" id="L80">                        entry.getKey() + &quot; -&gt; &quot; + mismatch.value + &quot; | expected = &quot; + mismatch.expected + &quot;;\n&quot;);</span>
+<span class="fc" id="L81">            }</span>
+<span class="fc" id="L82">            return false;</span>
+        }
+<span class="fc" id="L84">        return true;</span>
+
+    }
+
+    private Map&lt;Position, Mismatch&lt;S&gt;&gt; mismatches(Tensor&lt;S&gt; valueToAssert) {
+<span class="fc" id="L89">        Map&lt;Position, Mismatch&lt;S&gt;&gt; mismatches = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L90">        Tensor&lt;S&gt; diff = support.calculate(valueToAssert).minus(expected);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (Position position : diff.shape().positionSet()) {</span>
+<span class="fc" id="L92">            S absoluteDiff = support.absoluteValueOf(diff.get(position));</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            if (!support.testIf(absoluteDiff).isLessOrEqualTo(tolerance)) {</span>
+<span class="fc" id="L94">                mismatches.put(position, new Mismatch&lt;S&gt;(expected.get(position), valueToAssert.get(position)));</span>
+            }
+<span class="fc" id="L96">        }</span>
+<span class="fc" id="L97">        return mismatches;</span>
+    }
+
+    private static class Mismatch&lt;S&gt; {
+        private final S expected;
+        private final S value;
+
+        public Mismatch(S expected, S actual) {
+<span class="fc" id="L105">            super();</span>
+<span class="fc" id="L106">            this.expected = expected;</span>
+<span class="fc" id="L107">            this.value = actual;</span>
+<span class="fc" id="L108">        }</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

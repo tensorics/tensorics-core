@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractChainBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.util.chains</a> &gt; <span class="el_source">AbstractChainBuilder.java</span></div><h1>AbstractChainBuilder.java</h1><pre class="source lang-java linenums">/**
+ * Copyright (c) 2017 European Organisation for Nuclear Research (CERN), All Rights Reserved.
+ */
+
+package org.tensorics.core.util.chains;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import com.google.common.collect.ImmutableList;
+
+<span class="fc" id="L15">abstract class AbstractChainBuilder&lt;T, R, F, CB extends AbstractChainBuilder&lt;T, R, F, CB&gt;&gt; {</span>
+
+<span class="fc" id="L17">    final ImmutableList.Builder&lt;ConditionedMapper&lt;T, ?, R&gt;&gt; mappers = ImmutableList.builder();</span>
+    boolean throwIfAllReturnNull;
+    R defaultValue;
+
+<span class="fc" id="L21">    @SuppressWarnings(&quot;unchecked&quot;)</span>
+    private CB castedThis = (CB) this;
+
+    void addMapper(Function&lt;? super T, R&gt; mapper) {
+<span class="fc" id="L25">        requireNonNull(mapper, &quot;new mapper must not be null&quot;);</span>
+<span class="fc" id="L26">        addMapper((o, c) -&gt; mapper.apply(o));</span>
+<span class="fc" id="L27">    }</span>
+
+    void addMapper(BiFunction&lt;? super T, Function&lt;Object, R&gt;, R&gt; mapperWithCallback) {
+<span class="fc" id="L30">        addConditionedMapper(o -&gt; true, Function.identity(), mapperWithCallback);</span>
+<span class="fc" id="L31">    }</span>
+
+    &lt;T1 extends T&gt; void addMapper(Predicate&lt;T&gt; condition, Function&lt;T, T1&gt; conv, Function&lt;T1, R&gt; mapper) {
+<span class="nc" id="L34">        requireNonNull(mapper, &quot;mapper must not be null&quot;);</span>
+<span class="nc" id="L35">        addConditionedMapper(condition, conv, (o, c) -&gt; mapper.apply(o));</span>
+<span class="nc" id="L36">    }</span>
+
+    &lt;T1&gt; CB addConditionedMapper(Predicate&lt;T&gt; condition, Function&lt;T, T1&gt; conv,
+            BiFunction&lt;? super T1, Function&lt;Object, R&gt;, R&gt; mapperWithCallback) {
+<span class="fc" id="L40">        requireNonNull(mapperWithCallback, &quot;new mapper must not be null&quot;);</span>
+<span class="fc" id="L41">        mappers.add(new ConditionedMapper&lt;&gt;(condition, conv, mapperWithCallback));</span>
+<span class="fc" id="L42">        return castedThis;</span>
+    }
+
+    CB orElseThrow() {
+<span class="fc" id="L46">        this.defaultValue = null;</span>
+<span class="fc" id="L47">        this.throwIfAllReturnNull = true;</span>
+<span class="fc" id="L48">        return castedThis;</span>
+    }
+
+    CB orElseNull() {
+<span class="fc" id="L52">        this.defaultValue = null;</span>
+<span class="fc" id="L53">        this.throwIfAllReturnNull = false;</span>
+<span class="fc" id="L54">        return castedThis;</span>
+    }
+
+    CB orElse(R returnValue) {
+<span class="nc" id="L58">        this.defaultValue = returnValue;</span>
+<span class="nc" id="L59">        this.throwIfAllReturnNull = false;</span>
+<span class="nc" id="L60">        return castedThis;</span>
+    }
+
+    abstract F build();
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

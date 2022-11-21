@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConditionBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.analysis</a> &gt; <span class="el_source">ConditionBuilder.java</span></div><h1>ConditionBuilder.java</h1><pre class="source lang-java linenums">// @formatter:off
+/**
+*
+* This file is part of streaming pool (http://www.streamingpool.org).
+* 
+* Copyright (c) 2017-present, CERN. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+* 
+*/
+// @formatter:on
+
+package org.tensorics.core.analysis;
+
+import static java.util.Objects.requireNonNull;
+
+import org.tensorics.core.tree.domain.Expression;
+
+<span class="nc" id="L29">public class ConditionBuilder {</span>
+
+    private String name;
+    private Expression&lt;Boolean&gt; condition;
+    private String key;
+
+    public ConditionBuilder withName(String newName) {
+<span class="nc" id="L36">        this.name = requireNonNull(newName, &quot;name must not be null&quot;);</span>
+<span class="nc" id="L37">        return this;</span>
+    }
+
+    public &lt;T extends ConditionBuilder&gt; T withCondition(Expression&lt;Boolean&gt; newCondition) {
+<span class="nc" id="L41">        requireNonNull(newCondition, &quot;condition must not be null&quot;);</span>
+<span class="nc" id="L42">        this.condition = newCondition;</span>
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L44">        T conditionBuilderOrSubclass = (T) this;</span>
+<span class="nc" id="L45">        return conditionBuilderOrSubclass;</span>
+    }
+
+    public String name() {
+<span class="nc" id="L49">        return name;</span>
+    }
+
+    public Expression&lt;Boolean&gt; condition() {
+<span class="nc" id="L53">        return condition;</span>
+    }
+
+    public ConditionBuilder withKey(String newKey) {
+<span class="nc" id="L57">        this.key = requireNonNull(newKey, &quot;key must not be null&quot;);</span>
+<span class="nc" id="L58">        return this;</span>
+    }
+
+    public String key() {
+<span class="nc" id="L62">        return key;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

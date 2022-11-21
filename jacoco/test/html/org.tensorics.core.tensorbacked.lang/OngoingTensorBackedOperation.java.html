@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OngoingTensorBackedOperation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tensorics-core</a> &gt; <a href="index.source.html" class="el_package">org.tensorics.core.tensorbacked.lang</a> &gt; <span class="el_source">OngoingTensorBackedOperation.java</span></div><h1>OngoingTensorBackedOperation.java</h1><pre class="source lang-java linenums">// @formatter:off
+ /*******************************************************************************
+ *
+ * This file is part of tensorics.
+ * 
+ * Copyright (c) 2008-2011, CERN. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ ******************************************************************************/
+// @formatter:on
+
+package org.tensorics.core.tensorbacked.lang;
+
+import static org.tensorics.core.tensorbacked.TensorbackedInternals.createBackedByTensor;
+
+import org.tensorics.core.commons.lang.OngoingOperation;
+import org.tensorics.core.commons.options.Environment;
+import org.tensorics.core.lang.Tensorics;
+import org.tensorics.core.math.operations.BinaryOperation;
+import org.tensorics.core.tensor.ImmutableScalar;
+import org.tensorics.core.tensor.Tensor;
+import org.tensorics.core.tensor.operations.ElementBinaryOperation;
+import org.tensorics.core.tensorbacked.Tensorbacked;
+import org.tensorics.core.tensorbacked.TensorbackedInternals;
+
+/**
+ * Collects all fluent API elements for the {@link Tensorbacked} objects.
+ * 
+ * @author agorzaws
+ * @param &lt;TB&gt;
+ * @param &lt;V&gt;
+ */
+public class OngoingTensorBackedOperation&lt;TB extends Tensorbacked&lt;V&gt;, V&gt; implements OngoingOperation&lt;TB, V&gt; {
+
+    private final Environment&lt;V&gt; environment;
+    private final TB left;
+
+    /**
+     * @param environment the environment to use
+     * @param left first {@link Tensorbacked} to use
+     */
+<span class="fc" id="L53">    public OngoingTensorBackedOperation(Environment&lt;V&gt; environment, TB left) {</span>
+<span class="fc" id="L54">        this.environment = environment;</span>
+<span class="fc" id="L55">        this.left = left;</span>
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Allows to sum two {@link Tensorbacked}.
+     * 
+     * @param right as tensor to add
+     * @return result of summing two tensors
+     */
+
+    @Override
+    public TB plus(TB right) {
+<span class="fc" id="L67">        return plusT(right.tensor());</span>
+    }
+
+    public TB plusT(Tensor&lt;V&gt; tensor) {
+<span class="fc" id="L71">        return evaluate(tensor, environment.field().addition());</span>
+    }
+
+    @Override
+    public TB minus(TB right) {
+<span class="nc" id="L76">        return minusT(right.tensor());</span>
+    }
+
+    public TB minusT(Tensor&lt;V&gt; tensor) {
+<span class="nc" id="L80">        return evaluate(tensor, environment.field().subtraction());</span>
+    }
+
+    /**
+     * Constructs a tensor backed object, of the same type as the input objects, which will contain elements which are
+     * the products of the respective elements of the input objects.
+     * 
+     * @param right second {@link Tensorbacked} to use
+     * @return a tensor backed object of the same as the input object, containing the all the values of the left tensor,
+     *         multiplied by the values of the right tensor
+     */
+    @Override
+    public TB elementTimes(TB right) {
+<span class="fc" id="L93">        return elementTimesT(right.tensor());</span>
+    }
+
+    /**
+     * Construct a tensor backed object of the same type of the left given object, multiplied all the elements with the
+     * given tensor.
+     * 
+     * @param right the right tensor with which to multiyply all the elements
+     * @return a new tensor backed object, containing all the elements muyltiplied by each other
+     */
+    private TB elementTimesT(Tensor&lt;V&gt; right) {
+<span class="fc" id="L104">        return evaluate(right, environment.field().multiplication());</span>
+    }
+
+    @Override
+    public TB elementTimesV(V value) {
+<span class="fc" id="L109">        return elementTimesT(Tensorics.scalarOf(value));</span>
+    }
+
+    @Override
+    public TB elementDividedBy(TB right) {
+<span class="fc" id="L114">        return elementDividedByT(right.tensor());</span>
+    }
+
+    /**
+     * Constructs a new tensor backed object of the same type as the left operand, containing elements divided by the
+     * corresponding elements of the given tensor.
+     * 
+     * @param right the tensor with whose elements to divide the elements of the left operand
+     * @return a new tensorbacked object containing the left elements divided by the right ones
+     */
+    private TB elementDividedByT(Tensor&lt;V&gt; right) {
+<span class="fc" id="L125">        return evaluate(right, environment.field().division());</span>
+    }
+
+    @Override
+    public TB elementDividedByV(V value) {
+<span class="fc" id="L130">        return elementDividedByT(Tensorics.scalarOf(value));</span>
+    }
+
+    private TB evaluate(Tensor&lt;V&gt; right, BinaryOperation&lt;V&gt; operation) {
+<span class="fc" id="L134">        Tensor&lt;V&gt; result = new ElementBinaryOperation&lt;V&gt;(operation, environment.options()).perform(left.tensor(),</span>
+                right);
+<span class="fc" id="L136">        return createBackedByTensor(TensorbackedInternals.classOf(left), result);</span>
+    }
+
+    @Override
+    public TB plusV(V right) {
+<span class="nc" id="L141">        return plusT(ImmutableScalar.of(right));</span>
+    }
+
+    @Override
+    public TB minusV(V right) {
+<span class="nc" id="L146">        return minusT(ImmutableScalar.of(right));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
