@@ -1,0 +1,59 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@3
+jobs:
+  build-and-deploy:
+    docker:
+      - image: cimg/openjdk:11.0
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    steps:
+      - checkout
+      - run: chmod +x ./gradlew
+      - run: ./gradlew dependencies
+      - run: ./gradlew check --stacktrace
+      - run: ./gradlew jacocoTestReport
+
+      - run: "[[ -n ${SIGNING_KEY_SECRING_BASE64} ]]"
+      - run: echo $SIGNING_KEY_SECRING_BASE64 | base64 --decode > ./signing.key.secring
+      - run: echo "export SIGNING_KEY_PATH=./signing.key.secring" >> "$BASH_ENV"
+      - run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -DDEPLOYMENT=true
+
+  build:
+    docker:
+      - image: cimg/openjdk:11.0
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    steps:
+      - checkout
+      - run: chmod +x ./gradlew
+      - run: ./gradlew dependencies
+      - run: ./gradlew check --stacktrace
+      - run: ./gradlew jacocoTestReport
+      - codecov/upload
+
+workflows:
+  build-and-deploy-workflow:
+    jobs:
+      - build-and-deploy:
+          context:
+            - tensorics-deploy
+          filters:
+            tags:
+              # any tag
+              only: /.*/
+            branches:
+              # no branches
+              ignore: /.*/
+
+  build-workflow:
+    jobs:
+      - build:
+          filters:
+            tags:
+              # not tag
+              ignore: /.*/
