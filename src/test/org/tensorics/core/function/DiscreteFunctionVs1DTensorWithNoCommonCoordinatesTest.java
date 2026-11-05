@@ -4,8 +4,8 @@
 
 package org.tensorics.core.function;
 
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.TensorBuilder;
@@ -16,10 +16,10 @@ import org.tensorics.core.tensor.TensorBuilder;
  * 
  * @author caguiler
  */
-@Ignore
+@Disabled
 public class DiscreteFunctionVs1DTensorWithNoCommonCoordinatesTest extends AbstractDiscreteFunctionVs1DTensorTest {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         TensorBuilder<Double> builder2 = Tensorics.builder(Double.class);
         TensorBuilder<Double> builder3 = Tensorics.builder(Double.class);

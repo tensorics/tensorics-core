@@ -1,6 +1,6 @@
 package org.tensorics.core.tensorbacked;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensorbacked.AbstractTensorbacked;
 import org.tensorics.core.tensorbacked.TensorbackedInternals;

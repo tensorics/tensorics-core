@@ -22,13 +22,14 @@
 package org.tensorics.core.tensor.lang;
 
 import static com.google.common.collect.ImmutableSet.of;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
@@ -57,7 +58,7 @@ public class BroadcastAllBroadcastingStrategyTest {
 
     private BroadcastingStrategy strategy;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         strategy = BroadcastMissingDimensionsStrategy.get();
     }
@@ -67,18 +68,18 @@ public class BroadcastAllBroadcastingStrategyTest {
         assertEquals(BroadcastingStrategy.class, strategy.getMarkerInterface());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullLeftThrows() {
-        strategy.broadcast(null, ZERO_DIMENSIONAL_ZERO, emptyDimensions());
+        assertThrows(NullPointerException.class, () -> strategy.broadcast(null, ZERO_DIMENSIONAL_ZERO, emptyDimensions()));
     }
 
     private Set<Class<?>> emptyDimensions() {
         return Collections.<Class<?>> emptySet();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullRightThrows() {
-        strategy.broadcast(null, ZERO_DIMENSIONAL_ZERO, emptyDimensions());
+        assertThrows(NullPointerException.class, () -> strategy.broadcast(null, ZERO_DIMENSIONAL_ZERO, emptyDimensions()));
     }
 
     @Test

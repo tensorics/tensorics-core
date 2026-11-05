@@ -4,11 +4,11 @@
 
 package org.tensorics.core.reduction;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
 import static org.tensorics.core.lang.Tensorics.at;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;

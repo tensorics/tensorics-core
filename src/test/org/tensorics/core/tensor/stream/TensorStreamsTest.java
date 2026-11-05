@@ -23,19 +23,20 @@
 package org.tensorics.core.tensor.stream;
 
 import static java.util.Collections.emptySet;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.tensor.stream.TensorStreamFilters.byValue;
 import static org.tensorics.core.tensor.stream.TensorStreamMappers.coordinatesOfType;
 import static org.tensorics.core.tensor.stream.TensorStreamMappers.values;
 import static org.tensorics.core.tensor.stream.TensorStreams.toTensor;
 import static org.tensorics.core.tensor.stream.TensorStreams.toTensorbacked;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
@@ -66,10 +67,7 @@ public class TensorStreamsTest {
 
     private Tensor<Double> tensor;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void prepareTensor() {
         Builder<Double> tensorBuilder = ImmutableTensor.builder(ImmutableSet.of(Double.class, Integer.class));
         tensorBuilder.put(Position.of(0.0, 0), 0.0);
@@ -100,19 +98,18 @@ public class TensorStreamsTest {
 
     @Test
     public void duplicatePositionThrows() {
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("duplicate entry");
-
-        ImmutableList.of(1, 2, 3).stream().collect(toTensor(any -> Position.empty(), v -> v, emptySet()));
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> ImmutableList.of(1, 2, 3).stream().collect(toTensor(any -> Position.empty(), v -> v, emptySet())));
+        assertThat(exception.getMessage(), containsString("duplicate entry"));
     }
 
     @Test
     public void inconsistentPositionThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("not assignable");
-        Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };
-        ImmutableList.of(0, 1, 2).stream()
-                .collect(toTensor(i -> positions[i], v -> v, Collections.singleton(Integer.class)));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            Position positions[] = new Position[] { Position.of(1), Position.of(42.0), Position.of("fail") };
+            ImmutableList.of(0, 1, 2).stream()
+                    .collect(toTensor(i -> positions[i], v -> v, Collections.singleton(Integer.class)));
+        });
+        assertThat(exception.getMessage(), containsString("not assignable"));
     }
 
 }

@@ -25,20 +25,21 @@ package org.tensorics.core.tensor;
 import static com.google.common.collect.ImmutableSet.of;
 import static java.util.Collections.emptySet;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.tensorics.core.tensor.Shapes.dimensionStripped;
 import static org.tensorics.core.tensor.Shapes.dimensionalIntersection;
 import static org.tensorics.core.tensor.Shapes.intersection;
 import static org.tensorics.core.tensor.Shapes.outerProduct;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -64,7 +65,7 @@ public class ShapesTest {
     private Shape shapeA1B1A2B2;
     private Shape shapeA01;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         shapeA = Shape.of(of(String.class), POS_A);
         shapeB = Shape.of(of(String.class), POS_B);
@@ -115,9 +116,9 @@ public class ShapesTest {
         assertZeroDimensionality(shape);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void intersectionOfIncompatibleShapes() {
-        intersection(shapeA, shape1);
+        assertThrows(IllegalArgumentException.class, () -> intersection(shapeA, shape1));
     }
 
     @Test
@@ -152,14 +153,14 @@ public class ShapesTest {
         assertEquals(ImmutableSet.of(String.class), intersectionAbBc().dimensionSet());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void stripDimensionsWithNullShape() {
-        dimensionStripped(null, Collections.<Class<?>> emptySet());
+        assertThrows(NullPointerException.class, () -> dimensionStripped(null, Collections.<Class<?>> emptySet()));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void stripDimensionsWithNullSet() {
-        dimensionStripped(Shape.empty(), null);
+        assertThrows(NullPointerException.class, () -> dimensionStripped(Shape.empty(), null));
     }
 
     @Test
@@ -226,19 +227,19 @@ public class ShapesTest {
         assertEquals(ImmutableSet.of(String.class, Integer.class), intersection);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void outerProductLeftNullThrows() {
-        outerProduct(null, Shape.empty());
+        assertThrows(NullPointerException.class, () -> outerProduct(null, Shape.empty()));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void outerProductRightNullThrows() {
-        outerProduct(Shape.empty(), null);
+        assertThrows(NullPointerException.class, () -> outerProduct(Shape.empty(), null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void outerProductWithDimensionOverlapThrows() {
-        outerProduct(shapeA01, shapeA1B1A2B2);
+        assertThrows(IllegalArgumentException.class, () -> outerProduct(shapeA01, shapeA1B1A2B2));
     }
 
     @Test

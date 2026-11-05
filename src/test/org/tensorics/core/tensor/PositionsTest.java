@@ -22,11 +22,12 @@
 package org.tensorics.core.tensor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.tensor.Positions.union;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PositionsTest {
 
@@ -46,14 +47,14 @@ public class PositionsTest {
         assertEquals(POS_1A, POS_A1);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void leftNullThrowsException() {
-        union(null, Position.empty());
+        assertThrows(NullPointerException.class, () -> union(null, Position.empty()));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void rightNullThrowsException() {
-        union(Position.empty(), null);
+        assertThrows(NullPointerException.class, () -> union(Position.empty(), null));
     }
 
     @Test
@@ -62,9 +63,9 @@ public class PositionsTest {
         assertEquals(Position.empty(), result);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void overlappingDimensionsThrowException() {
-        union(POS_A, POS_B);
+        assertThrows(IllegalArgumentException.class, () -> union(POS_A, POS_B));
     }
 
     @Test
@@ -98,9 +99,9 @@ public class PositionsTest {
         assertThat(POS_1A.covers(Position.empty())).isTrue();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void coversThrowsFromNullPosition() {
-        POS_1A.covers(null);
+        assertThrows(NullPointerException.class, () -> POS_1A.covers(null));
     }
 
 }

@@ -24,7 +24,7 @@ package org.tensorics.core.tensor.variance;
 
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CoContraDimensionPairsTest {
 

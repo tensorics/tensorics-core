@@ -1,8 +1,7 @@
 language: java
 sudo: false
 jdk:
-  - openjdk8
-  - openjdk11
+  - openjdk21
 before_install:
   - chmod +x ./gradlew
 script:
@@ -23,7 +22,7 @@ deploy:
     script: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -DDEPLOYMENT=true
     on:
       tags: true
-      jdk: openjdk11
+      jdk: openjdk21
   - provider: pages
     skip_cleanup: true
     github-token: $GITHUB_TOKEN
@@ -31,6 +30,6 @@ deploy:
     keep-history: false
     on:
       branch: master
-      jdk: openjdk11
+      jdk: openjdk21
 after_success:
   - bash <(curl -s https://codecov.io/bash)

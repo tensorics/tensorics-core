@@ -3,10 +3,11 @@ package org.tensorics.core.lang;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.tensorics.core.lang.Tensorics.at;
 import static org.tensorics.core.lang.Tensorics.resample;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.NoSuchElementException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
 
@@ -64,9 +65,9 @@ public class TensoricsRepeatingResamplingAcceptanceTest {
         assertThat(resampledValue).isEqualTo("e1");
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void matrixOnlyStringRepeatingInvalidInteger() {
-        resample(MATRIX).repeat(String.class).get("b", 2);
+        assertThrows(NoSuchElementException.class, () -> resample(MATRIX).repeat(String.class).get("b", 2));
     }
 
     @Test

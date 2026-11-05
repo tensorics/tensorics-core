@@ -21,15 +21,15 @@
 // @formatter:on
 package org.tensorics.core.resolve;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.lang.Tensorics.at;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.DoubleScript;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
@@ -49,7 +49,7 @@ public class DeferredTensorBackedCalculationTest {
     private ResolvingEngine engine;
     private MultibeamOrbit multibeamObject;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         engine = ResolvingEngines.defaultEngine();
         multibeamObject = new MultibeamOrbit(prepareDoubleTensor(1.0));
@@ -60,7 +60,7 @@ public class DeferredTensorBackedCalculationTest {
         assertEquals(multibeamObject, engine.resolve(ResolvedExpression.of(multibeamObject)));
     }
 
-    @Ignore("TestForKajetan")
+    @Disabled("TestForKajetan")
     @Test
     public void testMoreComplicatedScript() throws Exception {
         MultibeamOrbit result = engine.resolve(new DoubleScript<MultibeamOrbit>() {

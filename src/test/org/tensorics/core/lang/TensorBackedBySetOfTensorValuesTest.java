@@ -22,13 +22,14 @@
 
 package org.tensorics.core.lang;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -49,7 +50,7 @@ public class TensorBackedBySetOfTensorValuesTest {
     /**
      * @throws java.lang.Exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         tensorToTest = createTensor();
     }
@@ -66,10 +67,13 @@ public class TensorBackedBySetOfTensorValuesTest {
         assertEquals(64.0, tensorToTest.get(x, y), DOUBLE_LIMIT);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void valueOfTensorWithNotEnoughCoordinates() {
-        YCoordinate y = YCoordinate.of(8);
-        assertEquals(64.0, tensorToTest.get(y), DOUBLE_LIMIT);
+        assertThrows(IllegalArgumentException.class, () -> {
+            YCoordinate y = YCoordinate.of(8);
+            assertEquals(64.0, tensorToTest.get(y), DOUBLE_LIMIT);
+
+        });
     }
 
     @Test
@@ -79,11 +83,14 @@ public class TensorBackedBySetOfTensorValuesTest {
         assertEquals(tensorToTest.shape().dimensionSet().size() - 1, tensorOnXCoordinate.shape().dimensionSet().size());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void sliceOfTensorGetSameCoordinate() {
-        XCoordinate x = XCoordinate.of(8);
-        Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extract(x);
-        assertEquals(1.0, tensorOnXCoordinate.get(x), DOUBLE_LIMIT);
+        assertThrows(IllegalArgumentException.class, () -> {
+            XCoordinate x = XCoordinate.of(8);
+            Tensor<Double> tensorOnXCoordinate = TensorStructurals.from(tensorToTest).extract(x);
+            assertEquals(1.0, tensorOnXCoordinate.get(x), DOUBLE_LIMIT);
+
+        });
     }
 
     @Test

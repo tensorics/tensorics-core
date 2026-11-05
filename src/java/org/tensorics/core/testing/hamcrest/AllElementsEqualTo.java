@@ -25,7 +25,6 @@ package org.tensorics.core.testing.hamcrest;
 import java.util.Objects;
 
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.tensorics.core.tensor.Position;
@@ -46,7 +45,6 @@ public class AllElementsEqualTo<V> extends TypeSafeMatcher<Tensor<V>> {
         this.value = value;
     }
 
-    @Factory
     public static final <V> Matcher<Tensor<V>> allElementsEqualTo(V value) {
         return new AllElementsEqualTo<>(value);
     }

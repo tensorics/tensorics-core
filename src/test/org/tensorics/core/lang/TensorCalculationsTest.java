@@ -22,12 +22,13 @@
 
 package org.tensorics.core.lang;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
 import static org.tensorics.core.tensor.lang.TensorStructurals.from;
 import static org.tensorics.core.util.SystemState.currentTimeAfterGc;
 import static org.tensorics.core.util.SystemState.currentTimeBeforeGc;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,9 +42,9 @@ import java.util.Set;
 
 import javax.measure.unit.SI;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -75,7 +76,7 @@ public class TensorCalculationsTest {
     private Tensor<Double> tensor3Big;
     private TensoricSupport<Double> tensoricFieldUsage;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         tensoricFieldUsage = Tensorics.using(Structures.doubles());
         tensor1 = prepareValues(1.0);
@@ -128,11 +129,13 @@ public class TensorCalculationsTest {
         assertEquals(5.33, rms2, 0.01);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testRMSCalculationTooManyCoordiantes() {
-        YCoordinate y = YCoordinate.of(1);
-        XCoordinate x = XCoordinate.of(2);
-        TensorStructurals.from(tensor1).reduce(XCoordinate.class).byRmsIn(doubles()).get(x, y);
+        assertThrows(IllegalArgumentException.class, () -> {
+            YCoordinate y = YCoordinate.of(1);
+            XCoordinate x = XCoordinate.of(2);
+            TensorStructurals.from(tensor1).reduce(XCoordinate.class).byRmsIn(doubles()).get(x, y);
+        });
     }
 
     @Test
@@ -210,12 +213,14 @@ public class TensorCalculationsTest {
         assertEquals(5, TensorStructurals.from(tensor).extractCoordinatesOfType(x.getClass()).size());
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void testFlagApplienceFailure() {
-        Tensor<Double> tensor = from(tensor1).extractWhereTrue(tensor1Flags);
-        YCoordinate y = YCoordinate.of(2);
-        XCoordinate x = XCoordinate.of(7);
-        assertEquals(14.0, tensor.get(x, y).doubleValue(), 0.0);
+        assertThrows(NoSuchElementException.class, () -> {
+            Tensor<Double> tensor = from(tensor1).extractWhereTrue(tensor1Flags);
+            YCoordinate y = YCoordinate.of(2);
+            XCoordinate x = XCoordinate.of(7);
+            assertEquals(14.0, tensor.get(x, y).doubleValue(), 0.0);
+        });
     }
 
     @Test
@@ -249,9 +254,9 @@ public class TensorCalculationsTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testReductionOnNonExistingCoordinate() {
-        TensorStructurals.from(tensor1).extract(ZCoordinate.of(1));
+        assertThrows(IllegalArgumentException.class, () -> TensorStructurals.from(tensor1).extract(ZCoordinate.of(1)));
     }
 
     @Test
@@ -261,7 +266,7 @@ public class TensorCalculationsTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void profileTensorPreparation() {
         int maxY = 1000;
         int step = 100;
@@ -277,7 +282,7 @@ public class TensorCalculationsTest {
     }
 
     @Test
-    @Ignore("takes too long. Enable for profiling")
+    @Disabled("takes too long. Enable for profiling")
     public void profileDoubleTensorPreparation() {
         int maxY = 1000;
         int step = 100;
@@ -302,7 +307,7 @@ public class TensorCalculationsTest {
         }
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void profilePositionMapPreparation() {
         int maxY = 1000;
@@ -319,7 +324,7 @@ public class TensorCalculationsTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void profileSimpleMapPopulation() {
         int maxValue = 100000;
         int step = 10000;
@@ -397,14 +402,14 @@ public class TensorCalculationsTest {
         return new ProfileResult(tensor.shape().size(), stateDiff);
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void profileRepetitiveMap() {
         List<ProfileResult> results = profileMapNTimes(10);
         printProfileResult(results);
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void profileSimpleRepetitiveTensor() {
         CoordinateRange range = CoordinateRange.fromSize(TensorSize.ofXYZ(400, 500, 1));
@@ -420,7 +425,7 @@ public class TensorCalculationsTest {
         printProfileResult(results);
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void profileQuantifiedRepetitiveTensor() {
         final Unit unit = JScienceUnit.of(SI.METER);

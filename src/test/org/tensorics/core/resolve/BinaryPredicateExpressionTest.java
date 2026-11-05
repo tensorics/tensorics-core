@@ -20,13 +20,13 @@
 
 package org.tensorics.core.resolve;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.DoubleScript;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
@@ -42,7 +42,7 @@ public class BinaryPredicateExpressionTest {
 
     private ResolvingEngine engine;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         engine = ResolvingEngines.defaultEngine();
     }

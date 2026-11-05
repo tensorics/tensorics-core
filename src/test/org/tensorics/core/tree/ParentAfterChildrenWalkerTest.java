@@ -22,17 +22,18 @@
 
 package org.tensorics.core.tree;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.tensorics.core.tree.domain.Node;
 import org.tensorics.core.tree.walking.BottomNodeCallback;
@@ -62,7 +63,7 @@ public class ParentAfterChildrenWalkerTest {
     private Node child221;
     private Node child22;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         this.walker = new ParentAfterChildrenWalker();
 
@@ -86,16 +87,22 @@ public class ParentAfterChildrenWalkerTest {
         /* has to do nothing on purpose */
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullNode() {
-        assertNotNull(callback);
-        walker.walk(null, callback);
+        assertThrows(NullPointerException.class, () -> {
+            assertNotNull(callback);
+            walker.walk(null, callback);
+
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullCallback() {
-        assertNotNull(rootNode);
-        walker.walk(rootNode, null);
+        assertThrows(NullPointerException.class, () -> {
+            assertNotNull(rootNode);
+            walker.walk(rootNode, null);
+
+        });
     }
 
     @Test
@@ -109,11 +116,14 @@ public class ParentAfterChildrenWalkerTest {
         verifyNoMoreInteractions(mock);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testOneNodeMockedNullChildren() {
-        assertNotNull(rootNode);
-        when(rootNode.getChildren()).thenReturn(null);
-        walker.walk(rootNode, callback);
+        assertThrows(NullPointerException.class, () -> {
+            assertNotNull(rootNode);
+            when(rootNode.getChildren()).thenReturn(null);
+            walker.walk(rootNode, callback);
+
+        });
     }
 
     @Test

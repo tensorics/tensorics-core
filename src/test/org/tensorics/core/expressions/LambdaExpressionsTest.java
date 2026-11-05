@@ -4,10 +4,10 @@
 
 package org.tensorics.core.expressions;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.TensoricExpressions;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
@@ -18,7 +18,7 @@ public class LambdaExpressionsTest {
 
     private ResolvingEngine engine;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         engine = ResolvingEngines.defaultEngine();
     }

@@ -24,9 +24,9 @@ package org.tensorics.core.testing.lang;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Scalar;
 import org.tensorics.core.tensor.Tensor;

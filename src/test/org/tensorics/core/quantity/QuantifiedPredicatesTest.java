@@ -4,13 +4,14 @@
 
 package org.tensorics.core.quantity;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.tensorics.core.lang.TensoricDoubles.confidenceLevelOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.measure.unit.SI;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.TensoricDoubles;
 import org.tensorics.core.lang.TensoricSupport;
 import org.tensorics.core.lang.Tensorics;
@@ -86,13 +87,15 @@ public class QuantifiedPredicatesTest {
         assertFalse(TensoricDoubles.testIf(v1).isGreaterThan(v1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void throwOnInconsistentUnits() {
-        QuantifiedValue<Double> v1 = Tensorics.quantityOf(100.0, SI.METER).withError(90.0);
-        QuantifiedValue<Double> v2 = Tensorics.quantityOf(190.0, SI.AMPERE).withError(1.0);
+        assertThrows(IllegalArgumentException.class, () -> {
+            QuantifiedValue<Double> v1 = Tensorics.quantityOf(100.0, SI.METER).withError(90.0);
+            QuantifiedValue<Double> v2 = Tensorics.quantityOf(190.0, SI.AMPERE).withError(1.0);
 
-        TensoricDoubles.testIf(v1).isLessThan(v2);
-        TensoricDoubles.testIf(v1).isGreaterThan(v2);
+            TensoricDoubles.testIf(v1).isLessThan(v2);
+            TensoricDoubles.testIf(v1).isGreaterThan(v2);
+        });
     }
 
     @Test

@@ -5,15 +5,14 @@
 package org.tensorics.core.util.chains;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 public class CaseMatchingsTest {
 
@@ -21,9 +20,6 @@ public class CaseMatchingsTest {
     private static final TestObject A_TEST_OBJECT = new TestObject("A_TEST_OBJECT");
 
     private static final Function<Object, String> FAKED_RECURSION = Objects::toString;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void stringIsResolvedByObjectParameterType() {
@@ -81,9 +77,8 @@ public class CaseMatchingsTest {
 
     @Test
     public void classWithTwoMethodsWithSameParameterTypeThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("anotherRepr");
-        CaseMatchings.from(String.class, MultipleMethodsWithListParamterClass.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CaseMatchings.from(String.class, MultipleMethodsWithListParamterClass.class));
+        assertThat(exception).hasMessageContaining("anotherRepr");
     }
 
     @Test

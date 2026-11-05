@@ -22,10 +22,11 @@
 
 package org.tensorics.core.lang;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.ExpressionIsUnresolvedException;
 
@@ -33,7 +34,7 @@ public class TensoricScriptTest {
 
     private TensoricScript<Double, Double> script;
 
-    @Before
+    @BeforeEach
     public void setUpBeforeClass() throws Exception {
         script = new DoubleScript<Double>() {
             private static final long serialVersionUID = 1L;
@@ -50,8 +51,8 @@ public class TensoricScriptTest {
         assertFalse(script.isResolved());
     }
 
-    @Test(expected = ExpressionIsUnresolvedException.class)
+    @Test
     public void scriptThrowsOnGet() {
-        script.get();
+        assertThrows(ExpressionIsUnresolvedException.class, () -> script.get());
     }
 }

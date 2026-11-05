@@ -4,10 +4,11 @@
 
 package org.tensorics.core.booleans;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.tensorics.core.lang.Tensorics.at;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.TensorBuilder;
@@ -37,10 +38,13 @@ public class OngoingDetectionTest extends AbstractBooleanTest {
         assertTrue(changes.iterator().next().equals(11));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testDimensionWithoutProviededComparator() {
-        Tensor<Boolean> tensorTrue = createTensorOfOneNoncomparableDimension();
-        detectWhere(tensorTrue).changesAlong(Integer.class);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Tensor<Boolean> tensorTrue = createTensorOfOneNoncomparableDimension();
+            detectWhere(tensorTrue).changesAlong(Integer.class);
+
+        });
     }
 
     @Test
@@ -49,18 +53,24 @@ public class OngoingDetectionTest extends AbstractBooleanTest {
         detectWhere(tensorTrue).changesAlong(TestNonComparableClass.class, (o1, o2) -> (o1.getField() - o2.getField()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWrongDirection() {
-        Tensor<Boolean> tensor = createSimpleOneComparableDimensionTensorOf(true, 2, 1);
-        @SuppressWarnings("unused")
-        Iterable<Double> changes2 = detectWhere(tensor).changesAlong(Double.class);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Tensor<Boolean> tensor = createSimpleOneComparableDimensionTensorOf(true, 2, 1);
+            @SuppressWarnings("unused")
+            Iterable<Double> changes2 = detectWhere(tensor).changesAlong(Double.class);
+
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testTooLargeTensor() {
-        Tensor<Boolean> tensorTrue = createTensorOf(true, 12, 4);
-        @SuppressWarnings("unused")
-        Iterable<Integer> changes2 = detectWhere(tensorTrue).changesAlong(Integer.class);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Tensor<Boolean> tensorTrue = createTensorOf(true, 12, 4);
+            @SuppressWarnings("unused")
+            Iterable<Integer> changes2 = detectWhere(tensorTrue).changesAlong(Integer.class);
+
+        });
     }
 
     private static Tensor<Boolean> createTensorOfOneNoncomparableDimension() {

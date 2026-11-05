@@ -2,15 +2,13 @@ package org.tensorics.core.tensor.coordinates;
 
 import static java.util.Comparator.comparingDouble;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.rules.ExpectedException.none;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.Position;
 
 import com.google.common.collect.ImmutableList;
@@ -21,9 +19,6 @@ public class PositionOrderingTest {
     private static final Position B3 = pos("b", 3);
     private static final Position B2 = pos("b", 2);
     private static final Position C1 = pos("c", 1);
-
-    @Rule
-    public ExpectedException thrown = none();
 
     @Test
     public void orderingIsRespected() {
@@ -52,16 +47,14 @@ public class PositionOrderingTest {
 
     @Test
     public void addingSameCoordinateTwiceThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("twice");
-        PositionOrdering.of(String.class).then(String.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> PositionOrdering.of(String.class).then(String.class));
+        assertThat(exception).hasMessageContaining("twice");
     }
 
     @Test
     public void invalidDimensionHierarchiesAreRejected() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("is assignable");
-        PositionOrdering.of(Number.class, comparingDouble(Number::doubleValue)).then(Integer.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> PositionOrdering.of(Number.class, comparingDouble(Number::doubleValue)).then(Integer.class));
+        assertThat(exception).hasMessageContaining("is assignable");
     }
 
     private List<Position> sort(List<Position> listToSort, PositionOrdering ordering) {

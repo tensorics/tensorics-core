@@ -4,13 +4,14 @@
 
 package org.tensorics.core.function;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Set;
 import java.util.stream.DoubleStream;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link MapBackedDiscreteFunction}
@@ -23,7 +24,7 @@ public class MapBackedDiscreteFunctionTest {
     private static final int NUMBER_OF_DEFINED_ELEMENTS = 10;
     private MapBackedDiscreteFunction<Double, Double> identityFunction;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MapBackedDiscreteFunction.Builder<Double, Double> builder = MapBackedDiscreteFunction
                 .<Double, Double> builder();
@@ -40,15 +41,18 @@ public class MapBackedDiscreteFunctionTest {
         //@formatter:on
     }
 
-    @Test(expected = IllegalDiscreteFunctionUsageException.class)
+    @Test
     public void testApplyThrowsExceptionWhenRequestedValueForUndefinedX() {
-        identityFunction.apply(UNDEFINED_X_VALUE);
+        assertThrows(IllegalDiscreteFunctionUsageException.class, () -> identityFunction.apply(UNDEFINED_X_VALUE));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testImmutability() {
-        Set<Double> definedXValues = identityFunction.definedXValues();
-        definedXValues.add(UNDEFINED_X_VALUE);
+        assertThrows(UnsupportedOperationException.class, () -> {
+            Set<Double> definedXValues = identityFunction.definedXValues();
+            definedXValues.add(UNDEFINED_X_VALUE);
+
+        });
     }
 
 }

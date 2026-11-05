@@ -1,9 +1,7 @@
 package org.tensorics.core.tensorbacked.dimtyped;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.TensoricDoubles;
 import org.tensorics.core.lang.Tensorics;
 
@@ -13,10 +11,6 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DimtypedOperationsTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
 
     @Test
     public void tensorbacked1dElementMultiplication() {

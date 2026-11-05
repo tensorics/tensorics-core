@@ -2,20 +2,16 @@ package org.tensorics.core.tensorbacked.dimtyped;
 
 import java.util.Date;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DimtypedTensorbackedTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void getExistingPositionWorks() {
@@ -29,15 +25,13 @@ public class DimtypedTensorbackedTest {
 
     @Test
     public void getNonExistingThrows() {
-        thrown.expect(NoSuchElementException.class);
-        tensorbacked().get("c", 1);
+        assertThrows(NoSuchElementException.class, () -> tensorbacked().get("c", 1));
     }
 
     @Test
     public void getWrongDimensionThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("dimensions of the tensor");
-        tensorbacked().tensor().get("c", 1, 1L);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> tensorbacked().tensor().get("c", 1, 1L));
+        assertThat(exception).hasMessageContaining("dimensions of the tensor");
     }
 
     @Test

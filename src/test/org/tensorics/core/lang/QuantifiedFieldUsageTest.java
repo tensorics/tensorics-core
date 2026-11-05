@@ -27,11 +27,11 @@ import static javax.measure.unit.SI.MICRO;
 import static javax.measure.unit.SI.MILLI;
 import static javax.measure.unit.SI.VOLT;
 import static javax.measure.unit.SI.WATT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.quantity.lang.QuantitySupport;
 import org.tensorics.core.units.JScienceUnit;

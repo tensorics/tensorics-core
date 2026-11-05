@@ -24,7 +24,7 @@ package org.tensorics.core.tensorbacked.expressions;
 
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TensorbackedExpressionsTest {
 

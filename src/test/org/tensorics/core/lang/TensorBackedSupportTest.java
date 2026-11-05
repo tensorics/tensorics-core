@@ -24,14 +24,14 @@ package org.tensorics.core.lang;
 
 import static javax.measure.unit.SI.METER;
 import static javax.measure.unit.SI.MICRO;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.lang.Tensorics.at;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.ImmutableTensor;
@@ -67,7 +67,7 @@ public class TensorBackedSupportTest {
     private MultibeamQOrbit multibeamTensorBackedofQVWithErrors;
     private TensoricSupport<Double> fullTensoricSupport;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         fullTensoricSupport = Tensorics.using(Structures.doubles());
         multibeamTensorBacked1 = new MultibeamOrbit(prepareDoubleTensor(1.0));

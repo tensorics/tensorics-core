@@ -2,7 +2,7 @@ package org.tensorics.core.tensor.operations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.Mappable;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Shape;

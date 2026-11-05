@@ -22,16 +22,17 @@
 
 package org.tensorics.core.lang;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
 import static org.tensorics.core.tensorbacked.Tensorbackeds.construct;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Position;
@@ -45,7 +46,7 @@ public class TensorsTest {
 
     private Tensor<Double> tensor;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         tensor = ImmutableTensor.<Double> builder(ImmutableSet.of(XCoordinate.class, YCoordinate.class)).build();
     }
@@ -78,42 +79,54 @@ public class TensorsTest {
         assertEquals(3, shapeOfMerged.dimensionality());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testTensorMergeFailsDueToWrongContextContent() {
-        prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
-        prepareTensorWithContextOf(ImmutableSet.of(YCoordinate.of(2)));
+        assertThrows(IllegalStateException.class, () -> {
+            prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+            prepareTensorWithContextOf(ImmutableSet.of(YCoordinate.of(2)));
+
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testTensorMergeFailsDueNoContextProvided() {
-        Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
-        Tensor<Double> tensor2 = prepareTensorWithContextOf(Collections.emptySet());
-        Set<Tensor<Double>> toMerge = new HashSet<>();
-        toMerge.add(tensor1);
-        toMerge.add(tensor2);
-        TensorStructurals.merge(toMerge);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+            Tensor<Double> tensor2 = prepareTensorWithContextOf(Collections.emptySet());
+            Set<Tensor<Double>> toMerge = new HashSet<>();
+            toMerge.add(tensor1);
+            toMerge.add(tensor2);
+            TensorStructurals.merge(toMerge);
+
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testTensorMergeFailsDueToDifferentContext() {
-        Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
-        Tensor<Double> tensor2 = prepareTensorWithContextOf(ImmutableSet.of(TCoordinate.of(3)));
-        Set<Tensor<Double>> toMerge = new HashSet<>();
-        toMerge.add(tensor1);
-        toMerge.add(tensor2);
-        assertEquals(2, tensor1.shape().dimensionSet().size());
-        assertEquals(2, tensor2.shape().dimensionSet().size());
+        assertThrows(IllegalArgumentException.class, () -> {
+            Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+            Tensor<Double> tensor2 = prepareTensorWithContextOf(ImmutableSet.of(TCoordinate.of(3)));
+            Set<Tensor<Double>> toMerge = new HashSet<>();
+            toMerge.add(tensor1);
+            toMerge.add(tensor2);
+            assertEquals(2, tensor1.shape().dimensionSet().size());
+            assertEquals(2, tensor2.shape().dimensionSet().size());
 
-        TensorStructurals.merge(toMerge);
+            TensorStructurals.merge(toMerge);
+
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testTensorMergeFailsDueToOnlyOneTensor() {
-        Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
-        Set<Tensor<Double>> toMerge = new HashSet<>();
-        toMerge.add(tensor1);
-        assertEquals(2, tensor1.shape().dimensionSet().size());
-        TensorStructurals.merge(toMerge);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Tensor<Double> tensor1 = prepareTensorWithContextOf(ImmutableSet.of(ZCoordinate.of(1)));
+            Set<Tensor<Double>> toMerge = new HashSet<>();
+            toMerge.add(tensor1);
+            assertEquals(2, tensor1.shape().dimensionSet().size());
+            TensorStructurals.merge(toMerge);
+
+        });
     }
 
     @Test
