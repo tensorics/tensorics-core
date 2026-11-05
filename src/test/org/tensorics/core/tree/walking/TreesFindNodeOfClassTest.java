@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tree.domain.AbstractDeferredExpression;
 import org.tensorics.core.tree.domain.Expression;
 import org.tensorics.core.tree.domain.Node;

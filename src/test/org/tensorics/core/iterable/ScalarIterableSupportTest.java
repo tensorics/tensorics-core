@@ -22,12 +22,13 @@
 
 package org.tensorics.core.iterable;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.fields.doubles.Structures.doubles;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.iterable.lang.ScalarIterableSupport;
 
 import com.google.common.collect.ImmutableList;
@@ -37,9 +38,9 @@ import com.google.common.collect.ImmutableList;
  */
 public class ScalarIterableSupportTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNoElement() {
-        usage().averageOf(Collections.<Double> emptyList());
+        assertThrows(IllegalArgumentException.class, () -> usage().averageOf(Collections.<Double> emptyList()));
     }
 
     private ScalarIterableSupport<Double> usage() {

@@ -9,7 +9,7 @@ import static org.tensorics.core.lang.Tensorics.scalarOf;
 
 import java.util.Collections;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 
 public class TensorEqualityTest {

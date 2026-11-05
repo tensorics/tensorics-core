@@ -22,14 +22,15 @@
 
 package org.tensorics.core.tensorbacked;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.tensorbacked.TensorbackedInternals.dimensionsOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 
 import com.google.common.reflect.TypeToken;
 import org.assertj.core.api.Assertions;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
@@ -52,9 +53,6 @@ import java.util.Set;
 
 public class TensorBackedInternalsTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void testDimensionsOfMultibeamOrbitEvolution() {
         assertEquals(ImmutableSet.of(Plane.class, Bpm.class, Time.class, Beam.class),
@@ -71,9 +69,9 @@ public class TensorBackedInternalsTest {
         assertEquals(ImmutableSet.of(Plane.class, Bpm.class), dimensionsOf(SinglebeamOrbit.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNoAnnotationPresent() {
-        dimensionsOf(NoAnnotationPresentOrbit.class);
+        assertThrows(IllegalArgumentException.class, () -> dimensionsOf(NoAnnotationPresentOrbit.class));
     }
 
     @Test
@@ -84,9 +82,8 @@ public class TensorBackedInternalsTest {
 
     @Test
     public void whenDimtypedIsImplementedThenNoAnnotationMustBePresent() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("No annotation of type 'interface org.tensorics.core.tensorbacked.annotation.Dimensions' must be present");
-        dimensionsOf(DimtypedAndAnnotationPresentOrbit.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> dimensionsOf(DimtypedAndAnnotationPresentOrbit.class));
+        assertThat(exception.getMessage(), containsString("No annotation of type 'interface org.tensorics.core.tensorbacked.annotation.Dimensions' must be present"));
     }
 
     @Test
@@ -104,9 +101,8 @@ public class TensorBackedInternalsTest {
 
     @Test
     public void checkDimensionsFailsForWrongDimensions() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("do not match dimensions");
-        TensorbackedInternals.verifyDimensions(SinglebeamOrbit.class, anyPlaneTensor());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> TensorbackedInternals.verifyDimensions(SinglebeamOrbit.class, anyPlaneTensor()));
+        assertThat(exception.getMessage(), containsString("do not match dimensions"));
     }
 
     /**
@@ -121,16 +117,14 @@ public class TensorBackedInternalsTest {
 
     @Test
     public void inconsistentDimensionThrowsForConstructorInstantiation() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("do not match dimensions of given tensor");
-        TensorbackedInternals.createBackedByTensor(SinglebeamOrbit.class, anyPlaneTensor());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> TensorbackedInternals.createBackedByTensor(SinglebeamOrbit.class, anyPlaneTensor()));
+        assertThat(exception.getMessage(), containsString("do not match dimensions of given tensor"));
     }
 
     @Test
     public void inconsistentDimensionThrowsForProxiedInterfaceInstantiation() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("do not match dimensions of given tensor");
-        TensorbackedInternals.createBackedByTensor(SingleBeamOrbitIf.class, anyPlaneTensor());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> TensorbackedInternals.createBackedByTensor(SingleBeamOrbitIf.class, anyPlaneTensor()));
+        assertThat(exception.getMessage(), containsString("do not match dimensions of given tensor"));
     }
 
 

@@ -1,12 +1,12 @@
 package org.tensorics.core.tensorbacked;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.Tensor;
@@ -18,9 +18,6 @@ import org.tensorics.core.tensorbacked.orbit.coordinates.Plane;
 import org.tensorics.core.testing.TestUtil;
 
 public class ProxiedInterfaceTensorbackedsTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void validateUtilityClass() {
@@ -55,9 +52,8 @@ public class ProxiedInterfaceTensorbackedsTest {
     
     @Test
     public void concreteClassCanNotBeInstantiatedByProxying() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("is not an interface!");
-        ProxiedInterfaceTensorbackeds.create(SinglebeamOrbit.class, anyBpmPlaneTensor());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ProxiedInterfaceTensorbackeds.create(SinglebeamOrbit.class, anyBpmPlaneTensor()));
+        assertThat(exception).hasMessageContaining("is not an interface!");
     }
 
     private Tensor<Double> anyBpmPlaneTensor() {

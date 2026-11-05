@@ -22,15 +22,16 @@
 
 package org.tensorics.core.tree;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tree.domain.ExceptionHandlingNode;
 import org.tensorics.core.tree.domain.Node;
 import org.tensorics.core.tree.walking.NoMatchingNodeFoundException;
@@ -59,7 +60,7 @@ public class TreeWithMultiplePathsTest {
     /*
      * rootNode / \ / \ child1(EH) child2 / \ \ / \ \ child11 child12 child21 \ / / \ / / childCommon
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         rootNode = mock(Node.class);
 
@@ -88,9 +89,9 @@ public class TreeWithMultiplePathsTest {
         when(childCommon.toString()).thenReturn("childCommon");
     }
 
-    @Test(expected = NoMatchingNodeFoundException.class)
+    @Test
     public void testFindClosestHandlingNodeCommon() throws Exception {
-        assertFoundNodes(childCommon, child1, child2);
+        assertThrows(NoMatchingNodeFoundException.class, () -> assertFoundNodes(childCommon, child1, child2));
     }
 
     private void assertFoundNodes(Node childNode, Node... expectedNodes) {

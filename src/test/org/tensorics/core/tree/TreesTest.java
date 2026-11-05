@@ -22,16 +22,17 @@
 
 package org.tensorics.core.tree;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tree.domain.Node;
 import org.tensorics.core.tree.domain.Path;
 import org.tensorics.core.tree.walking.PathDoesNotExistException;
@@ -52,7 +53,7 @@ public class TreesTest {
     private Node child221;
     private Node child22;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         rootNode = mock(Node.class);
 
@@ -105,9 +106,9 @@ public class TreesTest {
                 Trees.getPathsFromChildToAncestor(child22, rootNode).get(0).getPath().size());
     }
 
-    @Test(expected = PathDoesNotExistException.class)
+    @Test
     public void testPathRootTo22() {
-        Trees.getPathsFromChildToAncestor(rootNode, child22);
+        assertThrows(PathDoesNotExistException.class, () -> Trees.getPathsFromChildToAncestor(rootNode, child22));
     }
 
     @Test

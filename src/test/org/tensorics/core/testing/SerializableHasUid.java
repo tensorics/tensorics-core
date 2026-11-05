@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.rule.impl.SerializableMustHaveSerialVersionUIDRule;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 
 /**
  * This is a very basic test for all instruction nodes: It simply checks that all implementations declare the hash-code
@@ -31,7 +31,7 @@ import junitparams.Parameters;
  *
  * @author kfuchsbe
  */
-@RunWith(value = JUnitParamsRunner.class)
+@TestInstance(Lifecycle.PER_CLASS)
 public abstract class SerializableHasUid {
 
     private final String packageNameToScan;
@@ -46,8 +46,8 @@ public abstract class SerializableHasUid {
                 excludeInterfaces()).stream().map(c -> new Object[] { c }).collect(Collectors.toList());
     }
 
-    @Test
-    @Parameters(method = "getParameters")
+    @ParameterizedTest
+    @MethodSource("getParameters")
     public void hasSerialVersionUid(Class<?> classToCheck) throws SecurityException {
         rule.evaluate(PojoClassFactory.getPojoClass(classToCheck));
     }

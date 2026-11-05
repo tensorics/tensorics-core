@@ -1,13 +1,14 @@
 package org.tensorics.core.tensor;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 
 import java.util.Set;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 
 /**
@@ -17,9 +18,6 @@ import org.tensorics.core.lang.Tensorics;
  * @author arek
  */
 public class CoordinatesOnInterfacesTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     private static final double SAMPLE_VALUE = 2.2;
 
@@ -43,8 +41,7 @@ public class CoordinatesOnInterfacesTest {
      */
     @Test
     public void testBuilderCreatedFailDueToWrongInheritanceInClasses() {
-        thrown.expect(IllegalArgumentException.class);
-        Tensorics.builder(TestA.class, TestC.class, WrongD.class);
+        assertThrows(IllegalArgumentException.class, () -> Tensorics.builder(TestA.class, TestC.class, WrongD.class));
     }
 
     /*
@@ -64,10 +61,11 @@ public class CoordinatesOnInterfacesTest {
 
     @Test
     public void testBuilderPutInvalidInstancesSingleLineInheritance() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("assignable");
-        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
-        builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassD()), SAMPLE_VALUE);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
+            builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassD()), SAMPLE_VALUE);
+        });
+        assertThat(exception.getMessage(), containsString("assignable"));
     }
 
     /*
@@ -75,10 +73,11 @@ public class CoordinatesOnInterfacesTest {
      */
     @Test
     public void testBuilderPutInvalidInstancesMultipleInheritance() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("assignable");
-        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
-        builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassWrongD()), SAMPLE_VALUE);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class, TestE.class);
+            builder.put(Position.of(new TestClassA(1), new TestClassB(1), new TestClassWrongD()), SAMPLE_VALUE);
+        });
+        assertThat(exception.getMessage(), containsString("assignable"));
     }
 
     /*
@@ -118,38 +117,42 @@ public class CoordinatesOnInterfacesTest {
      */
     @Test
     public void testTensorGetDependentInterfaces() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("assignable");
-        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestE.class);
-        Tensor<Double> tensor = builder.build();
-        tensor.get(Position.of(new TestClassA(1), new TestClassD()));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestE.class);
+            Tensor<Double> tensor = builder.build();
+            tensor.get(Position.of(new TestClassA(1), new TestClassD()));
+        });
+        assertThat(exception.getMessage(), containsString("assignable"));
     }
 
     @Test
     public void testTensorNotEnoughCoordinatesInPosition() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("do not match");
-        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
-        Tensor<Double> tensor = builder.build();
-        tensor.get(Position.of(new TestClassA(1)));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
+            Tensor<Double> tensor = builder.build();
+            tensor.get(Position.of(new TestClassA(1)));
+        });
+        assertThat(exception.getMessage(), containsString("do not match"));
     }
 
     @Test
     public void testTensorPositionWithDoubledCoordinates() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("unique");
-        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
-        Tensor<Double> tensor = builder.build();
-        tensor.get(Position.of(new TestClassA(1), new TestClassA(2)));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
+            Tensor<Double> tensor = builder.build();
+            tensor.get(Position.of(new TestClassA(1), new TestClassA(2)));
+        });
+        assertThat(exception.getMessage(), containsString("unique"));
     }
 
     @Test
     public void testTensorWrongPosition() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("assignable");
-        TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
-        Tensor<Double> tensor = builder.build();
-        tensor.get(Position.of(new TestClassC(), new TestClassE()));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            TensorBuilder<Double> builder = Tensorics.builder(TestA.class, TestB.class);
+            Tensor<Double> tensor = builder.build();
+            tensor.get(Position.of(new TestClassC(), new TestClassE()));
+        });
+        assertThat(exception.getMessage(), containsString("assignable"));
     }
 
     /*

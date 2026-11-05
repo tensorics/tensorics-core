@@ -23,18 +23,19 @@
 package org.tensorics.core.tensor.variance;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.util.Instantiator;
 
 public class CovariantTest {
 
     private static final String TEST_VALUE_A = "A";
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullConstructorArgumentThrows() {
-        stringInstantiator().create(null);
+        assertThrows(NullPointerException.class, () -> stringInstantiator().create(null));
     }
 
     @Test

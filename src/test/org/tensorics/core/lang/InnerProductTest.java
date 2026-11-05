@@ -23,14 +23,15 @@
 package org.tensorics.core.lang;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.tensorics.core.lang.InnerProductTest.Coord.A;
 import static org.tensorics.core.lang.InnerProductTest.Coord.B;
 import static org.tensorics.core.lang.InnerProductTest.Coord.C;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 import org.tensorics.core.tensor.Tensor;
@@ -45,20 +46,20 @@ public class InnerProductTest extends TensoricDoubleSupport {
     private Tensor<Double> contravariant123;
     private Tensor<Double> covariant246;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         contravariant123 = contravariant(1.0, Coord.values());
         covariant246 = covariant(2.0, Coord.values());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void leftNullThrows() {
-        calculate((Tensor<Double>) null).times(contravariant123);
+        assertThrows(NullPointerException.class, () -> calculate((Tensor<Double>) null).times(contravariant123));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void rightNullThrows() {
-        calculate(covariant246).times(null);
+        assertThrows(NullPointerException.class, () -> calculate(covariant246).times(null));
     }
 
     @Test

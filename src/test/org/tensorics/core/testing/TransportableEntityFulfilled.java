@@ -5,8 +5,8 @@
 package org.tensorics.core.testing;
 
 import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.collect.ImmutableSet;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 /**
@@ -33,7 +33,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
  *
  * @author kfuchsbe
  */
-@RunWith(value = JUnitParamsRunner.class)
+@TestInstance(Lifecycle.PER_CLASS)
 public abstract class TransportableEntityFulfilled {
 
     private final String packageNameToScan;
@@ -51,33 +51,33 @@ public abstract class TransportableEntityFulfilled {
                 .stream().map(pc -> new Object[] { pc }).collect(toList());
     }
 
-    @Test
-    @Parameters(method = "getParameters")
+    @ParameterizedTest
+    @MethodSource("getParameters")
     public void equalsMethodIsDeclared(Class<?> classToCheck) throws NoSuchMethodException, SecurityException {
         assertNotNull(classToCheck.getDeclaredMethod("equals", Object.class));
     }
 
-    @Test
-    @Ignore("Damn this is difficult! ;-) To be worked on!")
-    @Parameters(method = "getParameters")
+    @ParameterizedTest
+    @Disabled("Damn this is difficult! ;-) To be worked on!")
+    @MethodSource("getParameters")
     public void equalsMethodIsValid(Class<?> classToCheck) {
         EqualsVerifier.forClass(classToCheck).verify();
     }
 
-    @Test
-    @Parameters(method = "getParameters")
+    @ParameterizedTest
+    @MethodSource("getParameters")
     public void hashCodeMethodIsDeclared(Class<?> classToCheck) throws NoSuchMethodException, SecurityException {
         assertNotNull(classToCheck.getDeclaredMethod("hashCode"));
     }
 
-    @Test
-    @Parameters(method = "getParameters")
+    @ParameterizedTest
+    @MethodSource("getParameters")
     public void serializableIsImplemented(Class<?> classToCheck) throws Exception {
         assertTrue(Serializable.class.isAssignableFrom(classToCheck));
     }
 
-    @Test
-    @Parameters(method = "getParameters")
+    @ParameterizedTest
+    @MethodSource("getParameters")
     public void toStringIsDeclared(Class<?> classToCheck) throws Exception {
         assertNotNull(classToCheck.getDeclaredMethod("toString"));
     }

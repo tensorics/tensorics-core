@@ -27,11 +27,12 @@ import static javax.measure.unit.SI.MILLIMETER;
 import static javax.measure.unit.SI.VOLT;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.measure.converter.ConversionException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.quantity.ImmutableQuantifiedValue;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.units.JScienceUnit;
@@ -54,8 +55,8 @@ public class QuantityDoubleSupportTest extends QuantityDoubleSupport {
         assertThat(convert(ERRONOUS_IN_M).to(MILLIMETER), is(equalTo(ERRONOUS_IN_MM)));
     }
 
-    @Test(expected = ConversionException.class)
+    @Test
     public void incompatibleUnitsThrow() {
-        convert(valueOf(1.0, METER)).to(VOLT);
+        assertThrows(ConversionException.class, () -> convert(valueOf(1.0, METER)).to(VOLT));
     }
 }

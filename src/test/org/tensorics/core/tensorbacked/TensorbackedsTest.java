@@ -28,7 +28,7 @@ import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Offset;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensorbacked.dimtyped.Tensorbacked1dBuilder;
 import org.tensorics.core.tensorbacked.interfacebacked.SingleBeamOrbitIf;

@@ -22,9 +22,9 @@
 
 package org.tensorics.incubate.function;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.incubate.function.SortedMapBackedDiscreteFunction.Builder;
 
 public class FunctionsTest {
@@ -34,7 +34,7 @@ public class FunctionsTest {
     /**
      * @throws java.lang.Exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         // *
     }
@@ -43,14 +43,14 @@ public class FunctionsTest {
     public void testLinearFunctionZeroToFive() {
         function = createLinearFunction();
         double integrateResult = Functions.integrate(function);
-        Assert.assertEquals(12.5, integrateResult, 0.01);
+        Assertions.assertEquals(12.5, integrateResult, 0.01);
     }
 
     @Test
     public void testSquereFunctionOneToThree() {
         function = createSquereFunction();
         double integrateResult = Functions.integrate(function, 1.0, 3.0);
-        Assert.assertEquals(8.666, integrateResult, 0.01);
+        Assertions.assertEquals(8.666, integrateResult, 0.01);
     }
 
     private DiscreteFunction<Double, Double> createSquereFunction() {

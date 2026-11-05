@@ -7,6 +7,7 @@ package org.tensorics.core.lang;
 import static javax.measure.unit.SI.AMPERE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +17,8 @@ import java.util.function.Function;
 import javax.measure.unit.Unit;
 
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.internal.matchers.EqualsWithDelta;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.units.JScienceUnit;
@@ -32,7 +33,7 @@ public class TensoricDoublesTest {
     private static final double DELTA = 10e-5;
     private List<QuantifiedValue<Double>> iterableSample;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initIterableSample();
     }
@@ -58,10 +59,12 @@ public class TensoricDoublesTest {
         verifyQuantifiedIterableOperationResult(TensoricDoubles::rmsOfQ, 6.204836823, AMPERE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testRmsOfEmptyIterableOfQuantifiedDouble() {
-        iterableSample = Collections.emptyList();
-        verifyQuantifiedIterableOperationResult(TensoricDoubles::rmsOfQ, 0.0, Unit.ONE);
+        assertThrows(IllegalArgumentException.class, () -> {
+            iterableSample = Collections.emptyList();
+            verifyQuantifiedIterableOperationResult(TensoricDoubles::rmsOfQ, 0.0, Unit.ONE);
+        });
     }
 
     @Test

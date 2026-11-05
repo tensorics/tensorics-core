@@ -22,7 +22,7 @@
 
 package org.tensorics.core.quantity;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,8 +32,8 @@ import java.io.ObjectOutputStream;
 
 import javax.measure.unit.SI;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.TensoricDoubles;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.units.JScienceUnit;
@@ -44,7 +44,7 @@ public class ImmutableQuantifiedScalarTest {
     private ImmutableQuantifiedValue<Double> zero;
     private ImmutableQuantifiedValue<Double> negativeScalar;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         zero = Tensorics.quantityOf(0.0, JScienceUnit.of(SI.AMPERE));
         scalar = Tensorics.quantityOf(10.5, JScienceUnit.of(SI.AMPERE));

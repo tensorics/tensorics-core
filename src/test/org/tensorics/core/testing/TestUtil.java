@@ -21,9 +21,9 @@
 // @formatter:on
 package org.tensorics.core.testing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -80,12 +80,12 @@ public class TestUtil {
     }
 
     private static void verifyClassIsFinal(final Class<?> clazz) {
-        assertTrue("class must be final", Modifier.isFinal(clazz.getModifiers()));
+        assertTrue(Modifier.isFinal(clazz.getModifiers()), "class must be final");
     }
 
     private static void verifyPrivateConstructor(final Class<?> clazz)
             throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        assertEquals("There must be only one constructor", 1, clazz.getDeclaredConstructors().length);
+        assertEquals(1, clazz.getDeclaredConstructors().length, "There must be only one constructor");
         final Constructor<?> constructor = clazz.getDeclaredConstructor();
         if (constructor.isAccessible() || !Modifier.isPrivate(constructor.getModifiers())) {
             fail("constructor is not private");

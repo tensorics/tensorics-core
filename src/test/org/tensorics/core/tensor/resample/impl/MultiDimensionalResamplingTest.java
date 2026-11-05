@@ -7,10 +7,11 @@ package org.tensorics.core.tensor.resample.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.tensorics.core.lang.Tensorics.at;
 import static org.tensorics.core.tensor.lang.TensorStructurals.resample;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.NoSuchElementException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensoric;
@@ -128,9 +129,9 @@ public class MultiDimensionalResamplingTest {
         assertThat(stringOnly.get("E", 4)).isEqualTo("D4");
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void stringOnlyDoesNotResampleA10() {
-        stringOnly.get("A", 10);
+        assertThrows(NoSuchElementException.class, () -> stringOnly.get("A", 10));
     }
 
 }

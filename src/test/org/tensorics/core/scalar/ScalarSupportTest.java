@@ -22,9 +22,9 @@
 
 package org.tensorics.core.scalar;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.math.ExtendedField;
 import org.tensorics.core.scalar.lang.ScalarSupport;

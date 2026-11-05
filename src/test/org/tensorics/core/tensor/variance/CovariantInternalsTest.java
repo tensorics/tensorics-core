@@ -22,12 +22,13 @@
 
 package org.tensorics.core.tensor.variance;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.tensor.variance.Covariants.contravariantOf;
 import static org.tensorics.core.tensor.variance.Covariants.coordinateClassFor;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CovariantInternalsTest {
 
@@ -46,9 +47,9 @@ public class CovariantInternalsTest {
         assertEquals(String.class, coordinateClassFor(CovariantStringDoubleInherited.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void resolveCoordinateTypeFromGenericDoubleInheritedClass() {
-        assertEquals(String.class, coordinateClassFor(CovariantDoubleInheritedString.class));
+        assertThrows(IllegalArgumentException.class, () -> assertEquals(String.class, coordinateClassFor(CovariantDoubleInheritedString.class)));
     }
 
     @Test

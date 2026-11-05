@@ -22,12 +22,13 @@
 package org.tensorics.core.tensor.specific;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensor.specific.PositionIndexer.Builder;
 
@@ -76,11 +77,14 @@ public class PositionArrayIndexMappingTest {
         return builder.build();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void putTwiceSameDimensionThrows() {
-        Builder builder = PositionIndexer.builder();
-        builder.put(String.class, STRINGS);
-        builder.put(String.class, STRINGS);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Builder builder = PositionIndexer.builder();
+            builder.put(String.class, STRINGS);
+            builder.put(String.class, STRINGS);
+
+        });
     }
 
 }

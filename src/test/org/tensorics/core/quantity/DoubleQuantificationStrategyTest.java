@@ -25,10 +25,10 @@ package org.tensorics.core.quantity;
 import static javax.measure.unit.SI.AMPERE;
 import static javax.measure.unit.SI.MICRO;
 import static javax.measure.unit.SI.MILLI;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.fields.doubles.DoubleCheating;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.quantity.options.JScienceQuantificationStrategy;
@@ -41,7 +41,7 @@ public class DoubleQuantificationStrategyTest {
 
     private QuantificationStrategy<Double> strategy;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         strategy = new JScienceQuantificationStrategy<>(new DoubleCheating());
     }

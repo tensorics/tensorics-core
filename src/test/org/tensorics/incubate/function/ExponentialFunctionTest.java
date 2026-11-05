@@ -25,14 +25,15 @@ package org.tensorics.incubate.function;
 import static javax.measure.unit.SI.AMPERE;
 import static javax.measure.unit.SI.SECOND;
 import static javax.measure.unit.Unit.ONE;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
 import javax.measure.quantity.ElectricCurrent;
 
 import org.jscience.physics.amount.Amount;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author agorzaws
@@ -54,9 +55,9 @@ public class ExponentialFunctionTest {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testBuildDefault() throws Exception {
-        ExponentialFunction.builder().build();
+        assertThrows(IllegalArgumentException.class, () -> ExponentialFunction.builder().build());
     }
 
     @Test

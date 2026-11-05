@@ -4,31 +4,31 @@
 
 package org.tensorics.core.function;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 
 import java.util.Comparator;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.function.interpolation.InterpolationStrategy;
 
 import com.google.common.collect.ImmutableSet;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Ensures that the contract of {@link DefaultInterpolatedFunction} is fulfilled.
  * 
  * @author caguiler
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DefaultInterpolatedFunctionTest {
 
     private static final double DEFINED_X_VALUE = 1.0;
@@ -44,10 +44,10 @@ public class DefaultInterpolatedFunctionTest {
 
     DefaultInterpolatedFunction<Double, Double> interpolatedFunction;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        when(function.definedXValues()).thenReturn(ImmutableSet.of(DEFINED_X_VALUE));
-        when(function.apply(DEFINED_X_VALUE)).thenReturn(DEFINED_X_VALUE);
+        lenient().when(function.definedXValues()).thenReturn(ImmutableSet.of(DEFINED_X_VALUE));
+        lenient().when(function.apply(DEFINED_X_VALUE)).thenReturn(DEFINED_X_VALUE);
         interpolatedFunction = new DefaultInterpolatedFunction<>(function, interpolationStrategy, conversion,
                 COMPARATOR);
     }

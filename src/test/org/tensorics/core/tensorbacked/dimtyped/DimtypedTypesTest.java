@@ -1,40 +1,32 @@
 package org.tensorics.core.tensorbacked.dimtyped;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DimtypedTypesTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-
     @Test
     public void notSubtypeOfWellknownThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("must be a SUBTYPE");
-        DimtypedTypes.coordinateParametrizedSubtypeOf(Tensorbacked1d.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> DimtypedTypes.coordinateParametrizedSubtypeOf(Tensorbacked1d.class));
+        assertThat(exception).hasMessageContaining("must be a SUBTYPE");
     }
 
     @Test
     public void unknownSubtypeThrows() {
-        thrown.expect(NoSuchElementException.class);
-        thrown.expectMessage("none was found");
-        DimtypedTypes.coordinateParametrizedSubtypeOf(AnUnknownSubtype.class);
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> DimtypedTypes.coordinateParametrizedSubtypeOf(AnUnknownSubtype.class));
+        assertThat(exception).hasMessageContaining("none was found");
     }
 
     @Test
     public void moreThanOneInterfaceImplementedThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("more than one were found");
-        DimtypedTypes.coordinateParametrizedSubtypeOf(TwoInterfacesImplemented.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> DimtypedTypes.coordinateParametrizedSubtypeOf(TwoInterfacesImplemented.class));
+        assertThat(exception).hasMessageContaining("more than one were found");
     }
 
     @Test
@@ -51,16 +43,14 @@ public class DimtypedTypesTest {
 
     @Test
     public void aNonConcreteSubtypeDoesNotResolveDimensions() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("is not a valid subtype with resolvable type parameters");
-        DimtypedTypes.dimensionsFrom(ANonConcreteSubtype.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> DimtypedTypes.dimensionsFrom(ANonConcreteSubtype.class));
+        assertThat(exception).hasMessageContaining("is not a valid subtype with resolvable type parameters");
     }
 
     @Test
     public void aSubtypeWithtWiceTheSameDimensionThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Probably two dimensions are of the same type?");
-        DimtypedTypes.dimensionsFrom(ASubtypeWithTheSameDimensions.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> DimtypedTypes.dimensionsFrom(ASubtypeWithTheSameDimensions.class));
+        assertThat(exception).hasMessageContaining("Probably two dimensions are of the same type?");
     }
 
     interface AnUnknownSubtype extends DimtypedTensorbacked {

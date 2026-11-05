@@ -4,56 +4,53 @@
 
 package org.tensorics.core.booleans.operations;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.tensorics.core.math.operations.BinaryFunction;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 
 /**
  * A simple test for basics of the boolean operations.
  * 
  * @author agorzaws
  */
-@RunWith(JUnitParamsRunner.class)
 public class LogicalOperationTest {
 
-    @Test
-    @Parameters(method = "getParametersAnd")
+    @ParameterizedTest
+    @MethodSource("getParametersAnd")
     public void testAND(boolean input1, boolean input2, boolean result) {
         BinaryFunction<Boolean, Boolean> andOperation = BooleanOperations.and();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
 
-    @Test
-    @Parameters(method = "getParametersNand")
+    @ParameterizedTest
+    @MethodSource("getParametersNand")
     public void testNAND(boolean input1, boolean input2, boolean result) {
         BinaryFunction<Boolean, Boolean> andOperation = BooleanOperations.nand();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
 
-    @Test
-    @Parameters(method = "getParametersXor")
+    @ParameterizedTest
+    @MethodSource("getParametersXor")
     public void testXOR(boolean input1, boolean input2, boolean result) {
         BinaryFunction<Boolean, Boolean> andOperation = BooleanOperations.xor();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
 
-    @Test
-    @Parameters(method = "getParametersOr")
+    @ParameterizedTest
+    @MethodSource("getParametersOr")
     public void testOR(boolean input1, boolean input2, boolean result) {
         BinaryFunction<Boolean, Boolean> andOperation = BooleanOperations.or();
         Boolean resultOp = andOperation.perform(input1, input2);
         assertEquals(result, resultOp);
     }
 
-    public Object[] getParametersAnd() {
+    static Object[] getParametersAnd() {
         Object[] params = new Object[4];
         params[0] = new Object[] { true, true, true };
         params[1] = new Object[] { true, false, false };
@@ -63,7 +60,7 @@ public class LogicalOperationTest {
         return params;
     }
 
-    public Object[] getParametersNand() {
+    static Object[] getParametersNand() {
         Object[] params = new Object[4];
         params[0] = new Object[] { true, true, false };
         params[1] = new Object[] { true, false, true };
@@ -73,7 +70,7 @@ public class LogicalOperationTest {
         return params;
     }
 
-    public Object[] getParametersXor() {
+    static Object[] getParametersXor() {
         Object[] params = new Object[4];
         params[0] = new Object[] { true, true, false };
         params[1] = new Object[] { true, false, true };
@@ -82,7 +79,7 @@ public class LogicalOperationTest {
         return params;
     }
 
-    public Object[] getParametersOr() {
+    static Object[] getParametersOr() {
         Object[] params = new Object[4];
         params[0] = new Object[] { true, true, true };
         params[1] = new Object[] { true, false, true };

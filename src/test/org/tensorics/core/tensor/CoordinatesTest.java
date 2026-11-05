@@ -23,11 +23,12 @@ package org.tensorics.core.tensor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -62,12 +63,15 @@ public class CoordinatesTest {
         Coordinates.checkClassRelations(C.class, coordinates);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void checkRelationsNotAllowed() {
-        Set<Class<?>> coordinates = new HashSet<>();
-        coordinates.add(IA.class);
-        coordinates.add(IC.class);
-        Coordinates.checkClassRelations(B.class, coordinates);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Set<Class<?>> coordinates = new HashSet<>();
+            coordinates.add(IA.class);
+            coordinates.add(IC.class);
+            Coordinates.checkClassRelations(B.class, coordinates);
+
+        });
     }
 
     @Test
@@ -78,22 +82,28 @@ public class CoordinatesTest {
         Coordinates.checkClassesRelations(coordinates);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCoordinatesBunch2() {
-        Set<Class<?>> coordinates = new HashSet<>();
-        coordinates.add(IA.class);
-        coordinates.add(IB.class);
-        coordinates.add(IC.class);
-        Coordinates.checkClassesRelations(coordinates);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Set<Class<?>> coordinates = new HashSet<>();
+            coordinates.add(IA.class);
+            coordinates.add(IB.class);
+            coordinates.add(IC.class);
+            Coordinates.checkClassesRelations(coordinates);
+
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCoordinatesBunchNotAllowed() {
-        Set<Class<?>> coordinates = new HashSet<>();
-        coordinates.add(IA.class);
-        coordinates.add(IB.class);
-        coordinates.add(IE.class);
-        Coordinates.checkClassesRelations(coordinates);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Set<Class<?>> coordinates = new HashSet<>();
+            coordinates.add(IA.class);
+            coordinates.add(IB.class);
+            coordinates.add(IE.class);
+            Coordinates.checkClassesRelations(coordinates);
+
+        });
     }
 
     @Test
@@ -104,11 +114,14 @@ public class CoordinatesTest {
         assertThat(result).containsExactlyInAnyOrder(IA.class, IB.class);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void parentClassObjectIntersection() {
-        ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, B.class);
-        ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(Object.class);
-        Coordinates.parentClassIntersection(leftCoordinates, rightCoordinates);
+        assertThrows(IllegalArgumentException.class, () -> {
+            ImmutableSet<Class<?>> leftCoordinates = ImmutableSet.of(A.class, B.class);
+            ImmutableSet<Class<?>> rightCoordinates = ImmutableSet.of(Object.class);
+            Coordinates.parentClassIntersection(leftCoordinates, rightCoordinates);
+
+        });
     }
 
     @Test

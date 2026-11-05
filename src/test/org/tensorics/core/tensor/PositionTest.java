@@ -22,25 +22,23 @@
 package org.tensorics.core.tensor;
 
 import static org.tensorics.core.tensor.Positions.assertConsistentDimensions;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import com.google.common.collect.ImmutableSet;
 
 public class PositionTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     private static final Position POS_A = Position.of("A");
 
     @Test
     public void coordinatesContainPositionThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("A position is contained");
-        Position.of(POS_A);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Position.of(POS_A));
+        assertThat(exception.getMessage(), containsString("A position is contained"));
     }
 
     @Test
@@ -50,32 +48,28 @@ public class PositionTest {
 
     @Test
     public void assertConsistentWithWrongSetThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("assignable");
-        assertConsistentDimensions(POS_A, ImmutableSet.of(Integer.class));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> assertConsistentDimensions(POS_A, ImmutableSet.of(Integer.class)));
+        assertThat(exception.getMessage(), containsString("assignable"));
     }
 
     @Test
     public void positionOfSameTypeAndNonEqualThrow() {
-        expectUniqueDimensionsException();
-        Position.of("A", "B");
+        assertUniqueDimensionsException(() -> Position.of("A", "B"));
     }
 
     @Test
     public void positionOfSetSameTypeThrow() {
-        expectUniqueDimensionsException();
-        Position.of(ImmutableSet.of("A", "B"));
+        assertUniqueDimensionsException(() -> Position.of(ImmutableSet.of("A", "B")));
     }
 
     @Test
     public void positionOfSameTypeAndSameValueThrow() {
-        expectUniqueDimensionsException();
-        Position.of("A", "A");
+        assertUniqueDimensionsException(() -> Position.of("A", "A"));
     }
 
-    private void expectUniqueDimensionsException() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("unique dimensions");
+    private static void assertUniqueDimensionsException(Executable executable) {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, executable);
+        assertThat(exception.getMessage(), containsString("unique dimensions"));
     }
 
 }

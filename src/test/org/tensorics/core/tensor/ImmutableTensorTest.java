@@ -22,15 +22,16 @@
 
 package org.tensorics.core.tensor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor.Builder;
 
@@ -38,9 +39,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 public class ImmutableTensorTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testMergingContextBackIntoShape() {
@@ -93,9 +91,8 @@ public class ImmutableTensorTest {
 
     @Test
     public void sameDimensionTwiceThrowsImmediately() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("unique");
-        Tensorics.builder(Integer.class, Integer.class);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Tensorics.builder(Integer.class, Integer.class));
+        assertThat(exception.getMessage(), containsString("unique"));
     }
 
     @Test
@@ -113,9 +110,8 @@ public class ImmutableTensorTest {
     @Test
     public void fromMapThrowsOnInconsistentDimensions() {
         Map<Position, Integer> map = ImmutableMap.of(Position.of(42), 0, Position.of("fail"), 1);
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("not assignable");
-        Tensorics.fromMap(ImmutableSet.of(Integer.class), map);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Tensorics.fromMap(ImmutableSet.of(Integer.class), map));
+        assertThat(exception.getMessage(), containsString("not assignable"));
     }
 
     @Test
@@ -127,8 +123,7 @@ public class ImmutableTensorTest {
         builder.put(Position.of(coordinates), value);
         ImmutableTensor<Object> tensor = builder.build();
 
-        thrown.expect(NoSuchElementException.class);
-        assertEquals(tensor.get(AnyClass.INSTANCE2), value);
+        assertThrows(NoSuchElementException.class, () -> assertEquals(tensor.get(AnyClass.INSTANCE2), value));
     }
 
     interface AnyInterface {

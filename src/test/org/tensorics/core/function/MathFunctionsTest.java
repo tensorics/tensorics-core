@@ -1,9 +1,10 @@
 package org.tensorics.core.function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.tensorics.core.lang.Tensorics.at;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Position;
@@ -41,7 +42,7 @@ public class MathFunctionsTest {
     private DiscreteFunction<Integer, Double> discreteFunction;
     private ImmutableTensor<Boolean> twoDimensionalTensor;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initOneDimensionalTensor();
         initTwoDimensionalTensor();
@@ -114,19 +115,19 @@ public class MathFunctionsTest {
         discreteFunction = builder.build();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testFunctionFrom1DTensorWithNullTensorThrowsNPE() {
-        MathFunctions.functionFrom1DTensor(null, Object.class);
+        assertThrows(NullPointerException.class, () -> MathFunctions.functionFrom1DTensor(null, Object.class));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testFunctionFrom1DTensorWithNullDimensionClassThrowsNPE() {
-        MathFunctions.functionFrom1DTensor(oneDimensionalTensor, null);
+        assertThrows(NullPointerException.class, () -> MathFunctions.functionFrom1DTensor(oneDimensionalTensor, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFunctionFrom1DTensorWithZeroDimensionalTensorThrowsIllegalArgumentException() {
-        MathFunctions.functionFrom1DTensor(zeroDimensionalTensor, Object.class);
+        assertThrows(IllegalArgumentException.class, () -> MathFunctions.functionFrom1DTensor(zeroDimensionalTensor, Object.class));
     }
 
     @Test
@@ -136,19 +137,19 @@ public class MathFunctionsTest {
         assertEquals(discreteFunction, function);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testFunctionsFromWithNullTensorThrowsNPE() {
-        MathFunctions.functionsFrom(null, Object.class);
+        assertThrows(NullPointerException.class, () -> MathFunctions.functionsFrom(null, Object.class));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testFunctionsFromWithNullDimensionClassThrowsNPE() {
-        MathFunctions.functionsFrom(oneDimensionalTensor, null);
+        assertThrows(NullPointerException.class, () -> MathFunctions.functionsFrom(oneDimensionalTensor, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFunctionsFromWithZeroDimensionalTensorThrowsIllegalArgumentException() {
-        MathFunctions.functionsFrom(zeroDimensionalTensor, Object.class);
+        assertThrows(IllegalArgumentException.class, () -> MathFunctions.functionsFrom(zeroDimensionalTensor, Object.class));
     }
 
     @Test
@@ -173,9 +174,9 @@ public class MathFunctionsTest {
                 tensorFunction.shape().coordinatesOfType(Integer.class));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testYValuesOfWithWithNullFunctionThrowsNPE() {
-        MathFunctions.yValuesOf(null);
+        assertThrows(NullPointerException.class, () -> MathFunctions.yValuesOf(null));
     }
 
     @Test

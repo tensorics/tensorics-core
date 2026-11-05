@@ -1,14 +1,14 @@
 package org.tensorics.core.tensor.lang;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.tensorics.core.lang.Tensorics.at;
 import static org.tensorics.core.lang.Tensorics.from;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Tensor;
 

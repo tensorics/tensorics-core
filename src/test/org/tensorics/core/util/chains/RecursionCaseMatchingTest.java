@@ -4,25 +4,23 @@
 
 package org.tensorics.core.util.chains;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
+
 import java.util.Objects;
 import java.util.function.Function;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.util.chains.CaseMatchings.ClassDispatcher;
 
 public class RecursionCaseMatchingTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void nullRecursionCallbackThrows() {
-        thrown.expect(NullPointerException.class);
-        thrown.expectMessage("recursionCallback");
-        matching().apply("anyString", null);
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> matching().apply("anyString", null));
+        assertThat(exception.getMessage(), containsString("recursionCallback"));
     }
 
     @Test
@@ -41,20 +39,17 @@ public class RecursionCaseMatchingTest {
 
     @Test
     public void wrongTypeReturningMethodThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        CaseMatchings.from(String.class, IntRepresenter.class);
+        assertThrows(IllegalArgumentException.class, () -> CaseMatchings.from(String.class, IntRepresenter.class));
     }
 
     @Test
     public void twoParameterMethodThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        CaseMatchings.from(String.class, TwoParameterRepresenter.class);
+        assertThrows(IllegalArgumentException.class, () -> CaseMatchings.from(String.class, TwoParameterRepresenter.class));
     }
 
     @Test
     public void wrongMethodNameThrows() {
-        thrown.expect(IllegalArgumentException.class);
-        CaseMatchings.from(String.class, WrongMethodNameRepresenter.class);
+        assertThrows(IllegalArgumentException.class, () -> CaseMatchings.from(String.class, WrongMethodNameRepresenter.class));
     }
 
     @Test

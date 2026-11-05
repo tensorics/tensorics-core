@@ -22,12 +22,13 @@
 
 package org.tensorics.incubate.function;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.incubate.function.SortedMapBackedDiscreteFunction.Builder;
 
 public class DiscreteFunctionTest {
@@ -59,12 +60,15 @@ public class DiscreteFunctionTest {
         assertEquals(VALUES, functionToTest.getYs());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testGetYforNonExistinXForMapSorted() {
-        Builder<Double, Double> builder = SortedMapBackedDiscreteFunction.builder();
-        createDicreteFunction(builder);
-        functionToTest = builder.build();
-        assertEquals(3.2, functionToTest.getY(1122.), 0.0);
+        assertThrows(IllegalStateException.class, () -> {
+            Builder<Double, Double> builder = SortedMapBackedDiscreteFunction.builder();
+            createDicreteFunction(builder);
+            functionToTest = builder.build();
+            assertEquals(3.2, functionToTest.getY(1122.), 0.0);
+
+        });
     }
 
     @Test

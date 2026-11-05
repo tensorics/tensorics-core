@@ -5,9 +5,10 @@
 package org.tensorics.core.lang;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.tensorics.core.lang.Tensorics.at;
 import static org.tensorics.core.lang.Tensorics.quantityOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.quantity.QuantifiedValue;
 import org.tensorics.core.tensor.Tensor;
 

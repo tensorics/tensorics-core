@@ -21,10 +21,10 @@
 // @formatter:on
 package org.tensorics.core.resolve;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.DoubleScript;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
@@ -38,7 +38,7 @@ public class DeferredTensoricCalculationTest {
     private static final String A_STRING = "A String";
     private ResolvingEngine engine;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         engine = ResolvingEngines.defaultEngine();
     }

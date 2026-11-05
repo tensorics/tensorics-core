@@ -22,45 +22,46 @@
 
 package org.tensorics.core.tensor.variance;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CoContraPairTest {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void leftNullThrows() {
-        CoContraDimensionPair.ofLeftRight(null, Plane.class);
+        assertThrows(NullPointerException.class, () -> CoContraDimensionPair.ofLeftRight(null, Plane.class));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void rightNullThrows() {
-        CoContraDimensionPair.ofLeftRight(Plane.class, null);
+        assertThrows(NullPointerException.class, () -> CoContraDimensionPair.ofLeftRight(Plane.class, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void bothSameThrow() {
-        CoContraDimensionPair.ofLeftRight(Bpm.class, Bpm.class);
+        assertThrows(IllegalArgumentException.class, () -> CoContraDimensionPair.ofLeftRight(Bpm.class, Bpm.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void bothContravariantThrow() {
-        CoContraDimensionPair.ofLeftRight(Bpm.class, Plane.class);
+        assertThrows(IllegalArgumentException.class, () -> CoContraDimensionPair.ofLeftRight(Bpm.class, Plane.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void bothCovariantThrow() {
-        CoContraDimensionPair.ofLeftRight(CoBpm.class, CoPlane.class);
+        assertThrows(IllegalArgumentException.class, () -> CoContraDimensionPair.ofLeftRight(CoBpm.class, CoPlane.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void notMathingContraCoPairThrows() {
-        CoContraDimensionPair.ofLeftRight(Bpm.class, CoPlane.class);
+        assertThrows(IllegalArgumentException.class, () -> CoContraDimensionPair.ofLeftRight(Bpm.class, CoPlane.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void notMathingCoContraPairThrows() {
-        CoContraDimensionPair.ofLeftRight(CoBpm.class, Plane.class);
+        assertThrows(IllegalArgumentException.class, () -> CoContraDimensionPair.ofLeftRight(CoBpm.class, Plane.class));
     }
 
     @Test

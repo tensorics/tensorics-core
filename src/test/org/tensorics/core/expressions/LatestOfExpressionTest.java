@@ -11,8 +11,8 @@ import static org.tensorics.core.tree.domain.ResolvedExpression.of;
 
 import java.util.Arrays;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.resolve.engine.ResolvingEngine;
 import org.tensorics.core.resolve.engine.ResolvingEngines;
 import org.tensorics.core.tree.domain.Expression;
@@ -22,7 +22,7 @@ public class LatestOfExpressionTest {
 
     private ResolvingEngine engine;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         engine = ResolvingEngines.defaultEngine();
     }

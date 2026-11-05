@@ -22,11 +22,12 @@
 
 package org.tensorics.core.tree;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,8 +35,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tree.domain.ExceptionHandlingNode;
 import org.tensorics.core.tree.domain.Node;
 import org.tensorics.core.tree.domain.Path;
@@ -66,7 +67,7 @@ public class PathWithoutMatchingNodeTest {
     /*
      * rootNode / \ / \ child1(EH) child2(EH) / \ \ / \ \ child11 child12 child21 \ / / \ / / childCommon
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         rootNode = mock(Node.class);
 
@@ -119,11 +120,14 @@ public class PathWithoutMatchingNodeTest {
         assertEquals(ImmutableList.of(childCommon), content);
     }
 
-    @Test(expected = PathDoesNotExistException.class)
+    @Test
     public void testPathRootTo22() {
-        assertNotNull(rootNode);
-        assertNotNull(child21);
-        Trees.getPathsFromChildToAncestor(rootNode, child21);
+        assertThrows(PathDoesNotExistException.class, () -> {
+            assertNotNull(rootNode);
+            assertNotNull(child21);
+            Trees.getPathsFromChildToAncestor(rootNode, child21);
+
+        });
     }
 
     @Test

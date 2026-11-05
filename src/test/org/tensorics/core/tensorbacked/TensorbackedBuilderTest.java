@@ -23,12 +23,13 @@
 package org.tensorics.core.tensorbacked;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
 import org.tensorics.core.tensorbacked.orbit.SinglebeamOrbit;
@@ -53,10 +54,13 @@ public class TensorbackedBuilderTest {
         assertThat(Tensorics.sizeOf(emptyOrbit()), equalTo(0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void putInsufficientCoordinateThrows() {
-        Object[] coordinates = { BPM_A };
-        newBuilder().put(Position.of(coordinates), 1.0);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Object[] coordinates = { BPM_A };
+            newBuilder().put(Position.of(coordinates), 1.0);
+
+        });
     }
 
     @Test
@@ -68,9 +72,9 @@ public class TensorbackedBuilderTest {
         assertThat(Tensorics.sizeOf(orbit), equalTo(1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void putAtOnePositionWithWrongCoordinatesThrows() {
-        newBuilder().put(Position.of(BPM_A), TESTVALUE_1_0);
+        assertThrows(IllegalArgumentException.class, () -> newBuilder().put(Position.of(BPM_A), TESTVALUE_1_0));
     }
 
     @Test
@@ -93,10 +97,13 @@ public class TensorbackedBuilderTest {
         assertThat(oneValueCoordinatesAH(), equalTo(oneValuePosAH()));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void putNullEntryThrows() {
-        java.util.Map.Entry<Position, Double> toPut = null;
-        newBuilder().put(toPut);
+        assertThrows(NullPointerException.class, () -> {
+            java.util.Map.Entry<Position, Double> toPut = null;
+            newBuilder().put(toPut);
+
+        });
     }
 
     @Test
@@ -106,10 +113,13 @@ public class TensorbackedBuilderTest {
         assertThat(builder.build(), equalTo(oneValuePosAH()));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void putNullEntriesThrows() {
-        Set<java.util.Map.Entry<Position, Double>> toPut = null;
-        newBuilder().putAll(toPut);
+        assertThrows(NullPointerException.class, () -> {
+            Set<java.util.Map.Entry<Position, Double>> toPut = null;
+            newBuilder().putAll(toPut);
+
+        });
     }
 
     @Test

@@ -5,14 +5,15 @@
 package org.tensorics.core.tensorbacked;
 
 import static java.lang.Double.valueOf;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.FirstCoordinate.FIRST_1;
 import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.FirstCoordinate.FIRST_2;
 import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.SecondCoordinate.SECOND_1;
 import static org.tensorics.core.tensorbacked.AbstractTensorbackedTest.SecondCoordinate.SECOND_2;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.lang.TensoricDoubles;
 import org.tensorics.core.lang.Tensorics;
 import org.tensorics.core.tensor.Position;
@@ -78,10 +79,13 @@ public class AbstractTensorbackedTest {
                 tb.tensor().shape().dimensionSet());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void canNotConstructLeafClassTensorbackedFromInterfaceClassTensor() {
-        LeafClassTensorbacked tb = new LeafClassTensorbacked(interfaceTensor);
-        assertEquals(Tensorics.mapFrom(tb.tensor()), TensorInternals.mapFrom(interfaceTensor));
+        assertThrows(IllegalArgumentException.class, () -> {
+            LeafClassTensorbacked tb = new LeafClassTensorbacked(interfaceTensor);
+            assertEquals(Tensorics.mapFrom(tb.tensor()), TensorInternals.mapFrom(interfaceTensor));
+
+        });
     }
 
     public void canConstructInterfaceTensorbackedFromLeafClassTensor() {

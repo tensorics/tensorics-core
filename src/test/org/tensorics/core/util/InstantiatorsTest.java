@@ -23,13 +23,14 @@
 package org.tensorics.core.util;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.tensorics.core.testing.TestUtil.assertUtilityClass;
 import static org.tensorics.core.util.InstantiatorType.CONSTRUCTOR;
 import static org.tensorics.core.util.Instantiators.instantiatorFor;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class InstantiatorsTest {
 
@@ -40,19 +41,19 @@ public class InstantiatorsTest {
         assertUtilityClass(Instantiators.class);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void instantiatorWithNullClassThrows() {
-        instantiatorFor(null);
+        assertThrows(NullPointerException.class, () -> instantiatorFor(null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void instantiatorWithNullArgumentClassThrows() {
-        instantiatorFor(TestClassWithIntConstructor.class).withArgumentType(null);
+        assertThrows(NullPointerException.class, () -> instantiatorFor(TestClassWithIntConstructor.class).withArgumentType(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void instantiatorWithNotMatchingConstructorThrows() {
-        instantiatorFor(TestClassWithIntConstructor.class).withArgumentType(String.class);
+        assertThrows(IllegalArgumentException.class, () -> instantiatorFor(TestClassWithIntConstructor.class).withArgumentType(String.class));
     }
 
     @Test
@@ -65,14 +66,14 @@ public class InstantiatorsTest {
         assertThat(workingInstantiator().create(5).integer, equalTo(TEST_VALUE_5));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void instantiatorForPackagePrivateConstructorThrows() throws Exception {
-        instantiatorFor(TestClassWithPackageIntConstructor.class).withArgumentType(Integer.class);
+        assertThrows(IllegalArgumentException.class, () -> instantiatorFor(TestClassWithPackageIntConstructor.class).withArgumentType(Integer.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void instantiatorWithThrowingConstructorThrows() {
-        instantiatorFor(TestClassWithIntThrowingConstructor.class).withArgumentType(Integer.class).create(TEST_VALUE_5);
+        assertThrows(IllegalArgumentException.class, () -> instantiatorFor(TestClassWithIntThrowingConstructor.class).withArgumentType(Integer.class).create(TEST_VALUE_5));
     }
 
     private Instantiator<Integer, TestClassWithIntConstructor> workingInstantiator() {

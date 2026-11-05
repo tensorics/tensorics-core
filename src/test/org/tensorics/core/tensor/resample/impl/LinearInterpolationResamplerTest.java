@@ -8,13 +8,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 import static org.tensorics.core.lang.TensoricDoubles.resample;
 import static org.tensorics.core.lang.Tensorics.at;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.NoSuchElementException;
 
 import org.assertj.core.data.Offset;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.tensor.ImmutableTensor;
 import org.tensorics.core.tensor.Tensor;
 import org.tensorics.core.tensor.Tensoric;
@@ -29,9 +28,6 @@ import org.tensorics.core.tensor.Tensoric;
 public class LinearInterpolationResamplerTest {
 
     private static final Offset<Double> DEFAULT_OFFSET = offset(1.0e-6);
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     // @formatter:off
     /*
@@ -74,18 +70,14 @@ public class LinearInterpolationResamplerTest {
 
     @Test
     public void linearIntOnlyC2Throws() {
-        thrown.expect(NoSuchElementException.class);
-        thrown.expectMessage("cannot be resampled");
-
-        linearIntOnly.get("C", 2);
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> linearIntOnly.get("C", 2));
+        assertThat(exception).hasMessageContaining("cannot be resampled");
     }
 
     @Test
     public void linearIntOnlyA3Throws() {
-        thrown.expect(NoSuchElementException.class);
-        thrown.expectMessage("cannot be resampled");
-
-        linearIntOnly.get("A", 3);
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> linearIntOnly.get("A", 3));
+        assertThat(exception).hasMessageContaining("cannot be resampled");
     }
 
     @Test

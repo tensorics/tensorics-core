@@ -4,24 +4,14 @@
 
 package org.tensorics.core.util.names;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.assertj.core.api.Assertions;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableSet;
 
 public class ClasspathConstantScannerTest {
 
     public static final String A_TEST_VALUE_TO_BE_FOUND = "aTestValueToBeFound";
-
-    @BeforeClass
-    public static final void setUpBeforeClass() {
-        BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.INFO);
-    }
 
     @Test
     public void test() {

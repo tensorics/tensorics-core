@@ -4,11 +4,11 @@
 
 package org.tensorics.core.function.lang;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.fields.doubles.Structures;
 import org.tensorics.core.function.DiscreteFunction;
 import org.tensorics.core.function.MapBackedDiscreteFunction;
@@ -35,7 +35,7 @@ public class FunctionExpressionSupportTest {
 
     private FunctionExpressionSupport<Double> support;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         engine = ResolvingEngines.defaultEngine();

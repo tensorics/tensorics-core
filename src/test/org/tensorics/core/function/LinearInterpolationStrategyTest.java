@@ -1,11 +1,12 @@
 package org.tensorics.core.function;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Comparator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tensorics.core.commons.operations.Conversion;
 import org.tensorics.core.commons.operations.Conversions;
 import org.tensorics.core.fields.doubles.Structures;
@@ -28,29 +29,29 @@ public class LinearInterpolationStrategyTest {
 
     private LinearInterpolationStrategy<Double> strategy;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         strategy = new LinearInterpolationStrategy<>(Structures.doubles());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testInterpolationWithNullxValueThrowsNPE() {
-        strategy.interpolate(null, xAxis(0, 1), IDENTITY, COMPARATOR);
+        assertThrows(NullPointerException.class, () -> strategy.interpolate(null, xAxis(0, 1), IDENTITY, COMPARATOR));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testInterpolationWithNullFunctionThrowsNPE() {
-        strategy.interpolate(1.0, null, IDENTITY, COMPARATOR);
+        assertThrows(NullPointerException.class, () -> strategy.interpolate(1.0, null, IDENTITY, COMPARATOR));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testInterpolationWithConversionThrowsNPE() {
-        strategy.interpolate(1.0, xAxis(0, 1), null, COMPARATOR);
+        assertThrows(NullPointerException.class, () -> strategy.interpolate(1.0, xAxis(0, 1), null, COMPARATOR));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testInterpolationWithFunctionThatContainsOnlyOneXValueThrowsIllegalStateException() {
-        strategy.interpolate(33.0, functionWithOnlyOneXValue(), IDENTITY, COMPARATOR);
+        assertThrows(IllegalStateException.class, () -> strategy.interpolate(33.0, functionWithOnlyOneXValue(), IDENTITY, COMPARATOR));
     }
 
     @Test
